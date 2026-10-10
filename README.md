@@ -31,24 +31,27 @@ L'IA extrait le texte/transcription et génère dynamiquement des leçons avec e
 
 ---
 
-## 📱 Targets Multiplateformes
+## ⚡ Comment tester et exécuter l'application ?
 
-- **Windows Desktop** : `composeApp/src/desktopMain/kotlin/main.kt`
-- **Android App** : `composeApp/src/androidMain/kotlin/com/duolingo/app/MainActivity.kt`
-- **iOS / iPad OS** : Framework KMP exporté dans `composeApp/build.gradle.kts`
+### Option 1 : Via Android Studio / IntelliJ IDEA (Recommandé)
+1. Ouvrez **Android Studio** ou **IntelliJ IDEA**.
+2. Choisissez **Open** et sélectionnez le dossier du projet : `C:\Users\The_dr3amsigner\.gemini\antigravity\scratch\duolingo-kmp-learning-app`.
+3. Pour exécuter la version **Windows Desktop** :
+   - Dans le panneau Gradle (à droite), développez `composeApp -> Tasks -> compose desktop -> desktopRun`.
+   - Cliquez deux fois sur **desktopRun** pour lancer la fenêtre de l'application sur Windows.
+4. Pour exécuter la version **Android** :
+   - Sélectionnez la configuration `composeApp` et lancez un émulateur Android ou connectez votre smartphone/iPad.
+
+### Option 2 : Via la ligne de commande (Terminal)
+Exécutez la commande suivante dans le terminal à la racine du projet :
+```bash
+./gradlew :composeApp:desktopRun
+```
 
 ---
 
-## 🚀 Publication sur GitHub
+## 📱 Structure Multiplateforme
 
-Le dépôt local a été initialisé dans ce dossier. Pour le publier sur votre compte GitHub :
-
-1. Créez un nouveau dépôt sur [GitHub](https://github.com/new) nommé `duolingo-kmp-learning-app`.
-2. Exécutez les commandes suivantes dans votre terminal :
-
-```bash
-cd "C:\Users\The_dr3amsigner\.gemini\antigravity\scratch\duolingo-kmp-learning-app"
-git remote add origin https://github.com/VOTRE_NOM_DUTILISATEUR/duolingo-kmp-learning-app.git
-git branch -M main
-git push -u origin main
-```
+- **Windows Desktop** : `composeApp/src/desktopMain/kotlin/main.kt`
+- **Android App** : `composeApp/src/androidMain/kotlin/com/duolingo/app/MainActivity.kt`
+- **Common Code (UI & Logique)** : `composeApp/src/commonMain/kotlin/com/duolingo/app`
