@@ -28,7 +28,10 @@ data class LearningUnit(
     val title: String,
     val description: String,
     val lessons: List<Lesson>,
-    val sourceUrl: String = ""
+    val sourceUrl: String = "",
+    val courseCode: String = "",
+    val edition: String = "",
+    val expectedLessonCount: Int? = null
 )
 
 @Serializable
@@ -46,7 +49,10 @@ data class Lesson(
     /** Set false for elective lessons that should not wait for the preceding path item. */
     val requiresPreviousLesson: Boolean = true,
     /** Stable content schema version, independent from the app release version. */
-    val contentVersion: Int = 1
+    val contentVersion: Int = 1,
+    val sourceSessionNumber: Int? = null,
+    val sourceTitle: String = "",
+    val sessionKind: String = "lesson"
 )
 
 @Serializable
@@ -116,5 +122,6 @@ data class UserStats(
     val hearts: Int = 5,
     val maxHearts: Int = 5,
     val completedLessonIds: Set<String> = emptySet(),
-    val activeSubjectId: String = "math_vectors"
+    val activeSubjectId: String = "math_vectors",
+    val lastStudyDate: String? = null
 )

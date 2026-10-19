@@ -26,14 +26,22 @@ séance doit avoir son contenu pédagogique et ses exercices avant publication.
 
 ## Contenu effectivement disponible dans l'application
 
-Le catalogue existant reste celui de 33 leçons et 66 exercices. Il ne satisfait
-pas la nouvelle demande de cours exhaustifs. Aucun cours complet supplémentaire
-n'a encore été rédigé ou intégré à l'application dans cette phase d'inventaire.
+Le cours MIT 18.01SC est rédigé et intégré : 102 leçons et 236 exercices,
+correspondant aux 102 séances vérifiées. Le validateur contrôle les numéros,
+l’ordre, les titres sources, les liens, les identifiants et les types jouables.
+La provenance et les limites de vérification mathématique figurent dans
+`mit-18-01sc-authoring-notes.md`. Les examens sont des entraînements adaptés,
+sans prétention de reproduire le barème MIT ou tous ses problèmes ouverts.
 
-Les 102 entrées du manifeste 18.01SC portent volontairement le statut
-`not_authored` : relever une séance et son lien ne constitue pas la rédaction
-d'une leçon. Les décomptes des autres cours restent inconnus tant que leur
-séquence source n'a pas été vérifiée.
+Les 16 exemples d’informatique et l’exemple de français restent provisoires.
+Ils ne satisfont pas encore la demande pour ces catégories. Aucun décompte
+de cours achevés n’est déduit des seules pages d’accueil de l’inventaire OSSU.
+
+Le manifeste 18.01SC conserve le statut `not_authored` de la collecte initiale :
+il constitue une trace source figée. Le contenu rédigé se trouve dans
+`curriculum/courses/mit_18_01sc_2010.json` et son état est contrôlé séparément
+par `tools/validate_curriculum.py`. Les décomptes des autres cours restent
+inconnus tant que leur séquence source n’a pas été vérifiée.
 
 ## Suite requise avant livraison conforme
 

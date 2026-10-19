@@ -1,6 +1,9 @@
 *.iml
 .gradle
 /build
+**/build/
+**/xcuserdata/
+*.xcuserstate
 /.idea
 /.kotlin
 .DS_Store
@@ -10,3 +13,5 @@
 .externalNativeBuild
 .cxx
 local.properties
+/.taste-skill/
+**/__pycache__/

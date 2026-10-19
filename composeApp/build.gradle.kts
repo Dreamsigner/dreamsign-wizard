@@ -31,6 +31,14 @@ kotlin {
     }
 
     sourceSets {
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+        }
+        val desktopTest by getting {
+            dependencies {
+                implementation(kotlin("test-junit"))
+            }
+        }
         val commonMain by getting {
             dependencies {
                 implementation(compose.runtime)

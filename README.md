@@ -4,9 +4,11 @@ Application d’apprentissage en Kotlin Multiplatform et Compose Multiplatform p
 
 ## Parcours et contenus
 
-Le catalogue jouable contient actuellement **16 leçons de mathématiques et 16 leçons d’informatique**, réparties dans 8 unités par matière, plus une unité de français. Les parcours reprennent les principaux domaines du cursus OSSU (raisonnement, calcul, maths discrètes, algèbre linéaire, probabilités, systèmes, algorithmes, sécurité, applications et éthique). Ce catalogue est une base structurée et extensible, pas l’intégralité d’un cursus universitaire OSSU. Les explications et exercices de l’application sont rédigés pour ce projet; les pages de référence et cours MIT OpenCourseWare sont liés dans l’aide de chaque leçon.
+Le cours **MIT 18.01SC — Calcul à une variable, Fall 2010** contient les **102 séances sources et 236 exercices** : 93 cours, 4 révisions et 5 entraînements adaptés aux examens. Chaque séance dispose de notes originales en français, d’exercices corrigés, d’indices et de liens précis vers les documents MIT consultés. Cette pratique guidée ne remplace pas tous les problèmes ouverts du cours d’origine.
 
-Les catalogues sont définis dans `composeApp/src/commonMain/kotlin/com/duolingo/app/data/SampleData.kt`. Une leçon contient un objectif, une note de cours, un ou plusieurs exercices avec correction et indice, des ressources de référence et des identifiants de prérequis. Pour ajouter une leçon, attribuer un identifiant stable unique et ajouter son contenu à une unité; l’écran d’aide et le parcours l’affichent automatiquement. Ne pas renommer les identifiants déjà publiés : la progression s’y rattache. `curriculumVersion` et `contentVersion` documentent les évolutions de structure et de contenu.
+L’informatique conserve provisoirement ses 16 leçons d’exemple ; le français, une leçon. Ces exemples ne sont pas des cours sources exhaustifs ni une préparation complète au TCF Canada. La couverture de tous les cours OSSU et du TCF reste en cours : voir `docs/curriculum/STATUS.md`.
+
+Les cours rédigés sont dans `curriculum/courses/`. `python tools/validate_curriculum.py --generate` vérifie leur correspondance intégrale au manifeste source puis génère le code Kotlin dans `data/generated/`. Une unité correspond à un cours ; chaque séance est une leçon. Les identifiants publiés restent stables pour conserver la progression. `SampleData.kt` fournit les catégories et les anciens exemples des catégories sans cours intégré.
 
 L’application n’utilise pas de génération IA et ne prétend pas analyser des PDF ou vidéos. Le contenu pédagogique est préparé à partir des ressources de cours citées. Les ressources MIT/OSSU peuvent avoir leurs propres conditions de licence; les liens mènent au matériel d’origine au lieu de le recopier.
 
@@ -28,7 +30,7 @@ Le dépôt ne contient pas de wrapper Gradle. Si Gradle est installé localement
 gradle :composeApp:desktopRun
 ```
 
-La progression est actuellement gardée en mémoire pendant la session. La persistance locale et la synchronisation entre appareils ne sont pas encore implémentées.
+La progression est enregistrée localement : fichier atomique dans `%LOCALAPPDATA%/AtelierApprentissage/progress.json` sur Windows, SharedPreferences sur Android, NSUserDefaults sur iOS. Les XP sont attribués une seule fois par leçon. Une sauvegarde illisible est préservée et signalée ; les erreurs d’écriture sont visibles. La synchronisation entre appareils reste absente. Voir `docs/platforms.md` pour les builds et les limites de signature iOS.
 
 ## Cibles
 

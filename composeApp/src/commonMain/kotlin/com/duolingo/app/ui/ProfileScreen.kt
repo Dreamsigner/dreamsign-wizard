@@ -1,87 +1,42 @@
 package com.duolingo.app.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.duolingo.app.model.UserStats
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun ProfileScreen(stats: UserStats) {
-    Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Card(
-            modifier = Modifier.fillMaxWidth().padding(bottom = 20.dp),
-            shape = RoundedCornerShape(16.dp),
-            backgroundColor = Color.White,
-            elevation = 4.dp
-        ) {
-            Column(
-                modifier = Modifier.padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Surface(
-                    modifier = Modifier.size(80.dp),
-                    shape = RoundedCornerShape(40.dp),
-                    color = BrandRed
-                ) {
-                    Box(contentAlignment = Alignment.Center) {
-                        Text("🎓", fontSize = 40.sp)
-                    }
-                }
-
-                Spacer(Modifier.height(12.dp))
-                Text("Mon profil", fontSize = 22.sp, fontWeight = FontWeight.Bold)
-                Text("C++, Algorithmes, Mathématiques & TCF Canada", fontSize = 14.sp, color = Graphite)
-
-                Spacer(Modifier.height(20.dp))
-                Divider()
-                Spacer(Modifier.height(20.dp))
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceAround
-                ) {
-                    StatCard(icon = "🔥", title = "Série (Jours)", value = "${stats.streakDays}", color = Graphite)
-                    StatCard(icon = "⚡", title = "XP Total", value = "${stats.xp}", color = Ink)
-                    StatCard(icon = "❤️", title = "Vies", value = "${stats.hearts}/${stats.maxHearts}", color = ActionRed)
+fun ProfileScreen(stats: UserStats, persistenceStatus: String = "État de la sauvegarde non disponible.") {
+    BoxWithConstraints(Modifier.fillMaxSize()) {
+        val wide = maxWidth >= 800.dp
+        Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(if (wide) 32.dp else 16.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
+            Text("Mon parcours", fontSize = 32.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.semantics { heading() })
+            Text("Les petits progrès font les grandes habitudes.", color = Graphite, fontSize = 16.sp)
+            Surface(color = White, shape = LearningShape) {
+                FlowRow(Modifier.fillMaxWidth().padding(24.dp), horizontalArrangement = Arrangement.spacedBy(32.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
+                    StatCard("", "Leçons terminées", "${stats.completedLessonIds.size}", Ink)
+                    StatCard("", "XP accumulés", "${stats.xp}", Ink)
+                    StatCard("", "Jours de série", "${stats.streakDays}", Ink)
+                    StatCard("", "Vies restantes", "${stats.hearts}/${stats.maxHearts}", ActionRed)
                 }
             }
-        }
-
-        // État de sauvegarde locale
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(16.dp),
-            backgroundColor = Color.White,
-            elevation = 2.dp
-        ) {
-            Column(modifier = Modifier.padding(20.dp)) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text("🐙", fontSize = 24.sp)
-                    Spacer(Modifier.width(10.dp))
-                    Text("État de la sauvegarde", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+            Surface(color = White, shape = LearningShape) {
+                Column(Modifier.fillMaxWidth().padding(24.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Text("Ma progression", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                    Text(persistenceStatus, fontSize = 16.sp)
+                    Text("Les XP récompensent la première réussite d’une leçon. Les révisions restent accessibles pour entretenir tes acquis.", color = Graphite, fontSize = 16.sp)
+                    Text("Une erreur retire un cœur. Même à zéro, tu peux continuer à t’entraîner et à corriger tes réponses.", color = Graphite, fontSize = 16.sp)
                 }
-                Spacer(Modifier.height(8.dp))
-                Text(
-                    "La progression reste en mémoire pendant cette session et se réinitialise à la fermeture.",
-                    fontSize = 13.sp,
-                    color = Graphite
-                )
-                Spacer(Modifier.height(16.dp))
-                Text("Synchronisation cloud non configurée.", color = Graphite, fontSize = 13.sp)
             }
         }
     }
@@ -89,10 +44,8 @@ fun ProfileScreen(stats: UserStats) {
 
 @Composable
 fun StatCard(icon: String, title: String, value: String, color: Color) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(icon, fontSize = 24.sp)
-        Spacer(Modifier.height(4.dp))
-        Text(value, fontSize = 20.sp, fontWeight = FontWeight.Bold, color = color)
-        Text(title, fontSize = 12.sp, color = Graphite)
+    Column(Modifier.widthIn(min = 120.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(title, color = Graphite, fontSize = 14.sp)
+        Text(value, color = color, fontSize = 32.sp)
     }
 }
