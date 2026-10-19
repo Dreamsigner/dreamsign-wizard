@@ -12,7 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.HelpOutline
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -70,7 +70,7 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
                 Spacer(Modifier.width(16.dp))
                 Text("❤️ ${stats.hearts}", fontWeight = FontWeight.Bold, color = ActionRed, fontSize = 16.sp)
                 IconButton(onClick = { showHelp = true }) {
-                    Icon(Icons.Default.HelpOutline, contentDescription = "Aide pour cette leçon", tint = Ink)
+                    Icon(Icons.Default.Info, contentDescription = "Aide pour cette leçon", tint = Ink)
                 }
             }
         },
