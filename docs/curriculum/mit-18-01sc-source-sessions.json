@@ -1,0 +1,745 @@
+{
+  "courseCode": "MIT 18.01SC",
+  "edition": "Fall 2010",
+  "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/",
+  "checkedOn": "2026-10-19",
+  "sessionCount": 102,
+  "sessions": [
+    {
+      "number": 1,
+      "sourceTitle": "Introduction to Derivatives",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/part-a-definition-and-basic-rules/session-1-introduction-to-derivatives/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 2,
+      "sourceTitle": "Examples of Derivatives",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/part-a-definition-and-basic-rules/session-2-examples-of-derivatives/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 3,
+      "sourceTitle": "Derivative as Rate of Change",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/part-a-definition-and-basic-rules/session-3-derivative-as-rate-of-change/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 4,
+      "sourceTitle": "Limits and Continuity",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/part-a-definition-and-basic-rules/session-4-limits-and-continuity/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 5,
+      "sourceTitle": "Discontinuity",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/part-a-definition-and-basic-rules/session-5-discontinuity/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 6,
+      "sourceTitle": "Calculating Derivatives",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/part-a-definition-and-basic-rules/session-6-calculating-derivatives/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 7,
+      "sourceTitle": "Derivatives of Sine and Cosine",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/part-a-definition-and-basic-rules/session-7-derivatives-of-sine-and-cosine/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 8,
+      "sourceTitle": "Limits of Sine and Cosine",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/part-a-definition-and-basic-rules/session-8-limits-of-sine-and-cosine/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 9,
+      "sourceTitle": "Product Rule",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/part-a-definition-and-basic-rules/session-9-product-rule/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 10,
+      "sourceTitle": "Quotient Rule",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/part-a-definition-and-basic-rules/session-10-quotient-rule/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 11,
+      "sourceTitle": "Chain Rule",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/part-a-definition-and-basic-rules/session-11-chain-rule/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 12,
+      "sourceTitle": "Higher Derivatives",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/part-a-definition-and-basic-rules/session-12-higher-derivatives/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 13,
+      "sourceTitle": "Implicit Differentiation",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/part-b-implicit-differentiation-and-inverse-functions/session-13-implicit-differentiation/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 14,
+      "sourceTitle": "Examples of Implicit Differentiation",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/part-b-implicit-differentiation-and-inverse-functions/session-14-examples-of-implicit-differentiation/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 15,
+      "sourceTitle": "Implicit Differentiation and Inverse Functions",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/part-b-implicit-differentiation-and-inverse-functions/session-15-implicit-differentiation-and-inverse-functions/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 16,
+      "sourceTitle": "The Derivative of a {{< sup “ x ” >}}",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/part-b-implicit-differentiation-and-inverse-functions/session-16-the-derivative-of-a-x/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 17,
+      "sourceTitle": "The Exponential Function, its Derivative, and its Inverse",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/part-b-implicit-differentiation-and-inverse-functions/session-17-the-exponential-function-its-derivative-and-its-inverse/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 18,
+      "sourceTitle": "Derivatives of other Exponential Functions",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/part-b-implicit-differentiation-and-inverse-functions/session-18-derivatives-of-other-exponential-functions/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 19,
+      "sourceTitle": "An Interesting Limit Involving e",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/part-b-implicit-differentiation-and-inverse-functions/session-19-an-interesting-limit-involving-e/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 20,
+      "sourceTitle": "Hyperbolic Trig Functions",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/part-b-implicit-differentiation-and-inverse-functions/session-20-hyperbolic-trig-functions/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 21,
+      "sourceTitle": "Review for Exam 1 - Computing Derivatives Using Differentiation Rules",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/exam-1/session-21-review-for-exam-1-computing-derivatives-using-differentiation-rules/",
+      "kind": "review",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 22,
+      "sourceTitle": "Materials for Exam 1",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/exam-1/session-22-materials-for-exam-1/",
+      "kind": "exam",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 23,
+      "sourceTitle": "Linear Approximation",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/part-a-approximation-and-curve-sketching/session-23-linear-approximation/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 24,
+      "sourceTitle": "Examples of Linear Approximation",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/part-a-approximation-and-curve-sketching/session-24-examples-of-linear-approximation/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 25,
+      "sourceTitle": "Introduction to Quadratic Approximation",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/part-a-approximation-and-curve-sketching/session-25-introduction-to-quadratic-appoximation/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 26,
+      "sourceTitle": "Using Quadratic Approximations",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/part-a-approximation-and-curve-sketching/session-26-using-quadratic-approximations/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 27,
+      "sourceTitle": "Sketching Graphs I - Polynomials and Rational Functions",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/part-a-approximation-and-curve-sketching/session-27-sketching-graphs-i-polynomials-and-rational-functions/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 28,
+      "sourceTitle": "Sketching Graphs II - General Strategies",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/part-a-approximation-and-curve-sketching/session-28-sketching-graphs-ii-general-strategies/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 29,
+      "sourceTitle": "Optimization Problems",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/part-b-optimization-related-rates-and-newtons-method/session-29-optimization-problems/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 30,
+      "sourceTitle": "Optimization Problems II",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/part-b-optimization-related-rates-and-newtons-method/session-30-optimization-problems-ii/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 31,
+      "sourceTitle": "Related Rates",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/part-b-optimization-related-rates-and-newtons-method/session-31-related-rates/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 32,
+      "sourceTitle": "Ring on a String >",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/part-b-optimization-related-rates-and-newtons-method/session-32-ring-on-a-string/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 33,
+      "sourceTitle": "Newton’s Method",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/part-b-optimization-related-rates-and-newtons-method/session-33-newtons-method/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 34,
+      "sourceTitle": "Introduction to the Mean Value Theorem",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/part-c-mean-value-theorem-antiderivatives-and-differential-equations/session-34-introduction-to-the-mean-value-theorem/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 35,
+      "sourceTitle": "Using the Mean Value Theorem",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/part-c-mean-value-theorem-antiderivatives-and-differential-equations/session-35-using-the-mean-value-theorem/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 36,
+      "sourceTitle": "Differentials >",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/part-c-mean-value-theorem-antiderivatives-and-differential-equations/session-36-differentials/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 37,
+      "sourceTitle": "Antiderivatives",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/part-c-mean-value-theorem-antiderivatives-and-differential-equations/session-37-antiderivatives/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 38,
+      "sourceTitle": "Integration by Substitution >",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/part-c-mean-value-theorem-antiderivatives-and-differential-equations/session-38-integration-by-substitution/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 39,
+      "sourceTitle": "Introduction to Differential Equations >",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/part-c-mean-value-theorem-antiderivatives-and-differential-equations/session-39-introduction-to-differential-equations/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 40,
+      "sourceTitle": "Separation of Variables >",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/part-c-mean-value-theorem-antiderivatives-and-differential-equations/session-40-separation-of-variables/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 41,
+      "sourceTitle": "Review for Exam 2",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/exam-2/session-41-review-for-exam-2/",
+      "kind": "review",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 42,
+      "sourceTitle": "Materials for Exam 2",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/exam-2/materials-for-exam-2/",
+      "kind": "exam",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 43,
+      "sourceTitle": "Definite Integrals",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-a-definition-of-the-definite-integral-and-first-fundamental-theorem/session-43-definite-integrals/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 44,
+      "sourceTitle": "Adding Areas of Rectangles",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-a-definition-of-the-definite-integral-and-first-fundamental-theorem/session-44-adding-areas-of-rectangles/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 45,
+      "sourceTitle": "Some Easy Integrals",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-a-definition-of-the-definite-integral-and-first-fundamental-theorem/session-45-some-easy-integrals/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 46,
+      "sourceTitle": "Riemann Sums",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-a-definition-of-the-definite-integral-and-first-fundamental-theorem/session-46-riemann-sums/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 47,
+      "sourceTitle": "Introduction of the Fundamental Theorem of Calculus",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-a-definition-of-the-definite-integral-and-first-fundamental-theorem/session-47-introduction-of-the-fundamental-theorem-of-calculus/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 48,
+      "sourceTitle": "The Fundamental Theorem of Calculus",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-a-definition-of-the-definite-integral-and-first-fundamental-theorem/session-48-the-fundamental-theorem-of-calculus/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 49,
+      "sourceTitle": "Applications of the Fundamental Theorem of Calculus",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-a-definition-of-the-definite-integral-and-first-fundamental-theorem/session-49-applications-of-the-fundamental-theorem-of-calculus/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 50,
+      "sourceTitle": "Combining the Fundamental Theorem and the Mean Value Theorem",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-a-definition-of-the-definite-integral-and-first-fundamental-theorem/session-50-combining-the-fundamental-theorem-and-the-mean-value-theorem/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 51,
+      "sourceTitle": "The Second Fundamental Theorem of Calculus",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-b-second-fundamental-theorem-areas-volumes/session-51-the-second-fundamental-theorem-of-calculus/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 52,
+      "sourceTitle": "Proving the Fundamental Theorem of Calculus",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-b-second-fundamental-theorem-areas-volumes/session-52-proving-the-fundamental-theorem-of-calculus/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 53,
+      "sourceTitle": "New Functions From Old",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-b-second-fundamental-theorem-areas-volumes/session-53-new-functions-from-old/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 54,
+      "sourceTitle": "The Second Fundamental Theorem and ln(x)",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-b-second-fundamental-theorem-areas-volumes/session-54-the-second-fundamental-theorem-and-ln-x/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 55,
+      "sourceTitle": "Creating New Functions Using the Second Fundamental Theorem",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-b-second-fundamental-theorem-areas-volumes/session-55-creating-new-functions-using-the-second-fundamental-theorem/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 56,
+      "sourceTitle": "Geometric Interpretation of Definite Integrals",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-b-second-fundamental-theorem-areas-volumes/session-56-geometric-interpretation-of-definite-integrals/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 57,
+      "sourceTitle": "How to Calculate Volumes",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-b-second-fundamental-theorem-areas-volumes/session-57-how-to-calculate-volumes/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 58,
+      "sourceTitle": "Volume of a Sphere, Revolving About x-axis",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-b-second-fundamental-theorem-areas-volumes/session-58-volume-of-a-sphere-revolving-about-x-axis/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 59,
+      "sourceTitle": "Volume of a Parabaloid, Revolving About y-axis",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-b-second-fundamental-theorem-areas-volumes/session-59-volume-of-a-parabaloid-revolving-about-y-axis/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 60,
+      "sourceTitle": "Integrals and Averages",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-c-average-value-probability-and-numerical-integration/session-60-integrals-and-averages/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 61,
+      "sourceTitle": "Integrals and Weighted Averages",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-c-average-value-probability-and-numerical-integration/session-61-integrals-and-weighted-averages/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 62,
+      "sourceTitle": "Integrals and Probability",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-c-average-value-probability-and-numerical-integration/session-62-integrals-and-probability/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 63,
+      "sourceTitle": "Numerical Integration",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-c-average-value-probability-and-numerical-integration/session-63-numerical-integration/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 64,
+      "sourceTitle": "Numerical Integration, Continued",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-c-average-value-probability-and-numerical-integration/session-64-numerical-integration-continued/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 65,
+      "sourceTitle": "Bell Curve, Conclusion",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-c-average-value-probability-and-numerical-integration/session-65-bell-curve-conclusion/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 66,
+      "sourceTitle": "Review for Exam 3",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/exam-3/review-for-exam-3/",
+      "kind": "review",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 67,
+      "sourceTitle": "Materials for Exam 3",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/exam-3/materials-for-exam-3/",
+      "kind": "exam",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 68,
+      "sourceTitle": "Integral of sinⁿ( x ) cosᵐ( x ), Odd Exponents",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-4-techniques-of-integration/part-a-trigonometric-powers-trigonometric-substitution-and-completing-the-square/session-68-integral-of-sin-n-x-cos-m-x-odd-exponents/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 69,
+      "sourceTitle": "Integral of sinⁿ( x ) cosᵐ( x ), Even Exponents",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-4-techniques-of-integration/part-a-trigonometric-powers-trigonometric-substitution-and-completing-the-square/session-69-integral-of-sin-n-x-cos-m-x-even-exponents/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 70,
+      "sourceTitle": "Preview of Trig Substitution and Polar Coordinates",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-4-techniques-of-integration/part-a-trigonometric-powers-trigonometric-substitution-and-completing-the-square/session-70-preview-of-trig-substitution-and-polar-coordinates/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 71,
+      "sourceTitle": "Integrals Involving secant, cosecant and cotangent",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-4-techniques-of-integration/part-a-trigonometric-powers-trigonometric-substitution-and-completing-the-square/session-71-integrals-involving-secant-cosecant-and-cotangent/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 72,
+      "sourceTitle": "Trig Substitution",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-4-techniques-of-integration/part-a-trigonometric-powers-trigonometric-substitution-and-completing-the-square/session-72-trig-substitution/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 73,
+      "sourceTitle": "Completing the Square",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-4-techniques-of-integration/part-a-trigonometric-powers-trigonometric-substitution-and-completing-the-square/session-73-completing-the-square/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 74,
+      "sourceTitle": "Integration by Partial Fractions",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-4-techniques-of-integration/part-b-partial-fractions-integration-by-parts-arc-length-and-surface-area/session-74-integration-by-partial-fractions/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 75,
+      "sourceTitle": "Advanced Partial Fractions",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-4-techniques-of-integration/part-b-partial-fractions-integration-by-parts-arc-length-and-surface-area/session-75-advanced-partial-fractions/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 76,
+      "sourceTitle": "Integration by Parts",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-4-techniques-of-integration/part-b-partial-fractions-integration-by-parts-arc-length-and-surface-area/session-76-integration-by-parts/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 77,
+      "sourceTitle": "Volume of a Wine Glass",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-4-techniques-of-integration/part-b-partial-fractions-integration-by-parts-arc-length-and-surface-area/session-77-volume-of-a-wine-glass/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 78,
+      "sourceTitle": "Computing the Length of a Curve",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-4-techniques-of-integration/part-b-partial-fractions-integration-by-parts-arc-length-and-surface-area/session-78-computing-the-length-of-a-curve/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 79,
+      "sourceTitle": "Surface Area",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-4-techniques-of-integration/part-b-partial-fractions-integration-by-parts-arc-length-and-surface-area/session-79-surface-area/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 80,
+      "sourceTitle": "Parametric Curves",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-4-techniques-of-integration/part-c-parametric-equations-and-polar-coordinates/session-80-parametric-curves/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 81,
+      "sourceTitle": "Examples Using Parametrized Curves",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-4-techniques-of-integration/part-c-parametric-equations-and-polar-coordinates/session-81-examples-using-parametrized-curves/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 82,
+      "sourceTitle": "Polar Coordinates",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-4-techniques-of-integration/part-c-parametric-equations-and-polar-coordinates/session-82-polar-coordinates/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 83,
+      "sourceTitle": "Polar Coordinates, Continued",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-4-techniques-of-integration/part-c-parametric-equations-and-polar-coordinates/session-83-polar-coordinates-continued/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 84,
+      "sourceTitle": "Polar Coordinates and Graphing",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-4-techniques-of-integration/part-c-parametric-equations-and-polar-coordinates/session-84-polar-coordinates-and-graphing/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 85,
+      "sourceTitle": "Review for Exam 4",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-4-techniques-of-integration/exam-4/session-85-review-for-exam-4/",
+      "kind": "review",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 86,
+      "sourceTitle": "Materials for Exam 4",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-4-techniques-of-integration/exam-4/session-86-materials-for-exam-4/",
+      "kind": "exam",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 87,
+      "sourceTitle": "L’Hospital’s Rule",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-5-exploring-the-infinite/part-a-lhospitals-rule-and-improper-integrals/session-87-lhospitals-rule/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 88,
+      "sourceTitle": "Examples of L’Hospital’s Rule",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-5-exploring-the-infinite/part-a-lhospitals-rule-and-improper-integrals/session-88-examples-of-lhospitals-rule/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 89,
+      "sourceTitle": "L’Hospital’s Rule and Rates of Growth",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-5-exploring-the-infinite/part-a-lhospitals-rule-and-improper-integrals/session-89-lhospitals-rule-and-rates-of-growth/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 90,
+      "sourceTitle": "Advanced Examples of L’Hospital’s Rule",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-5-exploring-the-infinite/part-a-lhospitals-rule-and-improper-integrals/session-90-advanced-examples-of-lhospitals-rule/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 91,
+      "sourceTitle": "Improper Integrals",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-5-exploring-the-infinite/part-a-lhospitals-rule-and-improper-integrals/session-91-improper-integrals/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 92,
+      "sourceTitle": "Integral Comparison",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-5-exploring-the-infinite/part-a-lhospitals-rule-and-improper-integrals/session-92-integral-comparison/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 93,
+      "sourceTitle": "Indefinite Integrals and Singularities",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-5-exploring-the-infinite/part-a-lhospitals-rule-and-improper-integrals/session-93-indefinite-integrals-and-singularities/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 94,
+      "sourceTitle": "Infinite Series",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-5-exploring-the-infinite/part-b-taylor-series/session-94-infinite-series/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 95,
+      "sourceTitle": "Series Comparison",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-5-exploring-the-infinite/part-b-taylor-series/session-95-series-comparison/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 96,
+      "sourceTitle": "Stacking Blocks",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-5-exploring-the-infinite/part-b-taylor-series/session-96-stacking-blocks/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 97,
+      "sourceTitle": "Power Series",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-5-exploring-the-infinite/part-b-taylor-series/session-97-power-series/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 98,
+      "sourceTitle": "Taylor’s Series",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-5-exploring-the-infinite/part-b-taylor-series/session-98-taylors-series/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 99,
+      "sourceTitle": "Taylor’s Series, Continued",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-5-exploring-the-infinite/part-b-taylor-series/session-99-taylors-series-continued/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 100,
+      "sourceTitle": "Operations on Power Series",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-5-exploring-the-infinite/part-b-taylor-series/session-100-operations-on-power-series/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 101,
+      "sourceTitle": "Conclusion",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-5-exploring-the-infinite/part-b-taylor-series/session-101-conclusion/",
+      "kind": "lesson",
+      "contentStatus": "not_authored"
+    },
+    {
+      "number": 102,
+      "sourceTitle": "Materials for Final Exam",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/final-exam/",
+      "kind": "exam",
+      "contentStatus": "not_authored"
+    }
+  ],
+  "assessmentIndexes": [
+    {
+      "sourceTitle": "Exam 1",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/exam-1/"
+    },
+    {
+      "sourceTitle": "Exam 2",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/exam-2/"
+    },
+    {
+      "sourceTitle": "Exam 3",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/exam-3/"
+    },
+    {
+      "sourceTitle": "Exam 4",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-4-techniques-of-integration/exam-4/"
+    },
+    {
+      "sourceTitle": "Final Exam",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/final-exam/"
+    }
+  ]
+}

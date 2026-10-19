@@ -1,0 +1,910 @@
+{
+  "checkedOn": "2026-10-19",
+  "sourceUrl": "https://github.com/ossu/computer-science",
+  "courseCount": 63,
+  "courses": [
+    {
+      "title": "Introduction to Computer Science and Programming using Python",
+      "sourceUrl": "https://github.com/ossu/computer-science/blob/master/coursepages/intro-cs/README.md",
+      "category": "computer_science",
+      "section": "Intro CS",
+      "subsection": "",
+      "optional": false,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://github.com/ossu/computer-science/blob/master/coursepages/intro-cs/README.md",
+      "candidateIndexes": [
+        {
+          "title": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/material-by-lecture/",
+          "url": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/material-by-lecture/"
+        },
+        {
+          "title": "course calendar",
+          "url": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/calendar/"
+        }
+      ]
+    },
+    {
+      "title": "Systematic Program Design",
+      "sourceUrl": "https://github.com/ossu/computer-science/blob/master/coursepages/spd/README.md",
+      "category": "computer_science",
+      "section": "Core CS",
+      "subsection": "Core programming",
+      "optional": false,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://github.com/ossu/computer-science/blob/master/coursepages/spd/README.md",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Class-based Program Design",
+      "sourceUrl": "https://github.com/ossu/computer-science/blob/master/coursepages/class-based/README.md",
+      "category": "computer_science",
+      "section": "Core CS",
+      "subsection": "Core programming",
+      "optional": false,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://github.com/ossu/computer-science/blob/master/coursepages/class-based/README.md",
+      "candidateIndexes": [
+        {
+          "title": "Lecture 28",
+          "url": "https://youtube.com/playlist?list=PL_N7YxtCMPydJ-aBr4Ku9-q--D6vheOnp&si=XnBXaZKbBhqdUJgJ"
+        },
+        {
+          "title": "Lecture 30",
+          "url": "https://www.youtube.com/watch?v=6WZo7sFFFlQ&list=PL_N7YxtCMPyea2YC3e-1s7SR_S3oWGjdb&index=1"
+        }
+      ]
+    },
+    {
+      "title": "Programming Languages",
+      "sourceUrl": "https://courses.cs.washington.edu/courses/cse341/19sp/#lectures",
+      "category": "computer_science",
+      "section": "Core CS",
+      "subsection": "Core programming",
+      "optional": false,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://courses.cs.washington.edu/courses/cse341/19sp/#lectures",
+      "candidateIndexes": [
+        {
+          "title": "Syllabus",
+          "url": "https://courses.cs.washington.edu/courses/cse341/19sp/syllabus.pdf"
+        },
+        {
+          "title": "Course Calendar",
+          "url": "https://courses.cs.washington.edu/courses/cse341/19sp/calendar/calendar.html"
+        }
+      ]
+    },
+    {
+      "title": "Object-Oriented Design",
+      "sourceUrl": "https://course.ccs.neu.edu/cs3500f19/",
+      "category": "computer_science",
+      "section": "Core CS",
+      "subsection": "Core programming",
+      "optional": false,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://course.ccs.neu.edu/cs3500f19/",
+      "candidateIndexes": [
+        {
+          "title": "Lectures",
+          "url": "https://course.ccs.neu.edu/cs3500f19/#%28part._lectures%29"
+        }
+      ]
+    },
+    {
+      "title": "Software Architecture",
+      "sourceUrl": "https://www.coursera.org/learn/software-architecture",
+      "category": "computer_science",
+      "section": "Core CS",
+      "subsection": "Core programming",
+      "optional": false,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.coursera.org/learn/software-architecture",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Calculus 1A: Differentiation",
+      "sourceUrl": "https://openlearninglibrary.mit.edu/courses/course-v1:MITx+18.01.1x+2T2019/about",
+      "category": "math",
+      "section": "Core CS",
+      "subsection": "Core math",
+      "optional": false,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://openlearninglibrary.mit.edu/courses/course-v1:MITx+18.01.1x+2T2019/about",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Calculus 1B: Integration",
+      "sourceUrl": "https://openlearninglibrary.mit.edu/courses/course-v1:MITx+18.01.2x+3T2019/about",
+      "category": "math",
+      "section": "Core CS",
+      "subsection": "Core math",
+      "optional": false,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://openlearninglibrary.mit.edu/courses/course-v1:MITx+18.01.2x+3T2019/about",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Calculus 1C: Coordinate Systems & Infinite Series",
+      "sourceUrl": "https://openlearninglibrary.mit.edu/courses/course-v1:MITx+18.01.3x+1T2020/about",
+      "category": "math",
+      "section": "Core CS",
+      "subsection": "Core math",
+      "optional": false,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://openlearninglibrary.mit.edu/courses/course-v1:MITx+18.01.3x+1T2020/about",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Mathematics for Computer Science",
+      "sourceUrl": "https://openlearninglibrary.mit.edu/courses/course-v1:OCW+6.042J+2T2019/about",
+      "category": "math",
+      "section": "Core CS",
+      "subsection": "Core math",
+      "optional": false,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://openlearninglibrary.mit.edu/courses/course-v1:OCW+6.042J+2T2019/about",
+      "candidateIndexes": []
+    },
+    {
+      "title": "The Missing Semester of Your CS Education",
+      "sourceUrl": "https://missing.csail.mit.edu/",
+      "category": "computer_science",
+      "section": "Core CS",
+      "subsection": "CS Tools",
+      "optional": false,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://missing.csail.mit.edu/",
+      "candidateIndexes": [
+        {
+          "title": "lectures",
+          "url": "https://missing.csail.mit.edu/2026/"
+        }
+      ]
+    },
+    {
+      "title": "Build a Modern Computer from First Principles: From Nand to Tetris",
+      "sourceUrl": "https://www.coursera.org/learn/build-a-computer",
+      "category": "computer_science",
+      "section": "Core CS",
+      "subsection": "Core systems",
+      "optional": false,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.coursera.org/learn/build-a-computer",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Build a Modern Computer from First Principles: Nand to Tetris Part II",
+      "sourceUrl": "https://www.coursera.org/learn/nand2tetris2",
+      "category": "computer_science",
+      "section": "Core CS",
+      "subsection": "Core systems",
+      "optional": false,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.coursera.org/learn/nand2tetris2",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Operating Systems: Three Easy Pieces",
+      "sourceUrl": "https://github.com/ossu/computer-science/blob/master/coursepages/ostep/README.md",
+      "category": "computer_science",
+      "section": "Core CS",
+      "subsection": "Core systems",
+      "optional": false,
+      "discoveryStatus": "unavailable",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "accessError": "IncompleteRead(294912 bytes read)"
+    },
+    {
+      "title": "Computer Networking: a Top-Down Approach",
+      "sourceUrl": "https://gaia.cs.umass.edu/kurose_ross/online_lectures.htm",
+      "category": "computer_science",
+      "section": "Core CS",
+      "subsection": "Core systems",
+      "optional": false,
+      "discoveryStatus": "unavailable",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "accessError": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1010)>"
+    },
+    {
+      "title": "Algorithms: Design and Analysis, Part 1",
+      "sourceUrl": "https://www.edx.org/learn/algorithms/stanford-university-algorithms-design-and-analysis-part-1",
+      "category": "computer_science",
+      "section": "Core CS",
+      "subsection": "Core theory",
+      "optional": false,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.edx.org/learn/algorithms/stanford-university-algorithms-design-and-analysis-part-1",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Algorithms: Design and Analysis, Part 2",
+      "sourceUrl": "https://www.edx.org/learn/algorithms/stanford-university-algorithms-design-and-analysis-part-2",
+      "category": "computer_science",
+      "section": "Core CS",
+      "subsection": "Core theory",
+      "optional": false,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.edx.org/learn/algorithms/stanford-university-algorithms-design-and-analysis-part-2",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Cybersecurity Fundamentals",
+      "sourceUrl": "https://www.edx.org/learn/cybersecurity/rochester-institute-of-technology-cybersecurity-fundamentals",
+      "category": "computer_science",
+      "section": "Core CS",
+      "subsection": "Core security",
+      "optional": false,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.edx.org/learn/cybersecurity/rochester-institute-of-technology-cybersecurity-fundamentals",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Principles of Secure Coding",
+      "sourceUrl": "https://www.coursera.org/learn/secure-coding-principles",
+      "category": "computer_science",
+      "section": "Core CS",
+      "subsection": "Core security",
+      "optional": false,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.coursera.org/learn/secure-coding-principles",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Identifying Security Vulnerabilities",
+      "sourceUrl": "https://www.coursera.org/learn/identifying-security-vulnerabilities",
+      "category": "computer_science",
+      "section": "Core CS",
+      "subsection": "Core security",
+      "optional": false,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.coursera.org/learn/identifying-security-vulnerabilities",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Identifying Security Vulnerabilities in C/C++ Programming",
+      "sourceUrl": "https://www.coursera.org/learn/identifying-security-vulnerabilities-c-programming",
+      "category": "computer_science",
+      "section": "Core CS",
+      "subsection": "Core security",
+      "optional": false,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.coursera.org/learn/identifying-security-vulnerabilities-c-programming",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Exploiting and Securing Vulnerabilities in Java Applications",
+      "sourceUrl": "https://www.coursera.org/learn/exploiting-securing-vulnerabilities-java-applications",
+      "category": "computer_science",
+      "section": "Core CS",
+      "subsection": "Core security",
+      "optional": false,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.coursera.org/learn/exploiting-securing-vulnerabilities-java-applications",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Databases: Modeling and Theory",
+      "sourceUrl": "https://www.edx.org/learn/databases/stanford-university-databases-modeling-and-theory",
+      "category": "computer_science",
+      "section": "Core CS",
+      "subsection": "Core applications",
+      "optional": false,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.edx.org/learn/databases/stanford-university-databases-modeling-and-theory",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Databases: Relational Databases and SQL",
+      "sourceUrl": "https://www.edx.org/learn/relational-databases/stanford-university-databases-relational-databases-and-sql",
+      "category": "computer_science",
+      "section": "Core CS",
+      "subsection": "Core applications",
+      "optional": false,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.edx.org/learn/relational-databases/stanford-university-databases-relational-databases-and-sql",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Databases: Semistructured Data",
+      "sourceUrl": "https://www.edx.org/learn/relational-databases/stanford-university-databases-semistructured-data",
+      "category": "computer_science",
+      "section": "Core CS",
+      "subsection": "Core applications",
+      "optional": false,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.edx.org/learn/relational-databases/stanford-university-databases-semistructured-data",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Machine Learning",
+      "sourceUrl": "https://www.deeplearning.ai/courses/machine-learning-specialization/",
+      "category": "computer_science",
+      "section": "Core CS",
+      "subsection": "Core applications",
+      "optional": false,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.deeplearning.ai/specializations/machine-learning",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Computer Graphics",
+      "sourceUrl": "https://www.edx.org/learn/computer-graphics/the-university-of-california-san-diego-computer-graphics",
+      "category": "computer_science",
+      "section": "Core CS",
+      "subsection": "Core applications",
+      "optional": false,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.edx.org/learn/computer-graphics/the-university-of-california-san-diego-computer-graphics",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Software Engineering: Introduction",
+      "sourceUrl": "https://www.edx.org/learn/software-engineering/university-of-british-columbia-software-engineering-introduction",
+      "category": "computer_science",
+      "section": "Core CS",
+      "subsection": "Core applications",
+      "optional": false,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.edx.org/learn/software-engineering/university-of-british-columbia-software-engineering-introduction",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Ethics, Technology and Engineering",
+      "sourceUrl": "https://www.coursera.org/learn/ethics-technology-engineering",
+      "category": "computer_science",
+      "section": "Core CS",
+      "subsection": "Core ethics",
+      "optional": false,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.coursera.org/learn/ethics-technology-engineering",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Introduction to Intellectual Property",
+      "sourceUrl": "https://www.coursera.org/learn/introduction-intellectual-property",
+      "category": "computer_science",
+      "section": "Core CS",
+      "subsection": "Core ethics",
+      "optional": false,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.coursera.org/learn/introduction-intellectual-property",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Data Privacy Fundamentals",
+      "sourceUrl": "https://www.coursera.org/learn/northeastern-data-privacy",
+      "category": "computer_science",
+      "section": "Core CS",
+      "subsection": "Core ethics",
+      "optional": false,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.coursera.org/learn/northeastern-data-privacy",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Parallel Programming",
+      "sourceUrl": "https://www.coursera.org/learn/scala-parallel-programming",
+      "category": "computer_science",
+      "section": "Advanced CS",
+      "subsection": "Advanced programming",
+      "optional": true,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.coursera.org/learn/scala-parallel-programming",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Compilers",
+      "sourceUrl": "https://www.edx.org/learn/computer-science/stanford-university-compilers",
+      "category": "computer_science",
+      "section": "Advanced CS",
+      "subsection": "Advanced programming",
+      "optional": true,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.edx.org/learn/computer-science/stanford-university-compilers",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Introduction to Haskell",
+      "sourceUrl": "https://www.seas.upenn.edu/~cis194/fall16/",
+      "category": "computer_science",
+      "section": "Advanced CS",
+      "subsection": "Advanced programming",
+      "optional": true,
+      "discoveryStatus": "unavailable",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "accessError": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1010)>"
+    },
+    {
+      "title": "Learn Prolog Now!",
+      "sourceUrl": "https://www.let.rug.nl/bos/lpn//lpnpage.php?pageid=online",
+      "category": "computer_science",
+      "section": "Advanced CS",
+      "subsection": "Advanced programming",
+      "optional": true,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.let.rug.nl/bos/lpn//lpnpage.php?pageid=online",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Software Debugging",
+      "sourceUrl": "https://www.youtube.com/playlist?list=PLAwxTw4SYaPkxK63TiT88oEe-AIBhr96A",
+      "category": "computer_science",
+      "section": "Advanced CS",
+      "subsection": "Advanced programming",
+      "optional": true,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.youtube.com/playlist?list=PLAwxTw4SYaPkxK63TiT88oEe-AIBhr96A",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Software Testing",
+      "sourceUrl": "https://www.youtube.com/playlist?list=PLAwxTw4SYaPkWVHeC_8aSIbSxE_NXI76g",
+      "category": "computer_science",
+      "section": "Advanced CS",
+      "subsection": "Advanced programming",
+      "optional": true,
+      "discoveryStatus": "unavailable",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "accessError": "Remote end closed connection without response"
+    },
+    {
+      "title": "Computation Structures 1: Digital Circuits",
+      "sourceUrl": "https://learning.edx.org/course/course-v1:MITx+6.004.1x_3+3T2016",
+      "category": "computer_science",
+      "section": "Advanced CS",
+      "subsection": "Advanced systems",
+      "optional": true,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://learning.edx.org/course/course-v1:MITx+6.004.1x_3+3T2016",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Computation Structures 2: Computer Architecture",
+      "sourceUrl": "https://learning.edx.org/course/course-v1:MITx+6.004.2x+3T2015",
+      "category": "computer_science",
+      "section": "Advanced CS",
+      "subsection": "Advanced systems",
+      "optional": true,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://learning.edx.org/course/course-v1:MITx+6.004.2x+3T2015",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Computation Structures 3: Computer Organization",
+      "sourceUrl": "https://learning.edx.org/course/course-v1:MITx+6.004.3x_2+1T2017",
+      "category": "computer_science",
+      "section": "Advanced CS",
+      "subsection": "Advanced systems",
+      "optional": true,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://learning.edx.org/course/course-v1:MITx+6.004.3x_2+1T2017",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Theory of Computation",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/",
+      "category": "computer_science",
+      "section": "Advanced CS",
+      "subsection": "Advanced theory",
+      "optional": true,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/",
+      "candidateIndexes": [
+        {
+          "title": "Syllabus",
+          "url": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/pages/syllabus/"
+        },
+        {
+          "title": "Calendar",
+          "url": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/pages/calendar/"
+        },
+        {
+          "title": "Lecture Notes",
+          "url": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/pages/lecture-notes/"
+        },
+        {
+          "title": "Video Lectures",
+          "url": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/video_galleries/video-lectures/"
+        },
+        {
+          "title": "Lecture 14",
+          "url": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/resources/mit18_404f20_lec14-1"
+        }
+      ]
+    },
+    {
+      "title": "Computational Geometry",
+      "sourceUrl": "https://www.edx.org/learn/geometry/tsinghua-university-ji-suan-ji-he-computational-geometry",
+      "category": "computer_science",
+      "section": "Advanced CS",
+      "subsection": "Advanced theory",
+      "optional": true,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.edx.org/learn/geometry/tsinghua-university-ji-suan-ji-he-computational-geometry",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Algorithmic Game Theory",
+      "sourceUrl": "https://timroughgarden.org/f13/f13.html",
+      "category": "computer_science",
+      "section": "Advanced CS",
+      "subsection": "Advanced theory",
+      "optional": true,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://timroughgarden.org/f13/f13.html",
+      "candidateIndexes": [
+        {
+          "title": "All lecture notes and exercise sets in one PDF.",
+          "url": "https://timroughgarden.org/f13/f13.pdf"
+        },
+        {
+          "title": "Lecture notes",
+          "url": "http://www.cs.cornell.edu/courses/cs683/2007sp/lecnotes/week1.pdf"
+        }
+      ]
+    },
+    {
+      "title": "Web Security Fundamentals",
+      "sourceUrl": "https://www.edx.org/learn/computer-security/ku-leuven-web-security-fundamentals",
+      "category": "computer_science",
+      "section": "Advanced CS",
+      "subsection": "Advanced Information Security",
+      "optional": true,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.edx.org/learn/computer-security/ku-leuven-web-security-fundamentals",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Security Governance & Compliance",
+      "sourceUrl": "https://www.coursera.org/learn/security-governance-compliance",
+      "category": "computer_science",
+      "section": "Advanced CS",
+      "subsection": "Advanced Information Security",
+      "optional": true,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.coursera.org/learn/security-governance-compliance",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Digital Forensics Concepts",
+      "sourceUrl": "https://www.coursera.org/learn/digital-forensics-concepts",
+      "category": "computer_science",
+      "section": "Advanced CS",
+      "subsection": "Advanced Information Security",
+      "optional": true,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.coursera.org/learn/digital-forensics-concepts",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Secure Software Development: Requirements, Design, and Reuse",
+      "sourceUrl": "https://www.edx.org/learn/software-development/the-linux-foundation-secure-software-development-requirements-design-and-reuse",
+      "category": "computer_science",
+      "section": "Advanced CS",
+      "subsection": "Advanced Information Security",
+      "optional": true,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.edx.org/school/linuxfoundationx",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Secure Software Development: Implementation",
+      "sourceUrl": "https://www.edx.org/learn/software-development/the-linux-foundation-secure-software-development-implementation",
+      "category": "computer_science",
+      "section": "Advanced CS",
+      "subsection": "Advanced Information Security",
+      "optional": true,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.edx.org/school/linuxfoundationx",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Secure Software Development: Verification and More Specialized Topics",
+      "sourceUrl": "https://www.edx.org/learn/software-engineering/the-linux-foundation-secure-software-development-verification-and-more-specialized-topics",
+      "category": "computer_science",
+      "section": "Advanced CS",
+      "subsection": "Advanced Information Security",
+      "optional": true,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.edx.org/school/linuxfoundationx",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Essence of Linear Algebra",
+      "sourceUrl": "https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab",
+      "category": "math",
+      "section": "Advanced CS",
+      "subsection": "Advanced math",
+      "optional": true,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Linear Algebra",
+      "sourceUrl": "https://ocw.mit.edu/courses/mathematics/18-06sc-linear-algebra-fall-2011/",
+      "category": "math",
+      "section": "Advanced CS",
+      "subsection": "Advanced math",
+      "optional": true,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/",
+      "candidateIndexes": [
+        {
+          "title": "Syllabus",
+          "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/syllabus/"
+        },
+        {
+          "title": "Final 18.06 Lecture 2023",
+          "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/final-1806-lecture-2023/"
+        }
+      ]
+    },
+    {
+      "title": "Introduction to Numerical Methods",
+      "sourceUrl": "https://ocw.mit.edu/courses/mathematics/18-335j-introduction-to-numerical-methods-spring-2019/index.htm",
+      "category": "math",
+      "section": "Advanced CS",
+      "subsection": "Advanced math",
+      "optional": true,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/",
+      "candidateIndexes": [
+        {
+          "title": "Syllabus",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/syllabus/"
+        },
+        {
+          "title": "Calendar",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/calendar/"
+        }
+      ]
+    },
+    {
+      "title": "Introduction to Formal Logic",
+      "sourceUrl": "https://forallx.openlogicproject.org/",
+      "category": "math",
+      "section": "Advanced CS",
+      "subsection": "Advanced math",
+      "optional": true,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://forallx.openlogicproject.org/",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Probability",
+      "sourceUrl": "https://stat110.hsites.harvard.edu/",
+      "category": "math",
+      "section": "Advanced CS",
+      "subsection": "Advanced math",
+      "optional": true,
+      "discoveryStatus": "unavailable",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "accessError": "HTTP Error 403: Forbidden"
+    },
+    {
+      "title": "Fullstack Open",
+      "sourceUrl": "https://fullstackopen.com/en/",
+      "category": "computer_science",
+      "section": "Final project",
+      "subsection": "",
+      "optional": true,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://fullstackopen.com/en/",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Modern Robotics",
+      "sourceUrl": "https://modernrobotics.northwestern.edu",
+      "category": "computer_science",
+      "section": "Final project",
+      "subsection": "",
+      "optional": true,
+      "discoveryStatus": "unavailable",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "accessError": "Remote end closed connection without response"
+    },
+    {
+      "title": "Data Mining (Specialization)",
+      "sourceUrl": "https://www.coursera.org/specializations/data-mining",
+      "category": "computer_science",
+      "section": "Final project",
+      "subsection": "",
+      "optional": true,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.coursera.org/specializations/data-mining",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Big Data (Specialization)",
+      "sourceUrl": "https://www.coursera.org/specializations/big-data",
+      "category": "computer_science",
+      "section": "Final project",
+      "subsection": "",
+      "optional": true,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.coursera.org/specializations/big-data",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Internet of Things (Specialization)",
+      "sourceUrl": "https://www.coursera.org/specializations/internet-of-things",
+      "category": "computer_science",
+      "section": "Final project",
+      "subsection": "",
+      "optional": true,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.coursera.org/specializations/internet-of-things",
+      "candidateIndexes": [
+        {
+          "title": "Session Initiation Protocols",
+          "url": "https://www.coursera.org/courses?query=session%20initiation%20protocols"
+        }
+      ]
+    },
+    {
+      "title": "Cloud Computing (Specialization)",
+      "sourceUrl": "https://www.coursera.org/specializations/cloud-computing",
+      "category": "computer_science",
+      "section": "Final project",
+      "subsection": "",
+      "optional": true,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.coursera.org/specializations/cloud-computing",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Data Science (Specialization)",
+      "sourceUrl": "https://www.coursera.org/specializations/jhu-data-science",
+      "category": "computer_science",
+      "section": "Final project",
+      "subsection": "",
+      "optional": true,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.coursera.org/specializations/jhu-data-science",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Functional Programming in Scala (Specialization)",
+      "sourceUrl": "https://www.coursera.org/specializations/scala",
+      "category": "computer_science",
+      "section": "Final project",
+      "subsection": "",
+      "optional": true,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.coursera.org/specializations/scala",
+      "candidateIndexes": []
+    },
+    {
+      "title": "Game Design and Development with Unity 2020 (Specialization)",
+      "sourceUrl": "https://www.coursera.org/specializations/game-design-and-development",
+      "category": "computer_science",
+      "section": "Final project",
+      "subsection": "",
+      "optional": true,
+      "discoveryStatus": "landing_accessible",
+      "sessionCount": null,
+      "provenance": "https://github.com/ossu/computer-science",
+      "resolvedUrl": "https://www.coursera.org/specializations/game-design-and-development",
+      "candidateIndexes": []
+    }
+  ]
+}
