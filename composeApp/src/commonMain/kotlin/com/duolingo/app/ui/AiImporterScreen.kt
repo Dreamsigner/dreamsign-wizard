@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.duolingo.app.ai.IngestionSourceType
+import com.duolingo.app.model.IngestionSourceType
 import com.duolingo.app.model.ResourceIngestionItem
 import com.duolingo.app.viewmodel.AppViewModel
 import kotlinx.coroutines.launch
@@ -147,6 +147,7 @@ fun AiImporterScreen(viewModel: AppViewModel) {
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun FilterChip(selected: Boolean, onClick: () -> Unit, label: String) {
     Surface(
