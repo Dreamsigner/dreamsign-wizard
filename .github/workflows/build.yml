@@ -31,3 +31,45 @@ jobs:
           gradle-version: '8.2.1'
       - name: Compile desktop target
         run: gradle :composeApp:compileKotlinDesktop
+
+  package-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v6
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v4
+        with:
+          packages: 'platform-tools platforms;android-34 build-tools;34.0.0'
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: '8.2.1'
+      - name: Build Windows app image
+        run: gradle :composeApp:createDistributable
+      - name: Prepare Windows test package
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $launcher = Get-ChildItem 'composeApp/build/compose/binaries' -Filter 'DuolingoKmpApp.exe' -File -Recurse | Select-Object -First 1
+          if (-not $launcher) { throw 'Windows app launcher was not produced.' }
+          $stage = Join-Path $env:RUNNER_TEMP 'DuolingoKmpApp'
+          New-Item -ItemType Directory -Path $stage -Force | Out-Null
+          Copy-Item -Path $launcher.Directory.FullName -Destination $stage -Recurse
+          Set-Content -Path (Join-Path $stage 'LISEZ-MOI.txt') -Value @'
+          Pour tester l'application : extrayez ce dossier, puis lancez DuolingoKmpApp.exe.
+          Il s'agit d'une version de démonstration. La progression n'est pas conservée après fermeture.
+          '@
+          Compress-Archive -Path (Join-Path $stage '*') -DestinationPath (Join-Path $env:RUNNER_TEMP 'DuolingoKmpApp-Windows.zip')
+      - name: Upload Windows test package
+        uses: actions/upload-artifact@v7
+        with:
+          name: DuolingoKmpApp-Windows
+          path: ${{ runner.temp }}\DuolingoKmpApp-Windows.zip
+          if-no-files-found: error
+          retention-days: 14
