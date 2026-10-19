@@ -43,7 +43,7 @@ fun ProfileScreen(stats: UserStats) {
                 }
 
                 Spacer(Modifier.height(12.dp))
-                Text("Etudiant Antigravity", fontSize = 22.sp, fontWeight = FontWeight.Bold)
+                Text("Mon profil", fontSize = 22.sp, fontWeight = FontWeight.Bold)
                 Text("C++, Algorithmes, Mathématiques & TCF Canada", fontSize = 14.sp, color = Color.Gray)
 
                 Spacer(Modifier.height(20.dp))
@@ -61,7 +61,7 @@ fun ProfileScreen(stats: UserStats) {
             }
         }
 
-        // GitHub Repository & Sync Status Card
+        // État de sauvegarde locale
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
@@ -72,23 +72,16 @@ fun ProfileScreen(stats: UserStats) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text("🐙", fontSize = 24.sp)
                     Spacer(Modifier.width(10.dp))
-                    Text("Synchronisation GitHub", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                    Text("État de la sauvegarde", fontWeight = FontWeight.Bold, fontSize = 16.sp)
                 }
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    "Le projet est prêt à être poussé sur GitHub. Vos leçons générées par IA sont sauvegardées sous forme de fichiers JSON versionnés.",
+                    "La progression reste en mémoire pendant cette session et se réinitialise à la fermeture.",
                     fontSize = 13.sp,
                     color = Color.Gray
                 )
                 Spacer(Modifier.height(16.dp))
-                Button(
-                    onClick = { },
-                    colors = ButtonDefaults.buttonColors(backgroundColor = Color(0FF24292E)),
-                    shape = RoundedCornerShape(12.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text("DÉPÔT GITHUB PRÊT", color = Color.White, fontWeight = FontWeight.Bold)
-                }
+                Text("Synchronisation cloud non configurée.", color = Color.Gray, fontSize = 13.sp)
             }
         }
     }

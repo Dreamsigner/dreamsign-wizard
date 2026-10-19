@@ -22,19 +22,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.duolingo.app.ai.IngestionSourceType
 import com.duolingo.app.model.*
 import com.duolingo.app.viewmodel.AppScreen
 import com.duolingo.app.viewmodel.AppViewModel
 import kotlinx.coroutines.launch
 
-val DuoGreen = Color(0FF58CC02)
-val DuoDarkGreen = Color(0FF46A302)
-val DuoRed = Color(0FFFF4B4B)
-val DuoBlue = Color(0FF1CB0F6)
-val DuoYellow = Color(0FFFFC800)
-val DuoPurple = Color(0FFCE82FF)
-val DuoBgGray = Color(0FFF7F7F7)
+val DuoGreen = Color(0xFF58CC02)
+val DuoDarkGreen = Color(0xFF46A302)
+val DuoRed = Color(0xFFFF4B4B)
+val DuoBlue = Color(0xFF1CB0F6)
+val DuoYellow = Color(0xFFFFC800)
+val DuoPurple = Color(0xFFCE82FF)
+val DuoBgGray = Color(0xFFF7F7F7)
 
 @Composable
 fun DuolingoApp(viewModel: AppViewModel = remember { AppViewModel() }) {
@@ -96,7 +95,7 @@ fun TopStatsHeader(
                 Row(
                     modifier = Modifier
                         .clip(RoundedCornerShape(12.dp))
-                        .background(Color(0FFF0F0F0))
+                        .background(Color(0xFFF0F0F0))
                         .clickable { dropdownExpanded = true }
                         .padding(horizontal = 12.dp, vertical = 6.dp),
                     verticalAlignment = Alignment.CenterVertically
@@ -170,8 +169,8 @@ fun BottomNavigationBar(currentScreen: AppScreen, onNavigate: (AppScreen) -> Uni
         BottomNavigationItem(
             selected = currentScreen == AppScreen.AI_IMPORTER,
             onClick = { onNavigate(AppScreen.AI_IMPORTER) },
-            icon = { Icon(Icons.Default.AddCircle, contentDescription = "IA Ingestion") },
-            label = { Text("IA Transcripteur") },
+            icon = { Icon(Icons.Default.AddCircle, contentDescription = "Import de démonstration") },
+            label = { Text("Import démo") },
             selectedContentColor = DuoPurple,
             unselectedContentColor = Color.Gray
         )
@@ -192,6 +191,15 @@ fun LearningPathScreen(
     completedLessonIds: Set<String>,
     onStartLesson: (Lesson) -> Unit
 ) {
+    val lockedLessonIds = buildSet {
+        var previousLessonCompleted = true
+        subject.units.flatMap { it.lessons }.forEach { lesson ->
+            val completed = completedLessonIds.contains(lesson.id) || lesson.isCompleted
+            if (lesson.isLocked && !completed && !previousLessonCompleted) add(lesson.id)
+            previousLessonCompleted = completed
+        }
+    }
+
     LazyColumn(
         modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
         contentPadding = PaddingValues(vertical = 16.dp)
@@ -233,7 +241,8 @@ fun LearningPathScreen(
 
             items(unit.lessons) { lesson ->
                 val isCompleted = completedLessonIds.contains(lesson.id) || lesson.isCompleted
-                LessonNodeItem(lesson = lesson, isCompleted = isCompleted, onClick = { onStartLesson(lesson) })
+                val lessonForDisplay = lesson.copy(isLocked = lesson.id in lockedLessonIds)
+                LessonNodeItem(lesson = lessonForDisplay, isCompleted = isCompleted, onClick = { onStartLesson(lessonForDisplay) })
                 Spacer(Modifier.height(16.dp))
             }
         }
@@ -247,7 +256,7 @@ fun LessonNodeItem(lesson: Lesson, isCompleted: Boolean, onClick: () -> Unit) {
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
             .background(Color.White)
-            .border(2.dp, if (isCompleted) DuoGreen else if (!lesson.isLocked) DuoBlue else Color(0FFE0E0E0), RoundedCornerShape(16.dp))
+            .border(2.dp, if (isCompleted) DuoGreen else if (!lesson.isLocked) DuoBlue else Color(0xFFE0E0E0), RoundedCornerShape(16.dp))
             .clickable(enabled = !lesson.isLocked) { onClick() }
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
