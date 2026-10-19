@@ -35,7 +35,7 @@ fun ProfileScreen(stats: UserStats) {
                 Surface(
                     modifier = Modifier.size(80.dp),
                     shape = RoundedCornerShape(40.dp),
-                    color = DuoGreen
+                    color = BrandRed
                 ) {
                     Box(contentAlignment = Alignment.Center) {
                         Text("🎓", fontSize = 40.sp)
@@ -44,7 +44,7 @@ fun ProfileScreen(stats: UserStats) {
 
                 Spacer(Modifier.height(12.dp))
                 Text("Mon profil", fontSize = 22.sp, fontWeight = FontWeight.Bold)
-                Text("C++, Algorithmes, Mathématiques & TCF Canada", fontSize = 14.sp, color = Color.Gray)
+                Text("C++, Algorithmes, Mathématiques & TCF Canada", fontSize = 14.sp, color = Graphite)
 
                 Spacer(Modifier.height(20.dp))
                 Divider()
@@ -54,9 +54,9 @@ fun ProfileScreen(stats: UserStats) {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceAround
                 ) {
-                    StatCard(icon = "🔥", title = "Série (Jours)", value = "${stats.streakDays}", color = DuoYellow)
-                    StatCard(icon = "⚡", title = "XP Total", value = "${stats.xp}", color = DuoBlue)
-                    StatCard(icon = "❤️", title = "Vies", value = "${stats.hearts}/${stats.maxHearts}", color = DuoRed)
+                    StatCard(icon = "🔥", title = "Série (Jours)", value = "${stats.streakDays}", color = Graphite)
+                    StatCard(icon = "⚡", title = "XP Total", value = "${stats.xp}", color = Ink)
+                    StatCard(icon = "❤️", title = "Vies", value = "${stats.hearts}/${stats.maxHearts}", color = ActionRed)
                 }
             }
         }
@@ -78,10 +78,10 @@ fun ProfileScreen(stats: UserStats) {
                 Text(
                     "La progression reste en mémoire pendant cette session et se réinitialise à la fermeture.",
                     fontSize = 13.sp,
-                    color = Color.Gray
+                    color = Graphite
                 )
                 Spacer(Modifier.height(16.dp))
-                Text("Synchronisation cloud non configurée.", color = Color.Gray, fontSize = 13.sp)
+                Text("Synchronisation cloud non configurée.", color = Graphite, fontSize = 13.sp)
             }
         }
     }
@@ -93,6 +93,6 @@ fun StatCard(icon: String, title: String, value: String, color: Color) {
         Text(icon, fontSize = 24.sp)
         Spacer(Modifier.height(4.dp))
         Text(value, fontSize = 20.sp, fontWeight = FontWeight.Bold, color = color)
-        Text(title, fontSize = 12.sp, color = Color.Gray)
+        Text(title, fontSize = 12.sp, color = Graphite)
     }
 }
