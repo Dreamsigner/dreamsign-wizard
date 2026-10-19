@@ -21,21 +21,18 @@ Une application d'apprentissage style **Duolingo** développée en **Kotlin Mult
 
 ---
 
-## 🤖 Ingestion & Transcription de Ressources par IA
+## Import de ressources (mode démonstration)
 
-L'application inclut un composant d'ingestion de ressources par IA (`AiContentPipeline`) permettant d'importer :
-- 📄 **Fichiers PDF** (Cours de maths, manuels de C++, fiches TCF).
-- ▶️ **Liens vidéo YouTube** (Tutoriels, explications de cours).
+Le parcours accepte une référence YouTube ou un chemin PDF, mais ne lit aucun fichier et ne récupère aucune transcription. Aucun fournisseur IA ni service backend ne sont configurés. Les exercices créés sont des exemples associés à la matière sélectionnée, sans analyse de la ressource.
 
-L'IA extrait le texte/transcription et génère dynamiquement des leçons avec exercices interactifs (Choix multiples, défis de code C++, calculs matriciels et reconstitution de phrases).
+La progression et les leçons ajoutées restent en mémoire pendant la session. Elles sont perdues à la fermeture. La synchronisation GitHub n’est pas implémentée.
 
 ---
-
 ## ⚡ Comment tester et exécuter l'application ?
 
 ### Option 1 : Via Android Studio / IntelliJ IDEA (Recommandé)
 1. Ouvrez **Android Studio** ou **IntelliJ IDEA**.
-2. Choisissez **Open** et sélectionnez le dossier du projet : `C:\Users\The_dr3amsigner\.gemini\antigravity\scratch\duolingo-kmp-learning-app`.
+2. Choisissez **Open** et sélectionnez le dossier du projet : `D:\Coding\duolingo-kmp-learning-app`.
 3. Pour exécuter la version **Windows Desktop** :
    - Dans le panneau Gradle (à droite), développez `composeApp -> Tasks -> compose desktop -> desktopRun`.
    - Cliquez deux fois sur **desktopRun** pour lancer la fenêtre de l'application sur Windows.
@@ -43,9 +40,9 @@ L'IA extrait le texte/transcription et génère dynamiquement des leçons avec e
    - Sélectionnez la configuration `composeApp` et lancez un émulateur Android ou connectez votre smartphone/iPad.
 
 ### Option 2 : Via la ligne de commande (Terminal)
-Exécutez la commande suivante dans le terminal à la racine du projet :
+Le dépôt ne contient pas encore de wrapper Gradle. Après installation de Gradle compatible avec Android Gradle Plugin 8.2.2, exécutez cette commande à la racine :
 ```bash
-./gradlew :composeApp:desktopRun
+gradle :composeApp:desktopRun
 ```
 
 ---

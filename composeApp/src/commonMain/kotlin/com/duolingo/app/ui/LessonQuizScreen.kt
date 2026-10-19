@@ -61,7 +61,7 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
                     progress = progress,
                     modifier = Modifier.weight(1f).height(12.dp).clip(RoundedCornerShape(6.dp)),
                     color = DuoGreen,
-                    backgroundColor = Color(0FFE0E0E0)
+                    backgroundColor = Color(0xFFE0E0E0)
                 )
                 Spacer(Modifier.width(16.dp))
                 Text("❤️ ${stats.hearts}", fontWeight = FontWeight.Bold, color = DuoRed, fontSize = 16.sp)
@@ -70,7 +70,7 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
         bottomBar = {
             Surface(
                 elevation = 12.dp,
-                color = if (isChecked) (if (isCorrect) Color(0FFD7FFB8) else Color(0xFFFFDFE0)) else Color.White
+                color = if (isChecked) (if (isCorrect) Color(0xFFD7FFB8) else Color(0xFFFFDFE0)) else Color.White
             ) {
                 Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
                     if (isChecked) {
@@ -126,12 +126,12 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
                     // Code snippet block
                     Card(
                         modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
-                        backgroundColor = Color(0FF1E1E1E),
+                        backgroundColor = Color(0xFF1E1E1E),
                         shape = RoundedCornerShape(12.dp)
                     ) {
                         Text(
                             text = exercise.codeSnippet,
-                            color = Color(0FFD4D4D4),
+                            color = Color(0xFFD4D4D4),
                             fontFamily = FontFamily.Monospace,
                             fontSize = 14.sp,
                             modifier = Modifier.padding(16.dp)
@@ -146,7 +146,7 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
                     exercise.formula?.let { formula ->
                         Card(
                             modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
-                            backgroundColor = Color(0FFE8F4F8),
+                            backgroundColor = Color(0xFFE8F4F8),
                             shape = RoundedCornerShape(12.dp)
                         ) {
                             Text(
@@ -214,18 +214,18 @@ fun OptionsList(options: List<String>, selectedIndex: Int?, isChecked: Boolean, 
                     .clip(RoundedCornerShape(12.dp))
                     .border(
                         width = 2.dp,
-                        color = if (isSelected) DuoBlue else Color(0FFE0E0E0),
+                        color = if (isSelected) DuoBlue else Color(0xFFE0E0E0),
                         shape = RoundedCornerShape(12.dp)
                     )
                     .clickable(enabled = !isChecked) { onSelect(index) },
-                backgroundColor = if (isSelected) Color(0FFE6F4FE) else Color.White
+                backgroundColor = if (isSelected) Color(0xFFE6F4FE) else Color.White
             ) {
                 Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                     Box(
                         modifier = Modifier
                             .size(24.dp)
                             .clip(RoundedCornerShape(6.dp))
-                            .background(if (isSelected) DuoBlue else Color(0FFF0F0F0)),
+                            .background(if (isSelected) DuoBlue else Color(0xFFF0F0F0)),
                         contentAlignment = Alignment.Center
                     ) {
                         Text("${index + 1}", color = if (isSelected) Color.White else Color.Gray, fontWeight = FontWeight.Bold)
@@ -243,7 +243,7 @@ fun TokenChip(token: String, selected: Boolean, onClick: () -> Unit) {
     Surface(
         modifier = Modifier.clickable { onClick() },
         shape = RoundedCornerShape(10.dp),
-        color = if (selected) DuoBlue else Color(0FFF0F0F0),
+        color = if (selected) DuoBlue else Color(0xFFF0F0F0),
         elevation = 2.dp
     ) {
         Text(
@@ -259,7 +259,7 @@ fun TokenChip(token: String, selected: Boolean, onClick: () -> Unit) {
 fun LessonCompletedTriumphView(xpReward: Int, onFinish: () -> Unit) {
     Column(
         modifier = Modifier.fillMaxSize().background(DuoBgGray).padding(24.dp),
-        horizontalAlignment = Alignment.CenterAlignment,
+        horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Text("🎉", fontSize = 64.sp)

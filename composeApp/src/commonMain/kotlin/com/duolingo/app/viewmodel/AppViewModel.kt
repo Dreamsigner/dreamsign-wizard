@@ -1,6 +1,6 @@
 package com.duolingo.app.viewmodel
 
-import com.duolingo.app.ai.AiContentPipeline
+import com.duolingo.app.ai.DemoLessonGenerator
 import com.duolingo.app.data.SampleData
 import com.duolingo.app.model.*
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +15,7 @@ enum class AppScreen {
 }
 
 class AppViewModel {
-    private val aiPipeline = AiContentPipeline()
+    private val demoLessonGenerator = DemoLessonGenerator()
 
     private val _subjects = MutableStateFlow(SampleData.sampleSubjects)
     val subjects: StateFlow<List<Subject>> = _subjects.asStateFlow()
@@ -51,29 +51,8 @@ class AppViewModel {
     private val _isLessonCompleted = MutableStateFlow(false)
     val isLessonCompleted: StateFlow<Boolean> = _isLessonCompleted.asStateFlow()
 
-    // AI Ingestion list
-    private val _ingestedItems = MutableStateFlow<List<ResourceIngestionItem>>(
-        listOf(
-            ResourceIngestionItem(
-                id = "item_1",
-                title = "Cours_Matrice_Et_Probabilites.pdf",
-                sourceType = IngestionSourceType.PDF_DOCUMENT,
-                sourceUrlOrPath = "/docs/math_matrices.pdf",
-                status = "COMPLETED",
-                generatedLessonsCount = 2,
-                targetSubjectId = "math_vectors"
-            ),
-            ResourceIngestionItem(
-                id = "item_2",
-                title = "TCF Canada Expression Orale & Ecrite Tips",
-                sourceType = IngestionSourceType.YOUTUBE_VIDEO,
-                sourceUrlOrPath = "https://youtube.com/watch?v=tcf_canada_guide",
-                status = "COMPLETED",
-                generatedLessonsCount = 1,
-                targetSubjectId = "lang_tcf_canada"
-            )
-        )
-    )
+    // Demonstration resource history
+    private val _ingestedItems = MutableStateFlow<List<ResourceIngestionItem>>(emptyList())
     val ingestedItems: StateFlow<List<ResourceIngestionItem>> = _ingestedItems.asStateFlow()
 
     private val _ingestionProgressText = MutableStateFlow("")
@@ -159,11 +138,11 @@ class AppViewModel {
         } else {
             // Lesson completed!
             _isLessonCompleted.value = true
-            val newXp = _userStats.value.xp + lesson.xpReward
-            val updatedCompleted = _userStats.value.completedLessonIds + lesson.id
-            _userStats.value = _userStats.value.copy(
-                xp = newXp,
-                completedLessonIds = updatedCompleted
+            val currentStats = _userStats.value
+            val alreadyCompleted = lesson.id in currentStats.completedLessonIds || lesson.isCompleted
+            _userStats.value = currentStats.copy(
+                xp = currentStats.xp + if (alreadyCompleted) 0 else lesson.xpReward,
+                completedLessonIds = currentStats.completedLessonIds + lesson.id
             )
             markLessonCompletedInSubject(lesson.id)
         }
@@ -182,9 +161,9 @@ class AppViewModel {
         _subjects.value = updatedSubjects
     }
 
-    suspend fun importResourceFromAi(sourceUrlOrPath: String, sourceType: IngestionSourceType) {
+    suspend fun createDemoLesson(sourceUrlOrPath: String, sourceType: IngestionSourceType) {
         val targetSubject = _selectedSubjectId.value
-        val newLesson = aiPipeline.processResource(sourceUrlOrPath, sourceType, targetSubject) { status ->
+        val newLesson = demoLessonGenerator.createDemoLesson(sourceUrlOrPath, sourceType, targetSubject) { status ->
             _ingestionProgressText.value = status
         }
 
@@ -201,10 +180,10 @@ class AppViewModel {
         // Add to ingestion history
         val newItem = ResourceIngestionItem(
             id = "item_" + System.currentTimeMillis(),
-            title = if (sourceType == IngestionSourceType.YOUTUBE_VIDEO) "Vidéo YouTube" else "Fichier PDF",
+            title = if (sourceType == IngestionSourceType.YOUTUBE_VIDEO) "Démo YouTube" else "Démo PDF",
             sourceType = sourceType,
             sourceUrlOrPath = sourceUrlOrPath,
-            status = "COMPLETED",
+            status = "DEMO_ONLY",
             generatedLessonsCount = 1,
             targetSubjectId = targetSubject
         )

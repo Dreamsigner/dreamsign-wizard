@@ -47,14 +47,14 @@ fun AiImporterScreen(viewModel: AppViewModel) {
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
-                        text = "🤖 Transcripteur IA de Ressources",
+                        text = "🤖 Import de ressources — démonstration",
                         color = Color.White,
                         fontSize = 22.sp,
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(Modifier.height(6.dp))
                     Text(
-                        text = "Importez des fichiers PDF ou des liens YouTube pour générer automatiquement des leçons et quiz Duolingo (Maths, C++, TCF Canada).",
+                        text = "Le moteur IA est déconnecté. Cette démonstration crée des exercices exemples ; le PDF et la vidéo ne sont pas lus.",
                         color = Color.White.copy(alpha = 0.9f),
                         fontSize = 14.sp
                     )
@@ -88,7 +88,7 @@ fun AiImporterScreen(viewModel: AppViewModel) {
 
                     Spacer(Modifier.height(16.dp))
 
-                    Text("2. Lien YouTube ou Chemin du Fichier PDF", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                    Text("2. Référence de la ressource (démo uniquement)", fontWeight = FontWeight.Bold, fontSize = 16.sp)
                     Spacer(Modifier.height(8.dp))
 
                     OutlinedTextField(
@@ -120,7 +120,7 @@ fun AiImporterScreen(viewModel: AppViewModel) {
                         onClick = {
                             if (inputUrlOrPath.isNotBlank()) {
                                 coroutineScope.launch {
-                                    viewModel.importResourceFromAi(inputUrlOrPath, selectedType)
+                                    viewModel.createDemoLesson(inputUrlOrPath, selectedType)
                                     inputUrlOrPath = ""
                                 }
                             }
@@ -130,14 +130,14 @@ fun AiImporterScreen(viewModel: AppViewModel) {
                         colors = ButtonDefaults.buttonColors(backgroundColor = DuoPurple),
                         shape = RoundedCornerShape(12.dp)
                     ) {
-                        Text("GÉNÉRER LA LEÇON IA", color = Color.White, fontWeight = FontWeight.Bold)
+                        Text("CRÉER UNE LEÇON DE DÉMO", color = Color.White, fontWeight = FontWeight.Bold)
                     }
                 }
             }
         }
 
         item {
-            Text("Historique des Ingestions IA", fontWeight = FontWeight.Bold, fontSize = 18.sp, modifier = Modifier.padding(bottom = 12.dp))
+            Text("Historique des démonstrations", fontWeight = FontWeight.Bold, fontSize = 18.sp, modifier = Modifier.padding(bottom = 12.dp))
         }
 
         items(ingestedItems) { item ->
@@ -151,7 +151,7 @@ fun AiImporterScreen(viewModel: AppViewModel) {
 fun FilterChip(selected: Boolean, onClick: () -> Unit, label: String) {
     Surface(
         modifier = Modifier.clip(RoundedCornerShape(20.dp)).border(1.5.dp, if (selected) DuoPurple else Color.LightGray, RoundedCornerShape(20.dp)),
-        color = if (selected) Color(0FFF3E8FF) else Color.White,
+        color = if (selected) Color(0xFFF3E8FF) else Color.White,
         onClick = onClick
     ) {
         Text(
@@ -182,7 +182,7 @@ fun IngestedItemRow(item: ResourceIngestionItem) {
             }
             Spacer(Modifier.width(8.dp))
             Surface(
-                color = Color(0FFE6F4FE),
+                color = Color(0xFFE6F4FE),
                 shape = RoundedCornerShape(8.dp)
             ) {
                 Text(

@@ -114,7 +114,7 @@ data class ResourceIngestionItem(
     val title: String,
     val sourceType: IngestionSourceType,
     val sourceUrlOrPath: String,
-    val status: String = "READY_TO_PROCESS", // READY_TO_PROCESS, TRANSCRIBING, GENERATING_LESSONS, COMPLETED
+    val status: String = "READY_TO_PROCESS", // READY_TO_PROCESS, TRANSCRIBING, GENERATING_LESSONS, COMPLETED, DEMO_ONLY
     val rawText: String = "",
     val generatedLessonsCount: Int = 0,
     val targetSubjectId: String
