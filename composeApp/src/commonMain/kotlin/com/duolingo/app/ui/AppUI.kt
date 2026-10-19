@@ -27,13 +27,13 @@ import com.duolingo.app.viewmodel.AppScreen
 import com.duolingo.app.viewmodel.AppViewModel
 import kotlinx.coroutines.launch
 
-val DuoGreen = Color(0xFF58CC02)
-val DuoDarkGreen = Color(0xFF46A302)
-val DuoRed = Color(0xFFFF4B4B)
-val DuoBlue = Color(0xFF1CB0F6)
-val DuoYellow = Color(0xFFFFC800)
-val DuoPurple = Color(0xFFCE82FF)
-val DuoBgGray = Color(0xFFF7F7F7)
+val BrandRed = Color(0xFFE3262E)
+val ActionRed = Color(0xFFC91E28)
+val Ink = Color(0xFF141414)
+val Graphite = Color(0xFF4A4A4A)
+val Paper = Color(0xFFF7F5F0)
+val Concrete = Color(0xFFD9D7D2)
+val White = Color(0xFFFFFFFF)
 
 @Composable
 fun DuolingoApp(viewModel: AppViewModel = remember { AppViewModel() }) {
@@ -55,7 +55,7 @@ fun DuolingoApp(viewModel: AppViewModel = remember { AppViewModel() }) {
                 BottomNavigationBar(currentScreen = currentScreen, onNavigate = { viewModel.navigateTo(it) })
             }
         },
-        backgroundColor = DuoBgGray
+        backgroundColor = Paper
     ) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding).fillMaxSize()) {
             when (currentScreen) {
@@ -94,7 +94,7 @@ fun TopStatsHeader(
                 Row(
                     modifier = Modifier
                         .clip(RoundedCornerShape(12.dp))
-                        .background(Color(0xFFF0F0F0))
+                        .background(Paper)
                         .clickable { dropdownExpanded = true }
                         .padding(horizontal = 12.dp, vertical = 6.dp),
                     verticalAlignment = Alignment.CenterVertically
@@ -135,21 +135,21 @@ fun TopStatsHeader(
                 Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(end = 12.dp)) {
                     Text("🔥", fontSize = 18.sp)
                     Spacer(Modifier.width(4.dp))
-                    Text("${stats.streakDays}", fontWeight = FontWeight.Bold, color = DuoYellow, fontSize = 16.sp)
+                    Text("${stats.streakDays}", fontWeight = FontWeight.Bold, color = Graphite, fontSize = 16.sp)
                 }
 
                 // XP
                 Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(end = 12.dp)) {
                     Text("⚡", fontSize = 18.sp)
                     Spacer(Modifier.width(4.dp))
-                    Text("${stats.xp}", fontWeight = FontWeight.Bold, color = DuoBlue, fontSize = 16.sp)
+                    Text("${stats.xp}", fontWeight = FontWeight.Bold, color = Ink, fontSize = 16.sp)
                 }
 
                 // Hearts
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text("❤️", fontSize = 18.sp)
                     Spacer(Modifier.width(4.dp))
-                    Text("${stats.hearts}", fontWeight = FontWeight.Bold, color = DuoRed, fontSize = 16.sp)
+                    Text("${stats.hearts}", fontWeight = FontWeight.Bold, color = ActionRed, fontSize = 16.sp)
                 }
             }
         }
@@ -167,16 +167,16 @@ fun BottomNavigationBar(currentScreen: AppScreen, onNavigate: (AppScreen) -> Uni
             onClick = { onNavigate(AppScreen.LEARNING_PATH) },
             icon = { Icon(Icons.Default.Home, contentDescription = "Leçons") },
             label = { Text("Leçons") },
-            selectedContentColor = DuoGreen,
-            unselectedContentColor = Color.Gray
+            selectedContentColor = BrandRed,
+            unselectedContentColor = Graphite
         )
         BottomNavigationItem(
             selected = currentScreen == AppScreen.PROFILE,
             onClick = { onNavigate(AppScreen.PROFILE) },
             icon = { Icon(Icons.Default.Person, contentDescription = "Profil") },
             label = { Text("Profil") },
-            selectedContentColor = DuoBlue,
-            unselectedContentColor = Color.Gray
+            selectedContentColor = Ink,
+            unselectedContentColor = Graphite
         )
     }
 }
@@ -205,7 +205,7 @@ fun LearningPathScreen(
             Card(
                 modifier = Modifier.fillMaxWidth().padding(bottom = 20.dp),
                 shape = RoundedCornerShape(16.dp),
-                backgroundColor = DuoGreen,
+                backgroundColor = BrandRed,
                 elevation = 4.dp
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
@@ -230,7 +230,7 @@ fun LearningPathScreen(
                 Text(
                     text = "UNITÉ ${unit.unitNumber}: ${unit.title.uppercase()}",
                     fontWeight = FontWeight.Bold,
-                    color = Color.Gray,
+                    color = Graphite,
                     fontSize = 14.sp,
                     modifier = Modifier.padding(vertical = 12.dp)
                 )
@@ -253,7 +253,7 @@ fun LessonNodeItem(lesson: Lesson, isCompleted: Boolean, onClick: () -> Unit) {
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
             .background(Color.White)
-            .border(2.dp, if (isCompleted) DuoGreen else if (!lesson.isLocked) DuoBlue else Color(0xFFE0E0E0), RoundedCornerShape(16.dp))
+            .border(2.dp, if (isCompleted) BrandRed else if (!lesson.isLocked) Ink else Concrete, RoundedCornerShape(16.dp))
             .clickable(enabled = !lesson.isLocked) { onClick() }
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -262,7 +262,7 @@ fun LessonNodeItem(lesson: Lesson, isCompleted: Boolean, onClick: () -> Unit) {
             modifier = Modifier
                 .size(48.dp)
                 .clip(CircleShape)
-                .background(if (isCompleted) DuoGreen else if (!lesson.isLocked) DuoBlue else Color.LightGray),
+                .background(if (isCompleted) BrandRed else if (!lesson.isLocked) Ink else Concrete),
             contentAlignment = Alignment.Center
         ) {
             if (isCompleted) {
@@ -279,13 +279,13 @@ fun LessonNodeItem(lesson: Lesson, isCompleted: Boolean, onClick: () -> Unit) {
         Column(modifier = Modifier.weight(1f)) {
             Text(lesson.title, fontWeight = FontWeight.Bold, fontSize = 16.sp)
             Spacer(Modifier.height(4.dp))
-            Text("${lesson.exercises.size} exercices • +${lesson.xpReward} XP", fontSize = 13.sp, color = Color.Gray)
+            Text("${lesson.exercises.size} exercices • +${lesson.xpReward} XP", fontSize = 13.sp, color = Graphite)
         }
 
         if (!lesson.isLocked) {
             Button(
                 onClick = onClick,
-                colors = ButtonDefaults.buttonColors(backgroundColor = if (isCompleted) DuoGreen else DuoBlue),
+                colors = ButtonDefaults.buttonColors(backgroundColor = if (isCompleted) BrandRed else Ink),
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Text(if (isCompleted) "Revoir" else "COMMENCER", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 12.sp)

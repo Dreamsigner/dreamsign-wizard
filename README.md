@@ -1,10 +1,10 @@
 # Duolingo KMP Learning App
 
-Application d’apprentissage en Kotlin Multiplatform et Compose Multiplatform pour Windows, Android et iOS. L’interface reprend un parcours ludique, des objectifs courts, des XP, des cœurs et le vert déjà utilisé dans le projet.
+Application d’apprentissage en Kotlin Multiplatform et Compose Multiplatform pour Windows, Android et iOS. L’interface reprend un parcours ludique et utilise la charte du cabinet : rouge signature `#E3262E`, rouge d’action `#C91E28`, encre `#141414`, graphite `#4A4A4A`, ivoire `#F7F5F0` et béton `#D9D7D2`. Le logo du cabinet n’est pas utilisé dans cette application.
 
 ## Parcours et contenus
 
-Le catalogue jouable contient actuellement 8 unités de mathématiques, 8 unités d’informatique et une unité de français. Les parcours s’inspirent de l’organisation OSSU (raisonnement, calcul, maths discrètes, algèbre linéaire, probabilités, systèmes, algorithmes, sécurité, bases de données et éthique). Les explications et exercices de l’application sont rédigés pour ce projet; les pages de référence et cours MIT OpenCourseWare sont liés dans l’aide de chaque leçon.
+Le catalogue jouable contient actuellement **16 leçons de mathématiques et 16 leçons d’informatique**, réparties dans 8 unités par matière, plus une unité de français. Les parcours reprennent les principaux domaines du cursus OSSU (raisonnement, calcul, maths discrètes, algèbre linéaire, probabilités, systèmes, algorithmes, sécurité, applications et éthique). Ce catalogue est une base structurée et extensible, pas l’intégralité d’un cursus universitaire OSSU. Les explications et exercices de l’application sont rédigés pour ce projet; les pages de référence et cours MIT OpenCourseWare sont liés dans l’aide de chaque leçon.
 
 Les catalogues sont définis dans `composeApp/src/commonMain/kotlin/com/duolingo/app/data/SampleData.kt`. Une leçon contient un objectif, une note de cours, un ou plusieurs exercices avec correction et indice, des ressources de référence et des identifiants de prérequis. Pour ajouter une leçon, attribuer un identifiant stable unique et ajouter son contenu à une unité; l’écran d’aide et le parcours l’affichent automatiquement. Ne pas renommer les identifiants déjà publiés : la progression s’y rattache. `curriculumVersion` et `contentVersion` documentent les évolutions de structure et de contenu.
 

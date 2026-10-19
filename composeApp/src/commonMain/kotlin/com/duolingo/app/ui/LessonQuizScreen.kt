@@ -64,40 +64,40 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
                 LinearProgressIndicator(
                     progress = progress,
                     modifier = Modifier.weight(1f).height(12.dp).clip(RoundedCornerShape(6.dp)),
-                    color = DuoGreen,
-                    backgroundColor = Color(0xFFE0E0E0)
+                    color = BrandRed,
+                    backgroundColor = Concrete
                 )
                 Spacer(Modifier.width(16.dp))
-                Text("❤️ ${stats.hearts}", fontWeight = FontWeight.Bold, color = DuoRed, fontSize = 16.sp)
+                Text("❤️ ${stats.hearts}", fontWeight = FontWeight.Bold, color = ActionRed, fontSize = 16.sp)
                 IconButton(onClick = { showHelp = true }) {
-                    Icon(Icons.Default.HelpOutline, contentDescription = "Aide pour cette leçon", tint = DuoBlue)
+                    Icon(Icons.Default.HelpOutline, contentDescription = "Aide pour cette leçon", tint = Ink)
                 }
             }
         },
         bottomBar = {
             Surface(
                 elevation = 12.dp,
-                color = if (isChecked) (if (isCorrect) Color(0xFFD7FFB8) else Color(0xFFFFDFE0)) else Color.White
+                color = if (isChecked) (if (isCorrect) Paper else Concrete) else Color.White
             ) {
                 Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
                     if (isChecked) {
                         Text(
                             text = if (isCorrect) "Excellent !" else "Correction :",
                             fontWeight = FontWeight.Bold,
-                            color = if (isCorrect) DuoDarkGreen else DuoRed,
+                            color = if (isCorrect) Ink else ActionRed,
                             fontSize = 18.sp
                         )
                         Spacer(Modifier.height(4.dp))
                         Text(
                             text = exercise.explanation,
-                            color = Color.DarkGray,
+                            color = Graphite,
                             fontSize = 14.sp
                         )
                         Spacer(Modifier.height(12.dp))
                         Button(
                             onClick = { viewModel.nextExercise() },
                             modifier = Modifier.fillMaxWidth().height(48.dp),
-                            colors = ButtonDefaults.buttonColors(backgroundColor = if (isCorrect) DuoGreen else DuoRed),
+                            colors = ButtonDefaults.buttonColors(backgroundColor = if (isCorrect) BrandRed else ActionRed),
                             shape = RoundedCornerShape(12.dp)
                         ) {
                             Text("CONTINUER", color = Color.White, fontWeight = FontWeight.Bold)
@@ -107,7 +107,7 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
                             onClick = { viewModel.checkAnswer() },
                             enabled = selectedOption != null || selectedTokens.isNotEmpty(),
                             modifier = Modifier.fillMaxWidth().height(48.dp),
-                            colors = ButtonDefaults.buttonColors(backgroundColor = DuoGreen),
+                            colors = ButtonDefaults.buttonColors(backgroundColor = BrandRed),
                             shape = RoundedCornerShape(12.dp)
                         ) {
                             Text("VÉRIFIER", color = Color.White, fontWeight = FontWeight.Bold)
@@ -131,7 +131,7 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
                 Text(
                     text = "Objectif : ${lesson.objective}",
                     fontSize = 14.sp,
-                    color = Color.Gray,
+                    color = Graphite,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
             }
@@ -141,12 +141,12 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
                     // Code snippet block
                     Card(
                         modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
-                        backgroundColor = Color(0xFF1E1E1E),
+                        backgroundColor = Ink,
                         shape = RoundedCornerShape(12.dp)
                     ) {
                         Text(
                             text = exercise.codeSnippet,
-                            color = Color(0xFFD4D4D4),
+                            color = White,
                             fontFamily = FontFamily.Monospace,
                             fontSize = 14.sp,
                             modifier = Modifier.padding(16.dp)
@@ -161,12 +161,12 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
                     exercise.formula?.let { formula ->
                         Card(
                             modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
-                            backgroundColor = Color(0xFFE8F4F8),
+                            backgroundColor = Paper,
                             shape = RoundedCornerShape(12.dp)
                         ) {
                             Text(
                                 text = "Formule : $formula",
-                                color = DuoBlue,
+                                color = Ink,
                                 fontWeight = FontWeight.SemiBold,
                                 modifier = Modifier.padding(16.dp)
                             )
@@ -179,7 +179,7 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
                     Text(
                         text = "\"${exercise.sourceSentence}\"",
                         fontSize = 16.sp,
-                        color = Color.Gray,
+                        color = Graphite,
                         modifier = Modifier.padding(bottom = 16.dp)
                     )
 
@@ -220,7 +220,7 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
     if (showHelp) {
         AlertDialog(
             onDismissRequest = { showHelp = false },
-            title = { Text("💡 Coup de pouce", fontWeight = FontWeight.Bold, color = DuoDarkGreen) },
+            title = { Text("💡 Coup de pouce", fontWeight = FontWeight.Bold, color = ActionRed) },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     Text("À retenir", fontWeight = FontWeight.Bold)
@@ -259,21 +259,21 @@ fun OptionsList(options: List<String>, selectedIndex: Int?, isChecked: Boolean, 
                     .clip(RoundedCornerShape(12.dp))
                     .border(
                         width = 2.dp,
-                        color = if (isSelected) DuoBlue else Color(0xFFE0E0E0),
+                        color = if (isSelected) Ink else Concrete,
                         shape = RoundedCornerShape(12.dp)
                     )
                     .clickable(enabled = !isChecked) { onSelect(index) },
-                backgroundColor = if (isSelected) Color(0xFFE6F4FE) else Color.White
+                backgroundColor = if (isSelected) Paper else Color.White
             ) {
                 Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                     Box(
                         modifier = Modifier
                             .size(24.dp)
                             .clip(RoundedCornerShape(6.dp))
-                            .background(if (isSelected) DuoBlue else Color(0xFFF0F0F0)),
+                            .background(if (isSelected) Ink else Paper),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text("${index + 1}", color = if (isSelected) Color.White else Color.Gray, fontWeight = FontWeight.Bold)
+                        Text("${index + 1}", color = if (isSelected) Color.White else Graphite, fontWeight = FontWeight.Bold)
                     }
                     Spacer(Modifier.width(12.dp))
                     Text(option, fontSize = 15.sp, fontWeight = FontWeight.Medium)
@@ -288,12 +288,12 @@ fun TokenChip(token: String, selected: Boolean, onClick: () -> Unit) {
     Surface(
         modifier = Modifier.clickable { onClick() },
         shape = RoundedCornerShape(10.dp),
-        color = if (selected) DuoBlue else Color(0xFFF0F0F0),
+        color = if (selected) Ink else Paper,
         elevation = 2.dp
     ) {
         Text(
             text = token,
-            color = if (selected) Color.White else Color.Black,
+            color = if (selected) Color.White else Ink,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
         )
@@ -303,22 +303,22 @@ fun TokenChip(token: String, selected: Boolean, onClick: () -> Unit) {
 @Composable
 fun LessonCompletedTriumphView(xpReward: Int, onFinish: () -> Unit) {
     Column(
-        modifier = Modifier.fillMaxSize().background(DuoBgGray).padding(24.dp),
+        modifier = Modifier.fillMaxSize().background(Paper).padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Text("🎉", fontSize = 64.sp)
         Spacer(Modifier.height(16.dp))
-        Text("Leçon Terminée !", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = DuoGreen)
+        Text("Leçon Terminée !", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = BrandRed)
         Spacer(Modifier.height(8.dp))
-        Text("Vous avez gagné +$xpReward XP pour vos révisions.", fontSize = 16.sp, color = Color.Gray)
+        Text("Vous avez gagné +$xpReward XP pour vos révisions.", fontSize = 16.sp, color = Graphite)
 
         Spacer(Modifier.height(32.dp))
 
         Button(
             onClick = onFinish,
             modifier = Modifier.fillMaxWidth().height(52.dp),
-            colors = ButtonDefaults.buttonColors(backgroundColor = DuoGreen),
+            colors = ButtonDefaults.buttonColors(backgroundColor = BrandRed),
             shape = RoundedCornerShape(14.dp)
         ) {
             Text("CONTINUER VOS REVISIONS", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 16.sp)
