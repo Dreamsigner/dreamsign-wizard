@@ -16,7 +16,9 @@ data class Subject(
     val icon: String,
     val description: String,
     val category: SubjectCategory,
-    val units: List<LearningUnit>
+    val units: List<LearningUnit>,
+    /** Bump only when the course structure or stable lesson identifiers change. */
+    val curriculumVersion: Int = 1
 )
 
 @Serializable
@@ -25,7 +27,8 @@ data class LearningUnit(
     val unitNumber: Int,
     val title: String,
     val description: String,
-    val lessons: List<Lesson>
+    val lessons: List<Lesson>,
+    val sourceUrl: String = ""
 )
 
 @Serializable
@@ -35,7 +38,15 @@ data class Lesson(
     val xpReward: Int = 15,
     val isCompleted: Boolean = false,
     val isLocked: Boolean = true,
-    val exercises: List<Exercise>
+    val exercises: List<Exercise>,
+    val objective: String = "",
+    val learningNotes: String = "",
+    val sourceUrls: List<String> = emptyList(),
+    val prerequisiteLessonIds: List<String> = emptyList(),
+    /** Set false for elective lessons that should not wait for the preceding path item. */
+    val requiresPreviousLesson: Boolean = true,
+    /** Stable content schema version, independent from the app release version. */
+    val contentVersion: Int = 1
 )
 
 @Serializable
@@ -43,6 +54,7 @@ sealed class Exercise {
     abstract val id: String
     abstract val prompt: String
     abstract val explanation: String
+    abstract val hint: String
 
     @Serializable
     data class MultipleChoice(
@@ -50,7 +62,8 @@ sealed class Exercise {
         override val prompt: String,
         val options: List<String>,
         val correctOptionIndex: Int,
-        override val explanation: String
+        override val explanation: String,
+        override val hint: String = "Repère les mots-clés de la question et élimine les choix qui contredisent la définition."
     ) : Exercise()
 
     @Serializable
@@ -60,7 +73,8 @@ sealed class Exercise {
         val codeSnippet: String,
         val options: List<String>,
         val correctOptionIndex: Int,
-        override val explanation: String
+        override val explanation: String,
+        override val hint: String = "Lis le code ligne par ligne et distingue l’adresse de la valeur stockée à cette adresse."
     ) : Exercise()
 
     @Serializable
@@ -70,7 +84,8 @@ sealed class Exercise {
         val formula: String? = null,
         val options: List<String>,
         val correctOptionIndex: Int,
-        override val explanation: String
+        override val explanation: String,
+        override val hint: String = "Écris la formule avant de remplacer les valeurs, puis vérifie les unités et les signes."
     ) : Exercise()
 
     @Serializable
@@ -80,7 +95,8 @@ sealed class Exercise {
         val sourceSentence: String,
         val targetTokens: List<String>,
         val correctSequence: List<String>,
-        override val explanation: String
+        override val explanation: String,
+        override val hint: String = "Commence par repérer l’ordre des propositions et les marqueurs qui relient les idées."
     ) : Exercise()
 
     @Serializable
@@ -88,34 +104,17 @@ sealed class Exercise {
         override val id: String,
         override val prompt: String,
         val pairs: Map<String, String>,
-        override val explanation: String
+        override val explanation: String,
+        override val hint: String = "Associe d’abord chaque terme à sa définition la plus précise."
     ) : Exercise()
 }
 
 @Serializable
 data class UserStats(
-    val xp: Int = 120,
-    val streakDays: Int = 5,
+    val xp: Int = 0,
+    val streakDays: Int = 0,
     val hearts: Int = 5,
     val maxHearts: Int = 5,
     val completedLessonIds: Set<String> = emptySet(),
     val activeSubjectId: String = "math_vectors"
-)
-
-@Serializable
-enum class IngestionSourceType {
-    PDF_DOCUMENT,
-    YOUTUBE_VIDEO
-}
-
-@Serializable
-data class ResourceIngestionItem(
-    val id: String,
-    val title: String,
-    val sourceType: IngestionSourceType,
-    val sourceUrlOrPath: String,
-    val status: String = "READY_TO_PROCESS", // READY_TO_PROCESS, TRANSCRIBING, GENERATING_LESSONS, COMPLETED, DEMO_ONLY
-    val rawText: String = "",
-    val generatedLessonsCount: Int = 0,
-    val targetSubjectId: String
 )

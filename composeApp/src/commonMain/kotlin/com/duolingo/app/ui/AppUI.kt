@@ -65,7 +65,6 @@ fun DuolingoApp(viewModel: AppViewModel = remember { AppViewModel() }) {
                     onStartLesson = { lesson -> viewModel.startLesson(lesson) }
                 )
                 AppScreen.LESSON_QUIZ -> LessonQuizScreen(viewModel = viewModel)
-                AppScreen.AI_IMPORTER -> AiImporterScreen(viewModel = viewModel)
                 AppScreen.PROFILE -> ProfileScreen(stats = stats)
             }
         }
@@ -102,7 +101,12 @@ fun TopStatsHeader(
                 ) {
                     Text(selectedSubject.icon, fontSize = 20.sp)
                     Spacer(Modifier.width(6.dp))
-                    Text(selectedSubject.title.take(15) + "...", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                    Text(
+                        selectedSubject.title.let { if (it.length > 20) it.take(19) + "…" else it },
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp,
+                        maxLines = 1
+                    )
                     Icon(Icons.Default.ArrowDropDown, contentDescription = null)
                 }
 
@@ -167,14 +171,6 @@ fun BottomNavigationBar(currentScreen: AppScreen, onNavigate: (AppScreen) -> Uni
             unselectedContentColor = Color.Gray
         )
         BottomNavigationItem(
-            selected = currentScreen == AppScreen.AI_IMPORTER,
-            onClick = { onNavigate(AppScreen.AI_IMPORTER) },
-            icon = { Icon(Icons.Default.AddCircle, contentDescription = "Import de démonstration") },
-            label = { Text("Import démo") },
-            selectedContentColor = DuoPurple,
-            unselectedContentColor = Color.Gray
-        )
-        BottomNavigationItem(
             selected = currentScreen == AppScreen.PROFILE,
             onClick = { onNavigate(AppScreen.PROFILE) },
             icon = { Icon(Icons.Default.Person, contentDescription = "Profil") },
@@ -191,14 +187,15 @@ fun LearningPathScreen(
     completedLessonIds: Set<String>,
     onStartLesson: (Lesson) -> Unit
 ) {
-    val lockedLessonIds = buildSet {
-        var previousLessonCompleted = true
-        subject.units.flatMap { it.lessons }.forEach { lesson ->
-            val completed = completedLessonIds.contains(lesson.id) || lesson.isCompleted
-            if (lesson.isLocked && !completed && !previousLessonCompleted) add(lesson.id)
-            previousLessonCompleted = completed
+    val lessonsInPath = subject.units.flatMap { it.lessons }
+    val completedIds = completedLessonIds + lessonsInPath.filter { it.isCompleted }.map { it.id }
+    val lockedLessonIds = lessonsInPath.mapIndexedNotNull { index, lesson ->
+        val completed = lesson.id in completedIds
+        val prerequisites = lesson.prerequisiteLessonIds.ifEmpty {
+            if (lesson.requiresPreviousLesson && index > 0) listOf(lessonsInPath[index - 1].id) else emptyList()
         }
-    }
+        if (!completed && prerequisites.any { it !in completedIds }) lesson.id else null
+    }.toSet()
 
     LazyColumn(
         modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),

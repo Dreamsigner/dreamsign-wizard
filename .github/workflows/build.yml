@@ -63,7 +63,7 @@ jobs:
           Copy-Item -Path $launcher.Directory.FullName -Destination $stage -Recurse
           Set-Content -Path (Join-Path $stage 'LISEZ-MOI.txt') -Value @'
           Pour tester l'application : extrayez ce dossier, puis lancez DuolingoKmpApp.exe.
-          Il s'agit d'une version de démonstration. La progression n'est pas conservée après fermeture.
+          Les leçons et leurs aides sont intégrées à l'application. La progression n'est pas conservée après fermeture.
           '@
           Compress-Archive -Path (Join-Path $stage '*') -DestinationPath (Join-Path $env:RUNNER_TEMP 'DuolingoKmpApp-Windows.zip')
       - name: Upload Windows test package

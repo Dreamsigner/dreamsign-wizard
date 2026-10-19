@@ -1,54 +1,37 @@
-# Duolingo KMP - App d'Apprentissage Multiplateforme (Kotlin / Compose Multiplatform)
+# Duolingo KMP Learning App
 
-Une application d'apprentissage style **Duolingo** développée en **Kotlin Multiplatform (KMP)** avec **Compose Multiplatform**, ciblant **Android**, **iOS (iPad / iPhone)** et **Windows Desktop**.
+Application d’apprentissage en Kotlin Multiplatform et Compose Multiplatform pour Windows, Android et iOS. L’interface reprend un parcours ludique, des objectifs courts, des XP, des cœurs et le vert déjà utilisé dans le projet.
 
----
+## Parcours et contenus
 
-## 🎯 Domaines d'apprentissage inclus
+Le catalogue jouable contient actuellement 8 unités de mathématiques, 8 unités d’informatique et une unité de français. Les parcours s’inspirent de l’organisation OSSU (raisonnement, calcul, maths discrètes, algèbre linéaire, probabilités, systèmes, algorithmes, sécurité, bases de données et éthique). Les explications et exercices de l’application sont rédigés pour ce projet; les pages de référence et cours MIT OpenCourseWare sont liés dans l’aide de chaque leçon.
 
-1. **📐 Mathématiques Avancées** :
-   - Algèbre linéaire, Vecteurs, Matrices, Produits scalaires & Valeurs propres.
-   - Probabilités conditionnelles, Statistiques & Théorème de Bayes.
+Les catalogues sont définis dans `composeApp/src/commonMain/kotlin/com/duolingo/app/data/SampleData.kt`. Une leçon contient un objectif, une note de cours, un ou plusieurs exercices avec correction et indice, des ressources de référence et des identifiants de prérequis. Pour ajouter une leçon, attribuer un identifiant stable unique et ajouter son contenu à une unité; l’écran d’aide et le parcours l’affichent automatiquement. Ne pas renommer les identifiants déjà publiés : la progression s’y rattache. `curriculumVersion` et `contentVersion` documentent les évolutions de structure et de contenu.
 
-2. **💻 Informatique & Programmation C++** :
-   - Structures de données (Arbres, Graphes, File/FIFO, Pile/LIFO).
-   - Conception d'algorithmes et complexité temporelle $O(n \log n)$.
-   - C++ moderne : Pointeurs, Déréférencement, Smart Pointers (`unique_ptr`, `shared_ptr`) & RAII.
+L’application n’utilise pas de génération IA et ne prétend pas analyser des PDF ou vidéos. Le contenu pédagogique est préparé à partir des ressources de cours citées. Les ressources MIT/OSSU peuvent avoir leurs propres conditions de licence; les liens mènent au matériel d’origine au lieu de le recopier.
 
-3. **🇨🇦 Langues (Préparation TCF Canada & Anglais)** :
-   - **TCF Canada** : Subjonctif présent, concordance des temps, compréhension écrite/orale & structures formelles.
-   - **Anglais technique** : Vocabulaire de programmation et tournures professionnelles.
+## Ressources de référence
 
----
+- [OSSU Computer Science](https://github.com/ossu/computer-science)
+- [OSSU Math](https://github.com/ossu/math)
+- [MIT OpenCourseWare — Mathematics for Computer Science](https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-spring-2015/)
+- [MIT OpenCourseWare — Linear Algebra](https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/)
+- [MIT OpenCourseWare — Probability and Statistics](https://ocw.mit.edu/courses/18-05-introduction-to-probability-and-statistics-spring-2022/)
 
-## Import de ressources (mode démonstration)
+## Lancer l’application Windows
 
-Le parcours accepte une référence YouTube ou un chemin PDF, mais ne lit aucun fichier et ne récupère aucune transcription. Aucun fournisseur IA ni service backend ne sont configurés. Les exercices créés sont des exemples associés à la matière sélectionnée, sans analyse de la ressource.
+Depuis Android Studio ou IntelliJ IDEA, ouvrir le dossier du projet puis lancer la tâche Gradle `composeApp > Tasks > compose desktop > desktopRun`.
 
-La progression et les leçons ajoutées restent en mémoire pendant la session. Elles sont perdues à la fermeture. La synchronisation GitHub n’est pas implémentée.
+Le dépôt ne contient pas de wrapper Gradle. Si Gradle est installé localement, lancer depuis la racine :
 
----
-## ⚡ Comment tester et exécuter l'application ?
-
-### Option 1 : Via Android Studio / IntelliJ IDEA (Recommandé)
-1. Ouvrez **Android Studio** ou **IntelliJ IDEA**.
-2. Choisissez **Open** et sélectionnez le dossier du projet : `D:\Coding\duolingo-kmp-learning-app`.
-3. Pour exécuter la version **Windows Desktop** :
-   - Dans le panneau Gradle (à droite), développez `composeApp -> Tasks -> compose desktop -> desktopRun`.
-   - Cliquez deux fois sur **desktopRun** pour lancer la fenêtre de l'application sur Windows.
-4. Pour exécuter la version **Android** :
-   - Sélectionnez la configuration `composeApp` et lancez un émulateur Android ou connectez votre smartphone/iPad.
-
-### Option 2 : Via la ligne de commande (Terminal)
-Le dépôt ne contient pas encore de wrapper Gradle. Après installation de Gradle compatible avec Android Gradle Plugin 8.2.2, exécutez cette commande à la racine :
-```bash
+```powershell
 gradle :composeApp:desktopRun
 ```
 
----
+La progression est actuellement gardée en mémoire pendant la session. La persistance locale et la synchronisation entre appareils ne sont pas encore implémentées.
 
-## 📱 Structure Multiplateforme
+## Cibles
 
-- **Windows Desktop** : `composeApp/src/desktopMain/kotlin/main.kt`
-- **Android App** : `composeApp/src/androidMain/kotlin/com/duolingo/app/MainActivity.kt`
-- **Common Code (UI & Logique)** : `composeApp/src/commonMain/kotlin/com/duolingo/app`
+- Windows Desktop : `composeApp/src/desktopMain/kotlin/main.kt`
+- Android : `composeApp/src/androidMain/kotlin/com/duolingo/app/MainActivity.kt`
+- UI et logique partagées : `composeApp/src/commonMain/kotlin/com/duolingo/app`

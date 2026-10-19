@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.HelpOutline
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.duolingo.app.model.Exercise
@@ -36,6 +38,7 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
     val isCorrect by viewModel.isAnswerCorrect.collectAsState()
     val isCompleted by viewModel.isLessonCompleted.collectAsState()
     val stats by viewModel.userStats.collectAsState()
+    var showHelp by remember(activeLesson?.id) { mutableStateOf(false) }
 
     val lesson = activeLesson ?: return
 
@@ -45,6 +48,7 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
     }
 
     val exercise = lesson.exercises.getOrNull(currentIndex) ?: return
+    val uriHandler = LocalUriHandler.current
     val progress = (currentIndex + 1).toFloat() / lesson.exercises.size
 
     Scaffold(
@@ -65,6 +69,9 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
                 )
                 Spacer(Modifier.width(16.dp))
                 Text("❤️ ${stats.hearts}", fontWeight = FontWeight.Bold, color = DuoRed, fontSize = 16.sp)
+                IconButton(onClick = { showHelp = true }) {
+                    Icon(Icons.Default.HelpOutline, contentDescription = "Aide pour cette leçon", tint = DuoBlue)
+                }
             }
         },
         bottomBar = {
@@ -120,6 +127,14 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 16.dp)
             )
+            if (lesson.objective.isNotBlank()) {
+                Text(
+                    text = "Objectif : ${lesson.objective}",
+                    fontSize = 14.sp,
+                    color = Color.Gray,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+            }
 
             when (exercise) {
                 is Exercise.CodeChallenge -> {
@@ -200,6 +215,36 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
                 else -> {}
             }
         }
+    }
+
+    if (showHelp) {
+        AlertDialog(
+            onDismissRequest = { showHelp = false },
+            title = { Text("💡 Coup de pouce", fontWeight = FontWeight.Bold, color = DuoDarkGreen) },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Text("À retenir", fontWeight = FontWeight.Bold)
+                    Text(lesson.learningNotes.ifBlank { lesson.objective.ifBlank { "Relis l’énoncé et cherche la règle étudiée dans cette leçon." } })
+                    Divider()
+                    Text("Indice pour cette question", fontWeight = FontWeight.Bold)
+                    Text(exercise.hint)
+                    if (lesson.sourceUrls.isNotEmpty()) {
+                        Divider()
+                        Text("Ressources du cours", fontWeight = FontWeight.Bold)
+                        lesson.sourceUrls.forEachIndexed { index, url ->
+                            TextButton(onClick = { runCatching { uriHandler.openUri(url) } }) {
+                                Text(if (index == 0) "Ouvrir la ressource de référence" else "Ouvrir une ressource complémentaire")
+                            }
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { showHelp = false }) { Text("Compris") }
+            },
+            shape = RoundedCornerShape(20.dp),
+            backgroundColor = Color.White
+        )
     }
 }
 

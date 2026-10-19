@@ -1,6 +1,5 @@
 package com.duolingo.app.viewmodel
 
-import com.duolingo.app.ai.DemoLessonGenerator
 import com.duolingo.app.data.SampleData
 import com.duolingo.app.model.*
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,13 +9,10 @@ import kotlinx.coroutines.flow.asStateFlow
 enum class AppScreen {
     LEARNING_PATH,
     LESSON_QUIZ,
-    AI_IMPORTER,
     PROFILE
 }
 
 class AppViewModel {
-    private val demoLessonGenerator = DemoLessonGenerator()
-
     private val _subjects = MutableStateFlow(SampleData.sampleSubjects)
     val subjects: StateFlow<List<Subject>> = _subjects.asStateFlow()
 
@@ -50,13 +46,6 @@ class AppViewModel {
 
     private val _isLessonCompleted = MutableStateFlow(false)
     val isLessonCompleted: StateFlow<Boolean> = _isLessonCompleted.asStateFlow()
-
-    // Demonstration resource history
-    private val _ingestedItems = MutableStateFlow<List<ResourceIngestionItem>>(emptyList())
-    val ingestedItems: StateFlow<List<ResourceIngestionItem>> = _ingestedItems.asStateFlow()
-
-    private val _ingestionProgressText = MutableStateFlow("")
-    val ingestionProgressText: StateFlow<String> = _ingestionProgressText.asStateFlow()
 
     fun selectSubject(subjectId: String) {
         _selectedSubjectId.value = subjectId
@@ -161,33 +150,4 @@ class AppViewModel {
         _subjects.value = updatedSubjects
     }
 
-    suspend fun createDemoLesson(sourceUrlOrPath: String, sourceType: IngestionSourceType) {
-        val targetSubject = _selectedSubjectId.value
-        val newLesson = demoLessonGenerator.createDemoLesson(sourceUrlOrPath, sourceType, targetSubject) { status ->
-            _ingestionProgressText.value = status
-        }
-
-        // Add to subject
-        val updatedSubjects = _subjects.value.map { subject ->
-            if (subject.id == targetSubject && subject.units.isNotEmpty()) {
-                val firstUnit = subject.units.first()
-                val updatedFirstUnit = firstUnit.copy(lessons = firstUnit.lessons + newLesson)
-                subject.copy(units = listOf(updatedFirstUnit) + subject.units.drop(1))
-            } else subject
-        }
-        _subjects.value = updatedSubjects
-
-        // Add to ingestion history
-        val newItem = ResourceIngestionItem(
-            id = "item_" + System.currentTimeMillis(),
-            title = if (sourceType == IngestionSourceType.YOUTUBE_VIDEO) "Démo YouTube" else "Démo PDF",
-            sourceType = sourceType,
-            sourceUrlOrPath = sourceUrlOrPath,
-            status = "DEMO_ONLY",
-            generatedLessonsCount = 1,
-            targetSubjectId = targetSubject
-        )
-        _ingestedItems.value = listOf(newItem) + _ingestedItems.value
-        _ingestionProgressText.value = ""
-    }
 }
