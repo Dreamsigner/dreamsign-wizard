@@ -352,3 +352,12 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   périmètre actif. Aucun nouveau succès Android/iOS revendiqué. La couverture
   pédagogique globale reste partielle; cette preuve ne vaut pas finalisation
   du cursus OSSU/TCF complet.
+- Artefact Windows téléchargé puis les deux niveaux ZIP contrôlés sans entrée
+  corrompue. SHA-256 du téléchargement GitHub :
+  dfd20cd019af32d423b69c5f537dc2f64151d6b45f4e75d99849f000ac4719b8.
+  Dossier extrait hors Git ../work/windows-delivery-86e0f59, 115 919 381 octets.
+  Le lanceur issu de ce téléchargement a également réussi son diagnostic local
+  avec exit 0 et les mêmes décomptes/drapeaux; le vérificateur Python retrouve
+  les trois fichiers audio avec leurs SHA exacts. Aucune fenêtre ni donnée
+  utilisateur ouverte pour ce contrôle. Ce paquet est celui du commit 86e0f59;
+  les commits documentaires suivants ne modifient pas son application.
