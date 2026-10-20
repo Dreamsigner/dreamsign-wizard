@@ -361,3 +361,70 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   les trois fichiers audio avec leurs SHA exacts. Aucune fenêtre ni donnée
   utilisateur ouverte pour ce contrôle. Ce paquet est celui du commit 86e0f59;
   les commits documentaires suivants ne modifient pas son application.
+
+## Retours utilisateur — ordre, cours, mathématiques et reprise des erreurs
+
+- Travaux repris dans la même copie D:, branche codex/windows-test-package,
+  sans changement global, réactivation automatique ni Computer Use.
+- Ordre explicite OSSU ajouté aux cours publiés, avec adaptation locale des
+  cours de remplacement. MIT 18.335J est un ajout local avancé, pas un cours
+  revendiqué comme listé par OSSU. Le TCF conserve son ordre éditorial distinct.
+- Revue française de Learn Prolog Now! : glossaire sourcé et précision de
+  l’échec fini pour la négation par l’échec. IDs, options et index corrects
+  conservés. Les notes françaises ne sont pas une traduction intégrale du livre.
+- Première reproduction TDD de reprise différée : deux assertions métier ont
+  échoué avec l’ancien comportement. Implémentation d’une file par tentative :
+  premier tour complet, puis rotation des erreurs restantes; XP après correction
+  de toutes les questions. La revue indépendante a trouvé un retry immédiat
+  laissant une erreur en file; test ajouté, échec reproduit puis retrait corrigé.
+- Lecteur réunissant toutes les notes originales d’un cours, sommaire et liens
+  vers exercices associés; lecture possible même avant le déverrouillage des
+  exercices. Objectif placé avant l’énoncé, contexte avant la question, bouton
+  explicite pour l’explication après vérification.
+- Rendu mathématique local JLaTeXMath (exception Classpath), sans WebView :
+  fractions, matrices, puissances/indices reconnus prudemment dans les champs
+  mathématiques, TeX explicite possible; aucun interpréteur appliqué au code
+  Prolog. Modules de polices grecques/cyrilliques optionnels exclus. Les formes
+  non reconnues restent du texte, sans invention de structure mathématique.
+- Icônes pixel originales pour flamme, cœur, XP et leçon terminée, bibliothèque
+  voxel décorative, palette de marque conservée. Aucune ressource Minecraft copiée.
+- Catalogue de supports appariés à chaque séance/exercice; PDF complets distingués
+  des supports partiels et collections. Les originaux restent liés à leurs sites.
+  Bibliothèque Markdown générée hors du code dans docs/courses et README principal
+  refondu, avec bannière originale et captures du catalogue réellement publié.
+- Premiers rendus inspectés : catalogue PC, exercice réel d’algèbre avec matrice,
+  lecteur de cours sur fixture et bannière SVG rasterisée. Aucun périphérique
+  physique ni fenêtre du système n’est déclaré vérifié.
+- Intégration en cours : les erreurs de compilation des premiers essais ont
+  révélé un import de test manquant, une propriété sémantique Compose mal typée
+  et un ancien index de ressources non régénéré dépassant 64 KB en <clinit>.
+  Corrections apportées; génération désormais par petits helpers. Les résultats
+  finaux et le paquet de ce lot seront inscrits après leur vérification.
+
+### Vérification locale du lot — 21 octobre 2026
+
+- Suite finale desktop : 93 tests, zéro échec/erreur/ignoré; BUILD SUCCESSFUL,
+  avec createDistributable. Journal ../work/remarks-final-package.log. Tests PDF
+  sous le vrai thème : erreur/réessai, navigation sur deux pages, zoom et fermeture.
+- Test réseau distinct sourcePdfSmokeTest réussi : véritable PDF de séance
+  MIT 18.06SC, quatre pages, première rendue en 1000 × 1294 pixels par le lecteur
+  de production. Ce test reste opt-in et n'est pas compté comme ignoré dans la
+  suite ordinaire. Aucun support original n'est publié dans le dépôt.
+- Les 24 tests Python, les dix contrôleurs pédagogiques, la validation des
+  15 cours/391 séances/1190 exercices, l'index de 1326 supports et l'export
+  Markdown ont réussi. La couverture globale OSSU reste explicitement false.
+- Le diagnostic du lanceur distribué a confirmé les trois WAV, le rendu LaTeX
+  et le rendu PDF originaux en mémoire. Première exécution : avertissement
+  PDFBox dû au module jdk.unsupported absent du runtime jlink réduit, sans
+  échec fonctionnel. La source IOUtils 3.0.8 confirme le recours à sun.misc.Unsafe.
+  Module ajouté à nativeDistributions; nouvelle construction et diagnostic
+  réussis sans InaccessibleObjectException ni avertissement d'unmapping.
+  Rapport : ../work/remarks-installation-d3f260e5d4a94ff9b8d6a2847f142465.json.
+  Les drapeaux mathRenderingVerified et pdfRenderingVerified valent true;
+  uiStarted et userDataAccessed restent false. La CI impose aussi ce module.
+- Inspection visuelle supplémentaire : contrôles du lecteur PDF et page d'un
+  document de test original via capture Compose. Les captures de catalogue et
+  de matrice dans le README proviennent du contenu publié, stockage mémoire.
+- Licences/notices exactes des JAR distribués JLaTeXMath, PDFBox, PDFBox IO,
+  FontBox et Commons Logging conservées; copie prévue dans le ZIP Windows.
+  La CI et les artefacts du commit à pousser restent à confirmer.

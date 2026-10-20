@@ -242,7 +242,7 @@ object SampleData {
 
     /** New lessons are appended to stable units; the lesson path renders them without UI changes. */
     val sampleSubjects = baseSubjects.map { subject ->
-        val authored = GeneratedCourses.unitsFor(subject.category)
+        val authored = CourseOrdering.order(GeneratedCourses.unitsFor(subject.category))
         subject.copy(curriculumVersion = 3, units = authored.ifEmpty { subject.units.map { unit ->
             unit.copy(lessons = unit.lessons + supplementalLessons[unit.id].orEmpty())
         } })

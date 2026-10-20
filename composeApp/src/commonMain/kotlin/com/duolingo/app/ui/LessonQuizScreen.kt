@@ -26,10 +26,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.duolingo.app.model.Exercise
 import com.duolingo.app.model.Lesson
+import com.duolingo.app.model.SubjectCategory
 import com.duolingo.app.model.practiceWordCount
 import com.duolingo.app.model.canFinishPractice
 import com.duolingo.app.viewmodel.AppScreen
 import com.duolingo.app.viewmodel.AppViewModel
+import com.duolingo.app.ui.math.LearningText
+import com.duolingo.app.ui.math.LearningFormula
+import androidx.compose.ui.text.TextStyle
+import com.duolingo.app.data.CourseResources
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -50,17 +55,23 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
     val recordingMillis by viewModel.verifiedRecordingMillis.collectAsState()
     val recordingReplayed by viewModel.recordingReplayed.collectAsState()
     val recordingBusy by viewModel.spokenRecordingBusy.collectAsState()
+    val reviewRound by viewModel.isReviewRound.collectAsState()
+    val reviewIndices by viewModel.reviewQuestionIndices.collectAsState()
     val lesson = activeLesson
     if (lesson == null) {
         Column { EmptyLearningState("Choisis une leçon", "Aucune leçon n’est ouverte."); LearningButton("Retour aux cours", { viewModel.navigateTo(AppScreen.LEARNING_PATH) }) }
         return
     }
     var showNotes by remember(lesson.id) { mutableStateOf(true) }
+    val mathematical = viewModel.subjects.value.any { subject ->
+        subject.category == SubjectCategory.MATHEMATICS && subject.units.any { unit -> unit.lessons.any { it.id == lesson.id } }
+    }
     var showHelp by remember(lesson.id) { mutableStateOf(false) }
+    var showExplanation by remember(lesson.id, index, checked) { mutableStateOf(false) }
     val exit = { viewModel.navigateTo(AppScreen.LEARNING_PATH) }
     if (completed) { LessonCompletedTriumphView(awardedXp, exit); return }
     val exercise = lesson.exercises.getOrNull(index)
-    val questionScrollState = key(lesson.id, showNotes, index) { rememberScrollState() }
+    val questionScrollState = key(lesson.id, showNotes, index, reviewRound, checked) { rememberScrollState() }
     val unsupported = exercise is Exercise.MatchingPairs
     val written = exercise as? Exercise.WrittenProduction
     val spoken = exercise as? Exercise.SpokenProduction
@@ -73,11 +84,13 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
                         IconButton(exit, Modifier.size(48.dp)) { Icon(Icons.Default.Close, "Quitter la leçon") }
                         Column(Modifier.weight(1f).padding(horizontal = 8.dp)) {
                             Text(lesson.title, fontWeight = FontWeight.Bold)
-                            Text(if (showNotes) "Le cours avant la pratique" else "Exercice ${index + 1} sur ${lesson.exercises.size}", color = Graphite, fontSize = 14.sp)
+                            Text(if (showNotes) "Le cours avant la pratique" else if (reviewRound) "Reprise des erreurs · ${reviewIndices.size} à corriger" else "Exercice ${index + 1} sur ${lesson.exercises.size}", color = Graphite, fontSize = 14.sp)
                         }
                         IconButton({ showHelp = true }, Modifier.size(48.dp)) { Icon(Icons.Default.Info, "Ouvrir le cours et l’indice") }
                     }
-                    if (!showNotes && exercise != null) LinearProgressIndicator(index.toFloat() / lesson.exercises.size.coerceAtLeast(1), Modifier.fillMaxWidth().height(8.dp), color = BrandRed, backgroundColor = Concrete)
+                    if (!showNotes && exercise != null) LinearProgressIndicator(
+                        (if (reviewRound) lesson.exercises.size - reviewIndices.size else index).toFloat() / lesson.exercises.size.coerceAtLeast(1),
+                        Modifier.fillMaxWidth().height(8.dp), color = BrandRed, backgroundColor = Concrete)
                 }
             }
         },
@@ -86,12 +99,11 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
                 Box(Modifier.fillMaxWidth().padding(16.dp), contentAlignment = Alignment.Center) {
                     Column(Modifier.widthIn(max = 760.dp).fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     if (checked && !showNotes) Text(
-                        if (written != null || spoken != null) "Entraînement auto-évalué terminé" else if (correct) "Bonne réponse" else "À corriger · consulte l’explication puis réessaie",
+                        if (written != null || spoken != null) "Entraînement auto-évalué terminé" else if (correct) "Bonne réponse" else "Cette question reviendra en fin de séance",
                         color = if (correct) Ink else ActionRed, fontWeight = FontWeight.Bold)
                     when {
                         showNotes -> LearningButton(if (lesson.exercises.isEmpty()) "Retour aux cours" else "Passer aux exercices", { if (lesson.exercises.isEmpty()) exit() else showNotes = false }, Modifier.widthIn(max = 760.dp).fillMaxWidth())
                         exercise == null || unsupported -> LearningButton("Retour aux cours", exit, Modifier.widthIn(max = 760.dp).fillMaxWidth())
-                        checked && !correct -> LearningButton("Réessayer", viewModel::retryExercise, Modifier.widthIn(max = 760.dp).fillMaxWidth())
                         checked -> LearningButton("Continuer", viewModel::nextExercise, Modifier.widthIn(max = 760.dp).fillMaxWidth())
                         spoken != null -> LearningButton("Terminer ma réécoute et mon bilan", viewModel::checkAnswer, Modifier.fillMaxWidth(), spoken.canFinishPractice(recordingMillis, recordingReplayed, recordingBusy, reviewedCriteria))
                         written != null -> LearningButton("Terminer ma relecture", viewModel::checkAnswer, Modifier.widthIn(max = 760.dp).fillMaxWidth(), written.canFinishPractice(writtenResponse, reviewedCriteria))
@@ -106,20 +118,17 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
         Box(Modifier.padding(padding).fillMaxSize(), contentAlignment = Alignment.TopCenter) {
             Column(Modifier.widthIn(max = 920.dp).fillMaxWidth().verticalScroll(questionScrollState).padding(24.dp), verticalArrangement = Arrangement.spacedBy(20.dp)) {
                 when {
-                    showNotes -> LessonNotes(lesson)
+                    showNotes -> LessonNotes(lesson, typesetMath = mathematical)
                     exercise == null -> EmptyLearningState("Aucun exercice disponible", "Les notes du cours restent accessibles avec le bouton d’aide.")
                     unsupported -> EmptyLearningState("Association de paires indisponible", "Cet exercice n’est pas encore pris en charge. Reviens au cours pour choisir une autre leçon ; aucune réponse ni récompense ne sera enregistrée ici.")
                     else -> {
+                        if (lesson.objective.isNotBlank()) Text("Objectif : ${lesson.objective}", color = Graphite, fontSize = 14.sp)
                         if (written != null || spoken != null) {
                             Text(if (spoken != null) "Ta production orale" else "Ta production écrite",
                                 fontSize = 26.sp, lineHeight = 34.sp, fontWeight = FontWeight.Bold,
                                 modifier = Modifier.semantics { heading() })
                             Text(exercise.prompt, fontSize = 18.sp, lineHeight = 28.sp)
-                        } else {
-                            Text(exercise.prompt, fontSize = 26.sp, lineHeight = 34.sp,
-                                fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
                         }
-                        if (lesson.objective.isNotBlank()) Text("Objectif : ${lesson.objective}", color = Graphite)
                         when (exercise) {
                             is Exercise.ReadingChoice -> {
                                 Surface(color = White, shape = LearningShape) {
@@ -128,28 +137,38 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
                                             fontSize = 18.sp, lineHeight = 28.sp, fontWeight = FontWeight.Normal)
                                     }
                                 }
-                                OptionsList(exercise.options, selectedOption, checked, viewModel::selectOption)
+                                ExercisePrompt(exercise)
+                                OptionsList(exercise.options, selectedOption, checked, viewModel::selectOption, typesetMath = mathematical)
                             }
                             is Exercise.SpokenProduction -> SpokenProductionPractice(exercise, viewModel, checked)
                             is Exercise.ListeningChoice -> {
                                 ListeningPractice(exercise, checked, exercise.audioResourcePath in heardAudioPaths,
                                     exercise.audioResourcePath in transcriptModePaths, viewModel::markAudioCompleted, viewModel::enableTranscriptMode)
-                                OptionsList(exercise.options, selectedOption, checked, viewModel::selectOption)
+                                ExercisePrompt(exercise)
+                                OptionsList(exercise.options, selectedOption, checked, viewModel::selectOption, typesetMath = mathematical)
                             }
                             is Exercise.WrittenProduction -> WrittenProductionPractice(exercise, writtenResponse, reviewedCriteria, checked, persistenceStatus, viewModel::updateWrittenResponse, viewModel::toggleReviewCriterion)
                             is Exercise.CodeChallenge -> {
                                 Surface(color = Ink, shape = LearningShape) {
                                     Text(exercise.codeSnippet, Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(20.dp), color = White, fontFamily = FontFamily.Monospace, fontSize = 16.sp)
                                 }
+                                ExercisePrompt(exercise)
                                 OptionsList(exercise.options, selectedOption, checked, viewModel::selectOption)
                             }
                             is Exercise.MathChallenge -> {
-                                exercise.formula?.let { Surface(color = White, shape = LearningShape) { Text(it, Modifier.fillMaxWidth().padding(20.dp), fontSize = 24.sp, fontWeight = FontWeight.Medium) } }
-                                OptionsList(exercise.options, selectedOption, checked, viewModel::selectOption)
+                                exercise.formula?.let { Surface(color = White, shape = LearningShape) {
+                                    LearningFormula(it, Modifier.fillMaxWidth().padding(20.dp), style = TextStyle(fontSize = 24.sp))
+                                } }
+                                ExercisePrompt(exercise)
+                                OptionsList(exercise.options, selectedOption, checked, viewModel::selectOption, typesetMath = true)
                             }
-                            is Exercise.MultipleChoice -> OptionsList(exercise.options, selectedOption, checked, viewModel::selectOption)
+                            is Exercise.MultipleChoice -> {
+                                ExercisePrompt(exercise)
+                                OptionsList(exercise.options, selectedOption, checked, viewModel::selectOption, typesetMath = mathematical)
+                            }
                             is Exercise.Translation -> {
                                 Surface(color = White, shape = LearningShape) { Text(exercise.sourceSentence, Modifier.fillMaxWidth().padding(20.dp), fontSize = 20.sp) }
+                                ExercisePrompt(exercise)
                                 Text("Ta réponse", fontWeight = FontWeight.Bold)
                                 Surface(color = White, shape = LearningShape) {
                                     Text(selectedTokens.joinToString(" ").ifBlank { "Choisis les mots dans l’ordre." }, Modifier.fillMaxWidth().heightIn(min = 72.dp).padding(16.dp), color = if (selectedTokens.isEmpty()) Graphite else Ink, fontSize = 18.sp)
@@ -164,8 +183,11 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
                         if (checked) Surface(color = White, shape = LearningShape, modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite }) {
                             Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                                 Text(if (written != null || spoken != null) "Auto-évaluation terminée" else if (correct) "Bien joué !" else "À retenir", color = if (correct) Ink else ActionRed, fontWeight = FontWeight.Bold, fontSize = 22.sp)
-                                Text(exercise.explanation, fontSize = 16.sp)
-                                Text("${stats.hearts}/${stats.maxHearts} vies restantes", color = Graphite)
+                                TextButton({ showExplanation = !showExplanation }, Modifier.heightIn(min = 48.dp)) {
+                                    Text(if (showExplanation) "Masquer l’explication" else "Pourquoi cette réponse ?")
+                                }
+                                if (showExplanation) LearningText(exercise.explanation, style = TextStyle(fontSize = 16.sp, lineHeight = 25.sp), recognizeLegacyMath = mathematical || exercise is Exercise.MathChallenge)
+                                SymbolValue(LearningSymbol.HEART, "${stats.hearts}/${stats.maxHearts} vies restantes")
                             }
                         }
                     }
@@ -177,15 +199,21 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
         title = { Text("Le cours et l’indice") },
         text = {
             Column(Modifier.heightIn(max = 460.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                LessonNotes(lesson)
+                LessonNotes(lesson, typesetMath = mathematical)
                 if (!showNotes && exercise != null) {
                     Text("Indice pour cet exercice", fontWeight = FontWeight.Bold)
-                    Text(exercise.hint)
+                    LearningText(exercise.hint)
                 }
             }
         },
         confirmButton = { TextButton({ showHelp = false }, Modifier.heightIn(min = 48.dp)) { Text("Revenir à la leçon") } },
         shape = LearningShape, backgroundColor = White)
+}
+
+@Composable
+private fun ExercisePrompt(exercise: Exercise) {
+    LearningText(exercise.prompt, Modifier.semantics { heading() },
+        style = TextStyle(fontSize = 22.sp, lineHeight = 32.sp, fontWeight = FontWeight.Bold), recognizeLegacyMath = exercise is Exercise.MathChallenge)
 }
 
 @Composable
@@ -224,25 +252,29 @@ private fun WrittenProductionPractice(
 }
 
 @Composable
-private fun LessonNotes(lesson: Lesson) {
+internal fun LessonNotes(lesson: Lesson, includeHeading: Boolean = true, typesetMath: Boolean = false) {
     val uriHandler = LocalUriHandler.current
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        Text("Comprendre avant de pratiquer", fontSize = 24.sp, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
+        if (includeHeading) Text("Comprendre avant de pratiquer", fontSize = 24.sp, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
         lesson.sourceSessionLabel?.let { Text(it, color = Graphite, fontWeight = FontWeight.Medium) }
         if (lesson.objective.isNotBlank()) Text("Objectif : ${lesson.objective}", fontSize = 16.sp, fontWeight = FontWeight.Medium)
-        Text(lesson.learningNotes.ifBlank { "Les notes de cette leçon ne sont pas encore disponibles. Consulte les ressources de référence lorsqu’elles sont proposées." }, fontSize = 16.sp, lineHeight = 25.sp)
+        LearningText(lesson.learningNotes.ifBlank { "Les notes de cette leçon ne sont pas encore disponibles. Consulte les ressources de référence lorsqu’elles sont proposées." }, style = TextStyle(fontSize = 16.sp, lineHeight = 25.sp), recognizeLegacyMath = typesetMath)
         if (lesson.sourceTitle.isNotBlank()) Text("Source : ${lesson.sourceTitle}", color = Graphite)
-        if (lesson.sourceUrls.isNotEmpty()) {
+        val pairedResources = lesson.exercises.firstOrNull()?.let { CourseResources.forExercise(it.id) }.orEmpty()
+        if (pairedResources.isNotEmpty()) {
+            Text("Supports associés à cette leçon", fontWeight = FontWeight.Bold)
+            ReferenceLinks(pairedResources)
+        } else if (lesson.sourceUrls.isNotEmpty()) {
             Text("Pour aller plus loin", fontWeight = FontWeight.Bold)
             lesson.sourceUrls.forEachIndexed { index, url ->
-                TextButton({ runCatching { uriHandler.openUri(url) } }, Modifier.heightIn(min = 48.dp)) { Text("Ressource ${index + 1} · ${url.substringAfter("://").substringBefore('/')}") }
+                TextButton({ runCatching { uriHandler.openUri(url) } }, Modifier.heightIn(min = 48.dp)) { Text("${if (url.substringBefore('?').endsWith(".pdf", true)) "Support PDF" else "Ressource"} ${index + 1} · ${url.substringAfter("://").substringBefore('/')}") }
             }
         }
     }
 }
 
 @Composable
-fun OptionsList(options: List<String>, selectedIndex: Int?, isChecked: Boolean, onSelect: (Int) -> Unit) {
+fun OptionsList(options: List<String>, selectedIndex: Int?, isChecked: Boolean, onSelect: (Int) -> Unit, typesetMath: Boolean = false) {
     Column(Modifier.selectableGroup(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         options.forEachIndexed { index, option ->
             val selected = selectedIndex == index
@@ -252,7 +284,7 @@ fun OptionsList(options: List<String>, selectedIndex: Int?, isChecked: Boolean, 
                 border = BorderStroke(if (selected) 2.dp else 1.dp, if (selected) Ink else Concrete),
                 colors = ButtonDefaults.outlinedButtonColors(backgroundColor = if (selected) Paper else White, contentColor = Ink, disabledContentColor = Ink), contentPadding = PaddingValues(16.dp)) {
                 RadioButton(selected, null, colors = RadioButtonDefaults.colors(selectedColor = Ink, unselectedColor = Graphite))
-                Spacer(Modifier.width(12.dp)); Text(option, Modifier.weight(1f), fontSize = 16.sp)
+                Spacer(Modifier.width(12.dp)); LearningText(option, Modifier.weight(1f), style = TextStyle(fontSize = 16.sp), recognizeLegacyMath = typesetMath)
             }
         }
     }
@@ -270,9 +302,9 @@ fun TokenChip(token: String, selected: Boolean, onClick: () -> Unit, enabled: Bo
 fun LessonCompletedTriumphView(xpReward: Int, onFinish: () -> Unit) {
     Box(Modifier.fillMaxSize().background(Paper), contentAlignment = Alignment.Center) {
         Column(Modifier.widthIn(max = 640.dp).fillMaxWidth().verticalScroll(rememberScrollState()).padding(32.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
-            Icon(Icons.Default.CheckCircle, null, Modifier.size(72.dp), tint = BrandRed)
+            PixelIcon(LearningSymbol.COMPLETED, Modifier.size(72.dp))
             Text("Une leçon de plus !", fontSize = 32.sp, fontWeight = FontWeight.ExtraBold)
-            Text(if (xpReward > 0) "+$xpReward XP. Ta progression avance." else "Révision terminée. Tu consolides tes acquis sans ajouter de XP.", fontSize = 18.sp)
+            SymbolValue(LearningSymbol.XP, if (xpReward > 0) "+$xpReward XP. Ta progression avance." else "Révision terminée. Tu consolides tes acquis sans ajouter de XP.")
             LearningButton("Revenir aux cours", onFinish, Modifier.fillMaxWidth())
         }
     }

@@ -1,66 +1,72 @@
-# Duolingo KMP Learning App
+<p align="center">
+  <img src="docs/images/atelier-banner.svg" alt="Atelier d’apprentissage — des livres et des marches de blocs rouges" width="100%">
+</p>
 
-**Périmètre actif : Windows uniquement**, suivant la décision utilisateur du
-20 octobre 2026. Le code mobile existant est conservé, mais les développements
-et builds Android/iOS sont arrêtés. Voir [DELIVERY-SCOPE.md](docs/DELIVERY-SCOPE.md).
+# Atelier d’apprentissage
 
-Application d’apprentissage en Kotlin Multiplatform et Compose Multiplatform pour Windows, Android et iOS. L’interface reprend un parcours ludique et utilise la charte du cabinet : rouge signature `#E3262E`, rouge d’action `#C91E28`, encre `#141414`, graphite `#4A4A4A`, ivoire `#F7F5F0` et béton `#D9D7D2`. Le logo du cabinet n’est pas utilisé dans cette application.
+Une application native **Windows**, en français, pour comprendre un cours, pratiquer et reprendre ses erreurs. Développée avec Kotlin et Compose Multiplatform dans le dépôt **Duolingo KMP Learning App**.
 
-## Parcours et contenus
+[![Build Windows](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/workflows/build.yml)
 
-Le cours **MIT 18.01SC — Calcul à une variable, Fall 2010** contient les **102 séances sources et 236 exercices** : 93 cours, 4 révisions et 5 entraînements adaptés aux examens. Chaque séance dispose de notes originales en français, d’exercices corrigés, d’indices et de liens précis vers les documents MIT consultés. Cette pratique guidée ne remplace pas tous les problèmes ouverts du cours d’origine.
+[Tester sur Windows](docs/windows-testing.md) · [Lire les cours et exercices](docs/courses/README.md) · [Couverture vérifiable](docs/curriculum/AUTHORED-COVERAGE.md) · [Sources et supports](docs/curriculum/course-resources-notes.md)
 
-Le cours **The Missing Semester, édition 2026**, contient les neuf conférences et 51 exercices sur les outils du développeur. Le **TCF Canada** dispose de trois ateliers originaux d’expression écrite, fondés sur ses trois formats FEI : saisie réelle, brouillon conservé localement, exemple et grille de relecture. L’auto-évaluation ne fournit aucune correction automatique de langue ni aucun score officiel. Les autres cours OSSU et les autres compétences TCF restent à compléter : voir `docs/curriculum/STATUS.md`.
+## Apprendre, puis pratiquer
 
-**MIT 18.06SC — Algèbre linéaire, Fall 2011** ajoute 40 séances et 131 exercices : 32 cours, quatre révisions et quatre entraînements adaptés aux examens. **MIT 6.100L — Introduction à la programmation Python, Fall 2022** ajoute 26 conférences et 104 exercices. L’écoute TCF dispose de trois documents synthétisés en français et de six questions, avec mode lecture accessible identifié séparément. La couverture globale OSSU/TCF reste partielle ; les décomptes reproductibles figurent dans [AUTHORED-COVERAGE.md](docs/curriculum/AUTHORED-COVERAGE.md).
+| Dans l’application | Fonctionnement |
+| --- | --- |
+| **Cours et supports** | Toutes les notes françaises d’un cours réunies dans un lecteur, avec sommaire et exercices associés. Les PDF officiels se lisent dans l’application avec pages et zoom. Les notes restent lisibles avant de débloquer les exercices. |
+| **Questions et corrections** | Objectif au-dessus de l’énoncé, réponses juste après la question, indice et bouton « Pourquoi cette réponse ? ». |
+| **Reprise des erreurs** | Une erreur permet d’avancer; les questions ratées reviennent en fin de séance jusqu’à leur correction. |
+| **Mathématiques composées** | Rendu LaTeX local et reconnaissance prudente des matrices, fractions et puissances dans les champs mathématiques. Les formes non reconnues restent visibles sous leur forme source. |
+| **Progression locale** | Cours choisi, leçons terminées, XP, série et brouillons conservés sur cet appareil. Les XP d’une leçon sont attribués une seule fois. |
+| **Ateliers TCF** | Lecture, écoute de documents originaux, saisie et production orale avec réécoute et auto-évaluation; aucun score officiel ni correction automatique de langue. |
 
-Les cours rédigés sont dans `curriculum/courses/`. `python tools/validate_curriculum.py --generate` vérifie leur correspondance intégrale au manifeste source puis génère le code Kotlin dans `data/generated/`. Une unité correspond à un cours ; chaque séance est une leçon. L’atelier TCF est explicitement une séquence de préparation originale, pas un programme officiel. Les identifiants publiés restent stables pour conserver la progression. `SampleData.kt` fournit les catégories et les anciens exemples des catégories sans cours intégré.
+L’interface PC utilise une navigation latérale et un espace de lecture adapté à la largeur. La charte rouge, encre et ivoire accompagne des illustrations pixel/voxel originales; aucune texture ni aucun personnage Minecraft n’est inclus.
 
-L’application n’utilise pas de génération IA et ne prétend pas analyser des PDF ou vidéos. Le contenu pédagogique est préparé à partir des ressources de cours citées. Les ressources MIT/OSSU peuvent avoir leurs propres conditions de licence; les liens mènent au matériel d’origine au lieu de le recopier.
+![Catalogue natif Windows, rendu Compose du véritable contenu publié](docs/images/windows-catalogue.png)
 
-## Ressources de référence
+<details>
+<summary>Voir un exercice d’algèbre linéaire avec matrice composée</summary>
 
-Le catalogue inclut aussi MIT 6.042J Fall 2010 (28 séances, 117 exercices),
-Learn Prolog Now! (12 chapitres, 60 exercices), MIT 18.404J Fall 2020
-(27 séances, 112 exercices), MIT 6.004 Spring 2017 (28 séances, 99 exercices)
-et MIT 18.335J Spring 2019 (39 séances, 117 exercices). Le TCF propose également
-trois ateliers de lecture et trois ateliers oraux originaux, avec prise de son
-locale, réécoute et bilan. La capture physique et ses permissions restent à
-vérifier sur appareils réels. Le catalogue intégral demandé n’est pas terminé.
+![Exercice avec objectif au-dessus, matrice composée et réponses directement sous la question](docs/images/windows-mathematics.png)
 
-**forall x: Calgary**, édition Fall 2025, ajoute 48 chapitres et 98 exercices
-originaux. **Stanford CS364A — Algorithmic Game Theory, Fall 2013** ajoute
-20 conférences et 41 exercices. Ces adaptations guidées ne remplacent pas
-les banques de problèmes, projets et examens ouverts des sources.
+Captures produites par les tests Compose hors écran avec le catalogue publié et une progression de test isolée.
 
-Les vrais écrans sont testables automatiquement sans Computer Use :
-`gradle :composeApp:desktopTest` rend Compose hors écran et produit rapports et
-captures compactes/PC. Voir [automated-testing.md](docs/automated-testing.md)
-pour les scénarios, commandes et limites des preuves.
+</details>
 
-- [OSSU Computer Science](https://github.com/ossu/computer-science)
-- [OSSU Math](https://github.com/ossu/math)
-- [MIT OpenCourseWare — Mathematics for Computer Science, Fall 2010](https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/)
-- [MIT OpenCourseWare — Linear Algebra, Fall 2011](https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/)
-- [MIT OpenCourseWare — Probability and Statistics](https://ocw.mit.edu/courses/18-05-introduction-to-probability-and-statistics-spring-2022/)
+## Catalogue actuel
 
-## Lancer l’application Windows
+**15 unités, 391 leçons et ateliers, 1 190 exercices.** Une unité correspond à un cours identifié; les séances suivent son ordre source. Le classement des unités suit les sections OSSU, avec les adaptations locales documentées. Les notes et exercices sont rédigés pour ce projet et appariés aux références de leur séance.
 
-Pour tester le paquet compilé sans installer Gradle ni Java, suivre le
-[guide Windows](docs/windows-testing.md).
+| Parcours | Cours publiés |
+| --- | --- |
+| **Mathématiques** | Calcul à une variable · Mathématiques discrètes · Algèbre linéaire · Logique formelle · Méthodes numériques |
+| **Informatique** | Python · Outils du développeur · Architecture des ordinateurs · Prolog · Théorie du calcul · Théorie algorithmique des jeux |
+| **TCF Canada** | Ateliers originaux de compréhension orale, compréhension écrite, expression orale et expression écrite |
 
-Depuis Android Studio ou IntelliJ IDEA, ouvrir le dossier du projet puis lancer la tâche Gradle `composeApp > Tasks > compose desktop > desktopRun`.
+Le cursus OSSU complet et la préparation TCF complète **restent à terminer**. Les adaptations guidées ne remplacent pas toutes les banques de problèmes, les projets et les examens ouverts des cours originaux. Un support PDF de séance n’est pas présenté comme un manuel complet. [Détails, provenance et limites](docs/curriculum/STATUS.md).
 
-Le dépôt ne contient pas de wrapper Gradle. Si Gradle est installé localement, lancer depuis la racine :
+## Tester sans installer Gradle
 
-```powershell
-gradle :composeApp:desktopRun
-```
+1. Ouvrir un [run Windows réussi](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/workflows/build.yml).
+2. Télécharger **DuolingoKmpApp-Windows**, extraire les archives et conserver ensemble l’exécutable, `app` et `runtime`.
+3. Lancer **DuolingoKmpApp.exe**. Java est inclus dans le paquet.
 
-La progression et le cours choisi par catégorie sont enregistrés localement : fichier atomique dans `%LOCALAPPDATA%/AtelierApprentissage/progress.json` sur Windows, SharedPreferences sur Android, NSUserDefaults sur iOS. Les XP sont attribués une seule fois par leçon. Les anciennes sauvegardes sont lues sans migration de fichiers. Une sauvegarde illisible est préservée et signalée ; les erreurs d’écriture sont visibles. La synchronisation entre appareils reste absente. Voir `docs/platforms.md` pour les builds et les limites de signature iOS.
+[Guide Windows et diagnostic sans fenêtre](docs/windows-testing.md). Les notes et documents audio sont intégrés; le lecteur PDF télécharge les supports officiels avec Internet et les vidéos restent des liens. La capture physique du microphone et la lecture d’écran native ne sont pas prouvées par les tests hors écran.
 
-## Cibles
+## Contribuer au projet
 
-- Windows Desktop : `composeApp/src/desktopMain/kotlin/main.kt`
-- Android : `composeApp/src/androidMain/kotlin/com/duolingo/app/MainActivity.kt`
-- UI et logique partagées : `composeApp/src/commonMain/kotlin/com/duolingo/app`
+- [Architecture et plateformes](docs/platforms.md) — le périmètre actif est **Windows uniquement**; le code Android/iOS est conservé, leurs développements et builds sont arrêtés.
+- [Tests automatisés Compose, audio et persistance](docs/automated-testing.md) — scénarios sans Computer Use, rapports et captures.
+- [Rendu mathématique](docs/math-typesetting.md) · [Glossaire Prolog français/anglais](docs/curriculum/learn-prolog-now-fr-glossary-order-notes.md).
+- [Registre de progression](docs/EXECUTION-LOG.md) — distingue implémentation, tests, inspection visuelle et vérifications manquantes.
+
+Les contenus canoniques sont dans `curriculum/courses/`. `python tools/validate_curriculum.py --generate` valide les correspondances sources et génère Kotlin. Garder les identifiants publiés stables pour préserver la progression. Le dépôt n’a pas de wrapper Gradle : utiliser Gradle 8.11.1 et JDK 17 pour `gradle :composeApp:desktopTest :composeApp:createDistributable`.
+
+La progression Windows est enregistrée dans `%LOCALAPPDATA%/AtelierApprentissage/progress.json`; une sauvegarde illisible est préservée et signalée. Aucune génération IA dans l’application, aucun import automatique de PDF, aucune synchronisation cloud.
+
+## Références
+
+[OSSU Computer Science](https://github.com/ossu/computer-science) · [OSSU Math](https://github.com/ossu/math) · [MIT OpenCourseWare](https://ocw.mit.edu/) · [France Éducation international — TCF Canada](https://www.france-education-international.fr/test/tcf-canada)
+
+Les supports originaux restent sur leurs sites officiels. Leurs licences et exceptions ne sont pas étendues aux notes de ce projet. Les dépendances distribuées sont documentées dans [les notices tierces](docs/licences/THIRD-PARTY-NOTICES.txt).

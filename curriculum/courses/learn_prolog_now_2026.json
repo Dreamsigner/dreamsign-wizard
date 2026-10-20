@@ -855,9 +855,9 @@
       "sourceSessionNumber": 10,
       "sourceTitle": "Cuts and Negation",
       "kind": "lesson",
-      "title": "Contrôler le retour arrière et nier par échec",
+      "title": "Contrôler le retour arrière et utiliser la négation par l’échec",
       "objective": "Comprendre la portée d’une coupure et l’effet de l’ordre des buts.",
-      "learningNotes": "La coupure ! réussit lorsqu'elle est rencontrée et supprime certains choix de retour arrière faits depuis l'entrée dans l'appel courant, notamment les autres clauses de ce prédicat. Elle ne garantit pas que les buts suivants réussiront. Un premier candidat retenu avant ! peut donc faire échouer tout l'appel si un test ultérieur le rejette, même lorsqu'un autre candidat aurait convenu sans coupure. Une coupure dite verte retire seulement des alternatives redondantes pour le contrat prévu ; une coupure rouge peut modifier les réponses logiques. La négation par échec \\+ G réussit lorsque la recherche de G échoue. Ce n'est pas une énumération des valeurs qui rendent G faux : avec des variables libres, elle peut échouer dès qu'une solution existe. Produire d'abord une valeur puis tester sa négation donne souvent le mode attendu.",
+      "learningNotes": "La coupure ! réussit lorsqu'elle est rencontrée et supprime certains choix de retour arrière faits depuis l'entrée dans l'appel courant, notamment les autres clauses de ce prédicat. Elle ne garantit pas que les buts suivants réussiront. Un premier candidat retenu avant ! peut donc faire échouer tout l'appel si un test ultérieur le rejette, même lorsqu'un autre candidat aurait convenu sans coupure. Une coupure dite verte retire seulement des alternatives redondantes pour le contrat prévu ; une coupure rouge peut modifier les réponses logiques. La négation par l’échec \\+ G réussit lorsque la recherche de G s’achève par un échec fini. Ce n'est pas une énumération des valeurs qui rendent G faux : avec des variables libres, elle peut échouer dès qu'une solution existe. Produire d'abord une valeur puis tester sa négation donne souvent le mode attendu.",
       "sourceUrls": [
         "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlch10",
         "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse43",
@@ -909,7 +909,7 @@
             "Elle réussit : couleur(bleu) ne peut pas être prouvé."
           ],
           "correctOptionIndex": 3,
-          "explanation": "La négation par échec teste le but couleur(bleu), qui échoue face à couleur(rouge). Elle ne modifie pas la base.",
+          "explanation": "La négation par l’échec réussit ici parce que le but fermé couleur(bleu) se termine par un échec fini dans cette base, où seul couleur(rouge) est établi. Elle ne modifie pas la base.",
           "hint": "La variable n’est pas libre : la couleur testée est déjà fixée.",
           "codeSnippet": "couleur(rouge).\n\n?- \\+ couleur(bleu)."
         },
@@ -925,7 +925,7 @@
           ],
           "correctOptionIndex": 2,
           "explanation": "Le but positif possède une solution, donc sa négation échoue. Aucune liste de couleurs absentes n’est construite.",
-          "hint": "La négation par échec n’est pas un générateur de complément.",
+          "hint": "La négation par l’échec n’est pas un générateur de complément.",
           "codeSnippet": "couleur(rouge).\n\n?- \\+ couleur(X)."
         },
         {

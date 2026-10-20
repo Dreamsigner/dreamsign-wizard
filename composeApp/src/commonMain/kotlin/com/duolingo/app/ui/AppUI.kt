@@ -84,7 +84,11 @@ fun DuolingoApp(viewModel: AppViewModel = remember { AppViewModel() }) {
     BoxWithConstraints(Modifier.fillMaxSize().background(Paper).windowInsetsPadding(WindowInsets.safeDrawing)) {
         val sidebar = maxWidth >= 1000.dp
         val rail = maxWidth >= 700.dp
-        if (screen == AppScreen.LESSON_QUIZ) {
+        if (screen == AppScreen.COURSE_READER && subject != null && selectedUnitId != null) {
+            val unit = subject.units.first { it.id == selectedUnitId }
+            CourseReaderScreen(unit, { subject.isLessonUnlocked(it, stats.completedLessonIds) }, viewModel::startLesson,
+                onClose = { viewModel.navigateTo(AppScreen.LEARNING_PATH) }, typesetMath = subject.category == SubjectCategory.MATHEMATICS)
+        } else if (screen == AppScreen.LESSON_QUIZ) {
             LessonQuizScreen(viewModel)
         } else {
             Row(Modifier.fillMaxSize()) {
@@ -94,10 +98,11 @@ fun DuolingoApp(viewModel: AppViewModel = remember { AppViewModel() }) {
                     bottomBar = { if (!rail) BottomNavigationBar(screen, viewModel::navigateTo) }) { padding ->
                     Box(Modifier.padding(padding).fillMaxSize()) {
                         when (screen) {
-                            AppScreen.LEARNING_PATH -> if (subject != null) LearningPathScreen(subject, stats.completedLessonIds, viewModel::startLesson, selectedUnitId) { viewModel.selectCourse(subject.id, it) }
+                            AppScreen.LEARNING_PATH -> if (subject != null) LearningPathScreen(subject, stats.completedLessonIds, viewModel::startLesson, selectedUnitId,
+                                onOpenCourse = { viewModel.navigateTo(AppScreen.COURSE_READER) }) { viewModel.selectCourse(subject.id, it) }
                                 else EmptyLearningState("Aucun cours disponible", "Les cours apparaîtront ici dès qu’ils seront disponibles.")
                             AppScreen.PROFILE -> ProfileScreen(stats, persistence)
-                            AppScreen.LESSON_QUIZ -> Unit
+                            AppScreen.LESSON_QUIZ, AppScreen.COURSE_READER -> Unit
                         }
                     }
                 }
@@ -110,7 +115,7 @@ fun DuolingoApp(viewModel: AppViewModel = remember { AppViewModel() }) {
 private fun AppNavigation(screen: AppScreen, stats: UserStats, expanded: Boolean, navigate: (AppScreen) -> Unit) {
     Column(Modifier.width(if (expanded) 224.dp else 104.dp).fillMaxHeight().verticalScroll(rememberScrollState()).padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        Icon(Icons.Default.Star, null, tint = BrandRed, modifier = Modifier.size(40.dp))
+        PixelIcon(LearningSymbol.BOOK, Modifier.size(40.dp))
         Text(if (expanded) "Atelier\nd’apprentissage" else "Atelier", fontWeight = FontWeight.ExtraBold, fontSize = if (expanded) 20.sp else 16.sp)
         Spacer(Modifier.height(20.dp))
         NavigationChoice("Cours", Icons.Default.Home, screen == AppScreen.LEARNING_PATH, expanded) { navigate(AppScreen.LEARNING_PATH) }
@@ -118,8 +123,9 @@ private fun AppNavigation(screen: AppScreen, stats: UserStats, expanded: Boolean
         Spacer(Modifier.height(32.dp))
         if (expanded) {
             Text("À petits pas,\nchaque jour.", fontSize = 20.sp, fontWeight = FontWeight.Bold)
-            Text("${stats.completedLessonIds.size} leçons terminées", color = Graphite)
-            Text("${stats.xp} XP accumulés", color = Graphite)
+            SymbolValue(LearningSymbol.COMPLETED, "${stats.completedLessonIds.size} leçons terminées")
+            SymbolValue(LearningSymbol.XP, "${stats.xp} XP accumulés")
+            VoxelBookshelf()
         }
     }
 }
@@ -152,9 +158,9 @@ fun TopStatsHeader(stats: UserStats, subjects: List<Subject>, selectedSubject: S
                         subjects.forEach { subject -> DropdownMenuItem({ onSelectSubject(subject.id); expanded = false }, Modifier.heightIn(min = 48.dp)) { Text(subject.title) } }
                     }
                 }
-                if (!compact) { Spacer(Modifier.width(24.dp)); Text("${stats.xp} XP  ·  ${stats.hearts}/${stats.maxHearts} vies", fontWeight = FontWeight.Bold) }
+                if (!compact) { Spacer(Modifier.width(24.dp)); StatsStrip(stats) }
             }
-            if (compact) Text("${stats.xp} XP  ·  ${stats.hearts}/${stats.maxHearts} vies", color = Graphite, modifier = Modifier.padding(start = 16.dp, bottom = 4.dp))
+            if (compact) StatsStrip(stats)
         }
     }
 }
@@ -169,8 +175,18 @@ fun BottomNavigationBar(currentScreen: AppScreen, onNavigate: (AppScreen) -> Uni
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun LearningPathScreen(subject: Subject, completedLessonIds: Set<String>, onStartLesson: (Lesson) -> Unit, selectedUnitId: String?, onSelectUnit: (String) -> Unit) {
+private fun StatsStrip(stats: UserStats) {
+    FlowRow(horizontalArrangement = Arrangement.spacedBy(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        SymbolValue(LearningSymbol.FLAME, "${stats.streakDays} j")
+        SymbolValue(LearningSymbol.XP, "${stats.xp} XP")
+        SymbolValue(LearningSymbol.HEART, "${stats.hearts}/${stats.maxHearts}")
+    }
+}
+
+@Composable
+fun LearningPathScreen(subject: Subject, completedLessonIds: Set<String>, onStartLesson: (Lesson) -> Unit, selectedUnitId: String?, onOpenCourse: () -> Unit = {}, onSelectUnit: (String) -> Unit) {
     val lessons = subject.units.flatMap { it.lessons }
     val completed = completedLessonIds + lessons.filter { it.isCompleted }.map { it.id }
     val lockedIds = lessons.filterNot { subject.isLessonUnlocked(it, completed) }.map { it.id }.toSet()
@@ -195,6 +211,9 @@ fun LearningPathScreen(subject: Subject, completedLessonIds: Set<String>, onStar
                 if (unit == null) item { EmptyLearningState("Aucune leçon", "Ce cours ne contient pas encore de leçon.") }
                 else {
                     item { CourseOverview(unit, completed) }
+                    item { OutlinedButton(onOpenCourse, Modifier.fillMaxWidth().heightIn(min = 48.dp), shape = LearningShape) {
+                        PixelIcon(LearningSymbol.BOOK, description = null); Spacer(Modifier.width(10.dp)); Text("Lire le cours et les supports")
+                    } }
                     val next = unit.lessons.firstOrNull { it.id !in completed && it.id !in lockedIds }
                     if (next != null) item { LearningButton("Continuer · ${next.title}", { onStartLesson(next.copy(isLocked = false)) }, Modifier.fillMaxWidth()) }
                     item { Text("Les leçons", fontSize = 20.sp, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() }) }

@@ -23,6 +23,8 @@ les leçons, corrections et documents audio sont intégrés.
 - Redimensionner la fenêtre et utiliser Tab puis Entrée pour les contrôles.
 - Dans les ateliers TCF, essayer l'écoute, la saisie et, si un microphone est
   disponible, l'enregistrement puis sa réécoute.
+- Ouvrir « Lire le cours et les supports » : consulter une section via le
+  sommaire, puis un support PDF avec une connexion Internet et ses pages/zoom.
 
 L'exécution réelle du microphone, les réglages audio et le comportement du
 gestionnaire de fenêtres restent distincts des tests Compose hors écran.
@@ -49,7 +51,8 @@ $processus.ExitCode
 Get-Content -LiteralPath $rapport
 ```
 
-Le code de sortie attendu est `0`. Ce mode vérifie le catalogue et lit les
-ressources audio intégrées. Il n'ouvre pas l'interface et n'accède pas à la
+Le code de sortie attendu est `0`. Ce mode vérifie le catalogue, lit les
+ressources audio intégrées et exerce les moteurs LaTeX/PDF avec des documents
+originaux en mémoire. Il n'ouvre pas l'interface et n'accède pas à la
 progression personnelle. Il refuse de remplacer un rapport existant. Il ne
 vérifie ni les périphériques audio ni l'apparence d'une fenêtre réelle.

@@ -26,6 +26,8 @@ import com.duolingo.app.model.SubjectCategory
 import com.duolingo.app.model.UserStats
 import com.duolingo.app.storage.ProgressStore
 import com.duolingo.app.viewmodel.AppViewModel
+import com.duolingo.app.ui.math.MathRenderingProvider
+import com.duolingo.app.ui.math.DesktopMathRenderer
 import kotlinx.serialization.json.Json
 import org.jetbrains.skia.Image
 import java.io.File
@@ -44,6 +46,73 @@ import kotlin.test.assertTrue
  * Requires ui-test:1.9.3 and the project's existing kotlin-test-junit dependency.
  */
 class LearningUiTest {
+    @Test
+    fun publishedWindowsCatalogueAndMatrixExerciseRenderWithTheirActualContent() = runDesktopComposeUiTest(width = 1400, height = 900, testTimeout = 60.seconds) {
+        val model = AppViewModel(MemoryProgressStore(), today = { "2026-10-20" })
+        try {
+            setContent { FixtureTheme { DuolingoApp(model) } }
+            onNodeWithText("Mes cours").assertIsDisplayed()
+            onNodeWithContentDescription("Série de jours").assertExists()
+            onNodeWithContentDescription("Vies restantes").assertExists()
+            saveSnapshot("published-catalogue-wide")
+            val linear = model.subjects.value.flatMap { it.units }.first { it.id == "mit_18_06sc_2011" }
+            runOnIdle { model.startLesson(linear.lessons.first()) }
+            onNodeWithText("Passer aux exercices").performClick()
+            val first = linear.lessons.first().exercises.first() as Exercise.MathChallenge
+            onNodeWithText(first.options[first.correctOptionIndex]).performScrollTo().performClick()
+            onNodeWithText("Vérifier ma réponse").performClick()
+            onNodeWithText("Continuer").performClick()
+            onNodeWithText(linear.lessons.first().exercises[1].prompt).assertExists()
+            saveSnapshot("published-matrix-exercise-wide")
+        } finally { model.close() }
+    }
+
+    @Test
+    fun theCourseReaderShowsLockedSectionsWithoutAwardingProgress() = runDesktopComposeUiTest(width = 1400, height = 900, testTimeout = 60.seconds) {
+        val first = quizLesson()
+        val locked = first.copy(id = "locked", title = "Section encore verrouillée", requiresPreviousLesson = true,
+            learningNotes = "Le texte de cette seconde section reste lisible avant de réussir la première.")
+        val fixture = Fixture(listOf(first, locked))
+        try {
+            setContent { FixtureTheme { DuolingoApp(fixture.model) } }
+            onNodeWithText("Lire le cours et les supports").performScrollTo().performClick()
+            onNodeWithText("Cours et supports").assertIsDisplayed()
+            onNodeWithText("Sommaire").performClick()
+            onNodeWithText("2. ${locked.title}").performClick()
+            onNodeWithText(locked.learningNotes).assertIsDisplayed()
+            onNodeWithText("Pratiquer · ${locked.title}").assertIsNotEnabled()
+            saveSnapshot("course-reader-wide")
+            onNodeWithContentDescription("Fermer le cours").performClick()
+            onNodeWithText("Mes cours").assertIsDisplayed()
+            runOnIdle {
+                assertEquals(0, fixture.model.userStats.value.xp)
+                assertTrue(fixture.model.userStats.value.completedLessonIds.isEmpty())
+            }
+        } finally { fixture.model.close() }
+    }
+
+    @Test
+    fun objectivePrecedesQuestionAndExplanationHasItsOwnButton() = runDesktopComposeUiTest(width = 1400, height = 900, testTimeout = 60.seconds) {
+        val lesson = quizLesson()
+        val fixture = Fixture(listOf(lesson))
+        try {
+            fixture.model.startLesson(lesson)
+            setContent { FixtureTheme { LessonQuizScreen(fixture.model) } }
+            onNodeWithText("Passer aux exercices").performClick()
+            val objective = onNodeWithText("Objectif : ${lesson.objective}").fetchSemanticsNode().boundsInRoot
+            val question = onNodeWithText(PROMPT).fetchSemanticsNode().boundsInRoot
+            val option = onNodeWithText("Trois").fetchSemanticsNode().boundsInRoot
+            assertTrue(objective.bottom <= question.top)
+            assertTrue(question.bottom <= option.top)
+            onNodeWithText("Quatre").performClick()
+            onNodeWithText("Vérifier ma réponse").performClick()
+            onNodeWithText(lesson.exercises.first().explanation).assertDoesNotExist()
+            onNodeWithText("Pourquoi cette réponse ?").performScrollTo().performClick()
+            onNodeWithText(lesson.exercises.first().explanation).assertExists()
+            saveSnapshot("question-feedback-wide")
+        } finally { fixture.model.close() }
+    }
+
     @Test
     fun theChosenPublishedCourseSurvivesModelRecreation() = runDesktopComposeUiTest(width = 1400, height = 900, testTimeout = 60.seconds) {
         val store = MemoryProgressStore()
@@ -165,8 +234,8 @@ class LearningUiTest {
 
         onNodeWithText("Trois").performScrollTo().performClick()
         onNodeWithText("Vérifier ma réponse").performClick()
-        onNodeWithText("À corriger · consulte l’explication puis réessaie").assertIsDisplayed()
-        onNodeWithText("Continuer").assertDoesNotExist()
+        onNodeWithText("Cette question reviendra en fin de séance").assertIsDisplayed()
+        onNodeWithText("Continuer").assertIsEnabled()
         onNodeWithText("Quatre").assertIsNotEnabled()
         runOnIdle {
             assertEquals(0, model.userStats.value.xp)
@@ -174,7 +243,8 @@ class LearningUiTest {
             assertTrue(model.userStats.value.completedLessonIds.isEmpty())
         }
 
-        onNodeWithText("Réessayer").performClick()
+        onNodeWithText("Continuer").performClick()
+        onNodeWithText("Reprise des erreurs · 1 à corriger").assertIsDisplayed()
         onNodeWithText("Vérifier ma réponse").assertIsNotEnabled()
         onNodeWithText("Quatre").performScrollTo().performClick()
         onNodeWithText("Vérifier ma réponse").performClick()
@@ -254,6 +324,7 @@ class LearningUiTest {
             onNodeWithText("Neuf heures").performScrollTo().performClick()
             onNodeWithText("Vérifier ma réponse").performClick()
             onNodeWithText("Bonne réponse").assertIsDisplayed()
+            onNodeWithText("Pourquoi cette réponse ?").performScrollTo().performClick()
             onNodeWithText(reading.explanation).assertExists()
             onNodeWithText("Continuer").performClick()
             onNodeWithText("Une leçon de plus !").assertIsDisplayed()
@@ -413,7 +484,7 @@ class LearningUiTest {
 @Composable
 private fun FixtureTheme(content: @Composable () -> Unit) {
     CompositionLocalProvider(LocalUriHandler provides TestUriHandler) {
-        LearningAppTheme { content() }
+        LearningAppTheme { MathRenderingProvider(DesktopMathRenderer) { content() } }
     }
 }
 

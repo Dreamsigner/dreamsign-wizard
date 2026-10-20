@@ -44,6 +44,8 @@ jobs:
           Invoke-PythonCheck tools/check_numerical_methods.py
           Invoke-PythonCheck tools/check_formal_logic.py
           Invoke-PythonCheck tools/check_algorithmic_game_theory.py
+          Invoke-PythonCheck tools/validate_course_resources.py
+          Invoke-PythonCheck tools/export_course_notes.py --check
           Invoke-PythonCheck tools/validate_curriculum.py --generate
           git diff --exit-code -- composeApp/src/commonMain/kotlin/com/duolingo/app/data/generated/ docs/curriculum/AUTHORED-COVERAGE.md
           if ($LASTEXITCODE -ne 0) { throw 'Generated catalogue is stale.' }
@@ -62,6 +64,10 @@ jobs:
           $ErrorActionPreference = 'Stop'
           $launcher = Get-ChildItem 'composeApp/build/compose/binaries' -Filter 'DuolingoKmpApp.exe' -File -Recurse | Select-Object -First 1
           if (-not $launcher) { throw 'Windows app launcher was not produced.' }
+          $runtimeRelease = Join-Path $launcher.Directory.FullName 'runtime/release'
+          if (-not (Select-String -LiteralPath $runtimeRelease -SimpleMatch 'jdk.unsupported' -Quiet)) { throw 'PDFBox runtime module is missing.' }
+          Get-ChildItem -LiteralPath 'docs/licences' -Filter '*.txt' -File | ForEach-Object { Copy-Item -LiteralPath $_.FullName -Destination (Join-Path $launcher.Directory.FullName $_.Name) }
+          Copy-Item -LiteralPath 'docs/windows-testing.md' -Destination (Join-Path $launcher.Directory.FullName 'LISEZ-MOI.md')
           python tools/verify_bundled_audio.py --desktop-dir $launcher.Directory.FullName
           if ($LASTEXITCODE -ne 0) { throw 'Bundled audio verification failed.' }
           $taskReport = Join-Path $PWD 'composeApp/build/reports/installation-check.json'
@@ -73,6 +79,7 @@ jobs:
           if ($checkProcess.ExitCode -ne 0 -or -not (Test-Path -LiteralPath $taskReport)) { throw 'The packaged installation check failed.' }
           $checks = Get-Content -Raw -LiteralPath $taskReport | ConvertFrom-Json
           if ($checks.courses -lt 1 -or $checks.lessons -lt 1 -or $checks.exercises -lt 1 -or $checks.uiStarted -ne $false -or $checks.userDataAccessed -ne $false) { throw 'Invalid installation report.' }
+          if ($checks.mathRenderingVerified -ne $true -or $checks.pdfRenderingVerified -ne $true) { throw 'The distributed document engines failed verification.' }
           Compress-Archive -Path (Join-Path $launcher.Directory.FullName '*') -DestinationPath (Join-Path $env:RUNNER_TEMP 'DuolingoKmpApp-Windows.zip')
       - uses: actions/upload-artifact@v7
         with:
@@ -86,6 +93,7 @@ jobs:
           name: Windows-checks
           path: |
             composeApp/build/reports/tests/
+            composeApp/build/test-results/desktopTest/
             composeApp/build/reports/ui-snapshots/
             composeApp/build/reports/installation-check.json
           retention-days: 14

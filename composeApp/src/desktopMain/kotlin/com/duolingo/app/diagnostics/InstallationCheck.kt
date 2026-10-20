@@ -20,6 +20,8 @@ internal data class InstallationCheckReport(
     val lessons: Int,
     val exercises: Int,
     val audioSha256: Map<String, String>,
+    val mathRenderingVerified: Boolean = false,
+    val pdfRenderingVerified: Boolean = false,
     val uiStarted: Boolean = false,
     val userDataAccessed: Boolean = false
 )

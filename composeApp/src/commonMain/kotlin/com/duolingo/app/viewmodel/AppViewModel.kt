@@ -14,7 +14,7 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-enum class AppScreen { LEARNING_PATH, LESSON_QUIZ, PROFILE }
+enum class AppScreen { LEARNING_PATH, LESSON_QUIZ, COURSE_READER, PROFILE }
 
 class AppViewModel(
     private val progressStore: ProgressStore = createProgressStore(),
@@ -47,6 +47,10 @@ class AppViewModel(
     val activeLesson: StateFlow<Lesson?> = _activeLesson.asStateFlow()
     private val _currentExerciseIndex = MutableStateFlow(0)
     val currentExerciseIndex: StateFlow<Int> = _currentExerciseIndex.asStateFlow()
+    private val _reviewQuestionIndices = MutableStateFlow<List<Int>>(emptyList())
+    val reviewQuestionIndices: StateFlow<List<Int>> = _reviewQuestionIndices.asStateFlow()
+    private val _isReviewRound = MutableStateFlow(false)
+    val isReviewRound: StateFlow<Boolean> = _isReviewRound.asStateFlow()
     private val _selectedOptionIndex = MutableStateFlow<Int?>(null)
     val selectedOptionIndex: StateFlow<Int?> = _selectedOptionIndex.asStateFlow()
     private val _selectedTokenSequence = MutableStateFlow<List<String>>(emptyList())
@@ -216,6 +220,8 @@ class AppViewModel(
         _heardAudioPaths.value = emptySet()
         _transcriptModePaths.value = emptySet()
         _currentExerciseIndex.value = 0
+        _reviewQuestionIndices.value = emptyList()
+        _isReviewRound.value = false
         _lastAwardedXp.value = 0
         _isLessonCompleted.value = false
         resetAnswer()
@@ -274,6 +280,13 @@ class AppViewModel(
         }
         _isAnswerCorrect.value = correct
         _isAnswerChecked.value = true
+        val current = _currentExerciseIndex.value
+        if (!correct) {
+            // Move a repeated mistake behind the remaining mistakes; preserve first-pass order.
+            _reviewQuestionIndices.value = _reviewQuestionIndices.value.filterNot { it == current } + current
+        } else {
+            _reviewQuestionIndices.value = _reviewQuestionIndices.value.filterNot { it == current }
+        }
         if (!correct) {
             _userStats.value = _userStats.value.copy(hearts = (_userStats.value.hearts - 1).coerceAtLeast(0))
             persist()
@@ -298,12 +311,20 @@ class AppViewModel(
 
     fun nextExercise() {
         val lesson = _activeLesson.value ?: return
-        if (_isLessonCompleted.value || !_isAnswerChecked.value || !_isAnswerCorrect.value) return
-        if (_currentExerciseIndex.value + 1 < lesson.exercises.size) {
+        if (_isLessonCompleted.value || !_isAnswerChecked.value) return
+        if (!_isReviewRound.value && _currentExerciseIndex.value + 1 < lesson.exercises.size) {
             _currentExerciseIndex.value += 1
             resetAnswer()
             return
         }
+        if (_reviewQuestionIndices.value.isNotEmpty()) {
+            _isReviewRound.value = true
+            _currentExerciseIndex.value = _reviewQuestionIndices.value.first()
+            resetAnswer()
+            return
+        }
+        // Only a correct last answer with no pending errors can complete a lesson.
+        if (!_isAnswerCorrect.value) return
         val stats = _userStats.value
         val awarded = if (lesson.id in stats.completedLessonIds || lesson.isCompleted) 0 else lesson.xpReward.coerceAtLeast(0)
         val studyDate = today()

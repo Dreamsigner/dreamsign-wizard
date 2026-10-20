@@ -80,6 +80,33 @@ avec délai maximal de 60 secondes. Elle archive `installation-check.json` dans
 Cela vérifie le démarrage du lanceur et la résolution des ressources; les vrais
 écrans sont vérifiés séparément par les tests Compose hors écran.
 
+## Retours d’usage : cours et documents
+
+Les régressions ajoutées couvrent la file de questions ratées, la rotation des
+erreurs répétées, le retrait après une correction immédiate, l’écoute conservée
+durant la reprise, l’ordre OSSU et les références de chaque exercice. Les tests
+Compose vérifient l’objectif au-dessus de la question, le bouton d’explication,
+la lecture de sections verrouillées sans XP et le rendu du véritable catalogue.
+Le lecteur PDF utilise des documents originaux générés en mémoire dans les tests :
+chargement, erreur/réessai, pages, zoom et fermeture des sessions sont contrôlés.
+
+Un test réseau distinct s’exécute uniquement sur demande :
+
+```powershell
+gradle :composeApp:sourcePdfSmokeTest
+```
+
+Ce test télécharge un support officiel MIT 18.06SC et l’ouvre avec le lecteur
+de production, puis rend une page. Il est exclu de `desktopTest` pour que la
+suite ordinaire ne dépende pas de la disponibilité d’un serveur tiers. Le run
+local du 21 octobre 2026 a ouvert un PDF de quatre pages et rendu la première
+en 1000 × 1294 pixels. Cela ne vérifie pas tous les PDF de l’index.
+
+Le diagnostic du véritable `.exe` distribué teste aussi les moteurs LaTeX et
+PDF sur du matériel original en mémoire : il expose `mathRenderingVerified`
+et `pdfRenderingVerified`, exigés par la CI, sans ouvrir de fenêtre ni stockage
+de progression. Les artefacts incluent maintenant les XML JUnit en plus du HTML.
+
 ## Limites des preuves
 
 Un test média simulé ne prouve pas la qualité sonore, l'autorisation système,

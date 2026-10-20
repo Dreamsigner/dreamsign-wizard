@@ -24,10 +24,10 @@ fun ProfileScreen(stats: UserStats, persistenceStatus: String = "État de la sau
             Text("Les petits progrès font les grandes habitudes.", color = Graphite, fontSize = 16.sp)
             Surface(color = White, shape = LearningShape) {
                 FlowRow(Modifier.fillMaxWidth().padding(24.dp), horizontalArrangement = Arrangement.spacedBy(32.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
-                    StatCard("", "Leçons terminées", "${stats.completedLessonIds.size}", Ink)
-                    StatCard("", "XP accumulés", "${stats.xp}", Ink)
-                    StatCard("", "Jours de série", "${stats.streakDays}", Ink)
-                    StatCard("", "Vies restantes", "${stats.hearts}/${stats.maxHearts}", ActionRed)
+                    StatCard(LearningSymbol.COMPLETED, "Leçons terminées", "${stats.completedLessonIds.size}", Ink)
+                    StatCard(LearningSymbol.XP, "XP accumulés", "${stats.xp}", Ink)
+                    StatCard(LearningSymbol.FLAME, "Jours de série", "${stats.streakDays}", Ink)
+                    StatCard(LearningSymbol.HEART, "Vies restantes", "${stats.hearts}/${stats.maxHearts}", ActionRed)
                 }
             }
             Surface(color = White, shape = LearningShape) {
@@ -44,8 +44,9 @@ fun ProfileScreen(stats: UserStats, persistenceStatus: String = "État de la sau
 }
 
 @Composable
-fun StatCard(icon: String, title: String, value: String, color: Color) {
+fun StatCard(icon: LearningSymbol, title: String, value: String, color: Color) {
     Column(Modifier.widthIn(min = 120.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        PixelIcon(icon)
         Text(title, color = Graphite, fontSize = 14.sp)
         Text(value, color = color, fontSize = 32.sp)
     }

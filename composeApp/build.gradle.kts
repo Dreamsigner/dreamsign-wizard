@@ -74,6 +74,13 @@ kotlin {
         val desktopMain by getting {
             dependencies {
                 implementation(compose.desktop.currentOs)
+                implementation("org.apache.pdfbox:pdfbox:3.0.8")
+                implementation("org.scilab.forge:jlatexmath:1.0.7") {
+                    // The core math glyphs (including \alpha and \sum) work without these
+                    // optional language-font modules; do not bundle their extra font sets.
+                    exclude(group = "org.scilab.forge", module = "jlatexmath-font-greek")
+                    exclude(group = "org.scilab.forge", module = "jlatexmath-font-cyrillic")
+                }
             }
         }
     }
@@ -107,10 +114,25 @@ tasks.withType<org.gradle.api.tasks.testing.Test>().configureEach {
     systemProperty("java.awt.headless", "true")
 }
 
+val desktopTestTask = tasks.named<org.gradle.api.tasks.testing.Test>("desktopTest") {
+    exclude("**/SourcePdfSmokeTest.class")
+}
+tasks.register<org.gradle.api.tasks.testing.Test>("sourcePdfSmokeTest") {
+    description = "Opt-in network check of an official MIT PDF with the production desktop reader."
+    group = "verification"
+    dependsOn("desktopTestClasses")
+    testClassesDirs = desktopTestTask.get().testClassesDirs
+    classpath = desktopTestTask.get().classpath
+    filter.includeTestsMatching("com.duolingo.app.ui.pdf.SourcePdfSmokeTest")
+}
+
 compose.desktop {
     application {
         mainClass = "MainKt"
         nativeDistributions {
+            // PDFBox 3 uses sun.misc.Unsafe.invokeCleaner via this module. The reduced
+            // jlink runtime otherwise falls back to inaccessible Java 8 internals.
+            modules("jdk.unsupported")
             targetFormats(org.jetbrains.compose.desktop.application.dsl.TargetFormat.Msi, org.jetbrains.compose.desktop.application.dsl.TargetFormat.Exe)
             packageName = "DuolingoKmpApp"
             packageVersion = "1.0.0"
