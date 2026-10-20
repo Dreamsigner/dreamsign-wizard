@@ -1,0 +1,14 @@
+{
+  "courseCode": "TCF Canada · atelier écrit",
+  "edition": "Préparation originale 2026 · format FEI",
+  "sourceUrl": "https://www.france-education-international.fr/test/tcf-canada",
+  "sequenceType": "original_practice_formats",
+  "notice": "Trois formats officiels servent de référence à trois ateliers originaux ; ce découpage ne constitue pas un programme officiel ni une banque complète TCF.",
+  "checkedOn": "2026-10-20",
+  "sessionCount": 3,
+  "sessions": [
+    {"number": 1, "sourceTitle": "Expression écrite — Tâche 1", "sourceUrl": "https://www.france-education-international.fr/test/tcf-canada", "kind": "practice"},
+    {"number": 2, "sourceTitle": "Expression écrite — Tâche 2", "sourceUrl": "https://www.france-education-international.fr/test/tcf-canada", "kind": "practice"},
+    {"number": 3, "sourceTitle": "Expression écrite — Tâche 3", "sourceUrl": "https://www.france-education-international.fr/test/tcf-canada", "kind": "practice"}
+  ]
+}

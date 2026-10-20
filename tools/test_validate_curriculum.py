@@ -57,6 +57,17 @@ class CurriculumValidationTest(unittest.TestCase):
         self.assertIn('\\n', value)
         self.assertIn('\\"', value)
 
+    def test_written_practice_requires_a_real_in_range_example_and_rubric(self):
+        exercise = self.course["lessons"][0]["exercises"][0]
+        exercise.update(type="written", minWords=3, maxWords=5,
+                        exampleResponse="Un texte personnel.", reviewCriteria=["J’ai relu."])
+        self.assertEqual([], validate_course(self.course, self.manifest))
+        exercise["exampleResponse"] = "Trop court"
+        self.assertTrue(any("word limits" in error for error in validate_course(self.course, self.manifest)))
+        exercise["exampleResponse"] = "Un texte personnel."
+        exercise["reviewCriteria"] = []
+        self.assertTrue(any("review criteria" in error for error in validate_course(self.course, self.manifest)))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -55,6 +55,7 @@ fun LearningButton(text: String, onClick: () -> Unit, modifier: Modifier = Modif
 
 @Composable
 fun DuolingoApp(viewModel: AppViewModel = remember { AppViewModel() }) {
+    DisposableEffect(viewModel) { onDispose { viewModel.close() } }
     val screen by viewModel.currentScreen.collectAsState()
     val stats by viewModel.userStats.collectAsState()
     val subjects by viewModel.subjects.collectAsState()

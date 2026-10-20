@@ -1,0 +1,81 @@
+{
+  "courseCode": "MIT Missing Semester",
+  "edition": "2026",
+  "sourceUrl": "https://missing.csail.mit.edu/2026/",
+  "checkedOn": "2026-10-19",
+  "sessionCount": 9,
+  "sessions": [
+    {
+      "number": 1,
+      "sourceTitle": "Course Overview + Introduction to the Shell",
+      "sourceUrl": "https://missing.csail.mit.edu/2026/course-shell/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceDate": "2026-01-12"
+    },
+    {
+      "number": 2,
+      "sourceTitle": "Command-line Environment",
+      "sourceUrl": "https://missing.csail.mit.edu/2026/command-line-environment/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceDate": "2026-01-13"
+    },
+    {
+      "number": 3,
+      "sourceTitle": "Development Environment and Tools",
+      "sourceUrl": "https://missing.csail.mit.edu/2026/development-environment/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceDate": "2026-01-14"
+    },
+    {
+      "number": 4,
+      "sourceTitle": "Debugging and Profiling",
+      "sourceUrl": "https://missing.csail.mit.edu/2026/debugging-profiling/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceDate": "2026-01-15"
+    },
+    {
+      "number": 5,
+      "sourceTitle": "Version Control and Git",
+      "sourceUrl": "https://missing.csail.mit.edu/2026/version-control/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceDate": "2026-01-16"
+    },
+    {
+      "number": 6,
+      "sourceTitle": "Packaging and Shipping Code",
+      "sourceUrl": "https://missing.csail.mit.edu/2026/shipping-code/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceDate": "2026-01-20"
+    },
+    {
+      "number": 7,
+      "sourceTitle": "Agentic Coding",
+      "sourceUrl": "https://missing.csail.mit.edu/2026/agentic-coding/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceDate": "2026-01-21"
+    },
+    {
+      "number": 8,
+      "sourceTitle": "Beyond the Code",
+      "sourceUrl": "https://missing.csail.mit.edu/2026/beyond-code/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceDate": "2026-01-22"
+    },
+    {
+      "number": 9,
+      "sourceTitle": "Code Quality",
+      "sourceUrl": "https://missing.csail.mit.edu/2026/code-quality/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceDate": "2026-01-23"
+    }
+  ]
+}

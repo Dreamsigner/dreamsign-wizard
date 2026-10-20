@@ -62,6 +62,19 @@ sealed class Exercise {
     abstract val explanation: String
     abstract val hint: String
 
+    /** Guided practice completed by a learner's explicit review, never an official language score. */
+    @Serializable
+    data class WrittenProduction(
+        override val id: String,
+        override val prompt: String,
+        val minWords: Int,
+        val maxWords: Int,
+        val reviewCriteria: List<String>,
+        val exampleResponse: String,
+        override val explanation: String,
+        override val hint: String
+    ) : Exercise()
+
     @Serializable
     data class MultipleChoice(
         override val id: String,
@@ -123,5 +136,6 @@ data class UserStats(
     val maxHearts: Int = 5,
     val completedLessonIds: Set<String> = emptySet(),
     val activeSubjectId: String = "math_vectors",
-    val lastStudyDate: String? = null
+    val lastStudyDate: String? = null,
+    val writtenDrafts: Map<String, String> = emptyMap()
 )

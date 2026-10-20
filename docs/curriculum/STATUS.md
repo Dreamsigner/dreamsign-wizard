@@ -33,9 +33,24 @@ La provenance et les limites de vérification mathématique figurent dans
 `mit-18-01sc-authoring-notes.md`. Les examens sont des entraînements adaptés,
 sans prétention de reproduire le barème MIT ou tous ses problèmes ouverts.
 
-Les 16 exemples d’informatique et l’exemple de français restent provisoires.
-Ils ne satisfont pas encore la demande pour ces catégories. Aucun décompte
-de cours achevés n’est déduit des seules pages d’accueil de l’inventaire OSSU.
+The Missing Semester 2026 est rédigé et intégré : neuf conférences officielles,
+51 exercices. Les pages de matière et les scénarios de shell ont été vérifiés :
+voir `missing-semester-authoring-notes.md`. L’ancien échantillon informatique
+est remplacé dans le catalogue affiché, avec de nouveaux identifiants.
+
+TCF : trois ateliers originaux d’expression écrite sont intégrés, avec saisie
+et brouillon persistant, exemples rédigés et relecture explicite. Ce découpage
+local correspond aux trois formats FEI ; il ne prétend pas être un programme
+officiel ou une préparation complète. Voir `tcf-writing-authoring-notes.md`.
+L’écoute, la production orale et le reste de la préparation restent requis.
+
+MIT 18.06SC Fall 2011 est rédigé et intégré : 40 séances (32 cours, quatre
+révisions, quatre examens adaptés), 131 exercices et 83 contrôles exacts
+SymPy liés aux réponses du fichier publié. Voir la note de provenance associée.
+
+Total actuellement rédigé : 154 leçons/ateliers et 421 exercices, dont
+151 séances universitaires et trois ateliers TCF. Aucun décompte de cours
+achevés n’est déduit des seules pages d’accueil de l’inventaire OSSU.
 
 Le manifeste 18.01SC conserve le statut `not_authored` de la collecte initiale :
 il constitue une trace source figée. Le contenu rédigé se trouve dans

@@ -25,6 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.duolingo.app.model.Exercise
 import com.duolingo.app.model.Lesson
+import com.duolingo.app.model.practiceWordCount
+import com.duolingo.app.model.canFinishPractice
 import com.duolingo.app.viewmodel.AppScreen
 import com.duolingo.app.viewmodel.AppViewModel
 
@@ -40,6 +42,8 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
     val completed by viewModel.isLessonCompleted.collectAsState()
     val stats by viewModel.userStats.collectAsState()
     val awardedXp by viewModel.lastAwardedXp.collectAsState()
+    val reviewedCriteria by viewModel.reviewedCriteria.collectAsState()
+    val persistenceStatus by viewModel.persistenceStatus.collectAsState()
     val lesson = activeLesson
     if (lesson == null) {
         Column { EmptyLearningState("Choisis une leçon", "Aucune leçon n’est ouverte."); LearningButton("Retour aux cours", { viewModel.navigateTo(AppScreen.LEARNING_PATH) }) }
@@ -52,6 +56,8 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
     val exercise = lesson.exercises.getOrNull(index)
     val questionScrollState = key(lesson.id, showNotes, index) { rememberScrollState() }
     val unsupported = exercise is Exercise.MatchingPairs
+    val written = exercise as? Exercise.WrittenProduction
+    val writtenResponse = written?.let { stats.writtenDrafts[it.id] }.orEmpty()
     Scaffold(backgroundColor = Paper,
         topBar = {
             Surface(color = White) {
@@ -76,6 +82,7 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
                         exercise == null || unsupported -> LearningButton("Retour aux cours", exit, Modifier.widthIn(max = 760.dp).fillMaxWidth())
                         checked && !correct -> LearningButton("Réessayer", viewModel::retryExercise, Modifier.widthIn(max = 760.dp).fillMaxWidth())
                         checked -> LearningButton("Continuer", viewModel::nextExercise, Modifier.widthIn(max = 760.dp).fillMaxWidth())
+                        written != null -> LearningButton("Terminer ma relecture", viewModel::checkAnswer, Modifier.widthIn(max = 760.dp).fillMaxWidth(), written.canFinishPractice(writtenResponse, reviewedCriteria))
                         else -> LearningButton("Vérifier ma réponse", viewModel::checkAnswer, Modifier.widthIn(max = 760.dp).fillMaxWidth(), selectedOption != null || selectedTokens.isNotEmpty())
                     }
                 }
@@ -91,6 +98,7 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
                         Text(exercise.prompt, fontSize = 26.sp, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
                         if (lesson.objective.isNotBlank()) Text("Objectif : ${lesson.objective}", color = Graphite)
                         when (exercise) {
+                            is Exercise.WrittenProduction -> WrittenProductionPractice(exercise, writtenResponse, reviewedCriteria, checked, persistenceStatus, viewModel::updateWrittenResponse, viewModel::toggleReviewCriterion)
                             is Exercise.CodeChallenge -> {
                                 Surface(color = Ink, shape = LearningShape) {
                                     Text(exercise.codeSnippet, Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(20.dp), color = White, fontFamily = FontFamily.Monospace, fontSize = 16.sp)
@@ -117,7 +125,7 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
                         }
                         if (checked) Surface(color = White, shape = LearningShape, modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite }) {
                             Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                                Text(if (correct) "Bien joué !" else "À retenir", color = if (correct) Ink else ActionRed, fontWeight = FontWeight.Bold, fontSize = 22.sp)
+                                Text(if (written != null) "Relecture terminée" else if (correct) "Bien joué !" else "À retenir", color = if (correct) Ink else ActionRed, fontWeight = FontWeight.Bold, fontSize = 22.sp)
                                 Text(exercise.explanation, fontSize = 16.sp)
                                 Text("${stats.hearts}/${stats.maxHearts} vies restantes", color = Graphite)
                             }
@@ -140,6 +148,41 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
         },
         confirmButton = { TextButton({ showHelp = false }, Modifier.heightIn(min = 48.dp)) { Text("Revenir à la leçon") } },
         shape = LearningShape, backgroundColor = White)
+}
+
+@Composable
+private fun WrittenProductionPractice(
+    exercise: Exercise.WrittenProduction, response: String, reviewed: Set<Int>, checked: Boolean, persistenceStatus: String,
+    updateResponse: (String) -> Unit, toggleCriterion: (Int) -> Unit
+) {
+    // Material value/onValueChange keeps editing state hoisted on the project's Compose 1.6 API.
+    // https://developer.android.com/develop/ui/compose/text/user-input#value-based
+    var showExample by remember(exercise.id) { mutableStateOf(false) }
+    val count = practiceWordCount(response)
+    Text("Atelier avec auto-évaluation. Aucun score officiel ni correction automatique de la langue.", color = Graphite)
+    OutlinedTextField(response, updateResponse, Modifier.fillMaxWidth().heightIn(min = 240.dp),
+        enabled = !checked, label = { Text("Ta production écrite") },
+        isError = count > exercise.maxWords,
+        colors = TextFieldDefaults.outlinedTextFieldColors(focusedBorderColor = Ink, cursorColor = Ink))
+    Text("$count mots · objectif ${exercise.minWords}–${exercise.maxWords}. Comptage indicatif par espaces.", color = if (count in exercise.minWords..exercise.maxWords) Ink else Graphite)
+    Text(persistenceStatus, color = if (persistenceStatus.contains("session")) ActionRed else Graphite)
+    Text("Une modification réinitialise la relecture.", color = Graphite)
+    Text("Relis ta réponse", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+    exercise.reviewCriteria.forEachIndexed { index, criterion ->
+        Row(Modifier.fillMaxWidth().heightIn(min = 48.dp), verticalAlignment = Alignment.CenterVertically) {
+            Checkbox(index in reviewed, if (checked) null else { _ -> toggleCriterion(index) }, Modifier.semantics { contentDescription = criterion })
+            Text(criterion, Modifier.weight(1f), fontSize = 16.sp)
+        }
+    }
+    TextButton({ showExample = !showExample }, Modifier.heightIn(min = 48.dp)) {
+        Text(if (showExample) "Masquer l’exemple" else "Comparer avec un exemple rédigé")
+    }
+    if (showExample || checked) Surface(color = White, shape = LearningShape) {
+        Column(Modifier.fillMaxWidth().padding(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Text("Un exemple possible, à comparer avec ton texte", fontWeight = FontWeight.Bold)
+            Text(exercise.exampleResponse, fontSize = 16.sp, lineHeight = 25.sp)
+        }
+    }
 }
 
 @Composable

@@ -28,7 +28,11 @@ jobs:
           python-version: '3.12'
       - name: Validate source coverage and generated curriculum
         run: |
-          python -m unittest discover -s tools -p 'test_validate_curriculum.py'
+          python -m pip install sympy==1.12
+          python -m unittest discover -s tools -p 'test_*.py'
+          python tools/check_calculus_math.py
+          python tools/check_linear_algebra_math.py
+          python tools/check_missing_semester_scenarios.py
           python tools/validate_curriculum.py --generate
           git diff --exit-code -- composeApp/src/commonMain/kotlin/com/duolingo/app/data/generated/
       - uses: actions/setup-java@v5

@@ -2,6 +2,7 @@
 
 Uses the Python standard library. Does not invent sessions or learning content.
 Run from the repository root: python tools/inventory_sources.py
+Writes discovery candidates only; reviewed inventories/manifests are preserved.
 """
 from concurrent.futures import ThreadPoolExecutor
 from datetime import date
@@ -146,10 +147,11 @@ def main():
         with ThreadPoolExecutor(max_workers=8) as pool:
             inventory = list(pool.map(discover, courses))
         payload = {"checkedOn": date.today().isoformat(), "sourceUrl": OSSU,
-                   "courseCount": len(inventory), "courses": inventory}
-        (OUT / "ossu-course-inventory.json").write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+                   "referenceCount": len(inventory), "courses": inventory}
+        # A fresh landing-page scan must never erase reviewed syllabi, alternatives or access notes.
+        (OUT / "ossu-course-discovery.json").write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     calculus = calculus_sessions()
-    (OUT / "mit-18-01sc-source-sessions.json").write_text(json.dumps(calculus, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (OUT / "mit-18-01sc-source-discovery.json").write_text(json.dumps(calculus, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"calculusSessions": calculus["sessionCount"]}))
 
 

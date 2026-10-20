@@ -8,6 +8,9 @@ import com.duolingo.app.storage.todayLocalDate
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.*
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -20,6 +23,9 @@ class AppViewModel(
 ) {
     private val json = Json { ignoreUnknownKeys = true; encodeDefaults = true }
     private var preserveUnreadableSave = false
+    private val saveScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+    private val saveMutex = Mutex()
+    private var pendingDraftSave: Job? = null
     private val _persistenceStatus = MutableStateFlow("Progression enregistrée sur cet appareil.")
     val persistenceStatus: StateFlow<String> = _persistenceStatus.asStateFlow()
     private val initialStats = loadProgress(catalogue)
@@ -53,6 +59,31 @@ class AppViewModel(
     val isLessonCompleted: StateFlow<Boolean> = _isLessonCompleted.asStateFlow()
     private val _lastAwardedXp = MutableStateFlow(0)
     val lastAwardedXp: StateFlow<Int> = _lastAwardedXp.asStateFlow()
+    private val _reviewedCriteria = MutableStateFlow<Set<Int>>(emptySet())
+    val reviewedCriteria: StateFlow<Set<Int>> = _reviewedCriteria.asStateFlow()
+
+    fun updateWrittenResponse(text: String) {
+        if (_isAnswerChecked.value || _isLessonCompleted.value || text.length > 12000) return
+        val exercise = currentExercise() as? Exercise.WrittenProduction ?: return
+        _userStats.value = _userStats.value.copy(writtenDrafts = _userStats.value.writtenDrafts + (exercise.id to text))
+        _reviewedCriteria.value = emptySet()
+        if (!preserveUnreadableSave) {
+            _persistenceStatus.value = "Brouillon modifié : enregistrement en cours…"
+            pendingDraftSave?.cancel()
+            pendingDraftSave = saveScope.launch {
+                delay(600)
+                writeProgress()
+            }
+        }
+    }
+
+    fun toggleReviewCriterion(index: Int) {
+        if (_isAnswerChecked.value || _isLessonCompleted.value) return
+        val exercise = currentExercise() as? Exercise.WrittenProduction ?: return
+        if (index !in exercise.reviewCriteria.indices) return
+        val current = _reviewedCriteria.value
+        _reviewedCriteria.value = if (index in current) current - index else current + index
+    }
 
     private fun loadProgress(catalogue: List<Subject>): UserStats {
         val fallback = UserStats(activeSubjectId = catalogue.firstOrNull()?.id.orEmpty())
@@ -76,7 +107,15 @@ class AppViewModel(
     }
 
     private fun persist() {
-        if (preserveUnreadableSave) return
+        pendingDraftSave?.cancel()
+        pendingDraftSave = null
+        runBlocking { writeProgress() }
+    }
+
+    // The mutex serializes debounced background saves and final navigation/close flushes.
+    // https://kotlinlang.org/docs/shared-mutable-state-and-concurrency.html#mutual-exclusion
+    private suspend fun writeProgress() = saveMutex.withLock {
+        if (preserveUnreadableSave) return@withLock
         try {
             // https://kotlinlang.org/docs/serialization.html
             progressStore.write(json.encodeToString(_userStats.value))
@@ -84,6 +123,12 @@ class AppViewModel(
         } catch (_: Exception) {
             _persistenceStatus.value = "Enregistrement indisponible : progression conservée pour cette session."
         }
+    }
+
+    /** Flush the last edit before the app's composition is disposed. */
+    fun close() {
+        persist()
+        saveScope.cancel()
     }
 
     fun selectSubject(subjectId: String) {
@@ -95,6 +140,7 @@ class AppViewModel(
 
     fun navigateTo(screen: AppScreen) {
         if (screen == AppScreen.LESSON_QUIZ && _activeLesson.value == null) return
+        if (pendingDraftSave != null) persist()
         _currentScreen.value = screen
     }
 
@@ -135,6 +181,11 @@ class AppViewModel(
     fun checkAnswer() {
         if (_isAnswerChecked.value || _isLessonCompleted.value) return
         val correct = when (val exercise = currentExercise()) {
+            is Exercise.WrittenProduction -> {
+                val text = _userStats.value.writtenDrafts[exercise.id].orEmpty()
+                if (!exercise.canFinishPractice(text, _reviewedCriteria.value)) return
+                true
+            }
             is Exercise.MultipleChoice -> (_selectedOptionIndex.value ?: return) == exercise.correctOptionIndex
             is Exercise.CodeChallenge -> (_selectedOptionIndex.value ?: return) == exercise.correctOptionIndex
             is Exercise.MathChallenge -> (_selectedOptionIndex.value ?: return) == exercise.correctOptionIndex
@@ -158,6 +209,7 @@ class AppViewModel(
     }
 
     private fun resetAnswer() {
+        _reviewedCriteria.value = emptySet()
         _selectedOptionIndex.value = null
         _selectedTokenSequence.value = emptyList()
         _isAnswerChecked.value = false

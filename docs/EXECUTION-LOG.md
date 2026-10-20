@@ -74,3 +74,39 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
 - The Missing Semester, édition 2026 : neuf séances officielles identifiées,
   rédaction en cours. Les autres cours OSSU et le TCF restent à compléter.
 - Les jobs Android/iOS nouvellement écrits ne sont pas encore prouvés sur CI.
+
+## Reprise après interruption de quota — 20 octobre
+
+- L’exécution et les sous-agents ont été interrompus par la limite d’utilisation.
+  Les modifications ont été conservées ; la finalisation n’a pas été annoncée.
+- Commit `d5425c4` poussé. Run GitHub Actions `39313889860` : Windows SUCCESS,
+  Android SUCCESS (APK, lint, tests et lancement émulateur), iOS compilation et
+  tests Kotlin réussis mais XCTest échoue à trouver les contrôles d’interface.
+  Capture iPhone extraite et inspectée : le contenu et les boutons sont visibles.
+  L’exposition de l’arborescence d’accessibilité Compose aux tests est corrigée
+  localement ; nouveau run requis, sans suppression des assertions.
+- Windows inspecté en 1266×833 et 400×833 : accueil, notes, deux réponses,
+  corrections, réussite +20 XP, déverrouillage et profil. Fichier réel de
+  progression retrouvé avec la première séance terminée. La navigation clavier
+  a été exercée ; l’arbre UI Automation Windows reste limité au cadre de fenêtre,
+  donc aucune compatibilité complète avec lecteur d’écran n’est revendiquée.
+- 114 leçons/ateliers et 290 exercices validés/générés : MIT 18.01SC (102/236),
+  Missing Semester 2026 (9/51), atelier écrit TCF original (3/3).
+- 15 tests Kotlin desktop réussis : parcours de toutes les leçons publiées avec
+  relecture du stockage, logique de progression, fichiers et production écrite.
+  10 tests du validateur Python réussis. Rejeu indépendant des scripts conservés :
+  95 calculs exacts SymPy et 12 scénarios Missing Semester réussis.
+- Preuves mathématiques reproductibles : `tools/check_calculus_math.py`
+  (SymPy 1.12) ; shell/scénarios : `tools/check_missing_semester_scenarios.py`.
+- 18.06SC Fall 2011 : 40 séances rédigées, intégrées et contrôlées ; 131 exercices,
+  83 calculs exacts rejoués et liés aux réponses publiées. Script reproductible
+  `tools/check_linear_algebra_math.py`, indépendant des fichiers temporaires.
+- Catalogue intégré porté à 154 leçons/ateliers et 421 exercices. Les 16 tests
+  desktop passent après intégration et correction de la saisie : sauvegarde des
+  brouillons regroupée après 600 ms sur un worker, écritures sérialisées, vidage
+  à la sortie/navigation et état visible dans l’éditeur.
+- Inventaire OSSU enrichi : 63 références, 25 index vérifiés, huit compositions
+  de spécialisations, trois index partiels, six références regroupées sous deux
+  alternatives, 21 séquences non établies. Ce sont des preuves de sources,
+  pas autant de cours pédagogiques rédigés. Le collecteur préserve désormais les
+  manifestes et audits existants ; ses nouvelles collectes sont des candidats.

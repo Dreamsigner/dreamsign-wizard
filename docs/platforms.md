@@ -61,6 +61,13 @@ La CI exécute les tests Kotlin iOS, puis le test de lancement SwiftUI sur iPhon
 et iPad (10e génération). Les fichiers `.xcresult` contiennent les assertions et
 captures XCTest ; les PNG de l'accueil sont aussi fournis séparément.
 Le ZIP simulateur contient une application x86_64 pour le simulateur Mac Intel.
+Pour les lancements XCTest, `COMPOSE_UI_TESTING=1` active la synchronisation
+permanente de l'arbre d'accessibilité Compose 1.6.11. Les lancements normaux gardent
+le comportement par défaut. Cette configuration suit l'[API de synchronisation
+documentée par JetBrains](https://kotlinlang.org/docs/multiplatform/compose-ios-accessibility.html#choose-the-tree-synchronization-option)
+et le [code de la version 1.6.11](https://github.com/JetBrains/compose-multiplatform-core/blob/v1.6.11/compose/ui/ui/src/uikitMain/kotlin/androidx/compose/ui/uikit/ComposeUIViewControllerConfiguration.uikit.kt).
+La CI conserve la hiérarchie accessible et les captures même lorsqu'une assertion
+échoue, et signale alors l'échec du job.
 Sur un Mac Apple Silicon, compiler le même projet pour générer la version arm64.
 Installer une application simulateur avec `xcrun simctl install booted <chemin.app>`.
 
