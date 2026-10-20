@@ -188,3 +188,23 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
 - Contrôle des vrais paquets ajouté : présence et SHA-256 des documents WAV
   dans APK, JAR Windows et bundles iOS. Deux tests de ce vérificateur passent ;
   le prochain build doit encore prouver que les produits natifs les contiennent.
+
+## Reprise après interruption de quota — 20 octobre, midi (Douala)
+
+- Les deux contributions 6.004 et 18.335J ont été interrompues par la limite
+  d’usage. Aucun de ces cours n’a été ajouté au catalogue ni annoncé rédigé.
+- `28249ca`, run `39385026380` : Windows SUCCESS, iOS SUCCESS, Android FAILURE.
+  Les paquets Windows et iOS ont passé le contrôle des trois WAV intégrés.
+  Les correctifs d’imports iOS sont donc confirmés par compilation, tests Kotlin,
+  XCTest iPhone/iPad et archive appareil non signée. Capture micro réelle et
+  signature Apple restent distinctes et non établies.
+- Tests desktop locaux : BUILD SUCCESSFUL, journal
+  `work/gradle-filtered-tests.log` hors dépôt. Les trente tests passent, y compris
+  capture simulée dans le modèle, stockage isolé et parseur WAV corrigé.
+- Échec Android restant : lint MissingPermission sur la construction AudioRecord
+  dans le worker, après le callback d’autorisation. Ajout d’un contrôle explicite
+  juste avant construction et d’un traitement SecurityException pour retrait
+  de permission entre les deux étapes. Aucun avertissement lint supprimé.
+- Paquet Windows local : premier essai offline bloqué par la sonde JDK Compose
+  1.9.3 absente du cache ; relance connectée en cours. Captures iOS du run réussi
+  en récupération pour inspection, sans annoncer celle-ci déjà réalisée.

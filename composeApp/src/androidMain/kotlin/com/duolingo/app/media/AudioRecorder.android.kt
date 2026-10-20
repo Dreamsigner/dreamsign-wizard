@@ -83,6 +83,10 @@ private class AndroidAudioRecorder : PlatformAudioRecorder {
                     var failure: String? = null
                     var input: AudioRecord? = null
                     try {
+                        // Permission can be revoked between the dialog callback and this worker.
+                        if (androidAudioApplication().checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+                            throw SecurityException("Microphone permission revoked")
+                        }
                         val minimum = AudioRecord.getMinBufferSize(RECORDING_RATE, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT)
                         check(minimum > 0)
                         val bufferSize = maxOf(minimum, 4096).let { it + it % 2 }
@@ -110,6 +114,8 @@ private class AndroidAudioRecorder : PlatformAudioRecorder {
                                 else if (!capture.stopped && !capture.cancelled) error("Capture microphone interrompue")
                             }
                         }
+                    } catch (_: SecurityException) {
+                        if (!capture.stopped && !capture.cancelled) failure = "L’autorisation du microphone a été refusée ou retirée. Le précédent brouillon est conservé."
                     } catch (_: Exception) {
                         if (!capture.stopped && !capture.cancelled) failure = "Impossible d’enregistrer le microphone. Vérifie les autorisations et les autres applications audio."
                     } finally {
