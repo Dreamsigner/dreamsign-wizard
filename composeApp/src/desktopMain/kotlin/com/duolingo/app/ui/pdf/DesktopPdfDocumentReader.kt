@@ -22,6 +22,8 @@ import java.net.URL
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
 import javax.imageio.ImageIO
+import java.util.concurrent.locks.ReentrantLock
+import kotlin.concurrent.withLock
 
 /** Desktop PDFBox implementation; it keeps PDF bytes and rendered pages in memory only. */
 class DesktopPdfDocumentReader(
@@ -69,52 +71,71 @@ internal fun validatePdfBytes(bytes: ByteArray) {
     if (!header.contains("%PDF-")) throw PdfReaderException("Le serveur n’a pas renvoyé un fichier PDF valide.")
 }
 
-private class PdfBoxDocumentSession(private val document: PDDocument) : PdfDocumentSession {
+internal class PdfBoxDocumentSession(
+    private val document: PDDocument,
+    private val renderImage: (PDDocument, Int, Float) -> BufferedImage = { source, index, dpi ->
+        PDFRenderer(source).apply { isSubsamplingAllowed = true }.renderImageWithDPI(index, dpi)
+    },
+) : PdfDocumentSession {
     private val closed = AtomicBoolean(false)
-    override val pageCount: Int get() = document.numberOfPages
+    private val disposed = AtomicBoolean(false)
+    private val renderLock = ReentrantLock()
+    override val pageCount: Int = document.numberOfPages
 
     override suspend fun renderPage(pageIndex: Int, targetWidthPx: Int): ImageBitmap {
         if (closed.get()) throw PdfReaderException("Le document PDF est fermé.")
         if (pageIndex !in 0 until pageCount) throw PdfReaderException("Cette page n’existe pas.")
         return withContext(Dispatchers.IO) {
-            synchronized(document) {
-                if (closed.get()) throw PdfReaderException("Le document PDF est fermé.")
-                val page = document.getPage(pageIndex)
-                val mediaBox = page.cropBox
-                val unit = page.userUnit.toDouble()
-                if (!unit.isFinite() || unit !in MIN_USER_UNIT..MAX_USER_UNIT) {
-                    throw PdfReaderException("L’échelle de cette page dépasse la limite de rendu.")
-                }
-                val rawWidthPoints = mediaBox.width.toDouble() * unit
-                val rawHeightPoints = mediaBox.height.toDouble() * unit
-                val quarterTurned = page.rotation % 180 != 0
-                val widthPoints = if (quarterTurned) rawHeightPoints else rawWidthPoints
-                val heightPoints = if (quarterTurned) rawWidthPoints else rawHeightPoints
-                if (!widthPoints.isFinite() || !heightPoints.isFinite() ||
-                    widthPoints !in 1.0..MAX_PAGE_POINTS || heightPoints !in 1.0..MAX_PAGE_POINTS
-                ) {
-                    throw PdfReaderException("Les dimensions de cette page dépassent la limite de rendu.")
-                }
-                val desiredWidth = targetWidthPx.coerceIn(320, MAX_RENDER_WIDTH_PX)
-                val pagePixelLimitWidth = kotlin.math.sqrt(MAX_RENDER_PIXELS * widthPoints / heightPoints).toInt().coerceAtLeast(1)
-                val pixelWidth = minOf(desiredWidth, pagePixelLimitWidth)
-                val dpi = (pixelWidth * 72.0 / widthPoints).toFloat().coerceAtMost(240f)
-                val renderer = PDFRenderer(document).apply { isSubsamplingAllowed = true }
-                val pageImage = renderer.renderImageWithDPI(pageIndex, dpi)
+            val context = currentCoroutineContext()
+            renderLock.withLock {
                 try {
-                    ByteArrayOutputStream().use { output ->
-                        ImageIO.write(pageImage, "png", output)
-                        SkiaImage.makeFromEncoded(output.toByteArray()).toComposeImageBitmap()
+                    context.ensureActive()
+                    if (closed.get()) throw PdfReaderException("Le document PDF est fermé.")
+                    val page = document.getPage(pageIndex)
+                    val mediaBox = page.cropBox
+                    val unit = page.userUnit.toDouble()
+                    if (!unit.isFinite() || unit !in MIN_USER_UNIT..MAX_USER_UNIT) {
+                        throw PdfReaderException("L’échelle de cette page dépasse la limite de rendu.")
                     }
+                    val rawWidthPoints = mediaBox.width.toDouble() * unit
+                    val rawHeightPoints = mediaBox.height.toDouble() * unit
+                    val quarterTurned = page.rotation % 180 != 0
+                    val widthPoints = if (quarterTurned) rawHeightPoints else rawWidthPoints
+                    val heightPoints = if (quarterTurned) rawWidthPoints else rawHeightPoints
+                    if (!widthPoints.isFinite() || !heightPoints.isFinite() ||
+                        widthPoints !in 1.0..MAX_PAGE_POINTS || heightPoints !in 1.0..MAX_PAGE_POINTS
+                    ) {
+                        throw PdfReaderException("Les dimensions de cette page dépassent la limite de rendu.")
+                    }
+                    val desiredWidth = targetWidthPx.coerceIn(320, MAX_RENDER_WIDTH_PX)
+                    val pagePixelLimitWidth = kotlin.math.sqrt(MAX_RENDER_PIXELS * widthPoints / heightPoints).toInt().coerceAtLeast(1)
+                    val pixelWidth = minOf(desiredWidth, pagePixelLimitWidth)
+                    val dpi = (pixelWidth * 72.0 / widthPoints).toFloat().coerceAtMost(240f)
+                    val pageImage = renderImage(document, pageIndex, dpi)
+                    try {
+                        ByteArrayOutputStream().use { output ->
+                            ImageIO.write(pageImage, "png", output)
+                            SkiaImage.makeFromEncoded(output.toByteArray()).toComposeImageBitmap()
+                        }
+                    } finally { pageImage.flush() }
                 } finally {
-                    pageImage.flush()
+                    if (closed.get()) disposeDocument()
                 }
             }
         }
     }
 
+    /** Closing the dialog never waits on a slow PDF renderer or font discovery. */
     override fun close() {
-        if (closed.compareAndSet(false, true)) runCatching { synchronized(document) { document.close() } }
+        if (!closed.compareAndSet(false, true)) return
+        if (renderLock.tryLock()) {
+            try { disposeDocument() } finally { renderLock.unlock() }
+        }
+        // The active render owns disposal in its finally block when it holds the lock.
+    }
+
+    private fun disposeDocument() {
+        if (disposed.compareAndSet(false, true)) runCatching { document.close() }
     }
 }
 

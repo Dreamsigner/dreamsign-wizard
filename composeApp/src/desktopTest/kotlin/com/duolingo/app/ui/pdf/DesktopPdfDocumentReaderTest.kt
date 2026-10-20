@@ -20,12 +20,13 @@ import androidx.compose.ui.test.performClick
 import com.duolingo.app.data.CourseResource
 import com.duolingo.app.data.CourseResources
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.async
+import kotlinx.coroutines.Dispatchers
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
 import org.apache.pdfbox.pdmodel.PDPageContentStream
 import org.apache.pdfbox.pdmodel.common.PDRectangle
-import org.apache.pdfbox.pdmodel.font.PDType1Font
-import org.apache.pdfbox.pdmodel.font.Standard14Fonts
+import org.apache.pdfbox.pdmodel.font.PDType0Font
 import org.jetbrains.skia.Image
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -35,8 +36,35 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 import kotlin.time.Duration.Companion.seconds
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
+import java.awt.image.BufferedImage
 
 class DesktopPdfDocumentReaderTest {
+    @Test
+    fun closingDoesNotWaitForASlowBackgroundPageRender() = runBlocking<Unit> {
+        val entered = CountDownLatch(1)
+        val release = CountDownLatch(1)
+        val document = PDDocument().apply { addPage(PDPage()) }
+        val session = PdfBoxDocumentSession(document) { _, _, _ ->
+            entered.countDown()
+            check(release.await(10, TimeUnit.SECONDS))
+            BufferedImage(640, 840, BufferedImage.TYPE_INT_RGB)
+        }
+        val render = async(Dispatchers.IO) { runCatching { session.renderPage(0, 640) } }
+        val closer = Executors.newSingleThreadExecutor()
+        try {
+            assertTrue(entered.await(5, TimeUnit.SECONDS))
+            closer.submit { session.close() }.get(2, TimeUnit.SECONDS)
+        } finally {
+            release.countDown()
+            render.await()
+            session.close()
+            closer.shutdownNow()
+        }
+    }
+
     @Test
     fun injectedOfficialPdfBytesOpenAndRenderOnePage() = runBlocking {
         val resource = publishedPdfResource()
@@ -190,12 +218,15 @@ class DesktopPdfDocumentReaderTest {
 
     private fun createOnePagePdf(pageCount: Int = 1): ByteArray = ByteArrayOutputStream().use { output ->
         PDDocument().use { document ->
+            // Embedded fixture font: never enumerate the runner's installed Windows fonts.
+            val font = checkNotNull(PDDocument::class.java.getResourceAsStream("/org/apache/pdfbox/resources/ttf/LiberationSans-Regular.ttf"))
+                .use { PDType0Font.load(document, it) }
             repeat(pageCount) { pageIndex ->
                 val page = PDPage(PDRectangle.LETTER)
                 document.addPage(page)
                 PDPageContentStream(document, page).use { content ->
                     content.beginText()
-                    content.setFont(PDType1Font(Standard14Fonts.FontName.HELVETICA), 22f)
+                    content.setFont(font, 22f)
                     content.newLineAtOffset(72f, 700f)
                     content.showText("Original PDF page ${pageIndex + 1}")
                     content.endText()

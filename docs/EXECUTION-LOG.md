@@ -428,3 +428,21 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
 - Licences/notices exactes des JAR distribués JLaTeXMath, PDFBox, PDFBox IO,
   FontBox et Commons Logging conservées; copie prévue dans le ZIP Windows.
   La CI et les artefacts du commit à pousser restent à confirmer.
+
+### Écart CI et correction du lecteur PDF
+
+- Runs 39513880534 / 39513886562 du commit f93e697 : échec d'un test PDF,
+  92 autres tests réussis. Le XML montre UncompletedCoroutinesError et un scan
+  initial de 147 polices Windows par la fixture Helvetica, prenant environ
+  86 secondes sur le runner neuf. Ce n'est pas un échec des données de cours.
+- Fixture autonome remplacée par une police TTF intégrée dans le PDF de test,
+  issue des ressources PDFBox déjà distribuées et couvertes par leurs notices.
+  Aucun délai de test augmenté et aucune assertion retirée.
+- Le rendu lent a également motivé un test de fermeture non bloquante : RED
+  reproduit par TimeoutException pendant un rendu retenu par un latch. La session
+  marque maintenant la fermeture immédiatement; le travailleur de rendu possède
+  la libération finale du document sous verrou, une seule fois. Les travaux de
+  rendu annulés sont vérifiés avant d'accéder au document.
+- Nouvelle suite avec un répertoire de cache de polices vide : 94 tests réussis,
+  zéro échec/erreur/ignoré, aucune collecte système de polices dans les journaux.
+  Journal ../work/pdf-cold-font-cache-green.log. Nouvelle CI encore requise.

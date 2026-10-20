@@ -25,6 +25,12 @@ can show `PdfDocumentDialog` for catalogued PDF resources. Common code's default
 provider reports unsupported reading on platforms without a native reader, so
 the mobile host can open the official URL in its browser.
 
+Closing a session does not wait on a slow background page render or font lookup.
+The rendering worker disposes its document when it releases the render lock;
+disposal is idempotent. Test PDFs embed their font so a fresh Windows runner does
+not enumerate installed fonts while creating fixtures. A latch-controlled test
+checks nonblocking closure without timing a real font scan.
+
 Download restrictions are 50 MiB maximum body size, a 30 second total download
 deadline with connection/read timeouts, HTTPS only, same-host HTTPS redirects
 only (up to four), PDF content-type/magic validation, and a 2,000-page document
