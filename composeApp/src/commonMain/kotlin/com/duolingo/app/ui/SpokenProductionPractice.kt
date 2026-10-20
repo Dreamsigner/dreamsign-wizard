@@ -20,14 +20,15 @@ import kotlinx.coroutines.*
 
 @Composable
 fun SpokenProductionPractice(exercise: Exercise.SpokenProduction, model: AppViewModel, checked: Boolean) {
-    // Reset the coroutine scope as well as remembered state when the exercise changes.
-    key(exercise.id) { SpokenProductionPracticeContent(exercise, model, checked) }
+    val media = LocalPracticeMedia.current
+    // Reset state, jobs and native ownership when either the provider or exercise changes.
+    key(media, exercise.id) { SpokenProductionPracticeContent(exercise, model, checked, media) }
 }
 
 @Composable
-private fun SpokenProductionPracticeContent(exercise: Exercise.SpokenProduction, model: AppViewModel, checked: Boolean) {
-    val recorder = remember(exercise.id) { createAudioRecorder() }
-    val player = remember(exercise.id) { createAudioPlayer() }
+private fun SpokenProductionPracticeContent(exercise: Exercise.SpokenProduction, model: AppViewModel, checked: Boolean, media: PracticeMedia) {
+    val recorder = remember(media, exercise.id) { media.createRecorder() }
+    val player = remember(media, exercise.id) { media.createPlayer() }
     val scope = rememberCoroutineScope()
     val duration by model.verifiedRecordingMillis.collectAsState()
     val reviewed by model.reviewedCriteria.collectAsState()
@@ -62,7 +63,7 @@ private fun SpokenProductionPracticeContent(exercise: Exercise.SpokenProduction,
                 val measured = withContext(Dispatchers.Default) {
                     val measured = recordingDurationMillis(captured)
                     require(measured in 1L..exercise.maxDurationSeconds * 1000L)
-                    saveAudioRecording(exercise.id, captured)
+                    media.saveRecording(exercise.id, captured)
                     measured
                 }
                 coroutineContext.ensureActive()
@@ -84,11 +85,11 @@ private fun SpokenProductionPracticeContent(exercise: Exercise.SpokenProduction,
         }
     }
 
-    LaunchedEffect(exercise.id, reloadKey) {
+    LaunchedEffect(media, exercise.id, reloadKey) {
         loading = true; restoreFailed = false; error = null
         status = "Chargement du brouillon audio…"
         try {
-            val loaded = withContext(Dispatchers.Default) { loadAudioRecording(exercise.id) }
+            val loaded = withContext(Dispatchers.Default) { media.loadRecording(exercise.id) }
             if (loaded != null) {
                 val measured = recordingDurationMillis(loaded)
                 require(measured in 1L..exercise.maxDurationSeconds * 1000L)
@@ -110,13 +111,13 @@ private fun SpokenProductionPracticeContent(exercise: Exercise.SpokenProduction,
     LaunchedEffect(prepRemaining > 0) {
         while (prepRemaining > 0) { delay(1000); prepRemaining-- }
     }
-    DisposableEffect(recorder, player) {
-        val unbindRecorder = bindAudioRecorderLifecycle(recorder) {
+    DisposableEffect(media, recorder, player) {
+        val unbindRecorder = media.bindRecorderLifecycle(recorder) {
             if (recording || waiting) status = "Capture interrompue en arrière-plan. Le précédent brouillon enregistré est conservé."
             recording = false; waiting = false
             model.setSpokenRecordingBusy(exercise.id, saving || pendingCapture != null)
         }
-        val unbindPlayer = bindAudioLifecycle(player) { playing = false }
+        val unbindPlayer = media.bindPlayerLifecycle(player) { playing = false }
         onDispose {
             attached = false
             saveJob?.cancel()

@@ -7,27 +7,33 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.duolingo.app.media.createAudioPlayer
-import com.duolingo.app.media.bindAudioLifecycle
+import com.duolingo.app.media.LocalPracticeMedia
+import com.duolingo.app.media.PracticeMedia
 import com.duolingo.app.model.Exercise
-import duolingo_kmp_learning_app.composeapp.generated.resources.Res
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.ensureActive
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun ListeningPractice(exercise: Exercise.ListeningChoice, checked: Boolean, heard: Boolean, transcriptMode: Boolean,
     onComplete: (String) -> Unit, onTranscriptMode: (String) -> Unit) {
-    val player = remember(exercise.id) { createAudioPlayer() }
+    val media = LocalPracticeMedia.current
+    key(media, exercise.id) {
+        ListeningPracticeContent(exercise, checked, heard, transcriptMode, onComplete, onTranscriptMode, media)
+    }
+}
+
+@Composable
+private fun ListeningPracticeContent(exercise: Exercise.ListeningChoice, checked: Boolean, heard: Boolean, transcriptMode: Boolean,
+    onComplete: (String) -> Unit, onTranscriptMode: (String) -> Unit, media: PracticeMedia) {
+    val player = remember(media, exercise.id) { media.createPlayer() }
     val scope = rememberCoroutineScope()
     var playing by remember(exercise.id) { mutableStateOf(false) }
     var error by remember(exercise.id) { mutableStateOf<String?>(null) }
     var loadingJob by remember(exercise.id) { mutableStateOf<Job?>(null) }
-    DisposableEffect(player) {
-        val unbind = bindAudioLifecycle(player) { loadingJob?.cancel(); playing = false }
+    DisposableEffect(media, player) {
+        val unbind = media.bindPlayerLifecycle(player) { loadingJob?.cancel(); playing = false }
         onDispose { loadingJob?.cancel(); unbind(); player.stop() }
     }
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -39,7 +45,7 @@ fun ListeningPractice(exercise: Exercise.ListeningChoice, checked: Boolean, hear
                 try {
                     // Bundled bytes; no network requests or runtime speech generation.
                     // https://kotlinlang.org/docs/multiplatform/compose-multiplatform-resources-usage.html#raw-files
-                    val bytes = Res.readBytes(exercise.audioResourcePath)
+                    val bytes = media.loadResource(exercise.audioResourcePath)
                     coroutineContext.ensureActive()
                     player.play(bytes, onComplete = {
                         scope.launch { playing = false; onComplete(exercise.id) }

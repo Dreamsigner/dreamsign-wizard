@@ -110,7 +110,15 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
                     exercise == null -> EmptyLearningState("Aucun exercice disponible", "Les notes du cours restent accessibles avec le bouton d’aide.")
                     unsupported -> EmptyLearningState("Association de paires indisponible", "Cet exercice n’est pas encore pris en charge. Reviens au cours pour choisir une autre leçon ; aucune réponse ni récompense ne sera enregistrée ici.")
                     else -> {
-                        Text(exercise.prompt, fontSize = 26.sp, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
+                        if (written != null || spoken != null) {
+                            Text(if (spoken != null) "Ta production orale" else "Ta production écrite",
+                                fontSize = 26.sp, lineHeight = 34.sp, fontWeight = FontWeight.Bold,
+                                modifier = Modifier.semantics { heading() })
+                            Text(exercise.prompt, fontSize = 18.sp, lineHeight = 28.sp)
+                        } else {
+                            Text(exercise.prompt, fontSize = 26.sp, lineHeight = 34.sp,
+                                fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
+                        }
                         if (lesson.objective.isNotBlank()) Text("Objectif : ${lesson.objective}", color = Graphite)
                         when (exercise) {
                             is Exercise.ReadingChoice -> {

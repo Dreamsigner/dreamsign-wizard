@@ -12,3 +12,6 @@ adb pull /sdcard/window.xml build/android-evidence/window.xml
 grep -q 'Cours' build/android-evidence/window.xml
 grep -q 'Profil' build/android-evidence/window.xml
 adb exec-out screencap -p > build/android-evidence/home-phone.png
+gradle :composeApp:connectedDebugAndroidTest \
+  -Pandroid.testInstrumentationRunnerArguments.class=com.duolingo.app.ui.LearningAndroidUiTest \
+  --stacktrace

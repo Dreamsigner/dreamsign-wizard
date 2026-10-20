@@ -16,11 +16,18 @@ L’application n’utilise pas de génération IA et ne prétend pas analyser d
 
 ## Ressources de référence
 
-Les nouveaux lots locaux ajoutent MIT 6.042J Fall 2010 (28 séances, 117 exercices),
-Learn Prolog Now! (12 chapitres, 60 exercices) et trois ateliers oraux originaux TCF
-avec prise de son locale, réécoute et bilan. Les tests natifs d’enregistrement et
-la nouvelle chaîne de compilation restent en cours de vérification ; voir le registre
-`docs/EXECUTION-LOG.md`. Le catalogue intégral demandé n’est pas encore terminé.
+Le catalogue inclut aussi MIT 6.042J Fall 2010 (28 séances, 117 exercices),
+Learn Prolog Now! (12 chapitres, 60 exercices), MIT 18.404J Fall 2020
+(27 séances, 112 exercices), MIT 6.004 Spring 2017 (28 séances, 99 exercices)
+et MIT 18.335J Spring 2019 (39 séances, 117 exercices). Le TCF propose également
+trois ateliers de lecture et trois ateliers oraux originaux, avec prise de son
+locale, réécoute et bilan. La capture physique et ses permissions restent à
+vérifier sur appareils réels. Le catalogue intégral demandé n’est pas terminé.
+
+Les vrais écrans sont testables automatiquement sans Computer Use :
+`gradle :composeApp:desktopTest` rend Compose hors écran et produit rapports et
+captures compactes/PC. Voir [automated-testing.md](docs/automated-testing.md)
+pour les scénarios, commandes et limites des preuves.
 
 - [OSSU Computer Science](https://github.com/ossu/computer-science)
 - [OSSU Math](https://github.com/ossu/math)

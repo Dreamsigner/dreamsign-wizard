@@ -89,8 +89,11 @@ La référence [c3439cc](https://github.com/Dreamsigner/duolingo-kmp-learning-ap
 a réussi sur macos-14 / Xcode 15.3, y compris les deux XCTest et l'archive non signée.
 GitHub retire macos-14 le **2 novembre 2026** : la configuration nouvelle utilise macos-15.
 [Apple demande Xcode 26 et les SDK 26 depuis le 28 avril 2026](https://developer.apple.com/news/upcoming-requirements/).
-La migration configurée répond à cette exigence de versions ; elle doit encore être compilée
-et vérifiée sur les trois plateformes. Les preuves précédentes ne valident pas cette migration.
+La migration a été compilée et testée sur les trois plateformes pour
+[`c3af563`, run 39416233195](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/runs/39416233195) :
+les trois jobs sont terminés avec succès, état revérifié via l'API GitHub le
+20 octobre 2026. Cela ne valide pas les modifications ultérieures non comprises
+dans ce commit, ni la capture microphone physique ou une signature Apple.
 
 Une configuration CI ajoutée au dépôt ne prouve pas que ses builds ont réussi :
 consulter les trois jobs du workflow `Build` et leurs artefacts pour le commit livré.

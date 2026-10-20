@@ -208,3 +208,42 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
 - Paquet Windows local : premier essai offline bloqué par la sonde JDK Compose
   1.9.3 absente du cache ; relance connectée en cours. Captures iOS du run réussi
   en récupération pour inspection, sans annoncer celle-ci déjà réalisée.
+
+## Reprise manuelle sur D: — 20 octobre 2026
+
+- Instructions Home/RTK relues ; CODEX_HOME effectif `D:\Coding\_Codex\Home`.
+  Dépôt vérifié : `D:\Coding\_Codex\Chats-hors-projet\2026-10-19\c\duolingo-kmp-learning-app`,
+  branche `codex/windows-test-package`, base `c3af563`. Aucun basculement vers
+  l'autre copie, aucune migration, aucune configuration globale modifiée.
+  L'automatisation reste suspendue. Computer Use interdit pour cette reprise.
+- Tous les fichiers modifiés/non suivis conservés. Les écritures de build et
+  temporaires Java/Gradle sont dirigées vers le workspace D:, sans écriture
+  dans les anciens dossiers C:.
+- API GitHub revérifiée : `c3af563`, run `39416233195`, trois jobs SUCCESS.
+  Cette preuve porte sur ce commit, pas sur le lot courant.
+- Validateur courant : 13 unités, 323 leçons/ateliers et 1051 exercices.
+  Dix-neuf tests Python PASS ; contrôles 6.004 (72) et 18.335J (78) PASS.
+- Nouvelle exécution locale `desktopTest --offline` dans le dépôt D: :
+  BUILD SUCCESSFUL, 52 tests exécutés, zéro échec/erreur/ignoré. Comprend
+  12 tests des vrais écrans Compose et dix tests du worker de capture factice.
+  Journal hors Git : `../work/resume-desktop-tests.log`. Le mode headless est
+  imposé et testé ; aucune fenêtre ou permission micro n'a été ouverte.
+- Capture générée `spoken-compact.png` inspectée : consigne réelle lisible en
+  corps de texte, écran scrollable et action finale visible à 400 × 900.
+  Les captures cours compact/large et les nouveaux tests Android nécessitent
+  encore leur contrôle dans le lot courant ; aucune réussite Android/iOS
+  ultérieure à c3af563 n'est encore annoncée.
+- Revue média indépendante en lecture seule : pas de défaut produit concret
+  trouvé ; nettoyage systématique des modèles après assertions en échec ajouté
+  aux tests audio. Nouvelle exécution requise après ce changement de fixture.
+- La rédaction forallx reste incomplète et hors catalogue. La couverture OSSU
+  et TCF demeure partielle ; les tests automatisés ne certifient pas les
+  performances pédagogiques, le microphone physique ou l'accessibilité native.
+- Après nettoyage des fixtures : nouvelle exécution desktopTest et
+  createDistributable réussie (52 tests, zéro échec/erreur/ignoré). Les trois
+  WAV du vrai paquet Windows sont présents avec leurs empreintes attendues.
+  Les deux rendus cours compact/large ont été inspectés : navigation inférieure
+  en compact, navigation latérale et colonnes distinctes en large. Ces rendus
+  utilisent un catalogue miniature isolé, pas l'intégralité des textes des cours.
+  Les contrôles de calcul des huit cours disposant d'un vérificateur passent
+  à nouveau ; Prolog garde sa limite explicite d'absence d'exécution par moteur.

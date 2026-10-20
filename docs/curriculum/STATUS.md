@@ -69,6 +69,20 @@ il constitue une trace source figée. Le contenu rédigé se trouve dans
 par `tools/validate_curriculum.py`. Les décomptes des autres cours restent
 inconnus tant que leur séquence source n’a pas été vérifiée.
 
+## Revalidation du dépôt de reprise sur D: — 20 octobre 2026
+
+Le validateur a été réexécuté : 13 unités, 323 leçons/ateliers, 1 051 exercices.
+MIT 18.404J Fall 2020 contient 27 séances et 112 exercices ; MIT 6.004 Spring 2017,
+28 séances et 99 exercices ; MIT 18.335J Spring 2019, 39 séances et 117 exercices.
+Les vérificateurs 6.004 et 18.335J passent à nouveau (72 contrôles finis/bornés
+et 78 réponses numériques recalculées). Voir les notes de provenance de chaque
+cours pour les limites : ce sont des exercices adaptés, pas tous les travaux
+ouverts, laboratoires ou projets originaux.
+
+Le cours forall x: Calgary reste en brouillon hors catalogue. Un manifeste de
+48 chapitres ne constitue pas 48 leçons rédigées. Les quatre compétences TCF
+ont désormais chacune trois ateliers originaux ; la préparation reste partielle.
+
 ## Suite requise avant livraison conforme
 
 1. Terminer les manifestes des programmes restants, avec éditions et sources.

@@ -34,6 +34,12 @@ No builds, capture tests or microphone permission interactions were executed by 
 
 Exercise: permission granted/refused/permanently refused; cancellation during permission; stop before initialization; start/start; stop twice; empty capture; manual stop; duration cap; cancel/background/OS interruption; navigate while initializing; unavailable microphone; captured WAV replay; saving/reloading after restart; invalid IDs; malformed files; disk-full/write-denied replacement retaining the earlier draft; temporary and native handle cleanup. Check UI state resets even when cancellation intentionally emits no completion callback. Audio presence and self-review do not certify intelligibility or TCF performance.
 
+## Isolated desktop worker coverage
+
+`AudioRecorderTest` injects a fake TargetDataLine through the internal DesktopAudioRecorder factory. It never calls createAudioRecorder or the default AudioSystem factory. Its synthetic byte patterns and barriers exercise the real daemon worker, WAV encoding, UI callback dispatch, stop/close unblocking, cancellation, replacement while open is pending, empty capture, read failure, initialization failure, invalid duration, the 270-second sample cap and the Swing deadline. Every recorder is cancelled in finally; no user recording path or physical audio device is touched.
+
+These ten tests were authored without running a build or opening microphone permissions in this subtask. The integration owner must compile/run them. Their success would establish synthetic worker behavior only, not real microphone capture quality or native Android/iOS behavior. Negative cancellation assertions observe the callback latch for 250 ms after releasing the fake line; they do not claim control over arbitrary OS scheduler delays.
+
 ## API references consulted
 
 - [Java TargetDataLine](https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/sound/sampled/TargetDataLine.html).

@@ -37,9 +37,17 @@ kotlin {
         commonTest.dependencies {
             implementation(kotlin("test"))
         }
+        androidInstrumentedTest.dependencies {
+            implementation("androidx.compose.ui:ui-test-junit4:1.9.4")
+            implementation("androidx.test.ext:junit:1.2.1")
+            implementation("androidx.test:runner:1.6.2")
+        }
         val desktopTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
+                // Native Compose semantics tests, independent of desktop UI automation.
+                // https://kotlinlang.org/docs/multiplatform/compose-desktop-ui-testing.html
+                implementation(compose.desktop.uiTestJUnit4)
             }
         }
         val commonMain by getting {
@@ -81,11 +89,22 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0.0"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+}
+
+dependencies {
+    // Isolated test activity; never included in the release application.
+    add("debugImplementation", "androidx.compose.ui:ui-test-manifest:1.9.4")
+}
+
+// Compose scene tests render offscreen; no desktop, display server or Computer Use required.
+tasks.withType<org.gradle.api.tasks.testing.Test>().configureEach {
+    systemProperty("java.awt.headless", "true")
 }
 
 compose.desktop {

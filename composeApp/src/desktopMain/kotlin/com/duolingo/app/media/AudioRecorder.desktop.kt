@@ -9,7 +9,10 @@ import javax.swing.Timer
 
 actual fun createAudioRecorder(): PlatformAudioRecorder = DesktopAudioRecorder()
 
-private class DesktopAudioRecorder : PlatformAudioRecorder {
+/** Tests inject a synthetic line; production keeps the normal JavaSound factory. */
+internal class DesktopAudioRecorder(
+    private val lineFactory: (AudioFormat) -> TargetDataLine = { AudioSystem.getTargetDataLine(it) }
+) : PlatformAudioRecorder {
     private class Capture(val token: Long) {
         @Volatile var stopped = false
         @Volatile var cancelled = false
@@ -31,7 +34,7 @@ private class DesktopAudioRecorder : PlatformAudioRecorder {
             var line: TargetDataLine? = null
             try {
                 val format = AudioFormat(RECORDING_RATE.toFloat(), 16, 1, true, false)
-                val input = AudioSystem.getTargetDataLine(format)
+                val input = lineFactory(format)
                 line = input
                 input.open(format)
                 capture.line = input

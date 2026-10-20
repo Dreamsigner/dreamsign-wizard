@@ -36,6 +36,8 @@ jobs:
           python tools/check_intro_python.py
           python tools/check_discrete_math.py
           python tools/check_computation_theory.py
+          python tools/check_computer_architecture.py
+          python tools/check_numerical_methods.py
           python tools/validate_curriculum.py --generate
           git diff --exit-code -- composeApp/src/commonMain/kotlin/com/duolingo/app/data/generated/ docs/curriculum/AUTHORED-COVERAGE.md
       - uses: actions/setup-java@v5
@@ -78,6 +80,7 @@ jobs:
           path: |
             composeApp/build/reports/
             composeApp/build/test-results/
+            composeApp/build/outputs/androidTest-results/
             build/android-evidence/
           retention-days: 14
 
@@ -120,7 +123,9 @@ jobs:
         if: always()
         with:
           name: Windows-checks
-          path: composeApp/build/reports/tests/
+          path: |
+            composeApp/build/reports/tests/
+            composeApp/build/reports/ui-snapshots/
           retention-days: 14
 
   ios:

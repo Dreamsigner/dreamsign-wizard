@@ -14,6 +14,12 @@ import com.duolingo.app.ui.White
 
 @Composable
 fun App() {
+    LearningAppTheme { DuolingoApp() }
+}
+
+/** Shared by native entry points and offscreen UI tests, preserving the production theme. */
+@Composable
+fun LearningAppTheme(content: @Composable () -> Unit) {
     MaterialTheme(
         colors = lightColors(
             primary = ActionRed,
@@ -30,6 +36,6 @@ fun App() {
         ),
         typography = Typography(defaultFontFamily = FontFamily.SansSerif)
     ) {
-        DuolingoApp()
+        content()
     }
 }

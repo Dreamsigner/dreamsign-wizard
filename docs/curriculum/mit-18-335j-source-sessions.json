@@ -1,0 +1,1079 @@
+{
+  "courseCode": "MIT 18.335J",
+  "edition": "Spring 2019",
+  "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/",
+  "indexUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/calendar/",
+  "checkedOn": "2026-10-20",
+  "sessionCount": 39,
+  "sessions": [
+    {
+      "number": 1,
+      "sourceTitle": "Course Overview, Newton’s Method for Root-Finding",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-1/#lecture-1-course-overview-newtons-method-for-root-finding",
+      "week": 1,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-1/",
+        "sha256": "5d03f6245631bea261d600b279d21d5e80be9c9ab91a27cdb69b68b5a34ec25f",
+        "summaryCharacters": 1199
+      },
+      "resourceLinks": [
+        {
+          "title": "Square Roots via Newton’s Method (PDF)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/mit18_335js19_lec1/"
+        },
+        {
+          "title": "Square Roots",
+          "url": "http://nbviewer.jupyter.org/github/mitmath/18335/blob/spring19/notes/Newton-Square-Roots.ipynb"
+        },
+        {
+          "title": "Problem set 1 (PDF)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/mit18_335js19_pset1/"
+        },
+        {
+          "title": "Problem set 1",
+          "url": "https://nbviewer.jupyter.org/github/mitmath/18335/blob/spring19/psets/pset1.ipynb"
+        },
+        {
+          "title": "Problem set 1 solutions (PDF)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/mit18_335js19_pset1sol/"
+        },
+        {
+          "title": "Problem set 1 solutions",
+          "url": "http://nbviewer.jupyter.org/github/mitmath/18335/blob/spring19/psets/pset1sol.ipynb"
+        }
+      ],
+      "readSupports": [
+        {
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/0a734ecc94b60a26213488e68588bc8d_MIT18_335JS19_lec1.pdf",
+          "title": "Square Roots via Newton’s Method (PDF)",
+          "status": "text-extracted-excerpt-inspected",
+          "pages": 4,
+          "textCharacters": 6687,
+          "sha256": "e995a34e55c9a7df747e2eee481c9a794e4ad2d5f2cfef5bb7dab5f446b8869d",
+          "inspectionLimit": "Full PDF text extracted in memory; opening textual excerpt inspected. Diagrams and every page were not visually reviewed.",
+          "internalDocumentDate": "2015-02-04"
+        }
+      ],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 2,
+      "sourceTitle": "Floating-Point Arithmetic",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-1/#lecture-2-floating-point-arithmetic",
+      "week": 1,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-1/",
+        "sha256": "5d03f6245631bea261d600b279d21d5e80be9c9ab91a27cdb69b68b5a34ec25f",
+        "summaryCharacters": 2276
+      },
+      "resourceLinks": [
+        {
+          "title": "Floating-Point Arithmetic",
+          "url": "http://nbviewer.jupyter.org/github/mitmath/18335/blob/spring19/notes/Floating-Point-Intro.ipynb"
+        },
+        {
+          "title": "Some Myths about Floating-Point Arithmetic (PDF)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/mit18_335js19_lec2_supp/"
+        },
+        {
+          "title": "How Java’s Floating-Point Hurts Everyone Everywhere (PDF)",
+          "url": "http://www.cs.berkeley.edu/~wkahan/JAVAhurt.pdf"
+        }
+      ],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 3,
+      "sourceTitle": "Floating-Point Summation and Backwards Stability",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-2/#lecture-3-floating-point-summation-and-backwards-stability",
+      "week": 2,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-2/",
+        "sha256": "cf11c1b32fffae9f9aaa3929110140ccd1c4ed71d6d62222dfb61b2d4d77504c",
+        "summaryCharacters": 2587
+      },
+      "resourceLinks": [
+        {
+          "title": "Notes on the Accuracy of Naive Summation (PDF)",
+          "url": "https://old.ocw.mit.edu/courses/mathematics/18-335j-introduction-to-numerical-methods-spring-2019/week-2/MIT18_335JS19_lec3-1.pdf"
+        },
+        {
+          "title": "Backwards Stability of Recursive Summation (PDF)",
+          "url": "https://old.ocw.mit.edu/courses/mathematics/18-335j-introduction-to-numerical-methods-spring-2019/week-2/MIT18_335JS19_lec3-2.pdf"
+        },
+        {
+          "title": "How Java’s Floating-Point Hurts Everyone Everywhere (PDF)",
+          "url": "http://www.cs.berkeley.edu/~wkahan/JAVAhurt.pdf"
+        }
+      ],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 4,
+      "sourceTitle": "Norms on Vector Spaces",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-2/#lecture-4-norms-on-vector-spaces",
+      "week": 2,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-2/",
+        "sha256": "cf11c1b32fffae9f9aaa3929110140ccd1c4ed71d6d62222dfb61b2d4d77504c",
+        "summaryCharacters": 2723
+      },
+      "resourceLinks": [
+        {
+          "title": "Notes on the Equivalence of Norms (PDF)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/mit18_335js19_lec4/"
+        }
+      ],
+      "readSupports": [
+        {
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/bcea047068e46ab87f398bdd4209c7f5_MIT18_335JS19_lec4.pdf",
+          "title": "Notes on the Equivalence of Norms (PDF)",
+          "status": "text-extracted-excerpt-inspected",
+          "pages": 3,
+          "textCharacters": 3800,
+          "sha256": "655f30f9f91d001172adf2bbb7e7615dfae31f432a021ccd6a58dbc61c218419",
+          "inspectionLimit": "Full PDF text extracted in memory; opening textual excerpt inspected. Diagrams and every page were not visually reviewed.",
+          "internalDocumentDate": "2012-09-19"
+        }
+      ],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 5,
+      "sourceTitle": "Condition Numbers",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-2/#lecture-5condition-numbers",
+      "week": 2,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-2/",
+        "sha256": "cf11c1b32fffae9f9aaa3929110140ccd1c4ed71d6d62222dfb61b2d4d77504c",
+        "summaryCharacters": 2860
+      },
+      "resourceLinks": [
+        {
+          "title": "Problem set 2 (PDF)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/mit18_335js19_pset2/"
+        },
+        {
+          "title": "Problem set 2 solutions (PDF)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/mit18_335js19_pset2sol/"
+        },
+        {
+          "title": "Errors, Norms, and Condition Numbers",
+          "url": "https://nbviewer.jupyter.org/github/stevengj/1806/blob/fall18/lectures/Conditioning.ipynb"
+        }
+      ],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 6,
+      "sourceTitle": "Numerical Methods for Ordinary Differential Equations",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-3/#lecture-6-numerical-methods-for-ordinary-differential-equations",
+      "week": 3,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-3/",
+        "sha256": "c9c5e929b47cf019ff06cbaa1da123a7b437978f638d3055ecbd7a305fedbfd1",
+        "summaryCharacters": 1476
+      },
+      "resourceLinks": [
+        {
+          "title": "Modern Differential Equations Solver Software: Where We Are and Where We’re Headed (PDF - 2.4MB)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/mit18_335js19_lec6/"
+        },
+        {
+          "title": "Differential Equations package",
+          "url": "https://github.com/JuliaDiffEq/DifferentialEquations.jl"
+        }
+      ],
+      "readSupports": [
+        {
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/469d460f74800c8a1135946a64dee01f_MIT18_335JS19_lec6.pdf",
+          "title": "Modern Differential Equations Solver Software: Where We Are and Where We’re Headed (PDF - 2.4MB)",
+          "status": "text-extracted-excerpt-inspected",
+          "pages": 44,
+          "textCharacters": 10363,
+          "sha256": "e9fb4cf28883772a37a05e92734e9a486b6c92baca22c5fc62a5f1d2cd6ac853",
+          "inspectionLimit": "Full PDF text extracted in memory; opening textual excerpt inspected. Diagrams and every page were not visually reviewed."
+        }
+      ],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 7,
+      "sourceTitle": "The SVD, its Applications, and Condition Numbers",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-3/#lecture-7-the-svd-its-applications-and-condition-numbers",
+      "week": 3,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-3/",
+        "sha256": "c9c5e929b47cf019ff06cbaa1da123a7b437978f638d3055ecbd7a305fedbfd1",
+        "summaryCharacters": 296
+      },
+      "resourceLinks": [],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 8,
+      "sourceTitle": "Linear Regression and the Generalized SVD",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-3/#lecture-8-linear-regression-and-the-generalized-svd",
+      "week": 3,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-3/",
+        "sha256": "c9c5e929b47cf019ff06cbaa1da123a7b437978f638d3055ecbd7a305fedbfd1",
+        "summaryCharacters": 509
+      },
+      "resourceLinks": [
+        {
+          "title": "Many Viewpoints on Linear Regression",
+          "url": "https://github.com/alanedelman/18.337_2017/blob/master/lectures/Lecture04_0918%20RegressionManyWays/RegressionManyWays.ipynb"
+        }
+      ],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 9,
+      "sourceTitle": "Solving the Normal Equations by QR and Gram-Schmidt",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-4/#lecture-9-solving-the-normal-equations-by-qr-and-gram-schmidt",
+      "week": 4,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-4/",
+        "sha256": "eab2d1f770237de742de09ae3361c032a0e14b91b1d38a6c8c22902daa545f69",
+        "summaryCharacters": 1250
+      },
+      "resourceLinks": [
+        {
+          "title": "Gram-Schmidt Orthogonalization (PDF)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/mit18_335js19_lec9_reading/"
+        }
+      ],
+      "readSupports": [
+        {
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/be0cdadd9de56ff8d20d9a0c6d6d9206_MIT18_335JS19_lec9_reading.pdf",
+          "title": "Gram-Schmidt Orthogonalization (PDF)",
+          "status": "text-extracted-excerpt-inspected",
+          "pages": 3,
+          "textCharacters": 5395,
+          "sha256": "8d127952a8c78278a508508ca8ffa315b0498a1772abb60d7ad722e8c9508399",
+          "inspectionLimit": "Full PDF text extracted in memory; opening textual excerpt inspected. Diagrams and every page were not visually reviewed.",
+          "internalDocumentDate": "2006-09-21"
+        }
+      ],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 10,
+      "sourceTitle": "Modified Gram-Schmidt and Householder QR",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-4/#lecture-10-modified-gram-schmidt-and-householder-qr",
+      "week": 4,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-4/",
+        "sha256": "eab2d1f770237de742de09ae3361c032a0e14b91b1d38a6c8c22902daa545f69",
+        "summaryCharacters": 1864
+      },
+      "resourceLinks": [
+        {
+          "title": "Householder Reflectors and Givens Rotations (PDF)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/mit18_335js19_lec10/"
+        },
+        {
+          "title": "Classical vs. Modified Gram-Schmidt",
+          "url": "http://nbviewer.jupyter.org/github/mitmath/18335/blob/spring19/notes/Gram-Schmidt.ipynb"
+        }
+      ],
+      "readSupports": [
+        {
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/24dd28c58f71fa98f333597707ff8684_MIT18_335JS19_lec10.pdf",
+          "title": "Householder Reflectors and Givens Rotations (PDF)",
+          "status": "text-extracted-excerpt-inspected",
+          "pages": 13,
+          "textCharacters": 5227,
+          "sha256": "484bdb30245726415e5f910b743f0a1bb5b9b60154eca0146b1035a3385ea002",
+          "inspectionLimit": "Full PDF text extracted in memory; opening textual excerpt inspected. Diagrams and every page were not visually reviewed.",
+          "internalDocumentDate": "2006-09-26"
+        }
+      ],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 11,
+      "sourceTitle": "Matrix Operations, Caches, and Blocking",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-4/#lecture-11-matrix-operations-caches-and-blocking",
+      "week": 4,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-4/",
+        "sha256": "eab2d1f770237de742de09ae3361c032a0e14b91b1d38a6c8c22902daa545f69",
+        "summaryCharacters": 2046
+      },
+      "resourceLinks": [
+        {
+          "title": "Performance Experiments with Matrix Multiplication (PDF)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/mit18_335js19_lec11/"
+        },
+        {
+          "title": "Ideal-Cache Terminology (PDF)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/ideal-cache/"
+        },
+        {
+          "title": "Problem set 3 (PDF)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/mit18_335js19_pset3/"
+        },
+        {
+          "title": "Problem set 3 solutions (PDF)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/mit18_335js19_pset3sol/"
+        }
+      ],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 12,
+      "sourceTitle": "Cache-Oblivious Algorithms and Spatial Locality",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-5/#lecture-12-cache-oblivious-algorithms-and-spatial-locality",
+      "week": 5,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-5/",
+        "sha256": "8b958fe92a08cb89f43dfbeaf5be4f42ab261d4af00bd9c8339584da92dff738",
+        "summaryCharacters": 799
+      },
+      "resourceLinks": [
+        {
+          "title": "Experiments with Cache-Oblivious Matrix Multiplication (PDF)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/mit18_335js19_lec12/"
+        },
+        {
+          "title": "Experiments with Memory Access and Matrices",
+          "url": "http://nbviewer.jupyter.org/github/mitmath/18335/blob/spring19/notes/Memory-and-Matrices.ipynb"
+        },
+        {
+          "title": "Register Allocation in Kernel Generators (PDF)",
+          "url": "http://cscads.rice.edu/workshops/july2007/autotune-slides-07/Frigo.pdf"
+        }
+      ],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 13,
+      "sourceTitle": "LU Factorization and Partial Pivoting",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-5/#lecture-13-lu-factorization-and-partial-pivoting",
+      "week": 5,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-5/",
+        "sha256": "8b958fe92a08cb89f43dfbeaf5be4f42ab261d4af00bd9c8339584da92dff738",
+        "summaryCharacters": 1355
+      },
+      "resourceLinks": [],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 14,
+      "sourceTitle": "Cholesky Factorization and other Specialized Solvers. Eigenproblems and Schur Factorizations",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-5/#lecture-14-cholesky-factorization-and-other-specialized-solvers-eigenproblems-and-schur-factorizations",
+      "week": 5,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-5/",
+        "sha256": "8b958fe92a08cb89f43dfbeaf5be4f42ab261d4af00bd9c8339584da92dff738",
+        "summaryCharacters": 1281
+      },
+      "resourceLinks": [],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 15,
+      "sourceTitle": "Eigensolver Algorithms: Companion Matrices, Ill-Conditioning, and Hessenberg Factorization",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-6/#lecture-15-eigensolver-algorithms-companion-matrices-ill-conditioning-and-hessenberg-factorization",
+      "week": 6,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-6/",
+        "sha256": "fe793bc45f13faf9464e2c1123e2a4e69cb125a3f517aa3c2ece460468fe5927",
+        "summaryCharacters": 2848
+      },
+      "resourceLinks": [
+        {
+          "title": "Hessenberg Factorization (PDF)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/mit18_335js19_lec15/"
+        },
+        {
+          "title": "Studying Wilkinson’s Polynomial in Julia",
+          "url": "https://nbviewer.jupyter.org/github/mitmath/18335/blob/spring15/notes/Wilkinson-Polynomial.ipynb"
+        },
+        {
+          "title": "Eigenvalues: The Key Idea",
+          "url": "https://nbviewer.jupyter.org/github/stevengj/1806/blob/fall18/lectures/Eigenvalue-Polynomials.ipynb"
+        }
+      ],
+      "readSupports": [
+        {
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/fc0209dbe68002972f36f172077fb976_MIT18_335JS19_lec15.pdf",
+          "title": "Hessenberg Factorization (PDF)",
+          "status": "text-extracted-excerpt-inspected",
+          "pages": 2,
+          "textCharacters": 3688,
+          "sha256": "3a142674a6b74bae432f9473ce2f3e3ade4ca45ed410dbecda4fab58a3f58329",
+          "inspectionLimit": "Full PDF text extracted in memory; opening textual excerpt inspected. Diagrams and every page were not visually reviewed."
+        }
+      ],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 16,
+      "sourceTitle": "The Power Method and the QR Algorithm",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-6/#lecture-16-the-power-method-and-the-qr-algorithm",
+      "week": 6,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-6/",
+        "sha256": "fe793bc45f13faf9464e2c1123e2a4e69cb125a3f517aa3c2ece460468fe5927",
+        "summaryCharacters": 1707
+      },
+      "resourceLinks": [
+        {
+          "title": "The QR Algorithm I (PDF)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/mit18_335js19_lec16_reading/"
+        },
+        {
+          "title": "The QR Algorithm II (PDF)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/mit18_335js19_lec16_reading2/"
+        }
+      ],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 17,
+      "sourceTitle": "Shifted QR and Rayleigh Quotients",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-6/#lecture-17-shifted-qr-and-rayleigh-quotients",
+      "week": 6,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-6/",
+        "sha256": "fe793bc45f13faf9464e2c1123e2a4e69cb125a3f517aa3c2ece460468fe5927",
+        "summaryCharacters": 2666
+      },
+      "resourceLinks": [
+        {
+          "title": "The QR Algorithm I (PDF)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/mit18_335js19_lec16_reading/"
+        },
+        {
+          "title": "The QR Algorithm II (PDF)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/mit18_335js19_lec16_reading2/"
+        }
+      ],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 18,
+      "sourceTitle": "Krylov Methods and the Arnoldi Algorithm",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-7/#lecture-18-krylov-methods-and-the-arnoldi-algorithm",
+      "week": 7,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-7/",
+        "sha256": "0eb4eae2d091d2e1d82c94721b2b9cb1ce7dbd3774748332ec8a6f949bbf3947",
+        "summaryCharacters": 2054
+      },
+      "resourceLinks": [],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 19,
+      "sourceTitle": "Arnoldi and Lanczos with Restarting",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-7/#lecture-19-arnoldi-and-lanczos-with-restarting",
+      "week": 7,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-7/",
+        "sha256": "0eb4eae2d091d2e1d82c94721b2b9cb1ce7dbd3774748332ec8a6f949bbf3947",
+        "summaryCharacters": 1551
+      },
+      "resourceLinks": [
+        {
+          "title": "Why Restarting Arnoldi/Lanczos is not Trivial (PDF)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/mit18_335js19_lec19/"
+        },
+        {
+          "title": "Experiments with Arnoldi Iterations",
+          "url": "http://nbviewer.jupyter.org/github/mitmath/18335/blob/spring19/notes/Arnoldi.ipynb"
+        }
+      ],
+      "readSupports": [
+        {
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/fa98fed43acb3e2311f6d9328ca31d04_MIT18_335JS19_lec19.pdf",
+          "title": "Why Restarting Arnoldi/Lanczos is not Trivial (PDF)",
+          "status": "text-extracted-excerpt-inspected",
+          "pages": 4,
+          "textCharacters": 6084,
+          "sha256": "712f1dcd9b5de1b61f875c60eade04efdfb7369c396ce8e24f54b23b2a12e2dc",
+          "inspectionLimit": "Full PDF text extracted in memory; opening textual excerpt inspected. Diagrams and every page were not visually reviewed.",
+          "internalDocumentDate": "2019-03-21"
+        }
+      ],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 20,
+      "sourceTitle": "The GMRES Algorithm and Convergence of GMRES and Arnoldi",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-7/#lecture-20-the-gmres-algorithm-and-convergence-of-gmres-and-arnoldi",
+      "week": 7,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-7/",
+        "sha256": "0eb4eae2d091d2e1d82c94721b2b9cb1ce7dbd3774748332ec8a6f949bbf3947",
+        "summaryCharacters": 4030
+      },
+      "resourceLinks": [
+        {
+          "title": "Problem set 4 (PDF)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/mit18_335js19_pset4/"
+        },
+        {
+          "title": "Problem set 4 solutions (PDF)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/mit18_335js19_pset4sol/"
+        }
+      ],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 21,
+      "sourceTitle": "Preconditioning Techniques. The Conjugate-Gradient Method",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-8/#lecture-21-preconditioning-techniques-the-conjugate-gradient-method",
+      "week": 8,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-8/",
+        "sha256": "6add0b1dba14320ca84017960b28f7de220d46b4502a184af0ff038d86afadec",
+        "summaryCharacters": 2925
+      },
+      "resourceLinks": [
+        {
+          "title": "Large-Scale Linear Algebra: Dense Matrix Methods",
+          "url": "https://nbviewer.jupyter.org/github/mitmath/18335/blob/spring19/notes/Dense-and-Sparse.ipynb"
+        },
+        {
+          "title": "An Introduction to the Conjugate Gradient Method without the Agonizing Pain (PDF)",
+          "url": "http://www.cs.cmu.edu/~quake-papers/painless-conjugate-gradient.pdf"
+        }
+      ],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 22,
+      "sourceTitle": "Convergence of Conjugate Gradient",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-8/#lecture-22-convergence-of-conjugate-gradient",
+      "week": 8,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-8/",
+        "sha256": "6add0b1dba14320ca84017960b28f7de220d46b4502a184af0ff038d86afadec",
+        "summaryCharacters": 404
+      },
+      "resourceLinks": [],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 23,
+      "sourceTitle": "Biconjugate Gradient Algorithms",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-8/#lecture-23-biconjugate-gradient-algorithms",
+      "week": 8,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-8/",
+        "sha256": "6add0b1dba14320ca84017960b28f7de220d46b4502a184af0ff038d86afadec",
+        "summaryCharacters": 2227
+      },
+      "resourceLinks": [],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 24,
+      "sourceTitle": "Sparse-Direct Solvers",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-9/#lecture-24-sparse-direct-solvers",
+      "week": 9,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-9/",
+        "sha256": "4b5782d1f4a2269aa507dc2b3fe82d1a1f27e00501002a91c5d99660d54024ed",
+        "summaryCharacters": 2591
+      },
+      "resourceLinks": [
+        {
+          "title": "Sparse Matrix Algorithms (PDF)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/mit18_335js19_lec24/"
+        },
+        {
+          "title": "Sparse-Direct Solvers in Julia",
+          "url": "http://nbviewer.jupyter.org/github/mitmath/18335/blob/spring19/notes/Nested-Dissection.ipynb"
+        }
+      ],
+      "readSupports": [
+        {
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/bcd746dca8cbf0d5a890f01a72d8ef64_MIT18_335JS19_lec24.pdf",
+          "title": "Sparse Matrix Algorithms (PDF)",
+          "status": "text-extracted-excerpt-inspected",
+          "pages": 3,
+          "textCharacters": 4478,
+          "sha256": "608af3f4be954a573beb1fc5ea2fe9b40b1e6ce8aa6af19500d2861b358cbac4",
+          "inspectionLimit": "Full PDF text extracted in memory; opening textual excerpt inspected. Diagrams and every page were not visually reviewed.",
+          "internalDocumentDate": "2006-11-28"
+        }
+      ],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 25,
+      "sourceTitle": "Overview of Optimization Algorithms",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-9/#lecture-25-overview-of-optimization-algorithms",
+      "week": 9,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-9/",
+        "sha256": "4b5782d1f4a2269aa507dc2b3fe82d1a1f27e00501002a91c5d99660d54024ed",
+        "summaryCharacters": 2566
+      },
+      "resourceLinks": [
+        {
+          "title": "A Brief Overview of Optimization Problems (PDF)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/mit18_335js19_lec25/"
+        },
+        {
+          "title": "A Survey of Nonlinear Conjugate Gradient Methods (PDF)",
+          "url": "http://people.cs.vt.edu/~asandu/Public/Qual2011/Optim/Hager_2006_CG-survey.pdf"
+        }
+      ],
+      "readSupports": [
+        {
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/b9aa5a3948b1d993b8e62cff9fd1bdf2_MIT18_335JS19_lec25.pdf",
+          "title": "A Brief Overview of Optimization Problems (PDF)",
+          "status": "text-extracted-excerpt-inspected",
+          "pages": 16,
+          "textCharacters": 8573,
+          "sha256": "1731b2ff02e2e5398f51d62e9cd05f1b6321b2f179f16fcefdc15ee1e197f3ed",
+          "inspectionLimit": "Full PDF text extracted in memory; opening textual excerpt inspected. Diagrams and every page were not visually reviewed."
+        }
+      ],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 26,
+      "sourceTitle": "Adjoint Methods",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-9/#lecture-26-adjoint-methods",
+      "week": 9,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-9/",
+        "sha256": "4b5782d1f4a2269aa507dc2b3fe82d1a1f27e00501002a91c5d99660d54024ed",
+        "summaryCharacters": 481
+      },
+      "resourceLinks": [
+        {
+          "title": "Adjoint Methods (PDF)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/mit18_335js19_lec26/"
+        }
+      ],
+      "readSupports": [
+        {
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/35b30d8c4896f95264ee1b135fe031f2_MIT18_335JS19_lec26.pdf",
+          "title": "Adjoint Methods (PDF)",
+          "status": "text-extracted-excerpt-inspected",
+          "pages": 7,
+          "textCharacters": 20008,
+          "sha256": "5c2ea5008dca1a8c8ef45c57724f91a0d1fa3a19c752ac17467f529d298221cb",
+          "inspectionLimit": "Full PDF text extracted in memory; opening textual excerpt inspected. Diagrams and every page were not visually reviewed.",
+          "internalDocumentDate": "Created Spring 2006; updated 2012-12-17"
+        }
+      ],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 27,
+      "sourceTitle": "Adjoint Methods for Eigenproblems and Recurrence Relations",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-10/#lecture-27-adjoint-methods-for-eigenproblems-and-recurrence-relations",
+      "week": 10,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-10/",
+        "sha256": "23b5440c414a8f0b09cf080d5a075929163e9963653f642d3644d58f3f61bdbe",
+        "summaryCharacters": 454
+      },
+      "resourceLinks": [
+        {
+          "title": "Adjoint Methods and Sensitivity Analysis for Recurrence Relations (PDF)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/mit18_335js19_lec27/"
+        },
+        {
+          "title": "Recurrence Relation",
+          "url": "https://nbviewer.jupyter.org/github/mitmath/18335/blob/spring19/notes/adjoint/Adjoint-method.ipynb"
+        }
+      ],
+      "readSupports": [
+        {
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/c34c9784410f2cef610f73af72883427_MIT18_335JS19_lec27.pdf",
+          "title": "Adjoint Methods and Sensitivity Analysis for Recurrence Relations (PDF)",
+          "status": "text-extracted-excerpt-inspected",
+          "pages": 5,
+          "textCharacters": 8718,
+          "sha256": "77a80b9c544cd0f1fe36ed2143f04a1a568e3ef1d9c88068971fb2c54483e0b0",
+          "inspectionLimit": "Full PDF text extracted in memory; opening textual excerpt inspected. Diagrams and every page were not visually reviewed.",
+          "internalDocumentDate": "Created October 2007; updated 2011-11-09"
+        }
+      ],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 28,
+      "sourceTitle": "Trust-Regions Methods and the CCSA Algorithm",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-10/#lecture-28-trust-regions-methods-and-the-ccsa-algorithm",
+      "week": 10,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-10/",
+        "sha256": "23b5440c414a8f0b09cf080d5a075929163e9963653f642d3644d58f3f61bdbe",
+        "summaryCharacters": 2842
+      },
+      "resourceLinks": [],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 29,
+      "sourceTitle": "Lagrange Dual Problems",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-11/#lecture-29-lagrange-dual-problems",
+      "week": 11,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-11/",
+        "sha256": "a4c26e5ed1d73b903eee9adf78c69eae6c0861d784bab221a162a2e0f79567f9",
+        "summaryCharacters": 1747
+      },
+      "resourceLinks": [
+        {
+          "title": "Lagrangian, Lagrange Dual Function and Dual Problem (PDF)",
+          "url": "https://github.com/mitmath/18335/blob/spring19/notes/boyd-ch5-slides.pdf"
+        }
+      ],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 30,
+      "sourceTitle": "Quasi-Newton Methods and the BFGS Algorithm",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-11/#lecture-30quasi-newton-methods-and-the-bfgs-algorithm-lecture-31derivation-of-the-bfgs-update",
+      "week": 11,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-11/",
+        "sha256": "a4c26e5ed1d73b903eee9adf78c69eae6c0861d784bab221a162a2e0f79567f9",
+        "summaryCharacters": 829
+      },
+      "resourceLinks": [
+        {
+          "title": "Quasi-Newton Optimization: Origin of the BFGS Update (PDF)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/mit18_335js19_lec30/"
+        },
+        {
+          "title": "The Linear Algebra of Block Quasi-Newton Algorithms (PDF)",
+          "url": "http://www.cs.umd.edu/~oleary/reprints/j39.pdf"
+        }
+      ],
+      "sharedSupportWith": [
+        31
+      ],
+      "readSupports": [
+        {
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/1b52b607c223977b35ba1d826e4d8df1_MIT18_335JS19_lec30.pdf",
+          "title": "Quasi-Newton Optimization: Origin of the BFGS Update (PDF)",
+          "status": "text-extracted-excerpt-inspected",
+          "pages": 9,
+          "textCharacters": 15541,
+          "sha256": "0962d0e3d5b863a60857e19d83547c01bfef894d13a8254e8ff7a4a8ee86ccfd",
+          "inspectionLimit": "Full PDF text extracted in memory; opening textual excerpt inspected. Diagrams and every page were not visually reviewed.",
+          "internalDocumentDate": "2019-04-25"
+        }
+      ],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read.",
+      "publishedCombinedHeading": "Lecture 30: Quasi-Newton Methods and the BFGS Algorithm; Lecture 31: Derivation of the BFGS Update"
+    },
+    {
+      "number": 31,
+      "sourceTitle": "Derivation of the BFGS Update",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-11/#lecture-30quasi-newton-methods-and-the-bfgs-algorithm-lecture-31derivation-of-the-bfgs-update",
+      "week": 11,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-11/",
+        "sha256": "a4c26e5ed1d73b903eee9adf78c69eae6c0861d784bab221a162a2e0f79567f9",
+        "summaryCharacters": 829
+      },
+      "resourceLinks": [
+        {
+          "title": "Quasi-Newton Optimization: Origin of the BFGS Update (PDF)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/mit18_335js19_lec30/"
+        },
+        {
+          "title": "The Linear Algebra of Block Quasi-Newton Algorithms (PDF)",
+          "url": "http://www.cs.umd.edu/~oleary/reprints/j39.pdf"
+        }
+      ],
+      "sharedSupportWith": [
+        30
+      ],
+      "readSupports": [
+        {
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/1b52b607c223977b35ba1d826e4d8df1_MIT18_335JS19_lec30.pdf",
+          "title": "Quasi-Newton Optimization: Origin of the BFGS Update (PDF)",
+          "status": "text-extracted-excerpt-inspected",
+          "pages": 9,
+          "textCharacters": 15541,
+          "sha256": "0962d0e3d5b863a60857e19d83547c01bfef894d13a8254e8ff7a4a8ee86ccfd",
+          "inspectionLimit": "Full PDF text extracted in memory; opening textual excerpt inspected. Diagrams and every page were not visually reviewed.",
+          "internalDocumentDate": "2019-04-25"
+        }
+      ],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read.",
+      "publishedCombinedHeading": "Lecture 30: Quasi-Newton Methods and the BFGS Algorithm; Lecture 31: Derivation of the BFGS Update"
+    },
+    {
+      "number": 32,
+      "sourceTitle": "Derivative-Free Optimization by Linear and Quadratic Approximations",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-12/#lecture-32-derivative-free-optimization-by-linear-and-quadratic-approximations",
+      "week": 12,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-12/",
+        "sha256": "c29588f35f95b4b9a7500c178f4591d558394beb6e0fdc1f7db91a6ac26808b1",
+        "summaryCharacters": 4278
+      },
+      "resourceLinks": [
+        {
+          "title": "BlackBoxOptim",
+          "url": "https://github.com/robertfeldt/BlackBoxOptim.jl"
+        }
+      ],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 33,
+      "sourceTitle": "Numerical Integration and the Convergence of the Trapezoidal Rule",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-12/#lecture-33-numerical-integration-and-the-convergence-of-the-trapezoidal-rule",
+      "week": 12,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-12/",
+        "sha256": "c29588f35f95b4b9a7500c178f4591d558394beb6e0fdc1f7db91a6ac26808b1",
+        "summaryCharacters": 1315
+      },
+      "resourceLinks": [
+        {
+          "title": "Numerical Integration and the Redemption of the Trapezoidal Rule (PDF)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/mit18_335js19_lec33_1/"
+        },
+        {
+          "title": "Fourier Cosine Series Examples (PDF)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/mit18_335js19_lec33_2/"
+        }
+      ],
+      "readSupports": [
+        {
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/4fc9cea286982357dc8f1a64a1b035cf_MIT18_335JS19_lec33_1.pdf",
+          "title": "Numerical Integration and the Redemption of the Trapezoidal Rule (PDF)",
+          "status": "text-extracted-excerpt-inspected",
+          "pages": 12,
+          "textCharacters": 24819,
+          "sha256": "f567271df7c669f2cc4ace1fb8b4a448edbea2f0a676e367988c85b81b651c5f",
+          "inspectionLimit": "Full PDF text extracted in memory; opening textual excerpt inspected. Diagrams and every page were not visually reviewed.",
+          "internalDocumentDate": "2011-01-06"
+        }
+      ],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 34,
+      "sourceTitle": "Clenshaw-Curtis Quadrature",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-12/#lecture-34clenshaw-curtis-quadrature",
+      "week": 12,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-12/",
+        "sha256": "c29588f35f95b4b9a7500c178f4591d558394beb6e0fdc1f7db91a6ac26808b1",
+        "summaryCharacters": 933
+      },
+      "resourceLinks": [],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 35,
+      "sourceTitle": "Chebyshev Approximation",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-13/#lecture-35-chebyshev-approximation",
+      "week": 13,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-13/",
+        "sha256": "fdc7f62ed91f5bfff21703d58eebac2e8970741dc59b8feb495bba79c2540a79",
+        "summaryCharacters": 907
+      },
+      "resourceLinks": [
+        {
+          "title": "ApproxFun",
+          "url": "https://github.com/ApproxFun/ApproxFun.jl"
+        }
+      ],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 36,
+      "sourceTitle": "Integration with Weight Functions, and Gaussian Quadrature",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-13/#lecture-36-integration-with-weight-functions-and-gaussian-quadrature",
+      "week": 13,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-13/",
+        "sha256": "fdc7f62ed91f5bfff21703d58eebac2e8970741dc59b8feb495bba79c2540a79",
+        "summaryCharacters": 3021
+      },
+      "resourceLinks": [
+        {
+          "title": "Numerical Approximation of Highly Oscillatory Integrals (PDF)",
+          "url": "https://people.math.ethz.ch/~hiptmair/Seminars/OSCINT/OLV08p.pdf"
+        },
+        {
+          "title": "FastGaussQuadrature",
+          "url": "https://github.com/JuliaApproximation/FastGaussQuadrature.jl"
+        }
+      ],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 37,
+      "sourceTitle": "Adaptive and Multidimensional Quadrature",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-13/#lecture-37-adaptive-and-multidimensional-quadrature",
+      "week": 13,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-13/",
+        "sha256": "fdc7f62ed91f5bfff21703d58eebac2e8970741dc59b8feb495bba79c2540a79",
+        "summaryCharacters": 297
+      },
+      "resourceLinks": [],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 38,
+      "sourceTitle": "The Discrete Fourier Transform (DFT) and FFT Algorithms",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-14/#lecture-38-the-discrete-fourier-transform-dft-and-fft-algorithms",
+      "week": 14,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-14/",
+        "sha256": "a60e9367937583fb5f8c3bf7c5964eec9e9da631ef4e7eaf006b3c8246ee965c",
+        "summaryCharacters": 674
+      },
+      "resourceLinks": [
+        {
+          "title": "Fast Fourier Transform Algorithms (PDF)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/mit18_335js19_lec38/"
+        }
+      ],
+      "readSupports": [
+        {
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/edf5b798bef2f1cfe687a6bfcd32a03a_MIT18_335JS19_lec38.pdf",
+          "title": "Fast Fourier Transform Algorithms (PDF)",
+          "status": "text-extracted-excerpt-inspected",
+          "pages": 3,
+          "textCharacters": 9354,
+          "sha256": "7beea803b41c1c642574c3df54a3cb4dad7eab434c0362510d61ace8da6ec20d",
+          "inspectionLimit": "Full PDF text extracted in memory; opening textual excerpt inspected. Diagrams and every page were not visually reviewed.",
+          "internalDocumentDate": "2008-01-11"
+        }
+      ],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    },
+    {
+      "number": 39,
+      "sourceTitle": "FFT Algorithms and FFTW",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-14/#lecture-39-fft-algorithms-and-fftw",
+      "week": 14,
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "sourceEvidence": {
+        "pageUrl": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-14/",
+        "sha256": "a60e9367937583fb5f8c3bf7c5964eec9e9da631ef4e7eaf006b3c8246ee965c",
+        "summaryCharacters": 641
+      },
+      "resourceLinks": [
+        {
+          "title": "Fast Fourier Transform and Fast Fourier Transform in the West (PDF - 2.6MB)",
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/resources/mit18_335js19_lec39/"
+        }
+      ],
+      "readSupports": [
+        {
+          "url": "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/f4e0fe09545fcf1a9fa8928385fcf412_MIT18_335JS19_lec39.pdf",
+          "title": "Fast Fourier Transform and Fast Fourier Transform in the West (PDF - 2.6MB)",
+          "status": "text-extracted-excerpt-inspected",
+          "pages": 62,
+          "textCharacters": 19933,
+          "sha256": "fc2b03b689011204945066664f3d767ecc56d9cf0d20d02945b68f0995c9cfea",
+          "inspectionLimit": "Full PDF text extracted in memory; opening textual excerpt inspected. Diagrams and every page were not visually reviewed."
+        }
+      ],
+      "supportCoverage": "Weekly lecture summary inspected; linked external references are not automatically claimed as read."
+    }
+  ],
+  "calendarNotes": {
+    "numberedLectures": 39,
+    "weeklyHeadingCount": 38,
+    "combinedLectures": [
+      30,
+      31
+    ],
+    "assessmentPolicy": "Problem-set deadlines, take-home midterm and final project are calendar milestones, not additional numbered lectures."
+  },
+  "provenancePolicy": "Original French learning notes and original practice questions aligned with the numbered lectures. Not a transcription of MIT assignments or an equivalence to completing the graduate course."
+}
