@@ -9,6 +9,7 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
@@ -112,6 +113,15 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
                         Text(exercise.prompt, fontSize = 26.sp, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
                         if (lesson.objective.isNotBlank()) Text("Objectif : ${lesson.objective}", color = Graphite)
                         when (exercise) {
+                            is Exercise.ReadingChoice -> {
+                                Surface(color = White, shape = LearningShape) {
+                                    SelectionContainer {
+                                        Text(exercise.passage, Modifier.fillMaxWidth().padding(20.dp),
+                                            fontSize = 18.sp, lineHeight = 28.sp, fontWeight = FontWeight.Normal)
+                                    }
+                                }
+                                OptionsList(exercise.options, selectedOption, checked, viewModel::selectOption)
+                            }
                             is Exercise.SpokenProduction -> SpokenProductionPractice(exercise, viewModel, checked)
                             is Exercise.ListeningChoice -> {
                                 ListeningPractice(exercise, checked, exercise.audioResourcePath in heardAudioPaths,

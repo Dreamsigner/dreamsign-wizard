@@ -1,0 +1,573 @@
+{
+  "courseCode": "MIT 18.404J",
+  "inventoryId": "ossu_041",
+  "edition": "Fall 2020",
+  "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/",
+  "checkedOn": "2026-10-20",
+  "sessionCount": 27,
+  "countUnit": "25 numbered lecture videos plus two examinations explicitly scheduled as sessions 13 and 27",
+  "sourceIndexUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/video_galleries/video-lectures/",
+  "calendarUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/pages/calendar/",
+  "notesIndexUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/pages/lecture-notes/",
+  "assessmentIndexUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/pages/exams/",
+  "sessions": [
+    {
+      "number": 1,
+      "sourceTitle": "Lecture 1: Introduction, Finite Automata, Regular Expressions",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/resources/introduction-finite-automata-regular-expressions/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/b4d9bf1573dccea21bee82cfba4224d4_MIT18_404f20_lec1.pdf",
+          "sha256": "92bd201b15f0a5e16ce3054c5d664d1751ca5eea03343fe9a74dcd8fd563603b"
+        },
+        {
+          "kind": "transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/86305bbfaa2bcc31f8c249142051e037_9syvZr-9xwk.pdf",
+          "sha256": "3f2fedabff010092939167dfcbfc444a41569db2c29b7fb324e076c4ceb8773b"
+        }
+      ],
+      "readingFocus": "DFA, acceptation et langages, parité du nombre de 1, opérations régulières et expressions ; distinction mémoire finie et compte exact."
+    },
+    {
+      "number": 2,
+      "sourceTitle": "Lecture 2: Nondeterminism, Closure Properties, Regular Expressions → Finite Automata",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/resources/nondeterminism-closure-properties-regular-expressions-2192-finite-automata/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/d741901d23b4522588e267177c77d10d_MIT18_404f20_lec2.pdf",
+          "sha256": "7eebd8442ae8b19db00c0ee39a8084a04c0e7b2b61d358317266c2bbf81e740c"
+        },
+        {
+          "kind": "transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/9bdf0ca77391027dfddc83f7e025ab6c_oNsscmUwjMU.pdf",
+          "sha256": "61d9162df1d7852d0abe6a886397d1072e2d76d4ab91bd82ffa824c7a2ac1a8d"
+        }
+      ],
+      "readingFocus": "Non-déterminisme, transitions ε, conversion par ensembles d’états, fermeture union/concaténation/étoile et expressions vers automates."
+    },
+    {
+      "number": 3,
+      "sourceTitle": "Lecture 3: Regular Pumping Lemma, Finite Automata → Regular Expressions, CFGs",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/resources/regular-pumping-lemma-finite-automata-2192-regular-expressions-cfgs/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/a77711ed3d212bf472f3485883a121e0_MIT18_404f20_lec3.pdf",
+          "sha256": "17928b1d1ba83d1f7828230b6da856b08770e29ff0dfd8aaa1d64157ed35c6c8"
+        },
+        {
+          "kind": "transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/5e1fd0dfb8d0d45a2bde948aec38b4d9_KAySmSEGc9U.pdf",
+          "sha256": "1070af348a967aa1a8fe8fdcabe15d45d29d6eabcc7f87f21aa4afcf906a14b3"
+        }
+      ],
+      "readingFocus": "Élimination d’états, lemme de pompage régulier et choix des témoins 0^p1^p ; quantificateurs, CFG et exemples de dérivation."
+    },
+    {
+      "number": 4,
+      "sourceTitle": "Lecture 4: Pushdown Automata, CFG ↔ PDA",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/resources/pushdown-automata-cfg-2194-pda/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/a22fce6f6824c53dbb79a0da786966a6_MIT18_404f20_lec4.pdf",
+          "sha256": "80e820272a6e9942b9d2b40d1d1d129258b129f405dcc90f9fbc915f09ff7fcf"
+        },
+        {
+          "kind": "transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/4971cfaeab8290eb2539668bfa3287d7_m9eHViDPAJQ.pdf",
+          "sha256": "10c6f1ec3bf528bac2d5ae99a43a7c44cf8baf4d63c2669404822d0ac6c8db2d"
+        }
+      ],
+      "readingFocus": "Définition des CFG, PDA et pile ; simulation d’une dérivation au sommet et équivalence des classes avec PDA non déterministes."
+    },
+    {
+      "number": 5,
+      "sourceTitle": "Lecture 5: CF Pumping Lemma, Turing Machines",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/resources/cf-pumping-lemma-turing-machines/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/18c8cd00b14d48dc5865f3bdc41abd76_MIT18_404f20_lec5.pdf",
+          "sha256": "bd7f38a115edd152314d94e4178f773d4a000734004e797b1c071be9d64a68ea"
+        },
+        {
+          "kind": "transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/12409362e93748137502be876e72f9b3_IycOPFmEQk8.pdf",
+          "sha256": "fd0e4246347d90078701952685464a5e73835773d6f86bb26aba53a8c08e2765"
+        }
+      ],
+      "readingFocus": "Pompage CFL à deux facteurs, fenêtres bornées et langages à comptes liés ; modèle TM, marquage, reconnaissance et décision."
+    },
+    {
+      "number": 6,
+      "sourceTitle": "Lecture 6: TM Variants, Church-Turing Thesis",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/resources/tm-variants-church-turing-thesis/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/7405f6112c8ca7242e1edd9a021c1e63_MIT18_404f20_lec6.pdf",
+          "sha256": "3f32d43d1ac10ba996169daa376e8cff86b0599ba64da9ae18e5daf89c1a0da0"
+        },
+        {
+          "kind": "transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/9ec3c6d48876f589a7a2e2526573a841_TTArY7ojshU.pdf",
+          "sha256": "6d284e5cc55e34dffdc225ad54e77ecc188a0ea52a5218da0a7aea1dedaf1005"
+        }
+      ],
+      "readingFocus": "Machines multirubans, non-déterminisme, énumérateurs et simulations équitables ; thèse de Church-Turing et encodages."
+    },
+    {
+      "number": 7,
+      "sourceTitle": "Lecture 7: Decision Problems for Automata and Grammars",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/resources/decision-problems-for-automata-and-grammars/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/78c0346bd81b6abcb2b1dde899adfc88_MIT18_404f20_lec7.pdf",
+          "sha256": "e6767e3d81df2c9a5d88d6e6214687ae67de7c0943e0d0bbc5688e60c59eebeb"
+        },
+        {
+          "kind": "transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/1b34887be491d500d385f8fb88eb20f0_4MgN6uxd4i4.pdf",
+          "sha256": "bd007d924ca07c199926f9d881f5dd27838d8cebee2b0e1c289f4adfbf878f63"
+        }
+      ],
+      "readingFocus": "Décision de l’acceptation/vacuité/équivalence pour automates ; appartenance et vacuité des CFG, normalisation de Chomsky, limites de l’équivalence CFG."
+    },
+    {
+      "number": 8,
+      "sourceTitle": "Lecture 8: Undecidability",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/resources/lecture-8-undecidability/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/3ab8452b4b29eb28a1416e4a1575323c_MIT18_404f20_lec8.pdf",
+          "sha256": "884c3431e30154a4436ee554051a2447a3a90cdb9e0ddcc7e29a3b9a7328c3ba"
+        },
+        {
+          "kind": "transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/ee8ea0832eeac91d9fdc5e20d19f9e22_3PzuSPQPEU4.pdf",
+          "sha256": "b3c7e87b069f701d0a3de62afc9538375b4692bbc17119d66eb6203e00801375"
+        }
+      ],
+      "readingFocus": "Diagonalisation contre A_TM, tailles d’ensembles et reconnaissabilité ; complément et entrelacement de reconnaisseurs."
+    },
+    {
+      "number": 9,
+      "sourceTitle": "Lecture 9: Reducibility",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/resources/lecture-9-reducibility/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/dae35894f6f5d5d09bb9fc225c664fff_MIT18_404f20_lec9.pdf",
+          "sha256": "900ee7d561950b3c044bb560366b0e3bec80469a66a1c39272c7d796c674d6d5"
+        },
+        {
+          "kind": "transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/87629dbae63a97eb64319b5a9f75db86_N28g_YBXY8Y.pdf",
+          "sha256": "51ce3379d53f25ea11de4b8c20b6a08599cf86944b332e20164fc2ff743158f1"
+        }
+      ],
+      "readingFocus": "Réductions générales et par application ; fonctions totales calculables, sens des transferts et propriétés des langages de machines."
+    },
+    {
+      "number": 10,
+      "sourceTitle": "Lecture 10: Computation History Method",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/resources/lecture-10-computation-history-method/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/a48f01c5374e72ee4f68a70bc0e38583_MIT18_404f20_lec10.pdf",
+          "sha256": "97d2c9b464c84b9d275e678ad684963674fd1227fda2b878cd72e0bd8a293794"
+        },
+        {
+          "kind": "transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/854d7b747ecd354b5ef5fcfa78b88a72_MGqoLm2aAgc.pdf",
+          "sha256": "4c9514ca83c29d38b568d4422976c5eeb8e1dccb850bbe4c236661277108b034"
+        }
+      ],
+      "readingFocus": "Configurations et histoires finies, LBA, correspondance de Post, contrôle local et problèmes globaux indécidables."
+    },
+    {
+      "number": 11,
+      "sourceTitle": "Lecture 11: Recursion Theorem and Logic",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/resources/lecture-11-recursion-theorem-and-logic/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/779043ea724131d008eae652d703938f_MIT18_404f20_lec11.pdf",
+          "sha256": "73dd557a1efe75ca0c6ee6f108535dace023adda0a220aac6df9f9d1e9b244c2"
+        },
+        {
+          "kind": "transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/b7a580ba97f66a30ee33598402debf0f_N-_XmLanPYg.pdf",
+          "sha256": "6336ffc6e5cf5fc20259c538b901cbf5c996e1c0315941b36ddca3dbe104666d"
+        }
+      ],
+      "readingFocus": "Autoréférence, théorème de récursion, point fixe comportemental, minimalité des descriptions et esquisse d’incomplétude avec correction/vérifiabilité."
+    },
+    {
+      "number": 12,
+      "sourceTitle": "Lecture 12: Time Complexity",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/resources/lecture-12-time-complexity/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/7278be637b3ba371d16c9dd574705e23_MIT18_404f20_lec12.pdf",
+          "sha256": "62d662179456e8fdb2f0818ff36fe1973004ec2d58ff0c755293cb4c98d41c00"
+        },
+        {
+          "kind": "transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/e2b6f886e1020b79f565b0d71ade0ce5_asjAc90L8rE.pdf",
+          "sha256": "84b0fdb0e69931c5e4b3cb7a59bccf48946a7b50f66dd5f5f6fa317be2dd43f9"
+        }
+      ],
+      "readingFocus": "Pire temps par longueur, modèles, surcoût polynomial de simulation, classe P et rôle de l’encodage."
+    },
+    {
+      "number": 13,
+      "sourceTitle": "Midterm Exam",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/pages/calendar/",
+      "kind": "exam",
+      "contentStatus": "authored",
+      "sourceMaterialStatus": "Fall 2020 exam scheduled, but its paper is not published in the examined index; authored practice only.",
+      "consultedMaterials": [
+        {
+          "kind": "historical_practice",
+          "sourceTitle": "Sample Midterm Exam, Fall 2006 Term (PDF)",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/9233517f4c6a12f4ba7b59eadd4fcc60_MIT18_404f20_mid06.pdf",
+          "sha256": "487aadeb98656344419ebc4904d9959bc4b049c606d874bf9c2c0a72ef7e3b6a"
+        }
+      ],
+      "readingFocus": "Midterm indiqué au calendrier 2020, sujet non publié ; exemple de partiel Fall 2006 lu : automates, parenthèses/CFG/PDA, pompage et indécidabilité. Exercices nouveaux."
+    },
+    {
+      "number": 14,
+      "sourceTitle": "Lecture 14: P and NP, SAT, Poly-Time Reducibility",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/resources/lecture-14-p-and-np-sat-poly-time-reducibility/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/45e2fd621349cfd7c9faf93a6ba134a3_MIT18_404f20_lec14.pdf",
+          "sha256": "87943fcefae7eb5e02dec5fa7be4b50713fcccaa621bce6a528f64b5e838ef83"
+        },
+        {
+          "kind": "transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/1f8c07520728f22bf88196d3f138be69_1VhnDdQsELo.pdf",
+          "sha256": "f16cd9ed9754c505aafb54f6c315a84cd14da8e89f33ed04d87e95c967f07617"
+        }
+      ],
+      "readingFocus": "NP et certificats, SAT, programmation dynamique pour CFG et réductions polynomiales ; sous-chaînes et composition des coûts."
+    },
+    {
+      "number": 15,
+      "sourceTitle": "Lecture 15: NP-Completeness",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/resources/lecture-15-np-completeness/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/c1aca7046a69c913721e5eb910a5fb21_MIT18_404f20_lec15.pdf",
+          "sha256": "486aedc02f5284e24ed61c088ed7680b6942d7bcdfa485abd71ded2f1b46fa00"
+        },
+        {
+          "kind": "transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/f842dbde1a9db506fd1909d5a78b1f1f_iZPzBHGDsWI.pdf",
+          "sha256": "5e298f81548374b199169551cce723cacfa5310e0acabd692fa495c0616abc13"
+        }
+      ],
+      "readingFocus": "NP-complétude, sens des réductions, gadgets HAMPATH/CLIQUE et vérification des deux directions de correction."
+    },
+    {
+      "number": 16,
+      "sourceTitle": "Lecture 16: Cook-Levin Theorem",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/resources/lecture-16-cook-levin-theorem/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/8212b19fc5a34f500ca6acf03a3a7d74_MIT18_404f20_lec16.pdf",
+          "sha256": "b41f125ff41c1947abb00a26c626a35f72c40d29141bb43c3a90804f540be070"
+        },
+        {
+          "kind": "transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/3a8e803c31ff396ad5338677489dc7ea_6Az1gtDRaAU.pdf",
+          "sha256": "642228442c0eb7868ad2ef484039d21145f51b2c81bce40d16e9886842777b7c"
+        }
+      ],
+      "readingFocus": "Cook-Levin, tableau de calcul, contraintes par case/départ/transition/acceptation ; SAT vers 3SAT avec variables auxiliaires."
+    },
+    {
+      "number": 17,
+      "sourceTitle": "Lecture 17: Space Complexity, PSPACE, Savitch's Theorem",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/resources/lecture-17-space-complexity-pspace-savitchs-theorem/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/9b025394d997750b3cd765c7a074881f_MIT18_404f20_lec17.pdf",
+          "sha256": "839fef907af9df7988d7cacebc95c27bdde7e96b21894341df437604fb529e82"
+        },
+        {
+          "kind": "transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/3a37f978045d4293c204cbcb72c6573a_cT_qwkTigv4.pdf",
+          "sha256": "0b3084f4c76b5e83aa2171adb5934484d954707527bacd205d85454d9eb2c9ca"
+        }
+      ],
+      "readingFocus": "Complexité en espace, PSPACE/NPSPACE, évaluation de QBF et réutilisation des espaces ; modèle à entrée non comptée pour bornes sous-linéaires."
+    },
+    {
+      "number": 18,
+      "sourceTitle": "Lecture 18: PSPACE-Completeness",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/resources/lecture-18-pspace-completeness/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/88f789664d3236a64481714fc911d119_MIT18_404f20_lec18.pdf",
+          "sha256": "e83490cb381e7af9e8b56c83a02634e0f5e7a41c45de7f462abf64630adeb22f"
+        },
+        {
+          "kind": "transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/765a003fe9933260b08d8c2267f6fe73_aVv9WXwW95w.pdf",
+          "sha256": "9a99b04d9f9e290296b03020f4ed56dbe52672235105b3167d93d32c40cbf83c"
+        }
+      ],
+      "readingFocus": "Savitch, chemins de configurations et récursion médiane ; PSPACE-complétude de TQBF et danger de l’expansion exponentielle."
+    },
+    {
+      "number": 19,
+      "sourceTitle": "Lecture 19: Games, Generalized Geography",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/resources/lecture-19-games-generalized-geography/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/fd9c1b8656c7def498dcf662f6750d87_MIT18_404f20_lec19.pdf",
+          "sha256": "cc28c50d5f92ee41fe1c74586475c773e11ec08367fb6239c256fc3511458275"
+        },
+        {
+          "kind": "transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/f6fda10316b3a876b0329e53a7f84f35_4dFPVJrNLDs.pdf",
+          "sha256": "06eabf39249cfe33db94fcbedf4f1d73b7c61bc8d4c24a9b0f68f657ecf45b48"
+        }
+      ],
+      "readingFocus": "Jeu de formule, quantificateurs et stratégies ; Geography généralisé, gadgets et premières propriétés logarithmiques."
+    },
+    {
+      "number": 20,
+      "sourceTitle": "Lecture 20: L and NL, NL = coNL",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/resources/lecture-20-l-and-nl-nl-conl/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/c9b742bd624556b45ac75ea2fb133b32_MIT18_404f20_lec20.pdf",
+          "sha256": "6adaa3d90faae54d0373f914c32d73092d85dfc435e1a4ae5c981b5d07f36e43"
+        },
+        {
+          "kind": "transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/38bae2468b75d4c9148d4bcf3c1c6138_q3xvno_KgRY.pdf",
+          "sha256": "8dcf8ab7e1e56e7fb3219574eb5bd6bf8fc8ab96d89243ba0c14f9750b4ef809"
+        }
+      ],
+      "readingFocus": "L/NL, réductions logarithmiques, PATH et 2SAT ; comptage inductif des accessibles et NL=coNL."
+    },
+    {
+      "number": 21,
+      "sourceTitle": "Lecture 21: Hierarchy Theorems",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/resources/lecture-21-hierarchy-theorems/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/985c567f01d3ad47d737c3b33eb678ea_MIT18_404f20_lec21.pdf",
+          "sha256": "d8f0b61f0908f27ba53c68b2180b59c72e9a03302cc122d71b7c06202c7a76c6"
+        },
+        {
+          "kind": "transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/5f10f0b037667fb9a9eda63833093400_vqFRAWeEcUs.pdf",
+          "sha256": "51fc1c0068f6024d80b7d9c92faa400b78026ae37ec5f70401611a3c3c859489"
+        }
+      ],
+      "readingFocus": "Fin de NL=coNL ; hiérarchies d’espace et temps, constructibilité, simulation diagonale et séparations précisément obtenues."
+    },
+    {
+      "number": 22,
+      "sourceTitle": "Lecture 22: Provably Intractable Problems, Oracles",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/resources/lecture-22-provably-intractable-problems-oracles/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/50cb369d1be3c7fbe0886e318aea13c2_MIT18_404f20_lec22.pdf",
+          "sha256": "ea2a468ea4d9e8993e06f75fcc7e416b1ac9c5e2c95b79704c96569aab88517a"
+        },
+        {
+          "kind": "transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/88786eaf01c47ee97d9afbc902d98608_N32bnUliSzo.pdf",
+          "sha256": "4966a6bb7812c611c0425daa56813a3cec73fdbba4a8208dc55dd19d42af2ab1"
+        }
+      ],
+      "readingFocus": "EXPTIME/EXPSPACE, équivalence de regex avec exposants binaires, histoires de calcul succinctes ; oracles et limite de relativisation."
+    },
+    {
+      "number": 23,
+      "sourceTitle": "Lecture 23: Probabilistic Computation, BPP",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/resources/lecture-23-probabilistic-computation-bpp/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/44f3286933ae429ff3cd163e8181ee46_MIT18_404f20_lec23.pdf",
+          "sha256": "9b719bdc41e598e9cf8960c574f1d3281e0dcab7f76cbcfa4d99d115a0e85b27"
+        },
+        {
+          "kind": "transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/d8ebfeeb2bdecefdbd328869efc094fe_Vp_AzDGQyrA.pdf",
+          "sha256": "41cc72f0d0fe41017571415c0cf3455fc02a2d49b7b75eace70fc044aecc01f6"
+        }
+      ],
+      "readingFocus": "Machines probabilistes, BPP, amplification ; programmes de branchement/read-once et arithmétisation des étiquettes."
+    },
+    {
+      "number": 24,
+      "sourceTitle": "Lecture 24: Probabilistic Computation (cont.)",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/resources/lecture-24-probabilistic-computation-cont/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/cbfe4302bc8bfa4dca3c3bfcfd4661a8_MIT18_404f20_lec24.pdf",
+          "sha256": "efcfe01441df94ae4840e0d07d4056b9c8c7b9d2cb16aa9feb2175c18dcf9a2b"
+        },
+        {
+          "kind": "transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/ae0db7c1390dd06b3680649a1d4b3606_7J1HD9rqEB4.pdf",
+          "sha256": "4cd9a3c5f33c1c97e3f4de6946cc67a2b4d907b6667072431515c820ad45dffd"
+        }
+      ],
+      "readingFocus": "Racines de polynômes sur corps finis, Schwartz-Zippel, multilinearité et test probabiliste d’équivalence de read-once branching programs."
+    },
+    {
+      "number": 25,
+      "sourceTitle": "Lecture 25: Interactive Proof Systems, IP",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/resources/lecture-25-interactive-proof-systems-ip/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/fe9281999e2d720710e4b58de72aa7e0_MIT18_404f20_lec25.pdf",
+          "sha256": "3cb5caa9ba7ac68546e81a6121986c61b6db17dc96994a52f8b3887343850a2a"
+        },
+        {
+          "kind": "transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/8b3e808aa8f62fc7000d5ff404da54a9_TSI3LR5WZmo.pdf",
+          "sha256": "7b925ee8262844efca35d83ede152ea06156deb7804dd211d348dcff572967dd"
+        }
+      ],
+      "readingFocus": "IP, complétude et fiabilité, non-isomorphie avec défi privé, répétition ; annonce IP=PSPACE et début du comptage exact."
+    },
+    {
+      "number": 26,
+      "sourceTitle": "Lecture 26: coNP ⊆ IP",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/resources/lecture-26-conp-2286-ip/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/7ac944716e076209c3964e073929f42e_MIT18_404f20_lec26.pdf",
+          "sha256": "6846dce84390c7aa4349e2cbfb39daaa1c9856029e93c93c8701a671557074ae"
+        },
+        {
+          "kind": "transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/a4de1484a9966fbdc95339952dd91aa9_eEXSv0jChO4.pdf",
+          "sha256": "79d9723d7972ced45f4161a893ea0ea2dfb6ec361f7b751a8d48fc32a134c992"
+        }
+      ],
+      "readingFocus": "Arithmétisation de formules, sommes partielles et choix de corps ; engagement polynomial puis défi aléatoire, conclusion coNP⊆IP."
+    },
+    {
+      "number": 27,
+      "sourceTitle": "Final Exam",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/pages/calendar/",
+      "kind": "exam",
+      "contentStatus": "authored",
+      "sourceMaterialStatus": "Fall 2020 exam scheduled, but its paper is not published in the examined index; authored practice only.",
+      "consultedMaterials": [
+        {
+          "kind": "historical_practice",
+          "sourceTitle": "Sample Final Exam, Fall 2006 Term (PDF)",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/e3751adeb5b918dbfea11a1c28b1278a_MIT18_404f20_final.pdf",
+          "sha256": "da2d31932b421c05867a9ac6ea4e3e4cfbaefd3581d45ccb439888a6ee28f2bd"
+        },
+        {
+          "kind": "historical_practice",
+          "sourceTitle": "Sample Final Exam Solutions, Fall 2006 Term (PDF)",
+          "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/bcd8ef382d00e6c7b448610776606fdf_MIT18_404f20_final_soln.pdf",
+          "sha256": "e8b5e649d66142cf574ac20405c518db035814dcf630969eb0190a1163fa4a17"
+        }
+      ],
+      "readingFocus": "Final indiqué au calendrier 2020, sujet non publié ; sujet/corrigé d’exemple Fall 2006 lus : classifications, réductions, complexité et problèmes de preuve. Pratique nouvelle."
+    }
+  ],
+  "knownSourceLimitations": [
+    "Fall 2020 Midterm and Final papers are not published in the examined Exams index. Their lessons are original practice anchored to the calendar, not reproductions of absent papers.",
+    "Exams index offers historical sample papers from Fall 2001 and Fall 2006; consulted samples and their dates are identified per assessment.",
+    "PDF mathematical symbol extraction is imperfect; definitions and arguments are cross-checked with lecture transcripts.",
+    "IP = PSPACE is stated in the course; the developed protocol proves only the weaker inclusion coNP subset IP."
+  ],
+  "supplementalResources": [
+    {
+      "sourceTitle": "Assignments",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/pages/assignments/",
+      "note": "Long proof problems complement the guided exercises; this course does not claim to reproduce all assignments or solve open research questions."
+    }
+  ],
+  "indexEvidence": {
+    "checkedOn": "2026-10-20",
+    "sha256": "261e2d114db7f0c2083216d945f217b56924c0b9dce2d9977b16490685e88c74",
+    "verifiedLectureTitles": 25
+  }
+}

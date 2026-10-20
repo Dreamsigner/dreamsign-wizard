@@ -1,6 +1,9 @@
 import copy
 import unittest
-from validate_curriculum import validate_course, kotlin_string
+import contextlib
+import io
+from unittest.mock import patch
+from validate_curriculum import validate_course, kotlin_string, exercise_kotlin, main
 
 
 class CurriculumValidationTest(unittest.TestCase):
@@ -20,6 +23,33 @@ class CurriculumValidationTest(unittest.TestCase):
 
     def test_complete_valid_course(self):
         self.assertEqual([], validate_course(self.course, self.manifest))
+
+    def test_reading_requires_a_separate_nonblank_passage(self):
+        exercise = self.course["lessons"][0]["exercises"][0]
+        exercise.update(type="reading", prompt="Quel horaire est annoncé ?", passage="Le rendez-vous est à dix heures.")
+        self.assertEqual([], validate_course(self.course, self.manifest))
+        for invalid in (None, "", "   ", 123):
+            exercise["passage"] = invalid
+            self.assertTrue(any("reading passage" in error for error in validate_course(self.course, self.manifest)))
+        exercise.pop("passage")
+        self.assertTrue(any("reading passage" in error for error in validate_course(self.course, self.manifest)))
+
+    def test_reading_generator_keeps_passage_separate_from_question(self):
+        exercise = self.course["lessons"][0]["exercises"][0]
+        exercise.update(type="reading", prompt="Quelle est la demande ?", passage="Message original :" + chr(10) + "Réserve une place.")
+        result = exercise_kotlin(exercise)
+        self.assertTrue(result.startswith("Exercise.ReadingChoice("))
+        self.assertIn('prompt = "Quelle est la demande ?"', result)
+        self.assertIn("passage = " + kotlin_string(exercise["passage"]), result)
+
+    def test_invalid_draft_prevents_generation_even_when_requested(self):
+        errors = ["draft_course: lesson sequence/count differs from source sequence"]
+        with patch("validate_curriculum.load_authored", return_value=([(self.course, self.manifest)], errors)), \
+                patch("validate_curriculum.generate") as generate, \
+                patch("sys.argv", ["validate_curriculum.py", "--generate"]), \
+                contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(1, main())
+            generate.assert_not_called()
 
     def test_missing_middle_session_rejected(self):
         self.course["lessons"].pop(1)

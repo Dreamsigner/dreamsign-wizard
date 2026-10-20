@@ -211,6 +211,7 @@ class AppViewModel(
     fun selectOption(index: Int) {
         if (_isAnswerChecked.value || _isLessonCompleted.value) return
         val options = when (val exercise = currentExercise()) {
+            is Exercise.ReadingChoice -> exercise.options
             is Exercise.ListeningChoice -> exercise.options
             is Exercise.MultipleChoice -> exercise.options
             is Exercise.CodeChallenge -> exercise.options
@@ -247,6 +248,7 @@ class AppViewModel(
                 if (!exercise.canFinishPractice(text, _reviewedCriteria.value)) return
                 true
             }
+            is Exercise.ReadingChoice -> (_selectedOptionIndex.value ?: return) == exercise.correctOptionIndex
             is Exercise.MultipleChoice -> (_selectedOptionIndex.value ?: return) == exercise.correctOptionIndex
             is Exercise.CodeChallenge -> (_selectedOptionIndex.value ?: return) == exercise.correctOptionIndex
             is Exercise.MathChallenge -> (_selectedOptionIndex.value ?: return) == exercise.correctOptionIndex

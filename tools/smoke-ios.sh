@@ -54,6 +54,7 @@ while IFS=$'\t' read -r label udid state; do
     -resultBundlePath "build/ios/$label.xcresult" \
     CODE_SIGNING_ALLOWED=NO test || test_status=$?
   if [[ -d "$app" ]]; then
+    python3 tools/verify_bundled_audio.py --ios-app "$app" || tests_failed=1
     if xcrun simctl install "$udid" "$app" && xcrun simctl launch "$udid" com.duolingo.app; then
       sleep 5
     else

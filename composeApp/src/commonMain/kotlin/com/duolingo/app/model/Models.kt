@@ -63,6 +63,17 @@ sealed class Exercise {
     abstract val hint: String
 
     @Serializable
+    data class ReadingChoice(
+        override val id: String,
+        override val prompt: String,
+        val passage: String,
+        val options: List<String>,
+        val correctOptionIndex: Int,
+        override val explanation: String,
+        override val hint: String
+    ) : Exercise()
+
+    @Serializable
     data class SpokenProduction(
         override val id: String,
         override val prompt: String,

@@ -8,6 +8,7 @@ import platform.AVFAudio.AVAudioPlayerDelegateProtocol
 import platform.AVFAudio.AVAudioSession
 import platform.AVFAudio.AVAudioSessionCategoryPlayback
 import platform.AVFAudio.AVAudioSessionInterruptionNotification
+import platform.AVFAudio.setActive
 import platform.Foundation.*
 import platform.darwin.NSObject
 import platform.darwin.dispatch_async

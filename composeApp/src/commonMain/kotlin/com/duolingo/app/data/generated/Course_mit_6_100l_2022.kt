@@ -5,7 +5,7 @@ import com.duolingo.app.model.*
 
 internal object Course_mit_6_100l_2022 {
     fun unit() = LearningUnit(
-        id = "mit_6_100l_2022", unitNumber = 2,
+        id = "mit_6_100l_2022", unitNumber = 3,
         title = "MIT 6.100L — Introduction à l’informatique avec Python",
         description = "Les 26 conférences de Fall 2022 : explications françaises et exercices guidés. Les TP, récitations optionnelles et microquizzes officiels demandent un travail complémentaire.",
         lessons = listOf(lesson001(), lesson002(), lesson003(), lesson004(), lesson005(), lesson006(), lesson007(), lesson008(), lesson009(), lesson010(), lesson011(), lesson012(), lesson013(), lesson014(), lesson015(), lesson016(), lesson017(), lesson018(), lesson019(), lesson020(), lesson021(), lesson022(), lesson023(), lesson024(), lesson025(), lesson026()),

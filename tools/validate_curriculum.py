@@ -103,11 +103,13 @@ def validate_course(course, manifest):
                 fail(f"invalid stable exercise ID {eid}")
             exercise_ids.add(eid)
             kind = exercise.get("type")
-            if kind not in ("math", "choice", "code", "written", "listening", "spoken"):
+            if kind not in ("math", "choice", "reading", "code", "written", "listening", "spoken"):
                 fail(f"{eid}: unsupported exercise type {kind}")
             for field in ("prompt", "explanation", "hint"):
                 if not nonblank(exercise.get(field)):
                     fail(f"{eid}: missing {field}")
+            if kind == "reading" and not nonblank(exercise.get("passage")):
+                fail(f"{eid}: missing reading passage")
             if kind == "spoken":
                 limit, preparation, minimum = (exercise.get(x) for x in ("maxDurationSeconds", "preparationSeconds", "minimumPracticeSeconds"))
                 if type(limit) is not int or not 5 <= limit <= 270:
@@ -192,8 +194,10 @@ def exercise_kotlin(exercise):
         fields += [f"{name} = {exercise[name]}" for name in ("minWords", "maxWords")]
         fields += ["reviewCriteria = listOf(" + ", ".join(kotlin_string(x) for x in exercise["reviewCriteria"]) + ")"]
         return "Exercise.WrittenProduction(" + ", ".join(fields) + ")"
-    kind = {"math": "MathChallenge", "choice": "MultipleChoice", "code": "CodeChallenge"}[exercise["type"]]
+    kind = {"math": "MathChallenge", "choice": "MultipleChoice", "reading": "ReadingChoice", "code": "CodeChallenge"}[exercise["type"]]
     fields = [f"id = {kotlin_string(exercise['id'])}", f"prompt = {kotlin_string(exercise['prompt'])}"]
+    if exercise["type"] == "reading":
+        fields.append(f"passage = {kotlin_string(exercise['passage'])}")
     if exercise["type"] == "math" and exercise.get("formula"):
         fields.append(f"formula = {kotlin_string(exercise['formula'])}")
     if exercise["type"] == "code":

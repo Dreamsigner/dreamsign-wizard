@@ -23,7 +23,8 @@ class RecordingFormatTest {
         assertFailsWith<IllegalArgumentException> { validateRecordingBytes(invalidChunk) }
         val wrongAlignment = good.copyOf().also { it[32] = 4 }
         assertFailsWith<IllegalArgumentException> { validateRecordingBytes(wrongAlignment) }
-        val wrongByteRate = good.copyOf().also { it[28] = 0 }
+        // 32000 = 0x00007d00 already has a zero low byte; change it to one.
+        val wrongByteRate = good.copyOf().also { it[28] = 1 }
         assertFailsWith<IllegalArgumentException> { validateRecordingBytes(wrongByteRate) }
     }
 }

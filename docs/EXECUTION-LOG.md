@@ -158,3 +158,33 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
 - Couverture OSSU toujours partielle. Le cours 18.404J est en rédaction ; son
   calendrier contient 25 conférences et deux examens, soit 27 séances, et non
   25 séances totales. Aucun cours en rédaction n’est publié par anticipation.
+
+### Intégration suivante : 256 leçons/ateliers, 835 exercices
+
+- MIT 18.404J Fall 2020 rédigé : 25 conférences et deux entraînements associés
+  aux examens du calendrier, soit 27 leçons/112 exercices. Les sujets 2020 ne
+  sont pas publiés ; les exemples historiques restent explicitement datés.
+  `tools/check_computation_theory.py` : 32 calculs finis exacts PASS, réponses
+  liées au JSON courant. Aucune validation automatique de preuves universelles.
+- Lecture TCF : trois ateliers originaux et douze QCM sur quatre textes fictifs.
+  `ReadingChoice` sépare document et question pour afficher le passage en corps
+  de lecture normal. Le catalogue généré contient onze unités ; couverture
+  OSSU et préparation TCF toujours partielles. 19 tests Python réussis.
+- `0607e5a`, run `39383746011` : trois jobs FAILURE. Android : callback
+  `onRequestPermissionsResult` exige `Array<String>` avec la nouvelle chaîne.
+  Windows : un test de débit WAV mettait à zéro un octet déjà nul ; le fixture
+  est corrigé pour réellement le modifier, sans assouplir le parseur.
+  iOS : import de l’extension AVFAudio `setActive` manquant dans le lecteur,
+  constante PCM désormais importée du module `CoreAudioTypes`. Correctifs
+  locaux à confirmer par nouveau build, non annoncés déjà validés.
+- Téléchargement des journaux API réussi avec curl et credential GCM en mémoire,
+  sans secret écrit en fichier ou argument. Les clients HTTP précédents avaient
+  expiré. Le premier push HTTP408 a réussi au second essai HTTP/1.1.
+- La relance locale avec paramètres réseau avait échoué avant les tâches :
+  PowerShell avait fragmenté un argument -D en nom de tâche. Les propriétés
+  passent maintenant par JAVA_TOOL_OPTIONS. Les recherches inutiles de groupes
+  Kotlin/JVM sur Google Maven ont été filtrées après observation des requêtes
+  HEAD manquantes ; nouvelle résolution locale en cours.
+- Contrôle des vrais paquets ajouté : présence et SHA-256 des documents WAV
+  dans APK, JAR Windows et bundles iOS. Deux tests de ce vérificateur passent ;
+  le prochain build doit encore prouver que les produits natifs les contiennent.

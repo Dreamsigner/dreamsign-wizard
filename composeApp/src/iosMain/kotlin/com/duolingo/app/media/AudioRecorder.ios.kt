@@ -3,7 +3,7 @@
 package com.duolingo.app.media
 
 import platform.AVFAudio.*
-import platform.AudioToolbox.kAudioFormatLinearPCM
+import platform.CoreAudioTypes.kAudioFormatLinearPCM
 import platform.Foundation.*
 import platform.darwin.NSObject
 import platform.darwin.dispatch_async

@@ -34,6 +34,10 @@ class AuthoredCurriculumTest {
                     lesson.exercises.forEach { exercise ->
                         assertTrue(allIds.add(exercise.id), "Duplicate exercise ${exercise.id}")
                         val answer = when (exercise) {
+                            is Exercise.ReadingChoice -> {
+                                assertTrue(exercise.passage.isNotBlank(), "Missing reading passage ${exercise.id}")
+                                exercise.correctOptionIndex
+                            }
                             is Exercise.SpokenProduction -> {
                                 // Business-state test only: native microphone/file/playback is checked separately.
                                 model.confirmSpokenRecording(exercise.id, exercise.minimumPracticeSeconds * 1000L)

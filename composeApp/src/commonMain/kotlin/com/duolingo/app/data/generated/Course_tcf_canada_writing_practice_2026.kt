@@ -5,7 +5,7 @@ import com.duolingo.app.model.*
 
 internal object Course_tcf_canada_writing_practice_2026 {
     fun unit() = LearningUnit(
-        id = "tcf_canada_writing_practice_2026", unitNumber = 3,
+        id = "tcf_canada_writing_practice_2026", unitNumber = 4,
         title = "TCF Canada — Atelier de production écrite",
         description = "Trois ateliers originaux fondés sur les formats FEI. Production réelle et auto-évaluation guidée ; aucun score officiel. Préparation TCF encore partielle.",
         lessons = listOf(lesson001(), lesson002(), lesson003()),
