@@ -53,11 +53,11 @@ Les règles de format WAV et de progression restent celles de l'application.
 
 ## Android et iOS
 
-Les trois tests Compose Android instrumentés s'exécutent dans l'émulateur CI
-avec une activité et un stockage mémoire de test : voir `android-ui-testing.md`.
-Ils n'utilisent pas Computer Use. Ils sont distincts des tests hors écran JVM.
-Les tests Kotlin iOS et les XCTest de l'hôte iPhone/iPad s'exécutent sur le runner
-macOS du workflow `Build`, qui construit aussi l'archive appareil non signée.
+Les trois tests Compose Android instrumentés ont été exécutés dans l'émulateur
+du run historique 39488554876 : voir `android-ui-testing.md`. Leurs sources sont
+conservées, ainsi que celles des tests Kotlin iOS et des XCTest. Depuis la
+décision Windows uniquement du 20 octobre 2026, ces jobs mobiles ne sont plus
+exécutés par le workflow `Build`. Aucun succès iOS n'est déduit de leur présence.
 
 ## Contrôle du lanceur Windows distribué
 
@@ -85,6 +85,6 @@ Cela vérifie le démarrage du lanceur et la résolution des ressources; les vra
 Un test média simulé ne prouve pas la qualité sonore, l'autorisation système,
 l'interruption réelle ni le fonctionnement d'un microphone physique. Les captures
 des tests prouvent un rendu donné ; elles ne couvrent pas toutes les tailles,
-la lecture d'écran native ou chaque écran du catalogue. Les rapports CI du commit
-livré doivent être consultés avant de déclarer Android ou iOS vérifié. Une archive
-iOS non signée n'est pas installable sur un iPhone réel.
+la lecture d'écran native ou chaque écran du catalogue. Android et iOS sont hors
+du périmètre actif; leurs résultats historiques ne valident pas la version Windows
+livrée. Une archive iOS non signée n'est pas installable sur un iPhone réel.

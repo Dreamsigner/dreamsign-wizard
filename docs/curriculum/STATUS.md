@@ -48,8 +48,8 @@ local correspond aux trois formats FEI ; il ne prétend pas être un programme
 officiel ou une préparation complète. Voir `tcf-writing-authoring-notes.md`.
 L’écoute dispose maintenant de trois documents originaux intégrés, six questions,
 voix de synthèse, transcription en correction et mode lecture accessible distinct.
-Les lecteurs natifs sont implémentés ; les contrôles Android/iOS de ce nouveau lot
-restent requis. Trois ateliers de production orale sont implémentés avec capture,
+Le lecteur Windows est implémenté et ses contrôles Compose sont testés hors écran.
+Android/iOS sont hors du périmètre actif. Trois ateliers de production orale sont implémentés avec capture,
 stockage local et réécoute, mais attendent la vérification native des permissions
 et de l’enregistrement. Le reste de la préparation reste à rédiger.
 

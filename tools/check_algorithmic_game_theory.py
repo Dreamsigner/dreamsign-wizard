@@ -95,5 +95,3 @@ def main():
  assert all(e['explanation']!=e['options'][e['correctOptionIndex']] for l in d['lessons'] for e in l['exercises'])
  print(f"OK: validate_course passed; 20/20 source sessions; {count} exercise responses checked ({recomputed} independently recomputed, {assertions} authored concept assertions); {len(kinds)} check types.")
 if __name__=='__main__': main()
-
-

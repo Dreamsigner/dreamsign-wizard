@@ -328,3 +328,27 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   n'est inventée depuis son titre. Checker volontairement PARTIAL, non inclus
   dans les contrôles des seuls cours publiés. Ces 24 leçons ne s'ajoutent pas
   au décompte publié de 391.
+
+## Preuve CI Windows — commit 86e0f59
+
+- Run 39503525124, unique job package-windows 118906653381 : SUCCESS.
+  https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/runs/39503525124
+- Le contrôle des sources et la génération déterministe ont réussi sur Windows,
+  puis desktopTest et createDistributable. Le rapport HTML téléchargé dans
+  Windows-checks confirme 64 tests, zéro échec et zéro ignoré.
+- Le véritable lanceur produit par le runner a réussi --self-check : 15 cours,
+  391 leçons/ateliers, 1190 exercices, trois SHA-256 audio identiques aux ressources
+  attendues; uiStarted=false et userDataAccessed=false. Rapport JSON lu dans
+  l'artefact 12302032183, dont l'intégrité ZIP a été contrôlée sans entrée corrompue.
+- Les captures CI learning-wide.png (fixture miniature) et
+  published-notes-mathematics.png (véritable première leçon forallx) ont été
+  inspectées avec view_image, sans Computer Use : navigation latérale et colonnes
+  lisibles, notes et bouton de continuation visibles. Il s'agit de rendus Compose
+  hors écran, pas d'une inspection du gestionnaire de fenêtres Windows.
+- Paquet Windows : artefact 12302522162, 56 996 388 octets sur GitHub. Le guide
+  windows-testing.md décrit l'extraction, le runtime intégré, la sauvegarde et le
+  diagnostic facultatif. La capture physique du microphone reste non vérifiée.
+- Mise au propre des mentions de CI mobile : jobs arrêtés conformément au
+  périmètre actif. Aucun nouveau succès Android/iOS revendiqué. La couverture
+  pédagogique globale reste partielle; cette preuve ne vaut pas finalisation
+  du cursus OSSU/TCF complet.

@@ -46,6 +46,9 @@ pour les scénarios, commandes et limites des preuves.
 
 ## Lancer l’application Windows
 
+Pour tester le paquet compilé sans installer Gradle ni Java, suivre le
+[guide Windows](docs/windows-testing.md).
+
 Depuis Android Studio ou IntelliJ IDEA, ouvrir le dossier du projet puis lancer la tâche Gradle `composeApp > Tasks > compose desktop > desktopRun`.
 
 Le dépôt ne contient pas de wrapper Gradle. Si Gradle est installé localement, lancer depuis la racine :
