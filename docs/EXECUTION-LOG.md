@@ -127,3 +127,34 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
 - Les contributions 6.042J et enregistrement oral ont été interrompues au début.
   Ne pas les traiter comme terminées, ni ajouter un écran de production orale
   sans capture/relecture réelle et contrôle des permissions natives.
+
+## Reprise du 20 octobre — lot audio et migration
+
+- `c3439cc`, run `39379770520` : les trois jobs Windows/Android/iOS sont
+  SUCCESS. XCTest iPhone (8,315 s) et iPad (11,330 s), zéro échec ; archive
+  appareil non signée réussie à 06:38:29 UTC. Cette preuve concerne l’ancienne
+  chaîne, pas les fichiers de migration encore locaux.
+- Catalogue local : 226 leçons/ateliers, 711 exercices, neuf unités. Ajouts
+  rédigés : MIT 6.042J Fall 2010 (28/117), Learn Prolog Now! (12 chapitres/60),
+  trois ateliers oraux originaux TCF. Prolog a été relu manuellement ; aucun
+  moteur installé et aucune exécution Prolog revendiquée.
+- Windows réel : lecture d’un document original TCF de 24,07 s jusqu’au callback
+  de fin, puis réponse et correction avec transcription. La progression utilisateur
+  antérieure (20 XP, première séance de calcul) est préservée. Cela prouve le
+  chemin de lecture natif, pas une évaluation subjective de l’intelligibilité.
+- Capture orale implémentée sur les trois plateformes, WAV privé, sauvegarde
+  atomique et réécoute avant auto-évaluation. Revue indépendante : corrections
+  de stop synchrone iOS, course Android de finalisation, interruption native,
+  sauvegarde réessayable et état occupé en arrière-plan. Aucun micro activé par
+  les outils ; les permissions et captures natives restent à vérifier réellement.
+- 13 tests Python du validateur réussis. Les 22 tests desktop du lot précédent
+  passaient avant ajout de l’oral ; les nouveaux tests d’oral et de stockage isolé
+  attendent la nouvelle compilation. Ne pas annoncer ces nouveaux tests verts.
+- Migration préparée : Kotlin 2.2.21, Compose 1.9.3, AGP 8.10.1, Gradle 8.11.1,
+  Xcode 26.0.1 sur runner macOS 15 ARM64. ZIP Gradle téléchargé dans work et
+  SHA-256 officiel vérifié. Première résolution bloquée longtemps en lecture
+  HTTP/TLS (thread dump), relancée avec journal info et délais réseau bornés.
+  Aucun résultat de build de cette nouvelle chaîne n’est encore établi.
+- Couverture OSSU toujours partielle. Le cours 18.404J est en rédaction ; son
+  calendrier contient 25 conférences et deux examens, soit 27 séances, et non
+  25 séances totales. Aucun cours en rédaction n’est publié par anticipation.

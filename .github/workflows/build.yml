@@ -33,18 +33,20 @@ jobs:
           python tools/check_calculus_math.py
           python tools/check_linear_algebra_math.py
           python tools/check_missing_semester_scenarios.py
+          python tools/check_intro_python.py
+          python tools/check_discrete_math.py
           python tools/validate_curriculum.py --generate
-          git diff --exit-code -- composeApp/src/commonMain/kotlin/com/duolingo/app/data/generated/
+          git diff --exit-code -- composeApp/src/commonMain/kotlin/com/duolingo/app/data/generated/ docs/curriculum/AUTHORED-COVERAGE.md
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
       - uses: android-actions/setup-android@v4
         with:
-          packages: 'platform-tools platforms;android-34 build-tools;34.0.0'
+          packages: 'platform-tools platforms;android-35 build-tools;35.0.0'
       - uses: gradle/actions/setup-gradle@v6
         with:
-          gradle-version: '8.2.1'
+          gradle-version: '8.11.1'
       - name: Test shared logic and build Android APK
         run: gradle :composeApp:desktopTest :composeApp:lintDebug :composeApp:assembleDebug --stacktrace
       - uses: actions/upload-artifact@v7
@@ -87,10 +89,10 @@ jobs:
           java-version: '17'
       - uses: android-actions/setup-android@v4
         with:
-          packages: 'platform-tools platforms;android-34 build-tools;34.0.0'
+          packages: 'platform-tools platforms;android-35 build-tools;35.0.0'
       - uses: gradle/actions/setup-gradle@v6
         with:
-          gradle-version: '8.2.1'
+          gradle-version: '8.11.1'
       - name: Test and build Windows app image
         run: gradle :composeApp:desktopTest :composeApp:createDistributable --stacktrace
       - name: Prepare Windows package
@@ -114,11 +116,12 @@ jobs:
           retention-days: 14
 
   ios:
-    # Kotlin 2.0.0 officially supports Xcode 15.3. See docs/platforms.md.
-    runs-on: macos-14
+    # Kotlin/Native 2.2.21 targets Xcode 26.0.1; macos-15 is ARM64.
+    runs-on: macos-15
     timeout-minutes: 60
     env:
-      DEVELOPER_DIR: /Applications/Xcode_15.3.app/Contents/Developer
+      DEVELOPER_DIR: /Applications/Xcode_26.0.1.app/Contents/Developer
+      IOS_SIMULATOR_RUNTIME_VERSION_PREFIX: '26.0'
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-java@v5
@@ -127,13 +130,21 @@ jobs:
           java-version: '17'
       - uses: gradle/actions/setup-gradle@v6
         with:
-          gradle-version: '8.2.1'
+          gradle-version: '8.11.1'
       - name: Check Apple toolchain
         run: |
-          xcodebuild -version
+          mkdir -p build/ios
+          uname -m | tee build/ios/runner-architecture.txt
+          test "$(uname -m)" = arm64
+          xcodebuild -version | tee build/ios/xcode-version.txt
+          grep -Fx 'Xcode 26.0.1' build/ios/xcode-version.txt
+          xcodebuild -showsdks | tee build/ios/xcode-sdks.txt
+          xcrun simctl list runtimes -j > build/ios/simulator-runtimes.json
+          xcrun simctl list devicetypes -j > build/ios/simulator-device-types.json
+          xcrun simctl list devices available -j > build/ios/simulator-devices.json
           plutil -lint iosApp/iosApp/Info.plist iosApp/iosApp.xcodeproj/project.pbxproj
       - name: Test shared Kotlin on iOS simulator
-        run: gradle :composeApp:iosX64Test --stacktrace
+        run: gradle :composeApp:iosSimulatorArm64Test --stacktrace
       - name: Test SwiftUI host on iPhone and iPad and capture screenshots
         run: bash tools/smoke-ios.sh
       - name: Build unsigned device archive
@@ -159,6 +170,9 @@ jobs:
           path: |
             build/ios/*.png
             build/ios/*.xcresult
+            build/ios/*.json
+            build/ios/*.txt
+            build/ios/*.tsv
             composeApp/build/reports/tests/
             composeApp/build/test-results/
           retention-days: 14

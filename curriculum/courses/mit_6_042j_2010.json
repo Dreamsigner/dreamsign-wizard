@@ -1,0 +1,2128 @@
+{
+  "courseId": "mit_6_042j_2010",
+  "title": "MIT 6.042J — Mathématiques pour l’informatique",
+  "sourceTitle": "Mathematics for Computer Science",
+  "edition": "Fall 2010",
+  "category": "MATHEMATICS",
+  "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/",
+  "manifest": "docs/curriculum/mit-6-042j-source-sessions.json",
+  "expectedLessonCount": 28,
+  "description": "Les 25 conférences de Fall 2010, une préparation au partiel et deux évaluations adaptées. Les récitations, devoirs longs et anciennes finales restent des compléments.",
+  "lessons": [
+    {
+      "id": "mit_6_042j_2010_s001",
+      "sourceSessionNumber": 1,
+      "sourceTitle": "Lecture 1: Introduction and Proofs",
+      "kind": "lesson",
+      "title": "Énoncer et démontrer une proposition",
+      "objective": "Distinguer implication, réciproque, contraposée et contre-exemple.",
+      "learningNotes": "Une proposition possède une valeur de vérité, même lorsque nous ignorons encore laquelle. Une preuve part d'hypothèses annoncées et enchaîne des conséquences justifiées ; vérifier quelques exemples ne démontre pas une affirmation universelle. L'implication P⇒Q n'est fausse que lorsque P est vraie et Q fausse. Sa contraposée ¬Q⇒¬P lui est équivalente, tandis que sa réciproque Q⇒P peut être fausse. Pour prouver qu'un entier dont le carré est impair est impair, on peut montrer qu'un entier pair 2k a un carré 4k² pair. Un contre-exemple suffit à réfuter une proposition universelle, mais pas à prouver sa négation pour tous les cas. Le domaine des variables et les quantificateurs font partie de l'énoncé.",
+      "sourceUrls": [
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-1-introduction-and-proofs/",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/35948f025420c52f2c6c18d2da9e266b_L3LMbpZIKhQ.pdf",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/7853d585044ef21bce5f48ce5fc89d28_MIT6_042JF10_chap01.pdf",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/38ca8d7baeedd6aa476010a0cbd041d0_MIT6_042JF10_chap02.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "id": "mit_6_042j_2010_s001_e01",
+          "type": "choice",
+          "prompt": "P est fausse et Q est fausse. Quelle valeur a P⇒Q ?",
+          "options": [
+            "Indéterminé",
+            "Équivalent à Q dans tous les cas",
+            "Vrai",
+            "Faux"
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "Une implication n’est fausse que si son hypothèse est vraie et sa conclusion fausse. Ici l’hypothèse est fausse.",
+          "hint": "Cherche l’unique ligne fausse de la table d’implication."
+        },
+        {
+          "id": "mit_6_042j_2010_s001_e02",
+          "type": "choice",
+          "prompt": "Quelle contraposée correspond à « si n est multiple de 4, alors n est pair » ?",
+          "options": [
+            "Si n est impair, alors n est multiple de 4.",
+            "Si n est impair, alors n n’est pas multiple de 4.",
+            "Si n est pair, alors n est multiple de 4.",
+            "Si n n’est pas multiple de 4, alors n est impair."
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "La contraposée inverse l’ordre et nie les deux propositions. Elle conserve la vérité de l’implication initiale.",
+          "hint": "Identifie séparément l’hypothèse et la conclusion."
+        },
+        {
+          "id": "mit_6_042j_2010_s001_e03",
+          "type": "math",
+          "prompt": "Quel entier réfute « tout nombre premier est impair » ?",
+          "options": [
+            "2",
+            "3",
+            "5",
+            "7"
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "2 possède exactement deux diviseurs positifs et il est pair. Un seul contre-exemple réfute l’affirmation universelle.",
+          "hint": "Examine le plus petit nombre premier."
+        },
+        {
+          "id": "mit_6_042j_2010_s001_e04",
+          "type": "choice",
+          "prompt": "Que démontre l’écriture (2k+1)²=2(2k²+2k)+1 pour k entier ?",
+          "options": [
+            "Tout entier impair est un carré.",
+            "Le carré de tout entier est impair.",
+            "Tout entier pair est premier.",
+            "Le carré de tout entier impair est impair."
+          ],
+          "correctOptionIndex": 3,
+          "explanation": "L’expression prend la forme 2m+1 avec m entier. Cela prouve l’implication à partir d’une représentation générale, sans énumération.",
+          "hint": "Reconnais la forme arithmétique qui définit un nombre impair."
+        }
+      ]
+    },
+    {
+      "id": "mit_6_042j_2010_s002",
+      "sourceSessionNumber": 2,
+      "sourceTitle": "Lecture 2: Induction",
+      "kind": "lesson",
+      "title": "Construire une preuve par récurrence",
+      "objective": "Relier initialisation, hypothèse et passage au rang suivant.",
+      "learningNotes": "Pour démontrer P(n) pour tout entier n≥b, une récurrence établit d'abord P(b), puis prouve P(n)⇒P(n+1) pour un n arbitraire au moins égal à b. L'hypothèse n'est pas la conclusion globale : elle sert seulement dans le passage. Pour S(n)=1+3+...+(2n-1), le cas n=1 donne 1=1². En supposant S(n)=n², ajouter 2n+1 donne n²+2n+1=(n+1)². Les deux étapes couvrent donc tous les rangs positifs. Un raisonnement peut échouer à la frontière même s'il semble valable pour de grands ensembles : un passage qui nécessite deux éléments communs ne fonctionne pas quand ces éléments n'existent pas. Il faut contrôler l'initialisation et chaque hypothèse utilisée dans le passage.",
+      "sourceUrls": [
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-2-induction/",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/3e3c5ae1dd04aab8de88a9cf9f16544f_z8HKWUWS-lA.pdf",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/e5079d6e1b0dc66d426df26e05dee250_MIT6_042JF10_chap03.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "id": "mit_6_042j_2010_s002_e01",
+          "type": "choice",
+          "prompt": "Quelle expression complète le passage S(n+1)=n²+... pour la somme des n premiers impairs ?",
+          "options": [
+            "n²+1",
+            "2n+1",
+            "n+1",
+            "2n-1"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "Le nouvel impair est 2(n+1)-1=2n+1 ; l’ajouter à n² forme le carré suivant.",
+          "hint": "Écris le terme d’indice n+1."
+        },
+        {
+          "id": "mit_6_042j_2010_s002_e02",
+          "type": "math",
+          "prompt": "Quelle somme donnent les six premiers entiers impairs positifs ?",
+          "options": [
+            "36",
+            "21",
+            "30",
+            "42"
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "1+3+5+7+9+11=36=6², conformément à la propriété démontrée.",
+          "hint": "Utilise la formule démontrée ou additionne les six termes."
+        },
+        {
+          "id": "mit_6_042j_2010_s002_e03",
+          "type": "choice",
+          "prompt": "On veut prouver P(n) seulement pour n≥4. Quelle initialisation suffit avec un passage valide pour tout n≥4 ?",
+          "options": [
+            "P(0) seulement",
+            "P(3) seulement",
+            "P(100) seulement",
+            "P(4)"
+          ],
+          "correctOptionIndex": 3,
+          "explanation": "Le passage fait progresser à partir de 4 ; une initialisation en dehors de cette chaîne ne suffit pas.",
+          "hint": "Repère le premier rang du domaine."
+        },
+        {
+          "id": "mit_6_042j_2010_s002_e04",
+          "type": "choice",
+          "prompt": "Pourquoi (n+1)³-(n+1) reste-t-il divisible par 3 si n³-n l’est ?",
+          "options": [
+            "Tous les cubes sont divisibles par 3.",
+            "Une propriété vraie en un rang est automatiquement vraie au suivant.",
+            "La différence entre ces expressions vaut 3n²+3n.",
+            "La différence vaut 1."
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "Développer donne (n³-n)+3n²+3n. Les trois termes sont divisibles par 3, en utilisant l’hypothèse pour le premier.",
+          "hint": "Soustrais l’expression du rang n à celle du rang suivant."
+        }
+      ]
+    },
+    {
+      "id": "mit_6_042j_2010_s003",
+      "sourceSessionNumber": 3,
+      "sourceTitle": "Lecture 3: Strong Induction",
+      "kind": "lesson",
+      "title": "Récurrence forte et invariants",
+      "objective": "Réduire un problème à des cas antérieurs et prouver une impossibilité.",
+      "learningNotes": "La récurrence forte autorise l'utilisation de tous les rangs déjà établis. Pour montrer que tout entier n≥2 se décompose en facteurs premiers, on distingue le cas où n est premier et celui où n=ab avec 2≤a,b<n ; les deux facteurs bénéficient alors de l'hypothèse. Une autre technique étudie une propriété conservée par les transitions d'un système : un invariant. Si un compteur commence pair et que chaque mouvement le change de +2 ou -2, il reste pair. Une cible impaire devient inaccessible. Une preuve d'invariance comporte elle aussi une initialisation et une conservation pour tous les mouvements autorisés. L'invariant peut interdire une cible sans garantir que toutes les autres cibles sont atteignables.",
+      "sourceUrls": [
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-3-strong-induction/",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/45f6debd41091c3e1a78c3d72be1d8cb_NuGDkmwEObM.pdf",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/e5079d6e1b0dc66d426df26e05dee250_MIT6_042JF10_chap03.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "id": "mit_6_042j_2010_s003_e01",
+          "type": "choice",
+          "prompt": "Dans la décomposition d’un entier composé n=ab, pourquoi la récurrence forte s’applique-t-elle à a et b ?",
+          "options": [
+            "Les deux facteurs sont des entiers au moins 2 et strictement inférieurs à n.",
+            "Les facteurs sont toujours égaux.",
+            "Les deux facteurs sont nécessairement premiers.",
+            "Les facteurs dépassent n."
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "Pour une factorisation non triviale, chaque facteur est plus petit que n et appartient au domaine déjà couvert.",
+          "hint": "Il ne suffit pas de connaître le seul rang n-1."
+        },
+        {
+          "id": "mit_6_042j_2010_s003_e02",
+          "type": "choice",
+          "prompt": "Un compteur part de 4 et chaque mouvement ajoute ou retranche 2. Quelle cible est impossible ?",
+          "options": [
+            "0",
+            "2",
+            "10",
+            "7"
+          ],
+          "correctOptionIndex": 3,
+          "explanation": "Le compteur reste pair : sa parité est conservée par chaque mouvement. La cible 7 est impaire.",
+          "hint": "Cherche une propriété stable sous +2 et -2."
+        },
+        {
+          "id": "mit_6_042j_2010_s003_e03",
+          "type": "math",
+          "prompt": "Combien d’inversions contient la liste [3,1,4,2] ?",
+          "options": [
+            "4",
+            "5",
+            "3",
+            "2"
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "Les paires inversées sont (3,1), (3,2) et (4,2), soit trois paires.",
+          "hint": "Compare chaque élément seulement avec ceux qui le suivent."
+        },
+        {
+          "id": "mit_6_042j_2010_s003_e04",
+          "type": "choice",
+          "prompt": "Un invariant est vrai au départ et conservé. Que permet sa violation dans un état cible ?",
+          "options": [
+            "Conclure que l’état initial n’existe pas.",
+            "Conclure que cet état est inaccessible.",
+            "Conclure que tous les autres états sont accessibles.",
+            "Conclure que le système termine."
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "Tout état accessible conserve la propriété par récurrence sur le nombre de transitions ; un état qui la viole ne peut être atteint.",
+          "hint": "Sépare condition nécessaire d’accessibilité et condition suffisante."
+        }
+      ]
+    },
+    {
+      "id": "mit_6_042j_2010_s004",
+      "sourceSessionNumber": 4,
+      "sourceTitle": "Lecture 4: Number Theory I",
+      "kind": "lesson",
+      "title": "Divisibilité, pgcd et combinaisons entières",
+      "objective": "Appliquer Euclide et reconnaître les combinaisons possibles.",
+      "learningNotes": "Dire que a divise b signifie qu'un entier k vérifie b=ak. Les combinaisons entières ax+by sont liées au pgcd : elles sont toutes multiples de d=pgcd(a,b), et Bézout exprime d comme l'une de ces combinaisons. L'algorithme d'Euclide conserve le pgcd en remplaçant (a,b) par (b,a mod b). Par exemple, 84=2×30+24, 30=24+6 et 24=4×6 donnent un pgcd égal à 6. Une équation 84x+30y=c possède donc des solutions entières exactement lorsque 6 divise c. Cette condition autorise des coefficients négatifs ; elle ne résout pas automatiquement une variante exigeant des quantités positives. Dans une preuve algorithmique, la conservation d'un invariant et la terminaison sont deux obligations distinctes.",
+      "sourceUrls": [
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-4-number-theory-i/",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/e5842da6cbc94ba2b8f61bedca94c518_NuY7szYSXSw.pdf",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/a608e339ab265c79de46c7c3830a49cb_MIT6_042JF10_chap04.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "id": "mit_6_042j_2010_s004_e01",
+          "type": "math",
+          "prompt": "Quel est le pgcd de 84 et 30 ?",
+          "options": [
+            "3",
+            "12",
+            "14",
+            "6"
+          ],
+          "correctOptionIndex": 3,
+          "explanation": "Les restes d’Euclide sont 24,6,0 ; le dernier reste non nul est 6.",
+          "hint": "Effectue des divisions avec reste."
+        },
+        {
+          "id": "mit_6_042j_2010_s004_e02",
+          "type": "choice",
+          "prompt": "Laquelle de ces valeurs ne peut pas être 18x+30y avec x,y entiers ?",
+          "options": [
+            "12",
+            "42",
+            "10",
+            "6"
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "Le pgcd vaut 6, donc toute combinaison est multiple de 6. Le nombre 10 ne l’est pas ; les autres le sont.",
+          "hint": "Cherche d’abord le diviseur commun imposé."
+        },
+        {
+          "id": "mit_6_042j_2010_s004_e03",
+          "type": "choice",
+          "prompt": "Quelle identité de Bézout est correcte pour 35 et 12 ?",
+          "options": [
+            "35+12=1",
+            "3×12-35=1",
+            "35-2×12=1",
+            "2×35-5×12=1"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "3×12-35=36-35=1. Cette combinaison entière prouve aussi que le pgcd vaut 1.",
+          "hint": "Évalue chaque combinaison proposée."
+        },
+        {
+          "id": "mit_6_042j_2010_s004_e04",
+          "type": "math",
+          "prompt": "Quel reste apparaît au premier pas d’Euclide sur (119,34) ?",
+          "options": [
+            "17",
+            "3",
+            "34",
+            "0"
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "119=3×34+17, donc la paire suivante est (34,17).",
+          "hint": "Le reste doit être au moins zéro et strictement inférieur à 34."
+        }
+      ]
+    },
+    {
+      "id": "mit_6_042j_2010_s005",
+      "sourceSessionNumber": 5,
+      "sourceTitle": "Lecture 5: Number Theory II",
+      "kind": "lesson",
+      "title": "Congruences, inverses et chiffrement pédagogique",
+      "objective": "Calculer modulo n et vérifier les hypothèses d’une annulation.",
+      "learningNotes": "La congruence a≡b modulo n signifie que n divise a-b. On peut additionner et multiplier des congruences, mais une simplification par un facteur n'est pas toujours permise. Si pgcd(k,n)=1, Bézout fournit un inverse de k modulo n et l'on peut multiplier par cet inverse. Par exemple, 3×5≡1 modulo 7, donc 5 est l'inverse de 3. Sans cette hypothèse, 2×1≡2×4 modulo 6 ne permet pas de conclure 1≡4. Le théorème d'Euler garantit k^φ(n)≡1 lorsque k et n sont premiers entre eux ; pour n premier, φ(n)=n-1. Ces outils expliquent un mécanisme de chiffrement à clé publique avec petits paramètres de démonstration, sans en faire un dispositif de sécurité à utiliser.",
+      "sourceUrls": [
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-5-number-theory-ii/",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/c2c73b8f33d9c0595ef6abb372271200_XX7ePR21Ook.pdf",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/a608e339ab265c79de46c7c3830a49cb_MIT6_042JF10_chap04.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "id": "mit_6_042j_2010_s005_e01",
+          "type": "math",
+          "prompt": "Quel est l’inverse de 5 modulo 12, entre 0 et 11 ?",
+          "options": [
+            "7",
+            "10",
+            "5",
+            "2"
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "5×5=25=2×12+1 ; le produit est congru à 1.",
+          "hint": "Cherche un produit laissant le reste 1."
+        },
+        {
+          "id": "mit_6_042j_2010_s005_e02",
+          "type": "math",
+          "prompt": "Quel reste vaut 3^20 modulo 7 ?",
+          "options": [
+            "6",
+            "2",
+            "1",
+            "3"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "3^6≡1 modulo 7 ; 20=3×6+2, donc le reste est celui de 3², soit 2.",
+          "hint": "Réduis l’exposant avec le petit théorème de Fermat."
+        },
+        {
+          "id": "mit_6_042j_2010_s005_e03",
+          "type": "choice",
+          "prompt": "Pourquoi 2 n’a-t-il pas d’inverse modulo 6 ?",
+          "options": [
+            "Tout produit 2x est pair, alors qu’un nombre congru à 1 modulo 6 est impair.",
+            "Parce que 2 est premier.",
+            "Parce que 6 est pair et tous ses résidus sont pairs.",
+            "Parce qu’un inverse doit toujours être égal à 1."
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "Le produit ne peut jamais avoir le reste 1. Cela concorde avec pgcd(2,6)=2≠1.",
+          "hint": "Compare parité et congruence."
+        },
+        {
+          "id": "mit_6_042j_2010_s005_e04",
+          "type": "math",
+          "prompt": "Dans un exemple de chiffrement c=m³ mod 33, quel chiffré donne m=4 ?",
+          "options": [
+            "12",
+            "16",
+            "4",
+            "31"
+          ],
+          "correctOptionIndex": 3,
+          "explanation": "4³=64=33+31 ; le reste est 31. Les paramètres sont uniquement pédagogiques.",
+          "hint": "Effectue l’exponentiation puis la réduction."
+        }
+      ]
+    },
+    {
+      "id": "mit_6_042j_2010_s006",
+      "sourceSessionNumber": 6,
+      "sourceTitle": "Lecture 6: Graph Theory and Coloring",
+      "kind": "lesson",
+      "title": "Modéliser les conflits et colorier un graphe",
+      "objective": "Utiliser degrés, arêtes et coloriage pour raisonner sur des contraintes.",
+      "learningNotes": "Un graphe simple non orienté représente des objets par des sommets et leurs relations par des arêtes, sans boucle ni arêtes multiples. Dans un planning, une arête peut signifier que deux examens ne doivent pas partager un créneau. Un coloriage propre attribue des couleurs différentes aux extrémités de chaque arête. Un triangle exige trois couleurs : ses trois sommets sont deux à deux voisins. Plus généralement, un algorithme glouton peut utiliser au plus Δ+1 couleurs lorsque le degré maximal est Δ, car au plus Δ couleurs sont interdites au moment de traiter un sommet. Ce majorant ne donne pas nécessairement le minimum. La somme des degrés vaut deux fois le nombre d'arêtes, chaque arête contribuant une fois à chaque extrémité.",
+      "sourceUrls": [
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-6-graph-theory-and-coloring/",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/1ccaf180bcd244fddd32e60789fa922f_h9wxtqoa1jY.pdf",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/f471f7b7034fabe8bbba5507df7d307f_MIT6_042JF10_chap05.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "id": "mit_6_042j_2010_s006_e01",
+          "type": "math",
+          "prompt": "Un graphe a les degrés 1,2,2,3. Combien a-t-il d’arêtes ?",
+          "options": [
+            "2",
+            "4",
+            "3",
+            "8"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "La somme des degrés vaut 8 et chaque arête y est comptée deux fois ; il y a donc 4 arêtes.",
+          "hint": "Applique le lemme des poignées de main."
+        },
+        {
+          "id": "mit_6_042j_2010_s006_e02",
+          "type": "math",
+          "prompt": "Combien de couleurs au minimum faut-il pour le cycle A-B-C-D-A ?",
+          "options": [
+            "2",
+            "1",
+            "3",
+            "4"
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "On colorie A,C d’une couleur et B,D d’une autre. Une seule couleur est impossible car il existe des arêtes.",
+          "hint": "Cherche une alternance de deux couleurs."
+        },
+        {
+          "id": "mit_6_042j_2010_s006_e03",
+          "type": "math",
+          "prompt": "Combien de coloriages propres du triangle existe-t-il avec trois couleurs étiquetées ?",
+          "options": [
+            "3",
+            "9",
+            "27",
+            "6"
+          ],
+          "correctOptionIndex": 3,
+          "explanation": "Le premier sommet a 3 choix, le deuxième 2 et le troisième 1 : 3×2×1=6.",
+          "hint": "Chaque sommet doit différer des deux autres."
+        },
+        {
+          "id": "mit_6_042j_2010_s006_e04",
+          "type": "choice",
+          "prompt": "Un glouton traite un sommet ayant au plus quatre voisins déjà coloriés. Combien de couleurs suffisent pour garantir un choix ?",
+          "options": [
+            "3",
+            "2",
+            "5",
+            "4"
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "Au plus quatre couleurs sont interdites. Une palette de cinq en laisse au moins une disponible, sans affirmer qu’elle est optimale.",
+          "hint": "Compte les interdictions possibles, puis réserve une couleur supplémentaire."
+        }
+      ]
+    },
+    {
+      "id": "mit_6_042j_2010_s007",
+      "sourceSessionNumber": 7,
+      "sourceTitle": "Lecture 7: Matching Problems",
+      "kind": "lesson",
+      "title": "Apparier des participants et garantir la stabilité",
+      "objective": "Distinguer compatibilité, appariement parfait et paire bloquante.",
+      "learningNotes": "Un appariement sélectionne des arêtes qui ne partagent aucune extrémité. Dans un graphe biparti, il associe des éléments de deux ensembles ; un appariement parfait couvre tous les participants. Des préférences introduisent une autre exigence, la stabilité : aucun couple non formé ne doit se préférer mutuellement à ses partenaires actuels. Dans l'algorithme de propositions différées, chaque proposant contacte son meilleur choix restant et chaque destinataire conserve provisoirement sa meilleure proposition. Un rejet est définitif, ce qui borne le nombre de propositions par le nombre de couples possibles. Si A et B proposent tous deux à x et que x préfère B, x conserve B et A poursuit sa liste. L'existence d'une affectation compatible ne suffit pas à rendre n'importe quelle affectation stable.",
+      "sourceUrls": [
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-7-matching-problems/",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/c53bca93ceaede29a7983409ec7e233c_5RSMLgy06Ew.pdf",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/f471f7b7034fabe8bbba5507df7d307f_MIT6_042JF10_chap05.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "id": "mit_6_042j_2010_s007_e01",
+          "type": "math",
+          "prompt": "Trois tâches distinctes peuvent être attribuées sans restriction à trois personnes distinctes, une tâche chacune. Combien d’appariements parfaits existe-t-il ?",
+          "options": [
+            "6",
+            "3",
+            "9",
+            "27"
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "La première tâche a 3 destinataires possibles, la deuxième 2 et la dernière 1 : 3!=6.",
+          "hint": "Les personnes déjà choisies ne sont plus disponibles."
+        },
+        {
+          "id": "mit_6_042j_2010_s007_e02",
+          "type": "math",
+          "prompt": "A accepte x ou y ; B accepte y ou z ; C accepte x ou z. Combien d’appariements parfaits compatibles existe-t-il ?",
+          "options": [
+            "1",
+            "3",
+            "6",
+            "2"
+          ],
+          "correctOptionIndex": 3,
+          "explanation": "Les affectations sont A-x,B-y,C-z et A-y,B-z,C-x. Les autres permutations utilisent au moins une paire interdite.",
+          "hint": "Énumère les destinations distinctes pour A, B et C."
+        },
+        {
+          "id": "mit_6_042j_2010_s007_e03",
+          "type": "choice",
+          "prompt": "A préfère x à y, B préfère x à y ; x préfère B à A et y préfère A à B. Pourquoi l’appariement A-x, B-y est-il instable ?",
+          "options": [
+            "Tout appariement parfait est instable.",
+            "x préfère toujours son partenaire actuel.",
+            "B et x se préfèrent mutuellement à leurs partenaires.",
+            "A et y se préfèrent mutuellement."
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "B préfère x à y et x préfère B à A : cette paire non formée est bloquante.",
+          "hint": "Vérifie simultanément les préférences des deux membres de la paire."
+        },
+        {
+          "id": "mit_6_042j_2010_s007_e04",
+          "type": "choice",
+          "prompt": "Dans les préférences précédentes, que produit la première compétition si A et B proposent à x ?",
+          "options": [
+            "y choisit avant toute proposition.",
+            "x conserve B ; A doit proposer ensuite à y.",
+            "x conserve A ; B reste définitivement sans partenaire.",
+            "x conserve les deux définitivement."
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "x conserve sa meilleure proposition B. A, rejeté par x, poursuit sa liste avec y, qui peut l’accepter.",
+          "hint": "L’acceptation est provisoire, mais le rejet retire cette option au proposant."
+        }
+      ]
+    },
+    {
+      "id": "mit_6_042j_2010_s008",
+      "sourceSessionNumber": 8,
+      "sourceTitle": "Lecture 8: Graph Theory II: Minimum Spanning Trees",
+      "kind": "lesson",
+      "title": "Construire un arbre couvrant de poids minimal",
+      "objective": "Reconnaître les propriétés d’un arbre et justifier un choix glouton.",
+      "learningNotes": "Un arbre est un graphe non orienté connexe sans cycle. Entre deux sommets, il possède un unique chemin simple ; avec n sommets, il a n-1 arêtes. Tout graphe connexe admet un arbre couvrant : retirer une arête d'un cycle ne détruit pas sa connexité, et l'on peut répéter jusqu'à supprimer tous les cycles. Dans un graphe pondéré, on cherche l'arbre couvrant dont la somme des poids est minimale. Kruskal examine les arêtes par poids croissant et refuse celles qui créeraient un cycle. La justification repose sur un échange : une arête la plus légère traversant une coupe peut remplacer une arête au moins aussi lourde d'un arbre optimal. Si elle est strictement la plus légère, elle appartient à tout arbre optimal.",
+      "sourceUrls": [
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-8-graph-theory-ii-minimum-spanning-trees/",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/4cd9e7dafa48708210af272844003398_GJpt_3ie4WU.pdf",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/f471f7b7034fabe8bbba5507df7d307f_MIT6_042JF10_chap05.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "id": "mit_6_042j_2010_s008_e01",
+          "type": "math",
+          "prompt": "Un arbre couvrant neuf sommets contient combien d’arêtes ?",
+          "options": [
+            "9",
+            "10",
+            "18",
+            "8"
+          ],
+          "correctOptionIndex": 3,
+          "explanation": "La propriété n-1 donne 9-1=8. Une arête supplémentaire créerait un cycle dans un graphe déjà connexe.",
+          "hint": "Un arbre relie tous les sommets sans liaison redondante."
+        },
+        {
+          "id": "mit_6_042j_2010_s008_e02",
+          "type": "math",
+          "prompt": "Pour les arêtes AB=1, BC=2, CD=3, DA=10, AC=4, BD=5, quel est le poids minimal d’un arbre couvrant ?",
+          "options": [
+            "10",
+            "12",
+            "6",
+            "7"
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "AB,BC,CD relient les quatre sommets sans cycle, pour 1+2+3=6. Ce sont les trois plus petites arêtes et elles forment déjà un arbre.",
+          "hint": "Teste les petites arêtes en refusant les cycles."
+        },
+        {
+          "id": "mit_6_042j_2010_s008_e03",
+          "type": "choice",
+          "prompt": "Kruskal a retenu AB et BC. Pourquoi doit-il refuser AC, même si elle est la suivante par poids ?",
+          "options": [
+            "Il doit toujours garder seulement deux arêtes.",
+            "AB, BC et AC formeraient un cycle.",
+            "Il interdit tous les sommets de degré 2.",
+            "Un arbre ne peut jamais contenir C."
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "A et C sont déjà reliés par A-B-C. Ajouter AC créerait une liaison redondante et un cycle.",
+          "hint": "Regarde si les extrémités sont déjà reliées."
+        },
+        {
+          "id": "mit_6_042j_2010_s008_e04",
+          "type": "choice",
+          "prompt": "Pourquoi retirer une arête d’un cycle préserve-t-il la connexité ?",
+          "options": [
+            "Les deux extrémités restent reliées par le reste du cycle.",
+            "Toute arête est inutile dans tout graphe.",
+            "Le nombre de sommets diminue.",
+            "Tous les graphes restent connexes après toute suppression."
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "Un chemin utilisant cette arête peut emprunter le détour fourni par les autres arêtes du cycle. L’argument ne vaut pas pour un pont.",
+          "hint": "Construis explicitement un détour entre ses extrémités."
+        }
+      ]
+    },
+    {
+      "id": "mit_6_042j_2010_s009",
+      "sourceSessionNumber": 9,
+      "sourceTitle": "Lecture 9: Communication Networks",
+      "kind": "lesson",
+      "title": "Analyser les chemins d’un réseau de communication",
+      "objective": "Séparer distance, encombrement et coût d’une architecture.",
+      "learningNotes": "Un réseau de communication se modélise par des sommets de commutation et des arêtes de transmission. La longueur d'un chemin mesure le nombre de liaisons traversées ; le diamètre prend la plus grande distance minimale entre deux sommets. Pour plusieurs messages, leur congestion compte combien utilisent une même ressource. Un faible diamètre ne garantit donc pas une faible durée globale si tous les messages partagent une liaison limitée. Les architectures arborescentes, en grille ou en papillon offrent des compromis entre nombre de commutateurs, profondeur et routage de permutations. Dans un papillon indexé par chaînes binaires, chaque étape peut corriger un bit de destination. Un exemple à trois bits nécessite trois transitions pour parcourir les trois étages, mais les conflits entre messages doivent encore être étudiés.",
+      "sourceUrls": [
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-9-communication-networks/",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/fca5cc3f1014121da9b7059254f58466_bTyxpoi2dmM.pdf",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/e6db7638031b754f5f68012946af4763_MIT6_042JF10_chap06.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "id": "mit_6_042j_2010_s009_e01",
+          "type": "math",
+          "prompt": "Dans un cycle non orienté de huit sommets, quel est le diamètre ?",
+          "options": [
+            "7",
+            "8",
+            "4",
+            "2"
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "Les sommets opposés sont séparés par quatre arêtes dans chacun des deux sens. Toute autre paire est au moins aussi proche.",
+          "hint": "Pour chaque paire, on choisit le plus court des deux sens."
+        },
+        {
+          "id": "mit_6_042j_2010_s009_e02",
+          "type": "math",
+          "prompt": "Un réseau possède quatre couches de huit sommets chacune. Combien de sommets contient cette représentation ?",
+          "options": [
+            "64",
+            "32",
+            "12",
+            "24"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "Chaque couche apporte huit sommets distincts : 4×8=32. Le décompte concerne exactement la représentation annoncée.",
+          "hint": "Ne confonds pas nombre de couches et nombre de transitions."
+        },
+        {
+          "id": "mit_6_042j_2010_s009_e03",
+          "type": "math",
+          "prompt": "Trois messages doivent traverser la même liaison qui transmet un message par unité de temps. Quelle borne minimale de temps impose cette liaison ?",
+          "options": [
+            "3",
+            "1",
+            "2",
+            "0"
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "La liaison doit effectuer trois transmissions distinctes, donc au moins trois unités, même si les chemins sont courts.",
+          "hint": "Raisonne sur la capacité de la ressource partagée."
+        },
+        {
+          "id": "mit_6_042j_2010_s009_e04",
+          "type": "choice",
+          "prompt": "Pourquoi le diamètre seul ne suffit-il pas à prévoir le délai d’une permutation de messages ?",
+          "options": [
+            "Il compte déjà tous les conflits possibles.",
+            "Il est toujours égal au nombre de messages.",
+            "Un chemin court ne peut jamais partager une arête.",
+            "Il ne décrit pas la congestion des chemins simultanés."
+          ],
+          "correctOptionIndex": 3,
+          "explanation": "Les distances concernent des trajets individuels ; des trajets simultanés peuvent se disputer une même liaison.",
+          "hint": "Compare longueur d’un trajet et charge d’une liaison."
+        }
+      ]
+    },
+    {
+      "id": "mit_6_042j_2010_s010",
+      "sourceSessionNumber": 10,
+      "sourceTitle": "Lecture 10: Graph Theory III",
+      "kind": "lesson",
+      "title": "Raisonner sur les graphes orientés",
+      "objective": "Distinguer circuits eulériens, chemins hamiltoniens et absence de cycles.",
+      "learningNotes": "Dans un graphe orienté, l'ordre des extrémités d'une arête importe. Une forte connexité exige un chemin dirigé de chaque sommet vers chaque autre ; un graphe acyclique dirigé, ou DAG, n'a aucun cycle dirigé. Un DAG fini possède un sommet sans prédécesseur : sinon, remonter toujours un prédécesseur finirait par répéter un sommet et créerait un cycle. Cela permet de construire un ordre topologique. Un circuit eulérien parcourt chaque arête une fois, tandis qu'un chemin hamiltonien visite chaque sommet une fois. Ces deux propriétés portent donc sur des objets différents. Une matrice d'adjacence encode les arêtes ; son carré compte les marches de longueur deux, en sommant les possibilités de sommet intermédiaire.",
+      "sourceUrls": [
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-10-graph-theory-iii/",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/116f983b7d45c3199eaa66a91d817db4_DOIp5D7VMS4.pdf",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/e6db7638031b754f5f68012946af4763_MIT6_042JF10_chap06.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "id": "mit_6_042j_2010_s010_e01",
+          "type": "math",
+          "prompt": "Un tournoi sur cinq participants comporte une arête orientée pour chaque paire distincte. Combien d’arêtes a-t-il ?",
+          "options": [
+            "25",
+            "10",
+            "5",
+            "20"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "Chaque paire non ordonnée fournit exactement une direction. Le nombre de paires est C(5,2)=10.",
+          "hint": "Il n’y a ni boucle ni deuxième direction pour une même paire."
+        },
+        {
+          "id": "mit_6_042j_2010_s010_e02",
+          "type": "choice",
+          "prompt": "Pourquoi un DAG fini non vide possède-t-il un sommet de degré entrant nul ?",
+          "options": [
+            "Sinon une remontée infinie de prédécesseurs répéterait un sommet et créerait un cycle.",
+            "Tous ses sommets ont nécessairement degré sortant nul.",
+            "Tout graphe orienté est un arbre.",
+            "Il ne possède aucune arête."
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "Dans un ensemble fini, suivre un prédécesseur à chaque étape finit par revisiter un sommet, contredisant l’absence de cycle.",
+          "hint": "Utilise la finitude et raisonne par contradiction."
+        },
+        {
+          "id": "mit_6_042j_2010_s010_e03",
+          "type": "choice",
+          "prompt": "Pour les arcs A→B, B→C, A→C, quel ordre est topologique ?",
+          "options": [
+            "C, B, A",
+            "B, A, C",
+            "A, C, B",
+            "A, B, C"
+          ],
+          "correctOptionIndex": 3,
+          "explanation": "Chaque arc va d’un sommet placé avant à un sommet placé après dans A,B,C. Les autres ordres inversent au moins une contrainte.",
+          "hint": "Contrôle séparément chacun des trois arcs."
+        },
+        {
+          "id": "mit_6_042j_2010_s010_e04",
+          "type": "math",
+          "prompt": "La matrice A=[[0,1],[1,0]] représente deux arcs opposés. Combien de marches de longueur deux reviennent au premier sommet ?",
+          "options": [
+            "2",
+            "4",
+            "1",
+            "0"
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "La seule marche est 1→2→1. Le coefficient (A²)11 vaut 0×0+1×1=1.",
+          "hint": "Compte les choix de sommet intermédiaire."
+        }
+      ]
+    },
+    {
+      "id": "mit_6_042j_2010_s011",
+      "sourceSessionNumber": 11,
+      "sourceTitle": "Lecture 11: Relations, Partial Orders, and Scheduling",
+      "kind": "lesson",
+      "title": "Relations d’ordre et ordonnancement",
+      "objective": "Reconnaître un ordre partiel et déduire des plannings compatibles.",
+      "learningNotes": "Une relation binaire est un ensemble de couples. Une équivalence est réflexive, symétrique et transitive ; elle partitionne le domaine en classes. Un ordre partiel large est réflexif, antisymétrique et transitif, sans obliger chaque paire à être comparable. Les dépendances strictes d'un planning forment plutôt un DAG ; leur clôture réflexive et transitive fournit l'ordre large correspondant. Pour A avant B et C, puis B et C avant D, B et C sont incomparables. Un tri topologique peut choisir l'un ou l'autre en premier. Si toutes les tâches durent une unité et que les ressources parallèles sont illimitées, le plus long chemin de dépendances impose trois créneaux : A, puis B et C, puis D. Les hypothèses sur durée et ressources sont essentielles.",
+      "sourceUrls": [
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-11-relations-partial-orders-and-scheduling/",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/df48391c844a4a9a03de190cc289cf10_1nScXLQAQ9A.pdf",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/efac321fdc8d0b27586ca35b04aab808_MIT6_042JF10_chap07.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "id": "mit_6_042j_2010_s011_e01",
+          "type": "math",
+          "prompt": "Pour A avant B et C, puis B et C avant D, combien d’ordres topologiques existe-t-il ?",
+          "options": [
+            "2",
+            "1",
+            "4",
+            "24"
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "A doit être premier et D dernier. B et C peuvent être permutés, ce qui donne deux ordres.",
+          "hint": "Identifie les seuls éléments incomparables."
+        },
+        {
+          "id": "mit_6_042j_2010_s011_e02",
+          "type": "math",
+          "prompt": "Ces quatre tâches durent chacune une unité et peuvent s’exécuter en parallèle sans limite. Quel temps minimal faut-il ?",
+          "options": [
+            "2",
+            "4",
+            "1",
+            "3"
+          ],
+          "correctOptionIndex": 3,
+          "explanation": "La chaîne A-B-D impose trois unités. Le planning A ; B et C ; D atteint cette borne.",
+          "hint": "Combine une borne par chaîne avec un planning réalisable."
+        },
+        {
+          "id": "mit_6_042j_2010_s011_e03",
+          "type": "choice",
+          "prompt": "Sur les entiers, la relation « avoir le même reste modulo 5 » est-elle une équivalence ?",
+          "options": [
+            "Non, car elle est forcément antisymétrique.",
+            "Oui, parce que tous les entiers sont dans la même classe.",
+            "Oui : réflexivité, symétrie et transitivité sont satisfaites.",
+            "Non, car deux entiers distincts peuvent être reliés."
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "Chaque entier a le même reste que lui-même ; l’égalité de restes se renverse et se transmet. Il existe cinq classes de restes.",
+          "hint": "Une équivalence n’exige pas l’égalité des objets."
+        },
+        {
+          "id": "mit_6_042j_2010_s011_e04",
+          "type": "choice",
+          "prompt": "Dans l’ordre de divisibilité sur {1,2,3,6}, quelle paire est incomparable ?",
+          "options": [
+            "1 et 6",
+            "2 et 3",
+            "1 et 2",
+            "2 et 6"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "Ni 2 ne divise 3, ni 3 ne divise 2. Chaque autre paire proposée possède une relation de divisibilité.",
+          "hint": "Teste les deux directions."
+        }
+      ]
+    },
+    {
+      "id": "mit_6_042j_2010_s012",
+      "sourceSessionNumber": 12,
+      "sourceTitle": "Lecture 12: Sums",
+      "kind": "lesson",
+      "title": "Transformer et borner des sommes",
+      "objective": "Choisir une identité de somme et contrôler son domaine.",
+      "learningNotes": "Une somme peut être remplacée par une forme fermée ou encadrée lorsqu'une expression exacte serait peu utile. Pour la somme géométrique S=1+x+...+x^n, multiplier par x puis soustraire laisse (1-x)S=1-x^(n+1), donc S=(1-x^(n+1))/(1-x) si x≠1. Si x=1, il faut traiter séparément les n+1 termes égaux à un. Pour |x|<1, la limite donne 1/(1-x). Dériver cette identité permet de calculer des sommes pondérées telles que Σi x^i=x/(1-x)², dans ce même domaine de convergence. Les sommes arithmétiques et les comparaisons avec des intégrales complètent la méthode. Avant de manipuler une somme infinie, on vérifie sa convergence et les conditions de la transformation.",
+      "sourceUrls": [
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-12-sums/",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/35c5b44faacb08f9bcd51cdf5d22506e_fAeShezAGLE.pdf",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/c110f2c1483fd57a9c97ebde0be38f75_MIT6_042JF10_chap09.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "id": "mit_6_042j_2010_s012_e01",
+          "type": "math",
+          "prompt": "Combien vaut 1+2+4+8+16+32 ?",
+          "options": [
+            "32",
+            "62",
+            "64",
+            "63"
+          ],
+          "correctOptionIndex": 3,
+          "explanation": "C’est une somme géométrique de six termes : (2^6-1)/(2-1)=63.",
+          "hint": "Compte les exposants de zéro à cinq."
+        },
+        {
+          "id": "mit_6_042j_2010_s012_e02",
+          "type": "math",
+          "prompt": "Quelle est la somme des entiers de 1 à 20 inclus ?",
+          "options": [
+            "190",
+            "420",
+            "210",
+            "200"
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "La formule n(n+1)/2 donne 20×21/2=210.",
+          "hint": "Associe premier et dernier termes."
+        },
+        {
+          "id": "mit_6_042j_2010_s012_e03",
+          "type": "math",
+          "prompt": "Pour |x|<1, quelle valeur a Σ de i=1 à l’infini de i/3^i ?",
+          "options": [
+            "1/4",
+            "3/4",
+            "1/3",
+            "3/2"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "Avec x=1/3, x/(1-x)²=(1/3)/(2/3)²=3/4.",
+          "hint": "Utilise la somme géométrique pondérée."
+        },
+        {
+          "id": "mit_6_042j_2010_s012_e04",
+          "type": "choice",
+          "prompt": "Pourquoi la formule (1-x^(n+1))/(1-x) doit-elle être traitée séparément en x=1 ?",
+          "options": [
+            "Son dénominateur est nul, alors que la somme finie vaut n+1.",
+            "La somme finie n’existe plus.",
+            "Tous les termes deviennent nuls.",
+            "La somme vaut toujours zéro."
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "La somme finie conserve un sens, mais cette expression quotient ne peut pas être évaluée directement en x=1.",
+          "hint": "Distingue une formule de sa valeur sur un cas exclu."
+        }
+      ]
+    },
+    {
+      "id": "mit_6_042j_2010_s013",
+      "sourceSessionNumber": 13,
+      "sourceTitle": "Lecture 13: Sums and Asymptotics",
+      "kind": "lesson",
+      "title": "Encadrer une croissance et lire une équivalence",
+      "objective": "Distinguer O, Θ et équivalence asymptotique.",
+      "learningNotes": "Pour une fonction positive décroissante, comparer rectangles et intégrale fournit des bornes de somme. Ainsi le nombre harmonique H_n=Σ1/i se situe entre ln(n+1) et 1+ln n ; il a donc un ordre logarithmique. Les notations expriment des degrés différents de précision : f=O(g) donne un majorant à constante près, f=Θ(g) fournit aussi un minorant, tandis que f~g demande que f/g tende vers un. Par exemple 3n²+2n est Θ(n²), mais n'est pas équivalent à n² car le rapport tend vers trois. Les produits, notamment n!, peuvent être étudiés en sommant leurs logarithmes. La formule de Stirling affine cette approche avec n!~√(2πn)(n/e)^n ; le facteur racine ne peut pas être supprimé si l'on prétend à une équivalence.",
+      "sourceUrls": [
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-13-sums-and-asymptotics/",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/0ee7810a0f2b2cded346b7ae55814e21_X9eErxRjQEI.pdf",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/c110f2c1483fd57a9c97ebde0be38f75_MIT6_042JF10_chap09.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "id": "mit_6_042j_2010_s013_e01",
+          "type": "choice",
+          "prompt": "Quel est l’ordre serré de 5n³+2n²+9 quand n tend vers l’infini ?",
+          "options": [
+            "Θ(log n)",
+            "Θ(1)",
+            "Θ(n³)",
+            "Θ(n²)"
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "Le terme cubique domine. Le rapport à n³ tend vers 5, une constante positive.",
+          "hint": "Divise tous les termes par la puissance dominante."
+        },
+        {
+          "id": "mit_6_042j_2010_s013_e02",
+          "type": "choice",
+          "prompt": "Quelle limite a (3n²+2n)/n² ?",
+          "options": [
+            "5",
+            "3",
+            "0",
+            "1"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "Le quotient vaut 3+2/n, qui tend vers 3. Cela donne Θ(n²), mais pas une équivalence avec n².",
+          "hint": "Simplifie le quotient avant de prendre sa limite."
+        },
+        {
+          "id": "mit_6_042j_2010_s013_e03",
+          "type": "math",
+          "prompt": "Quelle valeur exacte a H4=1+1/2+1/3+1/4 ?",
+          "options": [
+            "25/12",
+            "12/25",
+            "2",
+            "11/6"
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "Sur le dénominateur 12, la somme vaut (12+6+4+3)/12=25/12.",
+          "hint": "Cherche un dénominateur commun."
+        },
+        {
+          "id": "mit_6_042j_2010_s013_e04",
+          "type": "choice",
+          "prompt": "Pourquoi n! n’est-il pas Θ(n^n) ?",
+          "options": [
+            "Les deux expressions sont identiques.",
+            "Le rapport tend vers un.",
+            "Une factorielle est toujours plus grande que n^n.",
+            "Le rapport n!/n^n tend vers zéro, notamment par Stirling."
+          ],
+          "correctOptionIndex": 3,
+          "explanation": "Stirling donne un rapport équivalent à √(2πn)e^-n, qui tend vers zéro. Aucun minorant constant positif ne subsiste.",
+          "hint": "Étudie le rapport au lieu de comparer seulement quelques valeurs."
+        }
+      ]
+    },
+    {
+      "id": "mit_6_042j_2010_s014",
+      "sourceSessionNumber": 14,
+      "sourceTitle": "Lecture 14: Divide and Conquer Recurrences",
+      "kind": "lesson",
+      "title": "Résoudre une récurrence de division",
+      "objective": "Dérouler un arbre récursif et justifier une formule proposée.",
+      "learningNotes": "Une récurrence relie le coût d'un problème aux coûts de sous-problèmes. Les tours de Hanoï donnent H(n)=2H(n-1)+1 avec H(0)=0 : déplacer les n-1 petits disques, le grand, puis les petits. En développant, on obtient H(n)=2^n-1 et une récurrence permet de vérifier cette formule. Pour T(n)=2T(n/2)+n sur les puissances de deux, chaque niveau de l'arbre demande au total n unités ; il y a log₂n niveaux de division, d'où un ordre n log n. Les conditions initiales déterminent les termes constants. Une autre relation S(n)=S(⌊n/2⌋)+S(⌈n/2⌉)+1, S(1)=0, donne n-1, car les deux tailles s'additionnent à n. Deviner une formule à partir de quelques valeurs doit être suivi d'une preuve.",
+      "sourceUrls": [
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-14-divide-and-conquer-recurrences/",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/fa1c71923e2802c8415a16fadb541bb0_Kqf0uO0oV6s.pdf",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/18b5495f7408055f9679e3afebb108ab_MIT6_042JF10_chap10.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "id": "mit_6_042j_2010_s014_e01",
+          "type": "math",
+          "prompt": "Combien de mouvements impose H(n)=2H(n-1)+1, H(0)=0, pour quatre disques ?",
+          "options": [
+            "7",
+            "15",
+            "8",
+            "16"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "Les valeurs sont 0,1,3,7,15 ; la forme fermée est 2^4-1=15.",
+          "hint": "Déroule quatre fois la relation."
+        },
+        {
+          "id": "mit_6_042j_2010_s014_e02",
+          "type": "math",
+          "prompt": "T(1)=1 et T(n)=2T(n/2)+n sur les puissances de deux. Combien vaut T(8) ?",
+          "options": [
+            "32",
+            "24",
+            "16",
+            "64"
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "T(2)=4, T(4)=12, T(8)=2×12+8=32. Le terme des feuilles compte aussi.",
+          "hint": "Commence par la condition initiale."
+        },
+        {
+          "id": "mit_6_042j_2010_s014_e03",
+          "type": "choice",
+          "prompt": "Quel ordre a T(n)=2T(n/2)+n dans ce domaine ?",
+          "options": [
+            "Θ(log n)",
+            "Θ(n²)",
+            "Θ(2^n)",
+            "Θ(n log n)"
+          ],
+          "correctOptionIndex": 3,
+          "explanation": "Il y a log₂n niveaux, chacun de coût n, plus les feuilles de coût linéaire.",
+          "hint": "Additionne le travail total par niveau."
+        },
+        {
+          "id": "mit_6_042j_2010_s014_e04",
+          "type": "choice",
+          "prompt": "Si S(n)=n-1, que donne S(⌊n/2⌋)+S(⌈n/2⌉)+1 pour n≥2 ?",
+          "options": [
+            "n+1",
+            "2n-1",
+            "n-1",
+            "n"
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "La somme vaut ⌊n/2⌋-1+⌈n/2⌉-1+1=n-1. Les sous-tailles sont strictement plus petites, ce qui autorise la récurrence forte.",
+          "hint": "Utilise l’identité plancher plus plafond égale n."
+        }
+      ]
+    },
+    {
+      "id": "mit_6_042j_2010_s015",
+      "sourceSessionNumber": 15,
+      "sourceTitle": "Midterm Practice Problems",
+      "kind": "review",
+      "title": "Préparer le partiel : logique, invariants et graphes",
+      "objective": "Combiner plusieurs outils dans une révision adaptée aux thèmes du support.",
+      "learningNotes": "Cette révision est une pratique originale construite à partir des thèmes de Midterm Practice Problems ; elle ne reproduit ni l'intégralité du sujet ni sa notation. Avant de calculer, on identifie l'objet : vérité logique, congruence, invariant, graphe ou somme. Une preuve d'impossibilité exige une propriété initiale conservée par tous les mouvements. Une recherche d'inverse exige un pgcd égal à un. Pour un coloriage minimal, une construction donne un majorant et une obstruction, comme une clique, donne un minorant. Ces deux directions doivent se rencontrer. Enfin, un encadrement asymptotique doit préciser le domaine de n. Il est utile de vérifier une réponse numérique sur un petit exemple, mais cette vérification ne remplace pas une démonstration générale.",
+      "sourceUrls": [
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/mit6_042jf10_mid_practice/",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/3179fb7a80dcb5a10c5c85cf2b9ab585_MIT6_042JF10_mid_practice.pdf",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/b7bffa977868220bb3c262f4cb8875eb_MIT6_042JF10_mid_pctce_sol.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "id": "mit_6_042j_2010_s015_e01",
+          "type": "choice",
+          "prompt": "Le connecteur NOR est défini par NOR(P,Q)=¬(P∨Q). Que vaut NOR(P,P) ?",
+          "options": [
+            "¬P",
+            "P",
+            "Toujours vrai",
+            "Toujours faux"
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "P∨P est équivalent à P ; sa négation donne ¬P. Cette identité permet de fabriquer une négation avec NOR.",
+          "hint": "Utilise l’idempotence de OU."
+        },
+        {
+          "id": "mit_6_042j_2010_s015_e02",
+          "type": "math",
+          "prompt": "Un mouvement renverse exactement quatre positions consécutives d’une permutation. De combien de paires internes inverse-t-il l’ordre ?",
+          "options": [
+            "4",
+            "8",
+            "12",
+            "6"
+          ],
+          "correctOptionIndex": 3,
+          "explanation": "Toutes les paires parmi quatre objets changent d’ordre, soit C(4,2)=6. Les relations avec les objets extérieurs ne changent pas puisque le bloc reste consécutif.",
+          "hint": "Compte les paires non ordonnées dans le bloc."
+        },
+        {
+          "id": "mit_6_042j_2010_s015_e03",
+          "type": "math",
+          "prompt": "Quel inverse de 7 modulo 26 appartient à {0,…,25} ?",
+          "options": [
+            "11",
+            "19",
+            "15",
+            "7"
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "7×15=105=4×26+1. Le pgcd de 7 et 26 vaut 1, donc l’inverse existe.",
+          "hint": "Cherche un multiple de 7 une unité au-dessus d’un multiple de 26."
+        },
+        {
+          "id": "mit_6_042j_2010_s015_e04",
+          "type": "choice",
+          "prompt": "Un graphe contient un triangle et admet un coloriage à trois couleurs. Que peut-on conclure sur son minimum ?",
+          "options": [
+            "Il reste indéterminé entre un et trois.",
+            "Il vaut exactement trois.",
+            "Il vaut au plus deux.",
+            "Il vaut au moins quatre."
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "Le triangle impose au moins trois couleurs et le coloriage construit en utilise trois. Les deux bornes concordent.",
+          "hint": "Combine nécessité et réalisation."
+        },
+        {
+          "id": "mit_6_042j_2010_s015_e05",
+          "type": "math",
+          "prompt": "Quel reste a a5 si a0=a1=1 et an=an-1+2an-2 pour n≥2 ?",
+          "options": [
+            "1 modulo 2",
+            "0 modulo 2",
+            "2 modulo 3",
+            "0 modulo 3"
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "Les valeurs sont 1,1,3,5,11,21 : a5 est impair. Plus généralement, impair plus deux fois impair reste impair.",
+          "hint": "Travaille modulo deux ou calcule les premiers termes."
+        }
+      ]
+    },
+    {
+      "id": "mit_6_042j_2010_s016",
+      "sourceSessionNumber": 16,
+      "sourceTitle": "Midterm",
+      "kind": "exam",
+      "title": "Partiel : entraînement adapté de l’édition 2010",
+      "objective": "Mobiliser preuves, modularité, graphes et bornes dans une évaluation guidée.",
+      "learningNotes": "Cette séance est un entraînement original associé au Midterm 2010, après les quatorze premières conférences. Les valeurs et graphes proposés sont nouveaux, et les points d'expérience n'imitent pas le barème MIT. Pour une implication, on peut chercher une ligne de table de vérité qui la réfute. Pour une récurrence, on vérifie assez de valeurs initiales pour que tous les termes appelés soient couverts. Dans un système de transformations, une mesure décroissante prouve la terminaison alors qu'un invariant décrit les résultats possibles : les deux arguments ne se substituent pas. Les graphes demandent de distinguer sommets, arêtes, chemins et cycles. Les calculs modulaires et les bornes de sommes sont enfin justifiés avec leurs hypothèses, plutôt que présentés comme des formules à reconnaître.",
+      "sourceUrls": [
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/mit6_042jf10_midterm/",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/4ee24d59458be01224204a330cff7eca_MIT6_042JF10_midterm.pdf",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/6ed3117782fbe0bdacb11d65476a21f6_MIT6_042JF10_midterm_sol.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "id": "mit_6_042j_2010_s016_e01",
+          "type": "choice",
+          "prompt": "P signifie A⇒B et Q signifie B⇒A. Quel choix réfute P⇒Q ?",
+          "options": [
+            "A vrai et B vrai.",
+            "A faux et B faux.",
+            "A vrai et B faux.",
+            "A faux et B vrai."
+          ],
+          "correctOptionIndex": 3,
+          "explanation": "Avec A faux et B vrai, P est vrai et Q faux. C’est exactement la configuration qui réfute l’implication entre P et Q.",
+          "hint": "Il faut rendre la première implication vraie et la seconde fausse."
+        },
+        {
+          "id": "mit_6_042j_2010_s016_e02",
+          "type": "math",
+          "prompt": "Chaque mouvement remplace deux objets par un seul. Avec douze objets au départ, combien de mouvements sont nécessaires pour n’en garder qu’un ?",
+          "options": [
+            "12",
+            "10",
+            "11",
+            "6"
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "Chaque mouvement diminue le nombre total de un ; passer de 12 à 1 demande 11 diminutions.",
+          "hint": "Identifie une mesure strictement décroissante."
+        },
+        {
+          "id": "mit_6_042j_2010_s016_e03",
+          "type": "math",
+          "prompt": "Quel est le reste de 7^22 modulo 23 ?",
+          "options": [
+            "22",
+            "1",
+            "0",
+            "7"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "23 est premier et ne divise pas 7. Le petit théorème de Fermat donne 7^22≡1 modulo 23.",
+          "hint": "Vérifie d’abord les hypothèses du théorème."
+        },
+        {
+          "id": "mit_6_042j_2010_s016_e04",
+          "type": "math",
+          "prompt": "Un graphe connexe a sept sommets et neuf arêtes. Combien d’arêtes faut-il retirer pour obtenir un arbre couvrant en ne retirant que des arêtes de cycles ?",
+          "options": [
+            "3",
+            "2",
+            "4",
+            "6"
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "Un arbre couvrant a 6 arêtes. En retirer 9-6=3 sur des cycles préserve la connexité et supprime les redondances.",
+          "hint": "Compare le nombre d’arêtes actuel à celui d’un arbre."
+        },
+        {
+          "id": "mit_6_042j_2010_s016_e05",
+          "type": "choice",
+          "prompt": "Un cycle simple de cinq sommets admet-il un circuit eulérien non orienté ?",
+          "options": [
+            "Non, car son nombre de sommets est impair.",
+            "Non, car un cycle ne peut pas être eulérien.",
+            "Oui, parce que tous ses degrés sont impairs.",
+            "Oui, il est connexe et tous ses degrés valent deux."
+          ],
+          "correctOptionIndex": 3,
+          "explanation": "Un parcours autour du cycle utilise chaque arête une fois et revient au départ. La parité pertinente est celle des degrés.",
+          "hint": "Ne confonds pas parité du nombre de sommets et parité des degrés."
+        },
+        {
+          "id": "mit_6_042j_2010_s016_e06",
+          "type": "choice",
+          "prompt": "f(n)=n log n est-elle O(n) ?",
+          "options": [
+            "Oui, car toutes les fonctions croissantes sont O(n).",
+            "Non, car n log n devient négatif.",
+            "Non, car f(n)/n=log n n’est pas borné.",
+            "Oui, car log n est toujours inférieur à un."
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "Aucune constante ne majore log n pour tous les n suffisamment grands. Le majorant linéaire ne peut donc tenir.",
+          "hint": "Écris le quotient par la fonction proposée comme borne."
+        }
+      ]
+    },
+    {
+      "id": "mit_6_042j_2010_s017",
+      "sourceSessionNumber": 17,
+      "sourceTitle": "Lecture 15: Linear Recurrences",
+      "kind": "lesson",
+      "title": "Résoudre une récurrence linéaire",
+      "objective": "Utiliser les racines caractéristiques et les conditions initiales.",
+      "learningNotes": "Une récurrence linéaire homogène à coefficients constants admet des solutions exponentielles r^n lorsque r satisfait son équation caractéristique. Pour a_n=5a_(n-1)-6a_(n-2), cette équation est r²-5r+6=(r-2)(r-3). La solution générale s'écrit A2^n+B3^n, puis deux conditions initiales déterminent A et B. Si a0=2 et a1=5, les équations A+B=2 et 2A+3B=5 donnent A=B=1. En cas de racine double r, il faut inclure un terme n r^n : deux copies identiques de r^n ne fournissent pas deux paramètres indépendants. La formule obtenue doit satisfaire à la fois la relation et les conditions initiales ; vérifier seulement la relation laisse encore plusieurs suites possibles.",
+      "sourceUrls": [
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-15-linear-recurrences/",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/eb8fc3c5ca462d307112e4fcedda39da_TWBB-JlmYUc.pdf",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/18b5495f7408055f9679e3afebb108ab_MIT6_042JF10_chap10.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "id": "mit_6_042j_2010_s017_e01",
+          "type": "math",
+          "prompt": "Pour a0=2, a1=5 et an=5an-1-6an-2, combien vaut a4 ?",
+          "options": [
+            "65",
+            "48",
+            "97",
+            "81"
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "La formule 2^n+3^n donne 16+81=97. On peut aussi calculer 13,35,97 après les deux premiers termes.",
+          "hint": "Vérifie les deux conditions initiales avant d’utiliser la formule."
+        },
+        {
+          "id": "mit_6_042j_2010_s017_e02",
+          "type": "choice",
+          "prompt": "Quelles sont les racines de r²-7r+12 ?",
+          "options": [
+            "-3 et -4",
+            "3 et 4",
+            "2 et 6",
+            "1 et 12"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "Le produit des racines vaut 12 et leur somme 7 ; (r-3)(r-4) convient.",
+          "hint": "Cherche deux nombres avec le bon produit et la bonne somme."
+        },
+        {
+          "id": "mit_6_042j_2010_s017_e03",
+          "type": "choice",
+          "prompt": "Pour une racine caractéristique double égale à 2, quelle forme générale est nécessaire ?",
+          "options": [
+            "(A+Bn)2^n",
+            "A2^n+B2^n",
+            "A+B",
+            "A2^(n²)"
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "Le second terme indépendant est n2^n. Deux multiples de 2^n se regrouperaient en un seul coefficient.",
+          "hint": "Deux conditions initiales exigent deux paramètres réellement indépendants."
+        },
+        {
+          "id": "mit_6_042j_2010_s017_e04",
+          "type": "math",
+          "prompt": "Si bn=2bn-1, b0=3, quelle valeur a b6 ?",
+          "options": [
+            "64",
+            "96",
+            "729",
+            "192"
+          ],
+          "correctOptionIndex": 3,
+          "explanation": "La suite double six fois : b6=3×2^6=192.",
+          "hint": "Le coefficient initial reste un facteur de la puissance."
+        }
+      ]
+    },
+    {
+      "id": "mit_6_042j_2010_s018",
+      "sourceSessionNumber": 18,
+      "sourceTitle": "Lecture 16: Counting Rules I",
+      "kind": "lesson",
+      "title": "Compter par correspondances et tiroirs",
+      "objective": "Choisir une représentation sans perte ni double comptage.",
+      "learningNotes": "Compter un ensemble devient plus simple lorsqu'on le met en bijection avec un ensemble déjà compris. La règle du produit décrit des choix successifs dont le nombre d'options est connu à chaque étape ; la règle de la somme concerne des cas disjoints. Une application qui associe exactement k représentations à chaque objet permet de diviser le nombre de représentations par k. Le principe des tiroirs affirme que plus d'objets que de catégories forcent au moins une catégorie à recevoir plusieurs objets. Avec treize personnes réparties entre douze mois de naissance, deux partagent donc un mois, sans identifier lesquelles. Ce type de preuve d'existence n'exige pas de construire la paire. Une mauvaise représentation peut oublier des contraintes ou compter certains objets plus souvent que d'autres.",
+      "sourceUrls": [
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-16-counting-rules-i/",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/d9cfa23d44c5aa8f81fae627d0bb30dd_pNt5Ll6hGqo.pdf",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/fd14182dfb1a679eda5cbd38c48c8bb5_MIT6_042JF10_chap11.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "id": "mit_6_042j_2010_s018_e01",
+          "type": "math",
+          "prompt": "Un code comporte deux lettres choisies parmi quatre, puis un chiffre parmi dix, avec répétition autorisée. Combien de codes existe-t-il ?",
+          "options": [
+            "24",
+            "160",
+            "80",
+            "40"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "Les choix sont indépendants au sens du dénombrement : 4×4×10=160.",
+          "hint": "Compte les possibilités à chaque position."
+        },
+        {
+          "id": "mit_6_042j_2010_s018_e02",
+          "type": "math",
+          "prompt": "Combien de personnes suffisent pour garantir que deux sont nées dans le même mois ?",
+          "options": [
+            "13",
+            "12",
+            "24",
+            "2"
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "Douze mois peuvent recevoir douze personnes sans collision. La treizième force une répétition par le principe des tiroirs.",
+          "hint": "Compare nombre d’objets et nombre de catégories."
+        },
+        {
+          "id": "mit_6_042j_2010_s018_e03",
+          "type": "choice",
+          "prompt": "On forme une paire non ordonnée de deux personnes distinctes parmi six. Pourquoi diviser 6×5 par deux ?",
+          "options": [
+            "Chaque personne est choisie deux fois dans la paire.",
+            "Il y a seulement deux personnes disponibles.",
+            "Le choix initial est impossible.",
+            "Chaque paire est représentée par ses deux ordres possibles."
+          ],
+          "correctOptionIndex": 3,
+          "explanation": "Les listes (A,B) et (B,A) représentent la même paire et chaque paire possède exactement deux représentations.",
+          "hint": "Contrôle que la multiplicité est la même pour tous les objets."
+        },
+        {
+          "id": "mit_6_042j_2010_s018_e04",
+          "type": "math",
+          "prompt": "Sept objets sont répartis dans trois tiroirs. Quelle taille minimale peut-on garantir pour le tiroir le plus rempli ?",
+          "options": [
+            "4",
+            "7",
+            "3",
+            "2"
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "Si chaque tiroir contenait au plus deux objets, le total serait au plus six. Il y en a sept, donc l’un en contient au moins trois.",
+          "hint": "Raisonne par contradiction sur une capacité maximale."
+        }
+      ]
+    },
+    {
+      "id": "mit_6_042j_2010_s019",
+      "sourceSessionNumber": 19,
+      "sourceTitle": "Lecture 17: Counting Rules II",
+      "kind": "lesson",
+      "title": "Choisir des sous-ensembles et corriger les recouvrements",
+      "objective": "Appliquer coefficients binomiaux, inclusion-exclusion et multinomiaux.",
+      "learningNotes": "Un choix de k objets parmi n sans ordre se compte par C(n,k)=n!/(k!(n-k)!). Les permutations internes des objets choisis ne doivent pas créer de nouveaux choix. Pour une répartition en groupes étiquetés de tailles fixées, un coefficient multinomial divise les permutations par les factorielles de chaque groupe. L'inclusion-exclusion corrige un autre double comptage : |A∪B|=|A|+|B|-|A∩B|, car l'intersection a été comptée deux fois. Pour trois ensembles, on retranche les intersections deux à deux puis on rétablit l'intersection triple. Les mains de cartes illustrent ces distinctions : une main est un ensemble, mais sa description peut choisir d'abord des rangs puis des couleurs. Il faut vérifier qu'une description correspond à une unique main ou corriger sa multiplicité.",
+      "sourceUrls": [
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-17-counting-rules-ii/",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/545c0e4f7df07d15c4fbf6d3d0ed77dc_09yIb3VHhMI.pdf",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/fd14182dfb1a679eda5cbd38c48c8bb5_MIT6_042JF10_chap11.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "id": "mit_6_042j_2010_s019_e01",
+          "type": "math",
+          "prompt": "Combien de comités non ordonnés de trois personnes peut-on choisir parmi huit ?",
+          "options": [
+            "56",
+            "24",
+            "336",
+            "512"
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "C(8,3)=8×7×6/(3×2×1)=56. Les six ordres de chaque comité désignent le même ensemble.",
+          "hint": "Le choix ne comporte pas de fonctions distinctes."
+        },
+        {
+          "id": "mit_6_042j_2010_s019_e02",
+          "type": "math",
+          "prompt": "Dans un groupe, 18 personnes parlent A, 15 parlent B et 7 parlent les deux. Combien parlent au moins une de ces langues ?",
+          "options": [
+            "33",
+            "40",
+            "19",
+            "26"
+          ],
+          "correctOptionIndex": 3,
+          "explanation": "18+15 compte deux fois les sept bilingues. En les retranchant une fois, on obtient 26.",
+          "hint": "L’expression « au moins une » désigne une union."
+        },
+        {
+          "id": "mit_6_042j_2010_s019_e03",
+          "type": "math",
+          "prompt": "Combien d’arrangements distincts des lettres AABBC existe-t-il ?",
+          "options": [
+            "60",
+            "20",
+            "30",
+            "120"
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "Il y a 5! permutations de positions, mais permuter les deux A ou les deux B ne change pas le mot : 5!/(2!2!)=30.",
+          "hint": "Corrige chaque famille de lettres répétées."
+        },
+        {
+          "id": "mit_6_042j_2010_s019_e04",
+          "type": "math",
+          "prompt": "Combien de mains de cinq cartes contiennent exactement quatre rois, dans un jeu de 52 cartes ?",
+          "options": [
+            "624",
+            "48",
+            "13",
+            "52"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "Les quatre rois sont imposés. La cinquième carte est l’une des 48 autres cartes. Le total 624 concernerait quatre cartes de n’importe quel rang.",
+          "hint": "Ne multiplie pas par les rangs quand celui des quatre cartes est déjà fixé."
+        }
+      ]
+    },
+    {
+      "id": "mit_6_042j_2010_s020",
+      "sourceSessionNumber": 20,
+      "sourceTitle": "Lecture 18: Probability Introduction",
+      "kind": "lesson",
+      "title": "Définir un espace probabilisé",
+      "objective": "Modéliser les issues et leurs poids avant de compter un événement.",
+      "learningNotes": "Un modèle probabiliste comprend un ensemble d'issues, des événements et des probabilités totalisant un. Dans un espace fini équiprobable, la probabilité d'un événement est le rapport des issues favorables au nombre total ; sans équiprobabilité, il faut additionner leurs poids. Deux dés distinguables donnent trente-six couples équiprobables, mais leurs onze sommes possibles ne le sont pas. Un arbre aide à décrire les étapes : on multiplie les probabilités conditionnelles le long d'une branche et on additionne celles de branches disjointes. Le problème des trois portes montre que les règles de l'animateur comptent : lorsqu'il sait où se trouve le prix, ouvre toujours une porte perdante et offre toujours de changer, le changement gagne exactement quand le premier choix était faux, soit avec probabilité deux tiers.",
+      "sourceUrls": [
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-18-probability-introduction/",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/e38df7d17bc4b9e21ac6c9347279a8d0_SmFwFdESMHI.pdf",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/67563e626df1b795165a7bf1426cc166_MIT6_042JF10_chap14.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "id": "mit_6_042j_2010_s020_e01",
+          "type": "math",
+          "prompt": "Deux dés équilibrés et indépendants sont lancés. Quelle est la probabilité d’une somme égale à 5 ?",
+          "options": [
+            "1/11",
+            "1/6",
+            "5/36",
+            "1/9"
+          ],
+          "correctOptionIndex": 3,
+          "explanation": "Les couples favorables sont (1,4),(2,3),(3,2),(4,1), soit 4 parmi 36.",
+          "hint": "Les couples de faces sont équiprobables, pas les sommes."
+        },
+        {
+          "id": "mit_6_042j_2010_s020_e02",
+          "type": "math",
+          "prompt": "Trois issues ont les probabilités 1/2, 1/3 et 1/6. Quelle probabilité a l’événement regroupant les deux dernières ?",
+          "options": [
+            "1/6",
+            "5/6",
+            "1/2",
+            "2/3"
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "Les issues sont disjointes et leurs probabilités s’additionnent : 1/3+1/6=1/2.",
+          "hint": "Il faut additionner les poids, pas seulement compter deux issues sur trois."
+        },
+        {
+          "id": "mit_6_042j_2010_s020_e03",
+          "type": "math",
+          "prompt": "Un animateur connaissant le prix ouvre toujours une porte perdante et propose toujours le changement. Avec un premier choix uniforme parmi trois portes, quelle probabilité de gain a le changement ?",
+          "options": [
+            "1",
+            "2/3",
+            "1/3",
+            "1/2"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "Changer gagne précisément lorsque le premier choix est l’une des deux portes perdantes. Les règles de l’animateur sont indispensables à ce raisonnement.",
+          "hint": "Classe les premiers choix selon qu’ils sont corrects ou non."
+        },
+        {
+          "id": "mit_6_042j_2010_s020_e04",
+          "type": "choice",
+          "prompt": "Pourquoi compter six feuilles gagnantes sur douze dans un arbre ne suffit-il pas toujours ?",
+          "options": [
+            "Les feuilles peuvent ne pas avoir les mêmes probabilités.",
+            "Le nombre de feuilles est toujours infini.",
+            "Une probabilité ne peut jamais se calculer par comptage.",
+            "Toutes les feuilles ont forcément un poids nul."
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "Le rapport des nombres de feuilles est valable seulement en cas d’équiprobabilité. Sinon il faut sommer les poids des feuilles favorables.",
+          "hint": "Vérifie ce que représentent les probabilités des branches."
+        }
+      ]
+    },
+    {
+      "id": "mit_6_042j_2010_s021",
+      "sourceSessionNumber": 21,
+      "sourceTitle": "Lecture 19: Conditional Probability",
+      "kind": "lesson",
+      "title": "Conditionner et inverser une information",
+      "objective": "Appliquer probabilités totales et formule de Bayes.",
+      "learningNotes": "Conditionner par B restreint l'univers à cet événement puis renormalise ses poids : P(A|B)=P(A∩B)/P(B), si P(B)>0. Il faut distinguer cette probabilité de P(B|A). Supposons qu'une machine produise 10 % de pièces défectueuses, qu'un contrôle signale 90 % des défauts et fasse aussi un signal sur 20 % des pièces saines. Sur mille pièces représentatives, on attend quatre-vingt-dix vrais signaux et cent quatre-vingts faux signaux. Parmi les deux cent soixante-dix signaux, la proportion de défauts est donc un tiers. La formule de Bayes organise ce calcul avec la fréquence préalable et les deux comportements du contrôle. Une information nouvelle peut ainsi changer fortement la probabilité sans transformer le test en certitude.",
+      "sourceUrls": [
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-19-conditional-probability/",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/472fb084c579c044b7c3ee7a0f86d8ff_E6FbvM-FGZ8.pdf",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/d642d816867bcd205926eefaa116edd8_MIT6_042JF10_chap15.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "id": "mit_6_042j_2010_s021_e01",
+          "type": "math",
+          "prompt": "Parmi 100 objets, 30 sont rouges, 20 sont grands et 12 sont à la fois rouges et grands. Quelle est la probabilité d’être rouge sachant que l’objet est grand ?",
+          "options": [
+            "3/10",
+            "3/25",
+            "3/5",
+            "2/5"
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "Le nouvel univers contient les 20 grands objets, dont 12 rouges : 12/20=3/5.",
+          "hint": "Le dénominateur correspond à l’événement connu."
+        },
+        {
+          "id": "mit_6_042j_2010_s021_e02",
+          "type": "math",
+          "prompt": "Une pièce est défectueuse avec probabilité 1/10. Le contrôle signale avec probabilités 9/10 si elle est défectueuse et 1/5 sinon. Quelle est la probabilité totale d’un signal ?",
+          "options": [
+            "9/10",
+            "27/100",
+            "9/100",
+            "1/5"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "P(signal)=1/10×9/10+9/10×1/5=9/100+18/100=27/100.",
+          "hint": "Sépare les deux catégories disjointes de pièces."
+        },
+        {
+          "id": "mit_6_042j_2010_s021_e03",
+          "type": "math",
+          "prompt": "Dans le modèle précédent, quelle est la probabilité de défaut sachant qu’un signal est apparu ?",
+          "options": [
+            "1/3",
+            "9/10",
+            "1/10",
+            "2/3"
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "Le numérateur vaut 9/100 et le dénominateur 27/100 ; leur quotient vaut 1/3.",
+          "hint": "Renormalise parmi tous les signaux."
+        },
+        {
+          "id": "mit_6_042j_2010_s021_e04",
+          "type": "choice",
+          "prompt": "P(A|B) est définie par un quotient. Quelle hypothèse est nécessaire ?",
+          "options": [
+            "P(A)=P(B)",
+            "A et B disjoints",
+            "P(A)=1",
+            "P(B)>0"
+          ],
+          "correctOptionIndex": 3,
+          "explanation": "On divise par P(B). La définition élémentaire n’attribue pas de quotient lorsque cet événement a une probabilité nulle.",
+          "hint": "Regarde le dénominateur de la définition."
+        }
+      ]
+    },
+    {
+      "id": "mit_6_042j_2010_s022",
+      "sourceSessionNumber": 22,
+      "sourceTitle": "Lecture 20: Independence",
+      "kind": "lesson",
+      "title": "Vérifier l’indépendance au bon niveau",
+      "objective": "Distinguer indépendance mutuelle, deux à deux et incompatibilité.",
+      "learningNotes": "Deux événements A et B sont indépendants lorsque P(A∩B)=P(A)P(B). Ils sont incompatibles si leur intersection est vide ; deux événements incompatibles de probabilités positives ne sont donc pas indépendants. Pour plusieurs événements, vérifier toutes les paires ne garantit pas l'indépendance mutuelle. Prenons deux bits uniformes indépendants X et Y : les événements X=0, Y=0 et X=Y sont indépendants deux à deux, mais l'intersection triple a probabilité un quart plutôt qu'un huitième. Les produits de probabilités dans un modèle de collision ou de succès répétés demandent donc les hypothèses appropriées. Pour trois anniversaires uniformes indépendants sur cinq jours possibles, la probabilité d'absence de collision est 5×4×3/5³ ; le complément donne la probabilité d'au moins une répétition.",
+      "sourceUrls": [
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-20-independence/",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/6388bd9f7ac0cad66c505d5f76c4ffef_l1BCv3qqW4A.pdf",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/9907ae0740731964bce45d8fc06989d2_MIT6_042JF10_chap16.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "id": "mit_6_042j_2010_s022_e01",
+          "type": "math",
+          "prompt": "A et B sont indépendants, P(A)=2/5 et P(B)=3/4. Quelle est P(A∩B) ?",
+          "options": [
+            "1/2",
+            "3/10",
+            "23/20",
+            "1/5"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "L’indépendance autorise le produit : 2/5×3/4=6/20=3/10.",
+          "hint": "N’utilise pas une addition pour une intersection indépendante."
+        },
+        {
+          "id": "mit_6_042j_2010_s022_e02",
+          "type": "choice",
+          "prompt": "A et B sont disjoints avec chacun une probabilité strictement positive. Peuvent-ils être indépendants ?",
+          "options": [
+            "Non : leur intersection a probabilité zéro mais leur produit est positif.",
+            "Oui, car disjoint signifie indépendant.",
+            "Oui, seulement s’ils ont la même probabilité.",
+            "Oui, pour n’importe quelles probabilités positives."
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "L’égalité d’indépendance ne peut pas tenir entre zéro et un produit positif.",
+          "hint": "Compare les deux côtés de P(A∩B)=P(A)P(B)."
+        },
+        {
+          "id": "mit_6_042j_2010_s022_e03",
+          "type": "math",
+          "prompt": "Deux bits uniformes indépendants X,Y définissent A={X=0}, B={Y=0}, C={X=Y}. Quelle probabilité a A∩B∩C ?",
+          "options": [
+            "1/8",
+            "1/2",
+            "0",
+            "1/4"
+          ],
+          "correctOptionIndex": 3,
+          "explanation": "Seule l’issue (0,0) parmi les quatre équiprobables convient. Le produit des trois probabilités marginales vaut 1/8, donc l’indépendance mutuelle échoue.",
+          "hint": "Énumère les quatre couples binaires."
+        },
+        {
+          "id": "mit_6_042j_2010_s022_e04",
+          "type": "math",
+          "prompt": "Trois anniversaires sont uniformes et indépendants sur cinq jours. Quelle probabilité a au moins une collision ?",
+          "options": [
+            "3/5",
+            "1/5",
+            "13/25",
+            "12/25"
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "L’absence de collision a probabilité 5×4×3/125=12/25. Le complément vaut 13/25.",
+          "hint": "Il est plus simple de compter trois dates distinctes."
+        }
+      ]
+    },
+    {
+      "id": "mit_6_042j_2010_s023",
+      "sourceSessionNumber": 23,
+      "sourceTitle": "Lecture 21: Random Variables",
+      "kind": "lesson",
+      "title": "Décrire une variable aléatoire par sa loi",
+      "objective": "Passer d’issues élémentaires à une distribution et une fonction de répartition.",
+      "learningNotes": "Une variable aléatoire est une fonction qui associe une valeur à chaque issue. Plusieurs issues peuvent produire la même valeur ; sa loi regroupe leurs probabilités. Pour le nombre de faces sur deux lancers indépendants équilibrés, les valeurs 0,1,2 ont respectivement les probabilités un quart, une moitié et un quart. La fonction de répartition F(t)=P(X≤t) est croissante et prend en compte toutes les valeurs jusqu'au seuil, y compris une masse exactement au seuil. La loi binomiale compte les succès dans n essais indépendants de même probabilité p : P(X=k)=C(n,k)p^k(1-p)^(n-k). Le coefficient choisit les positions des succès ; le produit donne le poids de chacune de ces configurations. Des essais dépendants n'autorisent pas automatiquement cette loi.",
+      "sourceUrls": [
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-21-random-variables/",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/26637c51d9ed01c61aa160f5f4a20e26_MOfhhFaQdjw.pdf",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/6942723a3a99c1e7cfe0c3210b6f13ca_MIT6_042JF10_chap17.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "id": "mit_6_042j_2010_s023_e01",
+          "type": "math",
+          "prompt": "X compte les faces sur deux lancers indépendants équilibrés. Combien vaut P(X=1) ?",
+          "options": [
+            "1/2",
+            "1/4",
+            "3/4",
+            "1"
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "Les issues FP et PF conviennent parmi FF,FP,PF,PP, toutes équiprobables.",
+          "hint": "Regroupe les issues par nombre de faces."
+        },
+        {
+          "id": "mit_6_042j_2010_s023_e02",
+          "type": "math",
+          "prompt": "X suit une loi binomiale de paramètres 4 et 1/3. Quelle est P(X=2) ?",
+          "options": [
+            "4/27",
+            "2/9",
+            "16/81",
+            "8/27"
+          ],
+          "correctOptionIndex": 3,
+          "explanation": "C(4,2)(1/3)²(2/3)²=6×4/81=8/27.",
+          "hint": "Choisis d’abord les deux positions des succès."
+        },
+        {
+          "id": "mit_6_042j_2010_s023_e03",
+          "type": "math",
+          "prompt": "X vaut 0,1,2 avec probabilités 1/4,1/2,1/4. Combien vaut F(1) ?",
+          "options": [
+            "1/4",
+            "1",
+            "3/4",
+            "1/2"
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "F(1)=P(X≤1) inclut les masses de 0 et de 1, soit 1/4+1/2=3/4.",
+          "hint": "Le signe est inférieur ou égal, pas strictement inférieur."
+        },
+        {
+          "id": "mit_6_042j_2010_s023_e04",
+          "type": "choice",
+          "prompt": "Quelle situation justifie directement une loi binomiale ?",
+          "options": [
+            "Des probabilités de succès différentes à chaque essai sans autre analyse.",
+            "Un nombre fixé d’essais indépendants ayant tous la même probabilité de succès.",
+            "Des essais arbitrairement dépendants.",
+            "Un nombre de succès toujours fixé à l’avance."
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "Le nombre d’essais, leur indépendance et la constance du paramètre p fondent la formule binomiale.",
+          "hint": "Vérifie séparément les trois hypothèses."
+        }
+      ]
+    },
+    {
+      "id": "mit_6_042j_2010_s024",
+      "sourceSessionNumber": 24,
+      "sourceTitle": "Lecture 22: Expectation I",
+      "kind": "lesson",
+      "title": "Calculer une espérance par indicatrices",
+      "objective": "Utiliser la linéarité sans supposer une indépendance inutile.",
+      "learningNotes": "L'espérance est une moyenne pondérée : E[X]=ΣxP(X=x) lorsque la somme est bien définie. Elle ne doit pas être une valeur que X peut effectivement prendre. La linéarité E[X+Y]=E[X]+E[Y] ne demande pas l'indépendance. Une variable indicatrice I_A vaut un lorsque A se produit et zéro sinon ; son espérance est P(A). Pour une permutation uniforme de n étiquettes, le nombre de positions correctement occupées est une somme de n indicatrices, chacune d'espérance 1/n. Son espérance vaut donc un, même si ces indicatrices sont dépendantes. Une autre identité pour X entier non négatif est E[X]=Σ pour k≥1 de P(X≥k) : chaque issue de valeur x est comptée exactement x fois dans les queues de distribution.",
+      "sourceUrls": [
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-22-expectation-i/",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/8d9320ea601c41975fb1e2cdc0c99c40_gGlMSe7uEkA.pdf",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/b61628dbe4b2e1d264f12c8ada491766_MIT6_042JF10_chap18.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "id": "mit_6_042j_2010_s024_e01",
+          "type": "math",
+          "prompt": "Un dé équilibré à six faces vaut D. Quelle est E[D] ?",
+          "options": [
+            "3",
+            "7",
+            "21",
+            "7/2"
+          ],
+          "correctOptionIndex": 3,
+          "explanation": "La moyenne pondérée est (1+2+3+4+5+6)/6=21/6=7/2. Elle ne correspond pas à une face.",
+          "hint": "Les six faces ont le même poids."
+        },
+        {
+          "id": "mit_6_042j_2010_s024_e02",
+          "type": "math",
+          "prompt": "Une permutation uniforme de six étiquettes est choisie. Quel est le nombre moyen d’étiquettes à leur place ?",
+          "options": [
+            "3",
+            "6",
+            "1",
+            "0"
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "Chaque position a probabilité 1/6 d’être correcte. La somme de six indicatrices a espérance 6×1/6=1.",
+          "hint": "La linéarité s’applique même si les positions ne sont pas indépendantes."
+        },
+        {
+          "id": "mit_6_042j_2010_s024_e03",
+          "type": "math",
+          "prompt": "X et Y peuvent être dépendantes, E[X]=4 et E[Y]=7. Quelle est E[2X+Y] ?",
+          "options": [
+            "Impossible à déterminer malgré ces espérances finies.",
+            "15",
+            "11",
+            "28"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "La linéarité donne 2×4+7=15 sans hypothèse d’indépendance.",
+          "hint": "Sépare somme et produit de variables aléatoires."
+        },
+        {
+          "id": "mit_6_042j_2010_s024_e04",
+          "type": "math",
+          "prompt": "X est entier non négatif et vaut au plus 3. Si P(X≥1)=3/4, P(X≥2)=1/2 et P(X≥3)=1/4, quelle est E[X] ?",
+          "options": [
+            "3/2",
+            "1",
+            "3/4",
+            "2"
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "La formule des queues donne 3/4+1/2+1/4=3/2. Les queues suivantes sont nulles.",
+          "hint": "Additionne les probabilités de dépasser chaque niveau entier positif."
+        }
+      ]
+    },
+    {
+      "id": "mit_6_042j_2010_s025",
+      "sourceSessionNumber": 25,
+      "sourceTitle": "Lecture 23: Expectation II",
+      "kind": "lesson",
+      "title": "Mesurer la dispersion et compter des événements",
+      "objective": "Calculer une variance et préciser les usages de l’indépendance.",
+      "learningNotes": "L'espérance ne décrit pas à elle seule la dispersion. La variance est E[(X-E[X])²], également égale à E[X²]-E[X]² lorsque ces moments existent. Pour une indicatrice de probabilité p, X²=X et la variance vaut p(1-p). La variance d'une somme additionne celles des termes indépendants ; sans indépendance, des covariances peuvent intervenir. Le nombre d'événements survenus s'écrit comme une somme d'indicatrices. Sa moyenne fournit toujours un majorant de la probabilité qu'il y ait au moins un événement, puisque le compteur vaut alors au moins un. Une grande moyenne, en revanche, ne garantit pas à elle seule une forte probabilité d'occurrence : des événements très dépendants peuvent se produire tous ensemble très rarement. Les hypothèses déterminent donc le sens des conclusions possibles.",
+      "sourceUrls": [
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-23-expectation-ii/",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/dc4f198af215cde514be1c46c806d063_oI9fMUqgfxY.pdf",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/b61628dbe4b2e1d264f12c8ada491766_MIT6_042JF10_chap18.pdf",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/6c942e0720244be28959e968aae62e16_MIT6_042JF10_chap19.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "id": "mit_6_042j_2010_s025_e01",
+          "type": "math",
+          "prompt": "X est une indicatrice avec P(X=1)=1/4. Quelle est sa variance ?",
+          "options": [
+            "1/16",
+            "3/4",
+            "3/16",
+            "1/4"
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "Var(X)=p(1-p)=1/4×3/4=3/16.",
+          "hint": "Utilise X²=X."
+        },
+        {
+          "id": "mit_6_042j_2010_s025_e02",
+          "type": "math",
+          "prompt": "Quatre indicatrices indépendantes ont chacune la variance 3/16. Quelle est la variance de leur somme ?",
+          "options": [
+            "9/16",
+            "3/4",
+            "3/16",
+            "3"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "L’indépendance annule les covariances ; la somme vaut 4×3/16=3/4.",
+          "hint": "Il s’agit d’une variance, pas d’un écart type."
+        },
+        {
+          "id": "mit_6_042j_2010_s025_e03",
+          "type": "math",
+          "prompt": "X vaut -1 ou 3 avec probabilités 1/2 chacune. Quelle est sa variance ?",
+          "options": [
+            "4",
+            "1",
+            "2",
+            "5"
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "E[X]=1 et E[X²]=(1+9)/2=5. Donc Var(X)=5-1²=4.",
+          "hint": "Calcule d’abord les deux premiers moments."
+        },
+        {
+          "id": "mit_6_042j_2010_s025_e04",
+          "type": "math",
+          "prompt": "Cent événements sont exactement le même événement A, de probabilité 1/100. Leur compteur a espérance 1. Quelle probabilité a au moins un événement ?",
+          "options": [
+            "1",
+            "1/2",
+            "0",
+            "1/100"
+          ],
+          "correctOptionIndex": 3,
+          "explanation": "Tous arrivent ensemble ou pas du tout. L’union est simplement A, de probabilité 1/100, malgré un nombre moyen d’occurrences égal à 1.",
+          "hint": "Une répétition dépendante ne crée pas cent chances indépendantes."
+        }
+      ]
+    },
+    {
+      "id": "mit_6_042j_2010_s026",
+      "sourceSessionNumber": 26,
+      "sourceTitle": "Lecture 24: Large Deviations",
+      "kind": "lesson",
+      "title": "Borner les grands écarts",
+      "objective": "Choisir entre Markov, Chebyshev et Chernoff selon les hypothèses.",
+      "learningNotes": "L'inégalité de Markov dit que P(X≥a)≤E[X]/a pour X non négative et a>0. Sa preuve observe que les seules issues où X≥a contribuent déjà au moins aP(X≥a) à l'espérance. Appliquer Markov à (X-E[X])² donne Chebyshev : P(|X-E[X]|≥t)≤Var(X)/t². Cette borne demande une variance finie, mais pas l'indépendance d'une décomposition particulière. Pour une somme de variables mutuellement indépendantes dans [0,1], Chernoff donne des queues exponentielles plus fortes ; avec moyenne μ et c≥1, la borne étudiée est exp(-μ(c ln c-c+1)). Une borne peut dépasser un et devenir peu informative ; on conserve alors la borne universelle un. Aucun de ces résultats ne fournit automatiquement une probabilité exacte.",
+      "sourceUrls": [
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-24-large-deviations/",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/9f082671fda66fa7b8639a4922bd48fd_q4mwO2qS2z4.pdf",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/6c942e0720244be28959e968aae62e16_MIT6_042JF10_chap19.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "id": "mit_6_042j_2010_s026_e01",
+          "type": "math",
+          "prompt": "X≥0 et E[X]=8. Quel majorant Markov donne-t-il pour P(X≥40) ?",
+          "options": [
+            "0",
+            "1/5",
+            "1/8",
+            "5"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "Markov donne E[X]/40=8/40=1/5. C’est une borne supérieure, pas nécessairement la probabilité réelle.",
+          "hint": "Identifie le seuil positif."
+        },
+        {
+          "id": "mit_6_042j_2010_s026_e02",
+          "type": "math",
+          "prompt": "Var(X)=9. Quel majorant Chebyshev donne-t-il pour P(|X-E[X]|≥6) ?",
+          "options": [
+            "1/4",
+            "1/2",
+            "3/2",
+            "1/36"
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "La borne est 9/6²=9/36=1/4.",
+          "hint": "Le seuil est élevé au carré."
+        },
+        {
+          "id": "mit_6_042j_2010_s026_e03",
+          "type": "choice",
+          "prompt": "Quelle hypothèse est indispensable à la version de Chernoff enseignée pour une somme de variables dans [0,1] ?",
+          "options": [
+            "Une espérance nulle de tous les termes.",
+            "Une valeur toujours entière de chaque terme.",
+            "Une égalité de tous les termes entre eux.",
+            "L’indépendance mutuelle des termes."
+          ],
+          "correctOptionIndex": 3,
+          "explanation": "La factorisation des espérances exponentielles utilise l’indépendance mutuelle. Des termes identiques et dépendants ne conviennent pas.",
+          "hint": "La preuve combine une transformation exponentielle et un produit."
+        },
+        {
+          "id": "mit_6_042j_2010_s026_e04",
+          "type": "choice",
+          "prompt": "Pour c=2, quelle expression vaut c ln c-c+1 ?",
+          "options": [
+            "2 ln 2+1",
+            "1-2 ln 2",
+            "2 ln 2-1",
+            "ln 2"
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "La substitution donne 2 ln 2-2+1=2 ln 2-1, qui est positif et produit un exposant négatif dans la borne.",
+          "hint": "Conserve tous les termes et leurs signes."
+        }
+      ]
+    },
+    {
+      "id": "mit_6_042j_2010_s027",
+      "sourceSessionNumber": 27,
+      "sourceTitle": "Lecture 25: Random Walks",
+      "kind": "lesson",
+      "title": "Étudier une marche aléatoire avec des frontières",
+      "objective": "Écrire une récurrence d’atteinte et distinguer équilibre et biais.",
+      "learningNotes": "Une marche aléatoire déplace une position par étapes probabilistes. Pour une marche équilibrée sur les entiers entre 0 et N, absorbée aux frontières, notons h_i la probabilité d'atteindre N avant 0 depuis i. Conditionner sur le premier pas donne h_i=(h_(i-1)+h_(i+1))/2 avec h0=0 et hN=1. La solution h_i=i/N satisfait cette relation et les frontières. Pour N=5 et i=2, elle vaut deux cinquièmes. La durée moyenne d'absorption vaut i(N-i), obtenue avec une récurrence comportant une unité de temps supplémentaire. Un biais modifie les coefficients et la solution : la proximité de la probabilité d'un pas avec un demi ne justifie pas de réutiliser une formule équilibrée. Il faut annoncer règles de déplacement et conditions aux bords.",
+      "sourceUrls": [
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-25-random-walks/",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/1d5106863bee19ab21a7ac49503d3403_56iFMY8QW2k.pdf",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/eb5072ea046760bb81e5ce6bc1c97b37_MIT6_042JF10_chap20.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "id": "mit_6_042j_2010_s027_e01",
+          "type": "math",
+          "prompt": "Une marche équilibrée commence à 2 entre les frontières absorbantes 0 et 5. Quelle est la probabilité d’atteindre 5 avant 0 ?",
+          "options": [
+            "2/5",
+            "1/2",
+            "3/5",
+            "1/5"
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "La solution h_i=i/N donne 2/5 et respecte les deux valeurs aux frontières.",
+          "hint": "Utilise le point de départ relatif à la longueur de l’intervalle."
+        },
+        {
+          "id": "mit_6_042j_2010_s027_e02",
+          "type": "math",
+          "prompt": "Dans la marche équilibrée précédente, quelle durée moyenne d’absorption donne i(N-i) ?",
+          "options": [
+            "3",
+            "5",
+            "10",
+            "6"
+          ],
+          "correctOptionIndex": 3,
+          "explanation": "La formule donne 2×(5-2)=6 pas en moyenne. Il ne s’agit pas d’un nombre de pas imposé à chaque trajectoire.",
+          "hint": "Substitue la position de départ et la frontière supérieure."
+        },
+        {
+          "id": "mit_6_042j_2010_s027_e03",
+          "type": "math",
+          "prompt": "Une marche effectue quatre pas indépendants valant +1 ou -1 avec probabilités égales. Quelle est la probabilité de revenir à zéro ?",
+          "options": [
+            "1/2",
+            "1/8",
+            "3/8",
+            "1/4"
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "Il faut deux pas +1 et deux pas -1, soit C(4,2)=6 trajectoires sur 16.",
+          "hint": "Le retour impose un équilibre entre les deux directions."
+        },
+        {
+          "id": "mit_6_042j_2010_s027_e04",
+          "type": "choice",
+          "prompt": "Pourquoi la récurrence de durée contient-elle un terme +1 ?",
+          "options": [
+            "Le point de départ est toujours 1.",
+            "Le premier pas consomme une unité de temps avant la durée restante.",
+            "La probabilité totale doit dépasser un.",
+            "Il y a toujours un pas après absorption."
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "La décomposition est durée totale = un premier pas + durée depuis la nouvelle position. Aux frontières, la durée vaut zéro.",
+          "hint": "Distingue récurrence de probabilité et récurrence de durée."
+        }
+      ]
+    },
+    {
+      "id": "mit_6_042j_2010_s028",
+      "sourceSessionNumber": 28,
+      "sourceTitle": "Final Exam",
+      "kind": "exam",
+      "title": "Final : synthèse adaptée de mathématiques discrètes",
+      "objective": "Articuler récurrences, dénombrement, graphes et probabilités.",
+      "learningNotes": "Cette synthèse est une pratique originale associée au Final Exam 2010. Le sujet officiel traverse récurrences, dénombrement, graphes et probabilités ; son corrigé officiel n'est pas publié sur la page du cours. Les corrections ici sont donc des solutions rédigées pour nos nouveaux exercices et non des réponses MIT prétendument récupérées. Pour un comptage, on fixe ce qui distingue deux objets avant d'appliquer une formule. Pour une probabilité, on décrit les poids et les conditions avant de calculer. Une espérance par indicatrices évite souvent une énumération de toutes les configurations. Une preuve doit enfin relier explicitement sa conclusion aux hypothèses : indépendance, positivité, connexité ou domaine d'une récurrence ne sont pas de simples détails. Chaque correction montre ce lien afin de permettre une révision active des méthodes.",
+      "sourceUrls": [
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/mit6_042jf10_final/",
+        "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/23dc3226199eb8825acea5e7590f7caf_MIT6_042JF10_final.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "id": "mit_6_042j_2010_s028_e01",
+          "type": "choice",
+          "prompt": "La suite u0=u1=1 et un=un-1+2un-2 pour n≥2 reste-t-elle impaire ?",
+          "options": [
+            "Non, car multiplier par deux rend toute la somme paire.",
+            "Oui, sans qu’aucun cas initial soit nécessaire.",
+            "Non, car toutes les récurrences alternent les parités.",
+            "Oui : deux valeurs initiales impaires et impair plus pair donnent un passage valide."
+          ],
+          "correctOptionIndex": 3,
+          "explanation": "L’initialisation couvre les deux termes appelés. Si les deux précédents sont impairs, le dernier plus deux fois l’autre est impair ; la récurrence forte conclut.",
+          "hint": "Réduis la relation modulo deux et vérifie les rangs de départ."
+        },
+        {
+          "id": "mit_6_042j_2010_s028_e02",
+          "type": "math",
+          "prompt": "Combien de solutions entières positives de x+y+z=10 existe-t-il ?",
+          "options": [
+            "66",
+            "30",
+            "36",
+            "45"
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "Poser x’=x-1,y’=y-1,z’=z-1 donne une somme de 7 avec trois variables non négatives. La méthode des séparateurs donne C(9,2)=36.",
+          "hint": "Retire d’abord l’unité minimale de chaque variable."
+        },
+        {
+          "id": "mit_6_042j_2010_s028_e03",
+          "type": "math",
+          "prompt": "On colorie uniformément et indépendamment en rouge ou bleu les sommets du chemin à quatre sommets A-B-C-D. Quelle est la probabilité d’un coloriage propre ?",
+          "options": [
+            "3/8",
+            "1/8",
+            "1/4",
+            "1/2"
+          ],
+          "correctOptionIndex": 1,
+          "explanation": "Il existe 2 coloriages propres alternés sur 2^4=16 coloriages équiprobables, soit 1/8.",
+          "hint": "Une fois la première couleur choisie, toutes les autres sont imposées."
+        },
+        {
+          "id": "mit_6_042j_2010_s028_e04",
+          "type": "math",
+          "prompt": "X et Y sont deux dés équilibrés, sans avoir besoin de supposer leur indépendance pour cette question. Quelle est E[X+Y] ?",
+          "options": [
+            "7",
+            "6",
+            "12",
+            "49/4"
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "Chaque dé a espérance 7/2 ; la linéarité donne 7, quelle que soit la dépendance entre les deux marginales équilibrées.",
+          "hint": "Une espérance de somme ne demande pas la loi jointe complète."
+        },
+        {
+          "id": "mit_6_042j_2010_s028_e05",
+          "type": "math",
+          "prompt": "R≥0 et E[R²]=12. Quel majorant obtient-on pour P(R≥6) par Markov sur R² ?",
+          "options": [
+            "1/2",
+            "2",
+            "1/36",
+            "1/3"
+          ],
+          "correctOptionIndex": 3,
+          "explanation": "R≥6 équivaut à R²≥36 puisque R est non négative. Markov donne 12/36=1/3.",
+          "hint": "Transforme à la fois la variable et le seuil."
+        },
+        {
+          "id": "mit_6_042j_2010_s028_e06",
+          "type": "choice",
+          "prompt": "Un graphe simple non orienté de six sommets peut-il avoir tous ses degrés différents ?",
+          "options": [
+            "Oui, car le nombre d’arêtes n’a aucune contrainte.",
+            "Non, parce que tous les sommets doivent avoir le même degré.",
+            "Non : les degrés 0 à 5 seraient tous présents, mais 0 et 5 ne peuvent coexister.",
+            "Oui, en prenant les degrés 0,1,2,3,4,5."
+          ],
+          "correctOptionIndex": 2,
+          "explanation": "Six degrés distincts parmi 0,…,5 imposeraient un sommet isolé et un sommet relié à tous les autres, contradiction.",
+          "hint": "Le principe des tiroirs s’affine en excluant la coexistence des deux extrêmes."
+        }
+      ]
+    }
+  ]
+}

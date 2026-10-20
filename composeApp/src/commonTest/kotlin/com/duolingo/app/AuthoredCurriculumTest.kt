@@ -34,6 +34,17 @@ class AuthoredCurriculumTest {
                     lesson.exercises.forEach { exercise ->
                         assertTrue(allIds.add(exercise.id), "Duplicate exercise ${exercise.id}")
                         val answer = when (exercise) {
+                            is Exercise.SpokenProduction -> {
+                                // Business-state test only: native microphone/file/playback is checked separately.
+                                model.confirmSpokenRecording(exercise.id, exercise.minimumPracticeSeconds * 1000L)
+                                model.markRecordingReplayed(exercise.id)
+                                exercise.reviewCriteria.indices.forEach(model::toggleReviewCriterion)
+                                null
+                            }
+                            is Exercise.ListeningChoice -> {
+                                model.markAudioCompleted(exercise.id)
+                                exercise.correctOptionIndex
+                            }
                             is Exercise.MultipleChoice -> exercise.correctOptionIndex
                             is Exercise.CodeChallenge -> exercise.correctOptionIndex
                             is Exercise.MathChallenge -> exercise.correctOptionIndex

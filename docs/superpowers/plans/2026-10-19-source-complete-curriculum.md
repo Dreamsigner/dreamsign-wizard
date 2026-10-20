@@ -10,6 +10,12 @@
 
 **Spec:** `docs/superpowers/specs/2026-10-19-source-complete-curriculum-design.md`
 
+**Évolution d’exécution, 20 octobre :** la demande ultérieure de livraison native
+Windows/Android/iOS étend ce plan initialement centré sur Windows. La contrainte
+provisoire Kotlin/Compose ci-dessous est remplacée par la migration documentée
+dans `docs/platform-migration.md` ; ses preuves sont séparées de celles de l’ancienne
+chaîne. La couverture complète des sources reste obligatoire et non atteinte.
+
 ## Global constraints
 
 - Categories are Mathématiques, Informatique and TCF.
@@ -49,10 +55,10 @@
 **Consumes:** Source manifests from Task 1.
 **Produces:** Authored course content with stable `courseId`, edition, category, source-session key, title, objective, notes, exercises, hint, correction and resource URLs.
 
-- [ ] Define a source-session key as course ID + edition + source session number or chapter ID.
-- [ ] Validate exact source coverage and order, unique course/lesson/exercise IDs, nonempty teaching notes, meaningful exercise content and valid answer indices.
-- [ ] Exercise validation against a missing middle session, a duplicate ID, a false complete count and an invalid answer; all must be rejected with the offending ID.
-- [ ] Keep partial drafts out of the release catalogue; report authored count separately from expected count.
+- [x] Define a source-session key as course ID + edition + source session number or chapter ID.
+- [x] Validate exact source coverage and order, unique course/lesson/exercise IDs, nonempty teaching notes, meaningful exercise content and valid answer indices.
+- [x] Exercise validation against a missing middle session, a duplicate ID, a false complete count and an invalid answer; all must be rejected with the offending ID.
+- [x] Keep partial drafts out of the release catalogue; report authored count separately from expected count.
 
 ## Task 3: Full course authoring
 
@@ -61,7 +67,7 @@
 **Consumes:** Verified complete programmes and teaching material, not merely course titles.
 **Produces:** Fully authored per-session lessons, reviewed against each course's source material.
 
-- [ ] Author all 102 MIT 18.01SC sessions, with the 93 teaching sessions, 4 reviews and 5 exams identified explicitly. Use varied, topic-specific exercises and worked corrections.
+- [x] Author all 102 MIT 18.01SC sessions, with the 93 teaching sessions, 4 reviews and 5 exams identified explicitly. Use varied, topic-specific exercises and worked corrections.
 - [ ] Author the remaining verified mathematics courses in source order.
 - [ ] Author the verified computer-science courses, including programming and project exercises where appropriate.
 - [ ] Author TCF preparation based on the selected materials. Keep listening audio and production tasks distinct from reading/grammar QCMs.

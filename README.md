@@ -8,7 +8,7 @@ Le cours **MIT 18.01SC — Calcul à une variable, Fall 2010** contient les **10
 
 Le cours **The Missing Semester, édition 2026**, contient les neuf conférences et 51 exercices sur les outils du développeur. Le **TCF Canada** dispose de trois ateliers originaux d’expression écrite, fondés sur ses trois formats FEI : saisie réelle, brouillon conservé localement, exemple et grille de relecture. L’auto-évaluation ne fournit aucune correction automatique de langue ni aucun score officiel. Les autres cours OSSU et les autres compétences TCF restent à compléter : voir `docs/curriculum/STATUS.md`.
 
-**MIT 18.06SC — Algèbre linéaire, Fall 2011** ajoute 40 séances et 131 exercices : 32 cours, quatre révisions et quatre entraînements adaptés aux examens. Le catalogue actuel compte donc 154 leçons/ateliers et 421 exercices ; sa couverture de l’ensemble OSSU/TCF reste partielle.
+**MIT 18.06SC — Algèbre linéaire, Fall 2011** ajoute 40 séances et 131 exercices : 32 cours, quatre révisions et quatre entraînements adaptés aux examens. **MIT 6.100L — Introduction à la programmation Python, Fall 2022** ajoute 26 conférences et 104 exercices. L’écoute TCF dispose de trois documents synthétisés en français et de six questions, avec mode lecture accessible identifié séparément. La couverture globale OSSU/TCF reste partielle ; les décomptes reproductibles figurent dans [AUTHORED-COVERAGE.md](docs/curriculum/AUTHORED-COVERAGE.md).
 
 Les cours rédigés sont dans `curriculum/courses/`. `python tools/validate_curriculum.py --generate` vérifie leur correspondance intégrale au manifeste source puis génère le code Kotlin dans `data/generated/`. Une unité correspond à un cours ; chaque séance est une leçon. L’atelier TCF est explicitement une séquence de préparation originale, pas un programme officiel. Les identifiants publiés restent stables pour conserver la progression. `SampleData.kt` fournit les catégories et les anciens exemples des catégories sans cours intégré.
 
@@ -16,10 +16,16 @@ L’application n’utilise pas de génération IA et ne prétend pas analyser d
 
 ## Ressources de référence
 
+Les nouveaux lots locaux ajoutent MIT 6.042J Fall 2010 (28 séances, 117 exercices),
+Learn Prolog Now! (12 chapitres, 60 exercices) et trois ateliers oraux originaux TCF
+avec prise de son locale, réécoute et bilan. Les tests natifs d’enregistrement et
+la nouvelle chaîne de compilation restent en cours de vérification ; voir le registre
+`docs/EXECUTION-LOG.md`. Le catalogue intégral demandé n’est pas encore terminé.
+
 - [OSSU Computer Science](https://github.com/ossu/computer-science)
 - [OSSU Math](https://github.com/ossu/math)
-- [MIT OpenCourseWare — Mathematics for Computer Science](https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-spring-2015/)
-- [MIT OpenCourseWare — Linear Algebra](https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/)
+- [MIT OpenCourseWare — Mathematics for Computer Science, Fall 2010](https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/)
+- [MIT OpenCourseWare — Linear Algebra, Fall 2011](https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/)
 - [MIT OpenCourseWare — Probability and Statistics](https://ocw.mit.edu/courses/18-05-introduction-to-probability-and-statistics-spring-2022/)
 
 ## Lancer l’application Windows

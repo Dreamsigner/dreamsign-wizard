@@ -4,13 +4,18 @@ Les trois applications utilisent les mêmes écrans Compose et la même logique 
 Android démarre dans `MainActivity`, Windows dans `main.kt`, iOS dans une application
 SwiftUI qui appelle `MainViewController()` via le framework statique `ComposeApp`.
 
-## Versions conservées
+## Versions configurées
 
-Kotlin 2.0.0, Compose Multiplatform 1.6.11, AGP 8.2.2, Java 17 et Gradle 8.2.1.
-Le dépôt ne contient pas de wrapper Gradle : installer cette version de Gradle,
-ou utiliser `gradle/actions/setup-gradle`, comme dans le workflow.
+Kotlin **2.2.21**, Compose Multiplatform **1.9.3**, AGP **8.10.1**, Java **17** et Gradle **8.11.1**.
+Les plugins Kotlin, Compose Compiler et Serialization suivent la même version Kotlin.
+Le dépôt ne contient pas de wrapper Gradle : utiliser Gradle 8.11.1,
+ou `gradle/actions/setup-gradle`, comme dans le workflow.
 La [matrice officielle Kotlin](https://kotlinlang.org/docs/multiplatform/multiplatform-compatibility-guide.html#version-compatibility)
-indique Xcode 15.3 pour Kotlin 2.0.0. La CI sélectionne explicitement cette version.
+et les [propriétés de Kotlin/Native 2.2.21](https://github.com/JetBrains/kotlin/blob/v2.2.21/kotlin-native/konan/konan.properties)
+justifient **Xcode 26.0.1**. Voir [le dossier de migration](platform-migration.md) pour les contraintes,
+les sources et la séparation entre résultats de l'ancienne chaîne et validation à venir.
+**Cette nouvelle configuration attend son premier build CI.** Le run de référence `c3439cc`
+a réussi Windows, Android, les tests Kotlin/XCTest iOS et l'archive avec les versions antérieures.
 
 ## Windows
 
@@ -25,7 +30,7 @@ Les formats d'installateur restent configurés dans Gradle pour une distribution
 
 ## Android
 
-Installer Android SDK 34 et Build Tools 34.0.0 ; définir `ANDROID_HOME` ou `sdk.dir`
+Installer Android SDK 35 et Build Tools 35.0.0 ; définir `ANDROID_HOME` ou `sdk.dir`
 dans le fichier local non versionné `local.properties`.
 
 ```sh
@@ -40,16 +45,15 @@ la capture de l'accueil, la hiérarchie UI et les logs Android.
 
 ## iPhone et iPad
 
-Sur un Mac avec Xcode 15.3 et Gradle sur le PATH, ouvrir
-`iosApp/iosApp.xcodeproj`, sélectionner le scheme `iosApp` et un simulateur iOS 17.4.
+Sur un Mac Apple Silicon avec Xcode **26.0.1** et Gradle 8.11.1 sur le PATH, ouvrir
+`iosApp/iosApp.xcodeproj`, sélectionner le scheme `iosApp` et un simulateur disponible.
 Le projet Xcode est versionné ; aucun générateur Xcode supplémentaire n'est requis.
-La phase de compilation Xcode exécute `:composeApp:embedAndSignAppleFrameworkForXcode`.
-Cette [intégration directe officielle](https://kotlinlang.org/docs/multiplatform/multiplatform-direct-integration.html)
-compile et expose le framework Kotlin à SwiftUI.
+La phase Xcode exécute `:composeApp:embedAndSignAppleFrameworkForXcode` suivant
+l'[intégration directe officielle](https://kotlinlang.org/docs/multiplatform/multiplatform-direct-integration.html).
 
 ```sh
-export DEVELOPER_DIR=/Applications/Xcode_15.3.app/Contents/Developer
-gradle :composeApp:iosX64Test
+export DEVELOPER_DIR=/Applications/Xcode_26.0.1.app/Contents/Developer
+gradle :composeApp:iosSimulatorArm64Test
 bash tools/smoke-ios.sh
 xcodebuild -project iosApp/iosApp.xcodeproj -scheme iosApp \
   -configuration Release -destination 'generic/platform=iOS' \
@@ -57,33 +61,36 @@ xcodebuild -project iosApp/iosApp.xcodeproj -scheme iosApp \
   CODE_SIGNING_ALLOWED=NO archive
 ```
 
-La CI exécute les tests Kotlin iOS, puis le test de lancement SwiftUI sur iPhone 15
-et iPad (10e génération). Les fichiers `.xcresult` contiennent les assertions et
-captures XCTest ; les PNG de l'accueil sont aussi fournis séparément.
-Le ZIP simulateur contient une application x86_64 pour le simulateur Mac Intel.
-Pour les lancements XCTest, `COMPOSE_UI_TESTING=1` active la synchronisation
-permanente de l'arbre d'accessibilité Compose 1.6.11. Les lancements normaux gardent
-le comportement par défaut. Cette configuration suit l'[API de synchronisation
-documentée par JetBrains](https://kotlinlang.org/docs/multiplatform/compose-ios-accessibility.html#choose-the-tree-synchronization-option)
-et le [code de la version 1.6.11](https://github.com/JetBrains/compose-multiplatform-core/blob/v1.6.11/compose/ui/ui/src/uikitMain/kotlin/androidx/compose/ui/uikit/ComposeUIViewControllerConfiguration.uikit.kt).
-La CI conserve la hiérarchie accessible et les captures même lorsqu'une assertion
-échoue, et signale alors l'échec du job.
-Sur un Mac Apple Silicon, compiler le même projet pour générer la version arm64.
-Installer une application simulateur avec `xcrun simctl install booted <chemin.app>`.
+La CI sélectionne `macos-15` ARM64 et vérifie `uname -m`. Le script lit les runtimes
+et appareils réellement présents ; par défaut, il demande une version iOS 26.0 ou 26.0.x
+(`IOS_SIMULATOR_RUNTIME_VERSION_PREFIX=26.0`), puis choisit un iPhone et un iPad existants.
+Il échoue si ces ressources manquent et ne télécharge aucun runtime.
+Les inventaires JSON et `selected-simulators.json` donnent les noms/identifiants réels ;
+les fichiers de version Xcode/SDK, les résultats `.xcresult` et les PNG sont archivés.
+Le ZIP simulateur produit sur ce runner contient une application ARM64 pour Mac Apple Silicon.
+La cible Kotlin `iosX64` reste disponible pour les hôtes Intel ; y lancer `iosX64Test`
+et sélectionner explicitement un runner Intel compatible.
+
+Compose 1.9.3 synchronise l'accessibilité à la demande ; l'ancienne API
+`AccessibilitySyncOptions` a été retirée depuis 1.8. Le drapeau historique
+`COMPOSE_UI_TESTING` des XCTest n'active plus cette API. Les assertions et captures
+du prochain run doivent vérifier l'exposition réelle des contrôles avec la nouvelle version.
+Le minimum iOS du projet reste 14.0 ; contrôler également les contraintes et architectures
+des binaires résolus. Un SDK 26 ne signifie pas un minimum de déploiement 26.
 
 L'archive appareil `.xcarchive` est **non signée**. Elle ne peut pas être installée
 sur un iPhone ou iPad. Pour une installation sur appareil ou TestFlight, fournir une
 équipe Apple Developer, un certificat et un profil de provisionnement adaptés,
 puis signer/exporter dans Xcode. Aucune IPA installable n'est produite par ce workflow.
 
-## Limite de la chaîne Apple actuelle
+## Validation et distribution Apple
 
-L'[image officielle macos-14](https://github.com/actions/runner-images/blob/main/images/macos/macos-14-Readme.md)
-contient Xcode 15.3 et iOS 17.4. GitHub annonce son retrait le **2 novembre 2026**.
-La CI Apple actuelle devra ensuite utiliser un runner Mac conservant Xcode 15.3,
-ou faire l'objet d'une mise à niveau coordonnée Kotlin/Compose/Xcode. Les SDK anciens
-de cette configuration ne suffisent pas à une soumission actuelle sur l'App Store :
+La référence [c3439cc](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/runs/39379770520)
+a réussi sur macos-14 / Xcode 15.3, y compris les deux XCTest et l'archive non signée.
+GitHub retire macos-14 le **2 novembre 2026** : la configuration nouvelle utilise macos-15.
 [Apple demande Xcode 26 et les SDK 26 depuis le 28 avril 2026](https://developer.apple.com/news/upcoming-requirements/).
+La migration configurée répond à cette exigence de versions ; elle doit encore être compilée
+et vérifiée sur les trois plateformes. Les preuves précédentes ne valident pas cette migration.
 
 Une configuration CI ajoutée au dépôt ne prouve pas que ses builds ont réussi :
 consulter les trois jobs du workflow `Build` et leurs artefacts pour le commit livré.

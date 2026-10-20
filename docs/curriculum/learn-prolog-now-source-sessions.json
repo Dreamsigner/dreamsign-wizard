@@ -1,0 +1,440 @@
+{
+  "courseCode": "Learn Prolog Now!",
+  "inventoryId": "ossu_035",
+  "edition": "Version en ligne consultée le 20 octobre 2026 ; édition fixe non indiquée",
+  "sourceUrl": "https://www.let.rug.nl/bos/lpn//lpnpage.php?pageid=online",
+  "checkedOn": "2026-10-20",
+  "sessionCount": 12,
+  "countUnit": "textbook chapters including their exercises and practical sections; not official lecture sessions",
+  "sessions": [
+    {
+      "number": 1,
+      "sourceTitle": "Facts, Rules, and Queries",
+      "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlch1",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "54ddc2b911545c01f78e481e5b569937beabac23cd1dac7c3f427c2feae5ccbb",
+      "consultedSections": [
+        {
+          "sourceTitle": "Some Simple Examples",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse1",
+          "sha256": "cfbc61da5dc1f599a590c29502698c549842c260f4e5e7bfc4c931b3854c8de1"
+        },
+        {
+          "sourceTitle": "Prolog Syntax",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse2",
+          "sha256": "c01f951c0883f40203ae79b8a8fd76a38adb667e8e059dfcdaacd9edf5691928"
+        },
+        {
+          "sourceTitle": "Exercise s",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse3",
+          "sha256": "f1693ef39d7923fbd296ed40b81dce89e2490ef5c3ea7e75b0f2cd7f4cb41181"
+        },
+        {
+          "sourceTitle": "Practical Session",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse4",
+          "sha256": "d17f0e4c9015577e90e09d918b88beed20c8a5348b0da54142d0bad817e0bede"
+        }
+      ],
+      "readingFocus": "Faits, règles et requêtes ; conjonction/disjonction, atomes, nombres, variables, termes composés et arité. Exercices de traduction de phrases et interrogation de bases."
+    },
+    {
+      "number": 2,
+      "sourceTitle": "Unification and Proof Search",
+      "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlch2",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "553fd0187788042ceb7cbb45714e2f3428bfb73d49473be06ebe75fa9d8b34e6",
+      "consultedSections": [
+        {
+          "sourceTitle": "Unification",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse5",
+          "sha256": "fb6566d3304a02d0765c9dc668930ec0fc7b6df4adbc5fc88b8a9b06b8d2fb15"
+        },
+        {
+          "sourceTitle": "Proof Search",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse6",
+          "sha256": "a766133b6867ffbf91ad0275c70f695542409b16bb6b0ae6b1140f77e5b10e55"
+        },
+        {
+          "sourceTitle": "Exercise s",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse7",
+          "sha256": "2300fd74325db34891e0583e6851a08638565adbdef2a7d30d859fe9b4c315b0"
+        },
+        {
+          "sourceTitle": "Practical Session",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse8",
+          "sha256": "d168f732d58931cff19e770b00600db532ba09424bc2b3b7436f47f6d76fc60a"
+        }
+      ],
+      "readingFocus": "Unification récursive, variables partagées/anonymes, contrôle d’occurrence et recherche de preuve. Exercices d’unification, génération grammaticale et traces."
+    },
+    {
+      "number": 3,
+      "sourceTitle": "Recursion",
+      "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlch3",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "0b0b0e159b536ff630e11479b3dc1882f5585d5ff833b0b6ed46967da76a8c74",
+      "consultedSections": [
+        {
+          "sourceTitle": "Recursive Definitions",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse9",
+          "sha256": "44f6008281052ca651773bd6a386fb2ff30c5c2924d409e69bbf6a0104bf4d97"
+        },
+        {
+          "sourceTitle": "Rule Ordering, Goal Ordering, and Termination",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse10",
+          "sha256": "915f8211b4428a9aec8e492563809d434908eee8e022636357b8866c482f5a90"
+        },
+        {
+          "sourceTitle": "Exercise s",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse11",
+          "sha256": "efc978945641e707be8c1ceb3d8a1d6e6d1572d6615ae2cdef370469cc4391a7"
+        },
+        {
+          "sourceTitle": "Practical Session",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse12",
+          "sha256": "7b4a79517e3fd191ec5b6a753982f42c6fcc6cea5279844d28b9b8ef7dc315f4"
+        }
+      ],
+      "readingFocus": "Définitions récursives, descendants, nombres de Peano ; ordre des clauses et buts, récursion gauche et terminaison. Exercices de trajets, comparaisons et arbres."
+    },
+    {
+      "number": 4,
+      "sourceTitle": "Lists",
+      "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlch4",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "25f08e9d5b8a8c53e40682ff7619a4ff3fa9876716979cfceeeea7bc32b65977",
+      "consultedSections": [
+        {
+          "sourceTitle": "Lists",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse13",
+          "sha256": "7ed95fbd2849d5c7bce4fbc216b3289ad801541d50ad363123717f3fc2f37022"
+        },
+        {
+          "sourceTitle": "Member",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse14",
+          "sha256": "2c970965681523d66acbe18a5326fd77339da095527ab80bb2f5f3e149b7ccc2"
+        },
+        {
+          "sourceTitle": "Recursing down Lists",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse15",
+          "sha256": "9ee7fa21b47de4b7805a3a3011917b23b6791dc2e415a0e9efde1c0705b087f5"
+        },
+        {
+          "sourceTitle": "Exercise s",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse16",
+          "sha256": "d81954d6deafd1bc96264d30cc225333dba29bc4f2f8a40d4c08da6d6431958d"
+        },
+        {
+          "sourceTitle": "Practical Session",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse17",
+          "sha256": "fa898949946dc36d78c6390785a9b5129c36dbb92a616da6a6d2e5f058974743"
+        }
+      ],
+      "readingFocus": "Listes, constructeur tête/queue, membre et récursion parallèle. Exercices de décomposition, listes de longueur donnée, traduction et duplication d’éléments."
+    },
+    {
+      "number": 5,
+      "sourceTitle": "Arithmetic",
+      "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlch5",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "30d86f752c4985fafbd14d5313167eaca63e2da887e55ed98941537db639ab7e",
+      "consultedSections": [
+        {
+          "sourceTitle": "Arithmetic in Prolog",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse18",
+          "sha256": "d47f403c4693098dbed64ac17c307caa76a3743ebb254a6e1ca5fbc1fb75e132"
+        },
+        {
+          "sourceTitle": "A Closer Look",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse19",
+          "sha256": "55b4d3d095105891402788774887c3cb279a4dacf75b27639c984867ab105578"
+        },
+        {
+          "sourceTitle": "Arithmetic and Lists",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse20",
+          "sha256": "fd6db3d4f255342a1d99867b06dd1afdb346186436fa3276f02bf6440bc72dee"
+        },
+        {
+          "sourceTitle": "Comparing Integers",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse21",
+          "sha256": "f9f88d7c2dbace5a1bf75f4051769d00c642e7d10bf8ae7ed334f00c54699a4e"
+        },
+        {
+          "sourceTitle": "Exercise s",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse22",
+          "sha256": "0732f58b87f3de93f3d0a7dbe33966633ade6f4bed617a1804e3481b4ab555cd"
+        },
+        {
+          "sourceTitle": "Practical Session",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse23",
+          "sha256": "74c3ca25e545b7738c0f2c7e8e42880b2e826c3121e3460c6e7299a656020503"
+        }
+      ],
+      "readingFocus": "Arithmétique et distinction terme/évaluation, is, accumulateurs de longueur, comparaison et maximum. Exercices d’incrément, addition, produit scalaire et multiplication de vecteurs."
+    },
+    {
+      "number": 6,
+      "sourceTitle": "More Lists",
+      "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlch6",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "b965a2bd9c12f88377a7e63cca30f0965c17c6dc50a1d19bfefa4b7c1110d3dd",
+      "consultedSections": [
+        {
+          "sourceTitle": "Append",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse24",
+          "sha256": "05fd699d31328bc591490fd2c8024bc7a7469255e86d7039e64f3f81eb936db3"
+        },
+        {
+          "sourceTitle": "Reversing a List",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse25",
+          "sha256": "3cb2857a28124d5bcac4e2ad0f1afbdc283a1e656971576da4df60c425a3a73b"
+        },
+        {
+          "sourceTitle": "Exercise s",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse26",
+          "sha256": "89241154969127e269f20118b7c46521a7d6d90b2f5297f95f559481411120f2"
+        },
+        {
+          "sourceTitle": "Practical Session",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse27",
+          "sha256": "44cdf169b70e718a25fe64d04975fc7dfe9363b0b7bdfd3555cfd7286b34ba5e"
+        }
+      ],
+      "readingFocus": "append comme relation, recherche de préfixes/suffixes, inversion naïve et accumulateur. Exercices de dernier élément, échanges, puzzle et transformations de listes."
+    },
+    {
+      "number": 7,
+      "sourceTitle": "Definite Clause Grammars",
+      "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlch7",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "36e9d779f31480df506ca1f9543573feb48e1bd64eea68a8abc4ca5444d36b15",
+      "consultedSections": [
+        {
+          "sourceTitle": "Context Free Grammars",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse28",
+          "sha256": "248c0a9683864265b4a2f97045409832645a3265ed6c464057193d1f2959cf49"
+        },
+        {
+          "sourceTitle": "Definite Clause Grammars",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse29",
+          "sha256": "0f292a8f68693077ffc8e9921f7240f076fde83a4d6cc9c40e36443a1aa83fc7"
+        },
+        {
+          "sourceTitle": "Exercise s",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse30",
+          "sha256": "b6309286acff25d77e3b9633c12bd2985124673e73a0e3f5b5f78aa380ded3ec"
+        },
+        {
+          "sourceTitle": "Practical Session",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse31",
+          "sha256": "dd6e53c8bd490738deede43e2d1c3b5a9aa807636a0703f2ad9d243be5fef072"
+        }
+      ],
+      "readingFocus": "Grammaires hors contexte, reconnaissance par listes et listes différence, traduction des DCG. Exercices de langages a^n b^n, a^n b^(2n), chaînes paires et récursion gauche."
+    },
+    {
+      "number": 8,
+      "sourceTitle": "More Definite Clause Grammars",
+      "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlch8",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "d9a2400797aba3dcecf5e2e1c8693b090fc84d3549a2870af4409be29c8cd47c",
+      "consultedSections": [
+        {
+          "sourceTitle": "Extra Arguments",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse32",
+          "sha256": "f22fc3cd02cad3802aa4eb4b6048519c638597cd440e75ce2d3d9c615e5ebaaa"
+        },
+        {
+          "sourceTitle": "Extra Goals",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse33",
+          "sha256": "6c51336ad06432122f17ee4bbfaf90ff555f7d1b8855dd53071cbf6fbedae853"
+        },
+        {
+          "sourceTitle": "Concluding Remarks",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse34",
+          "sha256": "e1e176109cd117b2659227930cdb76a2a60d7835d4a9772762d26746a32ac840"
+        },
+        {
+          "sourceTitle": "Exercise s",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse35",
+          "sha256": "7d8a02925b81ec25db96e4c8d7f3d9556eab1748c6f4465d4bb3825dce152659"
+        },
+        {
+          "sourceTitle": "Practical Session",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse36",
+          "sha256": "1b4f3e58b2b2d47cd78dc60b5ca4fd616af17fa02d60a96209bd09324355c81f"
+        }
+      ],
+      "readingFocus": "Arguments supplémentaires des DCG pour traits et arbres ; buts entre accolades et lexique séparé. Exercices d’accord et traduction ; projet d’analyseur enrichi."
+    },
+    {
+      "number": 9,
+      "sourceTitle": "A Closer Look at Terms",
+      "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlch9",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "8259f9e420b3663683c9ed1bc4a66c0864bf3abef8c3fea302edbb33d4886143",
+      "consultedSections": [
+        {
+          "sourceTitle": "Comparing Terms",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse37",
+          "sha256": "f50fda759fa4f46f2ba3fd9ceb453b64935cbcf88aa79269429a96b63e1a1266"
+        },
+        {
+          "sourceTitle": "Terms with a Special Notation",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse38",
+          "sha256": "1d71fbd24cfba947f14ca05de9a624e7e567cd23359ee0b75109740c378f5897"
+        },
+        {
+          "sourceTitle": "Examining Terms",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse39",
+          "sha256": "c6fc3113af0aa66f425b428ad5d58d44ad94434873a8d321b7c48c5da47eff63"
+        },
+        {
+          "sourceTitle": "Operators",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse40",
+          "sha256": "a320721c762a5cdd79423e11a1019a4785dac76ab9747b3dd9a13de36c346ec9"
+        },
+        {
+          "sourceTitle": "Exercise s",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse41",
+          "sha256": "30ece2d268ccd430595e5385669421feba5f5a1150b3bfca5a302cc444e9a08b"
+        },
+        {
+          "sourceTitle": "Practical Session",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse42",
+          "sha256": "567b4a4d0127e231a7262432c2be828b50f1a3d920e60f841274c4747f982b28"
+        }
+      ],
+      "readingFocus": "Identité contre unification, notations spéciales, examen par functor/arg/=.., termes clos, priorités et associativité. Exercices de classification, égalité et structures."
+    },
+    {
+      "number": 10,
+      "sourceTitle": "Cuts and Negation",
+      "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlch10",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "2bd6f57dd5bbf89332ee90c61e408b4cea1b91a6f9e9e251c8d0c3723c79b8ec",
+      "consultedSections": [
+        {
+          "sourceTitle": "The Cut",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse43",
+          "sha256": "6e3daa3bfaac23b9f92589cbf34516192d882b70cbfa96220d85317db7b8f71e"
+        },
+        {
+          "sourceTitle": "Using Cut",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse44",
+          "sha256": "663c02e13febd18555d95273e61fcb9055eb54902f5790c9c616b10e48f80b72"
+        },
+        {
+          "sourceTitle": "Negation as Failure",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse45",
+          "sha256": "0f55f366f0972a6f2b377d028e85c7c1873e4783f023a24415b313b67e48398f"
+        },
+        {
+          "sourceTitle": "Exercise s",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse46",
+          "sha256": "087facd00d42fc464b1d4ecb4056317f98a789adb528fecc54204c03bf1b6cad"
+        },
+        {
+          "sourceTitle": "Practical Session",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse47",
+          "sha256": "0058c3c3eafe6b2fc7c912dcfefa6f835ae64be48f471168032f80b40a38805f"
+        }
+      ],
+      "readingFocus": "Portée du cut, coupures vertes/rouges, échec après engagement et négation par échec. Exercices de réponses successives, maximum, trajets et ordre des buts."
+    },
+    {
+      "number": 11,
+      "sourceTitle": "Database Manipulation and Collecting Solutions",
+      "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlch11",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "9f75640c9754810b7434861f64105a72d61a66e632495381f871814931908491",
+      "consultedSections": [
+        {
+          "sourceTitle": "Database Manipulation",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse48",
+          "sha256": "5785ea1949e3dc73ab6043541e79e1c1e30b632fa8f1df38fd34e4ab552f60d0"
+        },
+        {
+          "sourceTitle": "Collecting Solutions",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse49",
+          "sha256": "07de47fbba50e39e671f5ff4765b61c3a61b2d6bb51f53444ef00a463cc321e6"
+        },
+        {
+          "sourceTitle": "Exercise s",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse50",
+          "sha256": "563dbed4dc245f0737063b4a46b616be8056e1fd00d8dc1c838272b8a40e7310"
+        },
+        {
+          "sourceTitle": "Practical Session",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse51",
+          "sha256": "84b5e2bdcb631872a1d685a14ae3af6ae07fa4daa703fb11746f6d4b7f778f54"
+        }
+      ],
+      "readingFocus": "asserta/assertz/retract, état dynamique ; findall/bagof/setof, doublons, groupes et quantification. Exercices de cache et d’ensembles de sous-ensembles."
+    },
+    {
+      "number": 12,
+      "sourceTitle": "Working With Files",
+      "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlch12",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "71dc28a5cd5d1eecd23bc9f54f5c34361e7d3721b77eda047c0daa8cab785e6e",
+      "consultedSections": [
+        {
+          "sourceTitle": "Splitting Programs over Files",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse52",
+          "sha256": "913258988b22d85ba84a075458a790f438aa1fa24729fbddbce53db89ca646eb"
+        },
+        {
+          "sourceTitle": "Writing to Files",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse53",
+          "sha256": "95ffc1f02a71d0c1c2928683988a2d01d59297d0c05232b8dc44cd45ef592ec8"
+        },
+        {
+          "sourceTitle": "Reading from Files",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse54",
+          "sha256": "643b99143c2b7e5d3dde4ae9ad12fd74091513d35a8859a1c45f89ddd74d56a7"
+        },
+        {
+          "sourceTitle": "Exercise s",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse55",
+          "sha256": "79cf5ed4fe00b3a14a77df6afb3b343d149ef6d792ecfeb28f60b78066de457a"
+        },
+        {
+          "sourceTitle": "Practical Session",
+          "sourceUrl": "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse56",
+          "sha256": "d9ae7e3fb308a8e9346f1863a41678e0cc01c41b1026c09077014999b2d4b1af"
+        }
+      ],
+      "readingFocus": "Répartition sur fichiers, modules et bibliothèques ; flux, modes write/append, lecture de termes et caractères. Exercices de fréquence et projet d’analyseur modulaire avec entrées/sorties."
+    }
+  ],
+  "publicationDatePolicy": "2026 is a consultation snapshot identifier, not an asserted publication year. The site footer displays copyright 2006–2012.",
+  "assessmentCoverage": "Exercises and Practical Session sections belong to their chapters; the verified index defines no separate examinations.",
+  "executionEvidence": {
+    "prologEngineFound": false,
+    "searchScope": [
+      "Get-Command swipl, prolog, scryer-prolog",
+      "Standard Program Files SWI-Prolog locations",
+      "LocalAppData Programs directories",
+      "HKCU/HKLM Uninstall registrations"
+    ],
+    "claim": "No Prolog execution performed. Answers manually reasoned; Python validation checks structure only."
+  },
+  "indexEvidence": {
+    "checkedOn": "2026-10-20",
+    "sha256": "b737a9be0f5b0a3c870c89a6f6ab3a06e0303c3cbdb4e3d251202f572909f5fd",
+    "resolvedUrl": "https://www.let.rug.nl/bos/lpn//lpnpage.php?pageid=online"
+  }
+}

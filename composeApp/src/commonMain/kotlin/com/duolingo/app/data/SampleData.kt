@@ -152,9 +152,9 @@ object SampleData {
         ),
         Subject(
             id = "lang_tcf_canada",
-            title = "Français & anglais",
+            title = "TCF Canada",
             icon = "🇨🇦",
-            description = "Grammaire et communication professionnelle.",
+            description = "Écoute, production écrite et entraînements guidés. Préparation encore partielle.",
             category = SubjectCategory.LANGUAGES,
             units = listOf(
                 unit("tcf_u1", 1, "Grammaire française", "Subjonctif, concordance et formulations utiles.", OSSU_CS,

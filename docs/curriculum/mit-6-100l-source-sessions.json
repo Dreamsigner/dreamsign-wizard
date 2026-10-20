@@ -1,0 +1,631 @@
+{
+  "courseCode": "MIT 6.100L",
+  "edition": "Fall 2022",
+  "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/",
+  "checkedOn": "2026-10-20",
+  "sessionCount": 26,
+  "countUnit": "numbered main lecture pages",
+  "sessions": [
+    {
+      "number": 1,
+      "sourceTitle": "Lecture 1: Introduction",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-1-introduction/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "readingFocus": "Types scalaires, expressions, affectation et indépendance des valeurs déjà calculées ; code de calcul de surface.",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec01.pdf",
+          "sha256": "d954bfcdf5e245e2088de9bc775b03c1ec085039df2bbb1bce15b5d3555ae251"
+        },
+        {
+          "kind": "lecture_code",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec01_code.py",
+          "sha256": "01338bfc09a8b91b7df324e5d13a8cc96914af0c433a9e7dd0dcbab22755f102",
+          "files": [
+            "mit6_100l_f22_lec01_code.py"
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "sourceTitle": "Lecture 2: Strings, Input/Output, Branching",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-2-strings-inputoutput-branching/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "readingFocus": "Indices et tranches, input retournant str, conversion int, comparaisons et if/elif ; chaînes et saisies dans le code.",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec02.pdf",
+          "sha256": "44f5bc27225ee63a5d6d6d5734030d5dab1c091ce9d4690f8e6e113b0ae34a6f"
+        },
+        {
+          "kind": "lecture_code",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec02_code.py",
+          "sha256": "9482dfe67bbba4d082a634b5d66662d21521b10debfb782f25556804d0ffdb96",
+          "files": [
+            "mit6_100l_f22_lec02_code.py"
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "sourceTitle": "Lecture 3: Iteration",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-3-iteration/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "readingFocus": "Progression while, range à borne exclue, somme et produit accumulés ; exemples de boucles du code.",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec03.pdf",
+          "sha256": "d06c8454ec99c34d1997a450576a3311dccc37baca456d8b73ffcef88ce85156"
+        },
+        {
+          "kind": "lecture_code",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec03_code.py",
+          "sha256": "c1eba97414b958287eb60afa215a09fd915a99d67af0d1f1afe1f9a13f84aace",
+          "files": [
+            "mit6_100l_f22_lec03_code.py"
+          ]
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "sourceTitle": "Lecture 4: Loops over Strings, Guess-and-Check, Binary",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-4-loops-over-strings-guess-and-check-binary/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "readingFocus": "Parcours des caractères, drapeau de recherche, carrés et break ; conversion entière en binaire par restes.",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec04.pdf",
+          "sha256": "5a8923ad9ce06e485cc601e693d0726f0bcdab204c1dbe0f829f232c4ba68774"
+        },
+        {
+          "kind": "lecture_code",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec04_code.py",
+          "sha256": "1b3f6f3b3a041f20da9a3ddb1d2810033336cca5718a1a2ca8a6c30a2214d2d7",
+          "files": [
+            "mit6_100l_f22_lec04_code.py"
+          ]
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "sourceTitle": "Lecture 5: Floats and Approximation Methods",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-5-floats-and-approximation-methods/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "readingFocus": "Addition répétée de 0.1/0.125, critère abs(g²-x), pas et epsilon ; dépassement dans la recherche.",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec05.pdf",
+          "sha256": "14f5954353cb4da5302eeade03e53fe4f9acfe1df4035ccab22d03831cb70c7d"
+        },
+        {
+          "kind": "lecture_code",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec05_code.py",
+          "sha256": "52f86af150e5b059c155f75456f58a4356451fd4e67e167be7404fa416ee83e5",
+          "files": [
+            "mit6_100l_f22_lec05_code.py"
+          ]
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "sourceTitle": "Lecture 6: Bisection Search",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-6-bisection-search/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "readingFocus": "Dichotomie et invariant d’encadrement, cas 0<x<1, Newton pour racine carrée ; comparaison avec incréments.",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec06.pdf",
+          "sha256": "d3c2e94b59d7ce260a07c6ed10e092b96c3bd03383158e51ecd2864fa10dd1df"
+        },
+        {
+          "kind": "lecture_code",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec06_code.py",
+          "sha256": "20dd9d4195f80e35bb1db8cbf6024640aac21388961e9b28bde302d63951041e",
+          "files": [
+            "mit6_100l_f22_lec06_code.py"
+          ]
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "sourceTitle": "Lecture 7: Decomposition, Abstraction, Functions",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-7-decomposition-abstraction-functions/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "readingFocus": "Contrats, return, somme conditionnelle et décomposition ; fonctions is_even et sum_odd dans les exemples.",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec07.pdf",
+          "sha256": "157cbf19aa823e2047c486d6d5a01fa603a361ec210afb19e8ddf2b4f25a4bd6"
+        },
+        {
+          "kind": "lecture_code",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec07_code.py",
+          "sha256": "463cd33b5f89cd27502ffe43a463157842925b6fca0d6f1e349eda153883b38f",
+          "files": [
+            "mit6_100l_f22_lec07_code.py"
+          ]
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "sourceTitle": "Lecture 8: Functions as Objects",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-8-functions-as-objects/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "readingFocus": "Combinaisons print/return, fonction sans retour, calc recevant une opération et portée des paramètres.",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec08.pdf",
+          "sha256": "79b4f3f9022bec34e00f61da092c534b629f31789ffcc61a32b536e78d9fbef8"
+        },
+        {
+          "kind": "lecture_code",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec08_code.py",
+          "sha256": "cb4aa9bc7f8ba1b32a691c45a7ad9cfc337b171014b5d1f7151755246c85c8de",
+          "files": [
+            "mit6_100l_f22_lec08_code.py"
+          ]
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "sourceTitle": "Lecture 9: Lambda Functions, Tuples, and Lists",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-9-lambda-functions-tuples-and-lists/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "readingFocus": "Lambda passée à apply/do_twice, quotient/reste en tuple, échange de variables et listes indexées.",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec09.pdf",
+          "sha256": "1578dcab19ebc9ed8dcbde632c6549584be688f07ff188f2b0edfbf190aafeda"
+        },
+        {
+          "kind": "lecture_code",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec09_code.py",
+          "sha256": "624371097131bc3e48d38804943cc4653448b80d7a14033e401a7913f036e09e",
+          "files": [
+            "mit6_100l_f22_lec09_code.py"
+          ]
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "sourceTitle": "Lecture 10: Lists, Mutability",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-10-lists-mutability/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "readingFocus": "append retournant None, append/extend, square_list, distinction mutation et nouvelle liaison.",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec10.pdf",
+          "sha256": "64cb83d00ece53baeff65c7874acf1174fd4058d1a0ebb95276b6cac2641a645"
+        },
+        {
+          "kind": "lecture_code",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec10_code.py",
+          "sha256": "6fb83a0b487dd7ae647460a7c82fa992116ae7c2382f1c25c233a7da0dbb6b4e",
+          "files": [
+            "mit6_100l_f22_lec10_code.py"
+          ]
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "sourceTitle": "Lecture 11: Aliasing, Cloning",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-11-aliasing-cloning/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "readingFocus": "remove_all/remove_dups, déplacement des indices, alias, copie superficielle et sous-listes partagées.",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec11.pdf",
+          "sha256": "8ec68387484cc526b7de075a7056db8e9e9bc1ead1a9f89e5d06c69f8b2e8392"
+        },
+        {
+          "kind": "lecture_code",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec11_code.py",
+          "sha256": "bcffc60396fdc890e5a7064dd1cf7fe8fb969f97aebcc16895cc4cc9805023ca",
+          "files": [
+            "mit6_100l_f22_lec11_code.py"
+          ]
+        }
+      ]
+    },
+    {
+      "number": 12,
+      "sourceTitle": "Lecture 12: List Comprehension, Functions as Objects, Testing, Debugging",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-12-list-comprehension-functions-as-objects-testing-debugging/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "readingFocus": "Compréhensions et filtres, paramètres par défaut, fonctions retournées, tests de frontière et débogage ; archive lec12.py et fonctions du jeu lec12_wordle.py.",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec12.pdf",
+          "sha256": "d69b28b6828a7925fc92f8e1e5ca83f797159a80494aa1a6413d290c587ee7e7"
+        },
+        {
+          "kind": "lecture_code",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec12_code.zip",
+          "sha256": "691ce0f30c9d22b548c29a6f89d0a7da512cdb151c8a63e527f9cbdea5cca640",
+          "files": [
+            "lec12_wordle.py",
+            "lec12.py"
+          ]
+        }
+      ]
+    },
+    {
+      "number": 13,
+      "sourceTitle": "Lecture 13: Exceptions, Assertions",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-13-exceptions-assertions/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "readingFocus": "Conversions et exceptions, raise ValueError, assert et moyenne sur liste vide ; exemples sum_digits et statistiques.",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec13.pdf",
+          "sha256": "fdc6626d04f327b91bb3c13a3b759eac95b3899d7b6edce1f0c12138063576d4"
+        },
+        {
+          "kind": "lecture_code",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec13_code.py",
+          "sha256": "58ed2f31b1d123a8cb817b68ac2fa74ae4d85d9466d824fdbf299bfd1403658a",
+          "files": [
+            "mit6_100l_f22_lec13_code.py"
+          ]
+        }
+      ]
+    },
+    {
+      "number": 14,
+      "sourceTitle": "Lecture 14: Dictionaries",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-14-dictionaries/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "readingFocus": "Associations clés-valeurs, get, in, items, unicité et hachabilité ; exemples de notes et compteurs.",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec14.pdf",
+          "sha256": "03ce4642a9236382c752de8ee054a1be952847cbe8b76730ea239b880cf64556"
+        },
+        {
+          "kind": "lecture_code",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec14_code.py",
+          "sha256": "0d2a98ad8f119f526b5e4b5ee0582c26bb5ee066004059dca64065a3fc5794e5",
+          "files": [
+            "mit6_100l_f22_lec14_code.py"
+          ]
+        }
+      ]
+    },
+    {
+      "number": 15,
+      "sourceTitle": "Lecture 15: Recursion",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-15-recursion/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "readingFocus": "Multiplication, puissance, factorielle récursives ; cas de base, domaine et appels en attente.",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec15.pdf",
+          "sha256": "e8e478aa889fad69d4640a3932cdb920645c05a577904c4b3853f06b2077aac9"
+        },
+        {
+          "kind": "lecture_code",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec15_code.py",
+          "sha256": "15afbaf676014e74a9e54c9668bb1cc548fb116c4579c5f6ecd208f298ebab2f",
+          "files": [
+            "mit6_100l_f22_lec15_code.py"
+          ]
+        }
+      ]
+    },
+    {
+      "number": 16,
+      "sourceTitle": "Lecture 16: Recursion on Non-Numerics",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-16-recursion-on-non-numerics/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "readingFocus": "Fibonacci avec dictionnaire, palindrome, somme/aplatissement de listes ; coût des tranches et concaténations.",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec16.pdf",
+          "sha256": "475bdb3df79a3a956b8cbf3d6f8cc203185e19b3871421d569fe00e5eba5f7cb"
+        },
+        {
+          "kind": "lecture_code",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec16_code.py",
+          "sha256": "f85eeb6400fc10bb9c3662d5a5590fbbb55f72a7eb78c8af2b5ca69524c08301",
+          "files": [
+            "mit6_100l_f22_lec16_code.py"
+          ]
+        }
+      ]
+    },
+    {
+      "number": 17,
+      "sourceTitle": "Lecture 17: Python Classes",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-17-python-classes/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "readingFocus": "Coordinate, __init__, self, distance et instances ; attributs propres et méthodes.",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec17.pdf",
+          "sha256": "5ebc5293942ec4dc6e2757e2ce9821e198507a6c04238fcefdece95ac7b3a03e"
+        },
+        {
+          "kind": "lecture_code",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec17_code.py",
+          "sha256": "867c7010fc5101eb0766886d297fae6d641ffa71ccdae17e11eeb520f26ec240",
+          "files": [
+            "mit6_100l_f22_lec17_code.py"
+          ]
+        }
+      ]
+    },
+    {
+      "number": 18,
+      "sourceTitle": "Lecture 18: More Python Class Methods",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-18-more-python-class-methods/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "readingFocus": "Coordinate/Circle, composition, __str__, opérations de SimpleFraction ; interface et mutation.",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec18.pdf",
+          "sha256": "db80b45d51dc661a3011e96d2477c6185833795f43c892daa7d547a8e4e71a40"
+        },
+        {
+          "kind": "lecture_code",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec18_code.py",
+          "sha256": "1fe9424c82d22fe3e3e129551e43c53446a1820e235c663d5b82b999959564d1",
+          "files": [
+            "mit6_100l_f22_lec18_code.py"
+          ]
+        }
+      ]
+    },
+    {
+      "number": 19,
+      "sourceTitle": "Lecture 19: Inheritance",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-19-inheritance/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "readingFocus": "Animal/Person/Student, redéfinition et recherche des méthodes, constructeur parent ; attributs de classe.",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec19.pdf",
+          "sha256": "17f78422757dbc4b2b37480615acd962e4269f360c1383241820f9d8b021b593"
+        },
+        {
+          "kind": "lecture_code",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec19_code.py",
+          "sha256": "bcde6b4c45df232abfe22f1ba5d373e50a8913ddbea7e4a3927404b7a31706bd",
+          "files": [
+            "mit6_100l_f22_lec19_code.py"
+          ]
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "sourceTitle": "Lecture 20: Fitness Tracker Object-Oriented Programming Example",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-20-fitness-tracker-object-oriented-programming-example/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "readingFocus": "Workout/RunWorkout, durée et calories fournies ou estimées, super ; helper GPS lu sans être exécuté.",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec20.pdf",
+          "sha256": "c22a0068fcc983174a6d42509d46264b1e02dbe57a70fca22e4b86d6ed19ea8b"
+        },
+        {
+          "kind": "lecture_code",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec20_code.zip",
+          "sha256": "9c84f26dc8ebf82044af9e2348be8888ee3d51435592f133682080f48a29d1a5",
+          "files": [
+            "lec20.py",
+            "lec20_helpers.py"
+          ]
+        }
+      ]
+    },
+    {
+      "number": 21,
+      "sourceTitle": "Lecture 21: Timing Programs, Counting Operations",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-21-timing-programs-counting-operations/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "readingFocus": "Chronométrage, modèle de comptage, c_to_f/mysum/square et effet des boucles imbriquées.",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec21.pdf",
+          "sha256": "343f2e6f17647f3dcbccd48b240ad3120407afb3cf933c0ab5379aad4ffacb83"
+        },
+        {
+          "kind": "lecture_code",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec21_code.py",
+          "sha256": "0cae1a63e21360ec88d8bf465ca436b22c5ca865d69157f0f30d35429396946a",
+          "files": [
+            "mit6_100l_f22_lec21_code.py"
+          ]
+        }
+      ]
+    },
+    {
+      "number": 22,
+      "sourceTitle": "Lecture 22: Big Oh and Theta",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-22-big-oh-and-theta/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "readingFocus": "Comparaison recherche linéaire/dichotomique, Big Oh/Theta, élimination des termes inférieurs et cas de recherche.",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec22.pdf",
+          "sha256": "5df7f73d4ddff7bce2349ee698eacbe1c3cafba68e16a9feea1bef6aec4dd182"
+        },
+        {
+          "kind": "lecture_code",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec22_code.py",
+          "sha256": "a1398892dd91d1199f2a627828bbc84cb7215a8bc1bd234478f7bc8aa2ee68fb",
+          "files": [
+            "mit6_100l_f22_lec22_code.py"
+          ]
+        }
+      ]
+    },
+    {
+      "number": 23,
+      "sourceTitle": "Lecture 23: Complexity Classes Examples",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-23-complexity-classes-examples/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "readingFocus": "Familles constante/linéaire/quadratique/exponentielle/logarithmique ; sous-ensembles et coût réel de copie.",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec23.pdf",
+          "sha256": "1185666b6a43770f7d525347e5c0b0515e6fc99a6a4930ff0185d8661c8ad27f"
+        },
+        {
+          "kind": "lecture_code",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec23_code.py",
+          "sha256": "ccdd68a29e3ed4c40bda8a3e7ec2dc7ba38e0fcadbab6358b3ec6db45e703d31",
+          "files": [
+            "mit6_100l_f22_lec23_code.py"
+          ]
+        }
+      ]
+    },
+    {
+      "number": 24,
+      "sourceTitle": "Lecture 24: Sorting Algorithms",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-24-sorting-algorithms/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "readingFocus": "Amortissement tri+recherches, bogo/bulles/sélection/fusion ; passe voisine et coût de fusion par niveaux.",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec24.pdf",
+          "sha256": "41da3ddb62d5dc8efcc5799be5dbfc7fdfd8c23305324ac319c4b51ece0e0226"
+        },
+        {
+          "kind": "lecture_code",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec24_code.py",
+          "sha256": "bb84cc80a24050d4a9f2a7f80cdf195878d4cf78e140ab81fb40934ca5c34ff8",
+          "files": [
+            "mit6_100l_f22_lec24_code.py"
+          ]
+        }
+      ]
+    },
+    {
+      "number": 25,
+      "sourceTitle": "Lecture 25: Plotting",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-25-plotting/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "readingFocus": "plot et annotations, échelles, populations et températures, histogrammes ; parsing des données dans lec25.py.",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec25.pdf",
+          "sha256": "2abf9bb6d80f315a59935447bb28c1f8d507c5a28cda7836c37d1fdfa3c25429"
+        },
+        {
+          "kind": "lecture_code",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec25_code.zip",
+          "sha256": "f371737f015bc7e8304e5e935b93d7ec1428b9109944031667bc91a2a6bbb62d",
+          "files": [
+            "lec25.py"
+          ]
+        }
+      ]
+    },
+    {
+      "number": 26,
+      "sourceTitle": "Lecture 26: List Access, Hashing, Simulations, and Wrap-Up",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-26-list-access-hashing-simulations-and-wrap-up/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "readingFocus": "Accès liste et hachage, collisions, lancers de dés et expériences répétées, fill_pool et moyenne d’une fonction non linéaire.",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_slides",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec26.pdf",
+          "sha256": "c96fe23176c3a0cdb73952a96abcffe385554000e29990c404320f156b5cf403"
+        },
+        {
+          "kind": "lecture_code",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec26_code.py",
+          "sha256": "d00417ccc7d99fb3811923969008a5527701d481d475e36c17d0d7be5d77c360",
+          "files": [
+            "mit6_100l_f22_lec26_code.py"
+          ]
+        }
+      ]
+    }
+  ],
+  "assessmentEvents": {
+    "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/calendar/",
+    "microquizCount": 10,
+    "note": "Microquizzes embedded within scheduled lectures; no separate assessment materials linked in the lecture index."
+  },
+  "supplementalResources": [
+    {
+      "sourceTitle": "Recitations",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/lists/recitations/",
+      "count": 10,
+      "note": "Optional review sections; notes and code supplied separately."
+    },
+    {
+      "sourceTitle": "Problem Sets",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/lists/problem-sets/",
+      "note": "Long programming assignments, separate from authored guided lecture exercises.",
+      "count": 6
+    }
+  ],
+  "inventoryId": "ossu_001",
+  "sourceIndexUrl": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/material-by-lecture/"
+}

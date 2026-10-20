@@ -33,6 +33,12 @@ class CurriculumValidationTest(unittest.TestCase):
         self.course["expectedLessonCount"] = 999
         self.assertTrue(any("count" in error for error in validate_course(self.course, self.manifest)))
 
+    def test_stable_ids_cannot_be_paths_or_overlong_recording_keys(self):
+        for value in ("../escape", "bad-id.wav", "e" * 129):
+            course = copy.deepcopy(self.course)
+            course["lessons"][0]["exercises"][0]["id"] = value
+            self.assertTrue(any("stable exercise ID" in error for error in validate_course(course, self.manifest)))
+
     def test_invalid_answer_and_boolean_are_rejected(self):
         for answer in (99, -1, True):
             course = copy.deepcopy(self.course)
@@ -67,6 +73,29 @@ class CurriculumValidationTest(unittest.TestCase):
         exercise["exampleResponse"] = "Un texte personnel."
         exercise["reviewCriteria"] = []
         self.assertTrue(any("review criteria" in error for error in validate_course(self.course, self.manifest)))
+
+    def test_listening_requires_bundled_audio_and_a_transcript(self):
+        exercise = self.course["lessons"][0]["exercises"][0]
+        exercise.update(type="listening", audioResourcePath="../external.wav", transcript="Bonjour.")
+        self.assertTrue(any("audio path" in error for error in validate_course(self.course, self.manifest)))
+        exercise["audioResourcePath"] = "files/audio/nonexistent_audio_fixture.wav"
+        self.assertTrue(any("audio is missing" in error for error in validate_course(self.course, self.manifest)))
+        exercise["transcript"] = ""
+        self.assertTrue(any("transcript" in error for error in validate_course(self.course, self.manifest)))
+
+    def test_spoken_practice_checks_native_limits_and_self_review_contract(self):
+        exercise = self.course["lessons"][0]["exercises"][0]
+        exercise.update(type="spoken", maxDurationSeconds=120, preparationSeconds=0,
+                        minimumPracticeSeconds=5, reviewCriteria=["Réécouter ma réponse."],
+                        exampleOutline="Présenter son activité et donner un exemple.", roleplayTurns=[])
+        self.assertEqual([], validate_course(self.course, self.manifest))
+        for field, value, fragment in (("maxDurationSeconds", 271, "recording duration"),
+                                       ("preparationSeconds", True, "preparation duration"),
+                                       ("minimumPracticeSeconds", 121, "minimum practice"),
+                                       ("reviewCriteria", [], "review criteria")):
+            invalid = copy.deepcopy(self.course)
+            invalid["lessons"][0]["exercises"][0][field] = value
+            self.assertTrue(any(fragment in error for error in validate_course(invalid, self.manifest)))
 
 
 if __name__ == "__main__":

@@ -1,22 +1,25 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
-    kotlin("plugin.serialization") version "2.0.0"
+    alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {
+    jvmToolchain(17)
     androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "17"
-            }
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
         }
     }
     
     // Desktop target (Windows)
-    jvm("desktop")
+    jvm("desktop") {
+        compilerOptions { jvmTarget.set(JvmTarget.JVM_17) }
+    }
     
     // iOS target (iPad & iPhone)
     listOf(
@@ -44,6 +47,9 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material)
+                // Material no longer supplies these icons transitively since Compose 1.8.
+                // https://github.com/JetBrains/compose-multiplatform/releases/tag/v1.8.0
+                implementation("org.jetbrains.compose.material:material-icons-core:1.7.3")
                 implementation(compose.ui)
                 implementation(compose.components.resources)
                 implementation(libs.kotlinx.coroutines.core)
@@ -67,7 +73,7 @@ kotlin {
 
 android {
     namespace = "com.duolingo.app"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.duolingo.app"

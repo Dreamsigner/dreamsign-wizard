@@ -9,6 +9,9 @@ from urllib.parse import urlparse
 import argparse
 import json
 import re
+import wave
+from array import array
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 GENERATED = ROOT / "composeApp/src/commonMain/kotlin/com/duolingo/app/data/generated"
@@ -59,6 +62,8 @@ def validate_course(course, manifest):
         lesson_id = lesson.get("id", "?")
         if not nonblank(lesson_id) or lesson_id in lesson_ids:
             fail(f"duplicate or empty lesson ID {lesson_id}")
+        if not isinstance(lesson_id, str) or not re.fullmatch(r"[a-z][a-z0-9_]{0,127}", lesson_id):
+            fail(f"invalid stable lesson ID {lesson_id}")
         lesson_ids.add(lesson_id)
         if type(lesson.get("sourceSessionNumber")) is not int:
             fail(f"{lesson_id}: invalid source session number")
@@ -94,13 +99,32 @@ def validate_course(course, manifest):
             eid = exercise.get("id", "?")
             if not nonblank(eid) or eid in exercise_ids:
                 fail(f"{lesson_id}: duplicate or empty exercise ID {eid}")
+            if not isinstance(eid, str) or not re.fullmatch(r"[a-z][a-z0-9_]{0,127}", eid):
+                fail(f"invalid stable exercise ID {eid}")
             exercise_ids.add(eid)
             kind = exercise.get("type")
-            if kind not in ("math", "choice", "code", "written"):
+            if kind not in ("math", "choice", "code", "written", "listening", "spoken"):
                 fail(f"{eid}: unsupported exercise type {kind}")
             for field in ("prompt", "explanation", "hint"):
                 if not nonblank(exercise.get(field)):
                     fail(f"{eid}: missing {field}")
+            if kind == "spoken":
+                limit, preparation, minimum = (exercise.get(x) for x in ("maxDurationSeconds", "preparationSeconds", "minimumPracticeSeconds"))
+                if type(limit) is not int or not 5 <= limit <= 270:
+                    fail(f"{eid}: invalid recording duration")
+                if type(preparation) is not int or not 0 <= preparation <= 120:
+                    fail(f"{eid}: invalid preparation duration")
+                if type(minimum) is not int or type(limit) is not int or not 1 <= minimum <= limit:
+                    fail(f"{eid}: invalid minimum practice duration")
+                criteria = exercise.get("reviewCriteria")
+                if not isinstance(criteria, list) or not criteria or not all(nonblank(x) for x in criteria):
+                    fail(f"{eid}: missing explicit review criteria")
+                if not nonblank(exercise.get("exampleOutline")):
+                    fail(f"{eid}: missing spoken example outline")
+                turns = exercise.get("roleplayTurns", [])
+                if not isinstance(turns, list) or not all(nonblank(x) for x in turns):
+                    fail(f"{eid}: invalid roleplay cues")
+                continue
             if kind == "written":
                 lower, upper = exercise.get("minWords"), exercise.get("maxWords")
                 if type(lower) is not int or type(upper) is not int or not 0 < lower <= upper <= 2000:
@@ -114,6 +138,27 @@ def validate_course(course, manifest):
                 elif type(lower) is int and type(upper) is int and not lower <= len(example.split()) <= upper:
                     fail(f"{eid}: example response outside word limits")
                 continue
+            if kind == "listening":
+                if not nonblank(exercise.get("transcript")):
+                    fail(f"{eid}: missing listening transcript")
+                resource = exercise.get("audioResourcePath", "")
+                if not isinstance(resource, str) or not re.fullmatch(r"files/audio/[a-z0-9_]+\.wav", resource):
+                    fail(f"{eid}: invalid bundled audio path")
+                else:
+                    asset = ROOT / "composeApp/src/commonMain/composeResources" / resource
+                    try:
+                        with wave.open(str(asset), "rb") as wav:
+                            if (wav.getnchannels(), wav.getsampwidth(), wav.getframerate()) != (1, 2, 16000):
+                                fail(f"{eid}: unsupported audio format")
+                            if not 2 <= wav.getnframes() / wav.getframerate() <= 180:
+                                fail(f"{eid}: invalid audio duration")
+                            samples = array("h", wav.readframes(wav.getnframes()))
+                            if sys.byteorder != "little":
+                                samples.byteswap()
+                            if not samples or max(abs(x) for x in samples) < 500:
+                                fail(f"{eid}: audio is silent or unusable")
+                    except (OSError, wave.Error, EOFError):
+                        fail(f"{eid}: bundled audio is missing or invalid")
             options = exercise.get("options", [])
             if not isinstance(options, list) or len(options) < 2 or not all(nonblank(x) for x in options):
                 fail(f"{eid}: answer options are missing")
@@ -132,6 +177,16 @@ def kotlin_string(value):
 
 
 def exercise_kotlin(exercise):
+    if exercise["type"] == "spoken":
+        fields = [f"{name} = {kotlin_string(exercise[name])}" for name in ("id", "prompt", "exampleOutline", "explanation", "hint")]
+        fields += [f"{name} = {exercise[name]}" for name in ("maxDurationSeconds", "preparationSeconds", "minimumPracticeSeconds")]
+        fields += [name + " = listOf(" + ", ".join(kotlin_string(x) for x in exercise.get(name, [])) + ")" for name in ("reviewCriteria", "roleplayTurns")]
+        return "Exercise.SpokenProduction(" + ", ".join(fields) + ")"
+    if exercise["type"] == "listening":
+        fields = [f"{name} = {kotlin_string(exercise[name])}" for name in ("id", "prompt", "audioResourcePath", "transcript", "explanation", "hint")]
+        fields += ["options = listOf(" + ", ".join(kotlin_string(x) for x in exercise["options"]) + ")",
+                   f"correctOptionIndex = {exercise['correctOptionIndex']}"]
+        return "Exercise.ListeningChoice(" + ", ".join(fields) + ")"
     if exercise["type"] == "written":
         fields = [f"{name} = {kotlin_string(exercise[name])}" for name in ("id", "prompt", "exampleResponse", "explanation", "hint")]
         fields += [f"{name} = {exercise[name]}" for name in ("minWords", "maxWords")]
@@ -184,6 +239,20 @@ def generate(courses):
     for category, objects in category_units.items():
         registry += f"        SubjectCategory.{category} -> listOf(" + ", ".join(obj + ".unit()" for obj in objects) + ")\n"
     (GENERATED / "GeneratedCourses.kt").write_text(registry + "    }\n}\n", encoding="utf-8")
+    report = ["# Couverture des unités rédigées", "",
+              "Généré par `python tools/validate_curriculum.py --generate` à partir des contenus validés.", "",
+              "| Unité | Type de séquence | Édition | Leçons/ateliers | Exercices |", "| --- | --- | --- | ---: | ---: |"]
+    for course, manifest in courses:
+        kind = "Atelier original" if manifest.get("sequenceType") == "original_practice_formats" else "Séances du cours source"
+        count = sum(len(lesson["exercises"]) for lesson in course["lessons"])
+        report.append(f"| [{course['title']}]({course['sourceUrl']}) | {kind} | {course['edition']} | {len(course['lessons'])} | {count} |")
+    report += ["", f"Total : **{sum(len(course['lessons']) for course, _ in courses)} leçons/ateliers**, "
+               f"**{sum(len(lesson['exercises']) for course, _ in courses for lesson in course['lessons'])} exercices**.", "",
+               "Cette table constate les unités rédigées. Elle ne certifie ni l’intégralité du cursus OSSU, "
+               "ni celle de la préparation TCF, ni l’équivalence des exercices adaptés avec tous les travaux ouverts des sources.", "",
+               "Les preuves et limites de lecture, de calcul et de vérification native sont consignées dans les notes de provenance "
+               "et dans `docs/EXECUTION-LOG.md`. Un build réussi ne prouve pas à lui seul la qualité pédagogique ou visuelle.", ""]
+    (ROOT / "docs/curriculum/AUTHORED-COVERAGE.md").write_text("\n".join(report), encoding="utf-8")
 
 
 def load_authored():

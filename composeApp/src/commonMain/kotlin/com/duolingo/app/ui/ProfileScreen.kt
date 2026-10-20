@@ -34,6 +34,7 @@ fun ProfileScreen(stats: UserStats, persistenceStatus: String = "État de la sau
                 Column(Modifier.fillMaxWidth().padding(24.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     Text("Ma progression", fontSize = 20.sp, fontWeight = FontWeight.Bold)
                     Text(persistenceStatus, fontSize = 16.sp)
+                    if (stats.textModeCompletedLessonIds.isNotEmpty()) Text("${stats.textModeCompletedLessonIds.size} atelier(s) audio terminé(s) en mode lecture. Ces tentatives correspondent à la compréhension écrite.", color = Graphite)
                     Text("Les XP récompensent la première réussite d’une leçon. Les révisions restent accessibles pour entretenir tes acquis.", color = Graphite, fontSize = 16.sp)
                     Text("Une erreur retire un cœur. Même à zéro, tu peux continuer à t’entraîner et à corriger tes réponses.", color = Graphite, fontSize = 16.sp)
                 }

@@ -61,6 +61,52 @@ class AppViewModel(
     val lastAwardedXp: StateFlow<Int> = _lastAwardedXp.asStateFlow()
     private val _reviewedCriteria = MutableStateFlow<Set<Int>>(emptySet())
     val reviewedCriteria: StateFlow<Set<Int>> = _reviewedCriteria.asStateFlow()
+    private val _heardAudioPaths = MutableStateFlow<Set<String>>(emptySet())
+    val heardAudioPaths: StateFlow<Set<String>> = _heardAudioPaths.asStateFlow()
+    private val _transcriptModePaths = MutableStateFlow<Set<String>>(emptySet())
+    val transcriptModePaths: StateFlow<Set<String>> = _transcriptModePaths.asStateFlow()
+    private val _verifiedRecordingMillis = MutableStateFlow<Long?>(null)
+    val verifiedRecordingMillis: StateFlow<Long?> = _verifiedRecordingMillis.asStateFlow()
+    private val _recordingReplayed = MutableStateFlow(false)
+    val recordingReplayed: StateFlow<Boolean> = _recordingReplayed.asStateFlow()
+    private val _spokenRecordingBusy = MutableStateFlow(false)
+    val spokenRecordingBusy: StateFlow<Boolean> = _spokenRecordingBusy.asStateFlow()
+
+    fun setSpokenRecordingBusy(exerciseId: String, busy: Boolean) {
+        val exercise = currentExercise() as? Exercise.SpokenProduction ?: return
+        if (exercise.id != exerciseId || _isAnswerChecked.value) return
+        _spokenRecordingBusy.value = busy
+        if (busy) { _recordingReplayed.value = false; _reviewedCriteria.value = emptySet() }
+    }
+
+    /** Call only after the recording was loaded/validated or atomically saved, never on a timer. */
+    fun confirmSpokenRecording(exerciseId: String, durationMillis: Long) {
+        val exercise = currentExercise() as? Exercise.SpokenProduction ?: return
+        if (exercise.id != exerciseId || durationMillis !in 1..exercise.maxDurationSeconds * 1000L || _isAnswerChecked.value) return
+        _verifiedRecordingMillis.value = durationMillis
+        _spokenRecordingBusy.value = false
+        _recordingReplayed.value = false
+        _reviewedCriteria.value = emptySet()
+        _userStats.value = _userStats.value.copy(spokenRecordingDurationsMillis = _userStats.value.spokenRecordingDurationsMillis + (exerciseId to durationMillis))
+        persist()
+    }
+
+    fun markRecordingReplayed(exerciseId: String) {
+        if (currentExercise()?.id == exerciseId && _verifiedRecordingMillis.value != null && !_spokenRecordingBusy.value) _recordingReplayed.value = true
+    }
+
+    fun enableTranscriptMode(exerciseId: String) {
+        val exercise = currentExercise() as? Exercise.ListeningChoice ?: return
+        if (exercise.id == exerciseId && !_isAnswerChecked.value && !_isLessonCompleted.value) {
+            _transcriptModePaths.value = _transcriptModePaths.value + exercise.audioResourcePath
+        }
+    }
+
+    fun markAudioCompleted(exerciseId: String) {
+        val exercise = currentExercise() as? Exercise.ListeningChoice ?: return
+        if (exercise.id != exerciseId || _isLessonCompleted.value) return
+        _heardAudioPaths.value = _heardAudioPaths.value + exercise.audioResourcePath
+    }
 
     fun updateWrittenResponse(text: String) {
         if (_isAnswerChecked.value || _isLessonCompleted.value || text.length > 12000) return
@@ -79,8 +125,12 @@ class AppViewModel(
 
     fun toggleReviewCriterion(index: Int) {
         if (_isAnswerChecked.value || _isLessonCompleted.value) return
-        val exercise = currentExercise() as? Exercise.WrittenProduction ?: return
-        if (index !in exercise.reviewCriteria.indices) return
+        val criteria = when (val exercise = currentExercise()) {
+            is Exercise.WrittenProduction -> exercise.reviewCriteria
+            is Exercise.SpokenProduction -> exercise.reviewCriteria
+            else -> return
+        }
+        if (index !in criteria.indices) return
         val current = _reviewedCriteria.value
         _reviewedCriteria.value = if (index in current) current - index else current + index
     }
@@ -149,6 +199,8 @@ class AppViewModel(
         val canonical = subject.units.flatMap { it.lessons }.first { it.id == lesson.id }
         if (canonical.exercises.isEmpty() || !subject.isLessonUnlocked(canonical, _userStats.value.completedLessonIds)) return
         _activeLesson.value = canonical
+        _heardAudioPaths.value = emptySet()
+        _transcriptModePaths.value = emptySet()
         _currentExerciseIndex.value = 0
         _lastAwardedXp.value = 0
         _isLessonCompleted.value = false
@@ -159,6 +211,7 @@ class AppViewModel(
     fun selectOption(index: Int) {
         if (_isAnswerChecked.value || _isLessonCompleted.value) return
         val options = when (val exercise = currentExercise()) {
+            is Exercise.ListeningChoice -> exercise.options
             is Exercise.MultipleChoice -> exercise.options
             is Exercise.CodeChallenge -> exercise.options
             is Exercise.MathChallenge -> exercise.options
@@ -181,6 +234,14 @@ class AppViewModel(
     fun checkAnswer() {
         if (_isAnswerChecked.value || _isLessonCompleted.value) return
         val correct = when (val exercise = currentExercise()) {
+            is Exercise.SpokenProduction -> {
+                if (!exercise.canFinishPractice(_verifiedRecordingMillis.value, _recordingReplayed.value, _spokenRecordingBusy.value, _reviewedCriteria.value)) return
+                true
+            }
+            is Exercise.ListeningChoice -> {
+                if (exercise.audioResourcePath !in _heardAudioPaths.value && exercise.audioResourcePath !in _transcriptModePaths.value) return
+                (_selectedOptionIndex.value ?: return) == exercise.correctOptionIndex
+            }
             is Exercise.WrittenProduction -> {
                 val text = _userStats.value.writtenDrafts[exercise.id].orEmpty()
                 if (!exercise.canFinishPractice(text, _reviewedCriteria.value)) return
@@ -209,6 +270,9 @@ class AppViewModel(
     }
 
     private fun resetAnswer() {
+        _verifiedRecordingMillis.value = null
+        _recordingReplayed.value = false
+        _spokenRecordingBusy.value = false
         _reviewedCriteria.value = emptySet()
         _selectedOptionIndex.value = null
         _selectedTokenSequence.value = emptyList()
@@ -237,6 +301,7 @@ class AppViewModel(
         }
         _userStats.value = stats.copy(xp = stats.xp + awarded,
             completedLessonIds = stats.completedLessonIds + lesson.id,
+            textModeCompletedLessonIds = if (_transcriptModePaths.value.isNotEmpty()) stats.textModeCompletedLessonIds + lesson.id else stats.textModeCompletedLessonIds - lesson.id,
             streakDays = streak, lastStudyDate = if (day != null) studyDate else stats.lastStudyDate)
         _subjects.value = _subjects.value.map { subject -> subject.copy(units = subject.units.map { unit ->
             unit.copy(lessons = unit.lessons.map { if (it.id == lesson.id) it.copy(isCompleted = true) else it })

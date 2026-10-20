@@ -5,7 +5,7 @@ import com.duolingo.app.model.*
 
 internal object Course_mit_missing_semester_2026 {
     fun unit() = LearningUnit(
-        id = "mit_missing_semester_2026", unitNumber = 1,
+        id = "mit_missing_semester_2026", unitNumber = 3,
         title = "MIT Missing Semester — Outils du développeur",
         description = "9 séances du programme source, avec révisions et évaluations identifiées.",
         lessons = listOf(lesson001(), lesson002(), lesson003(), lesson004(), lesson005(), lesson006(), lesson007(), lesson008(), lesson009()),

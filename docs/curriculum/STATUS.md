@@ -1,6 +1,6 @@
 # État du catalogue fondé sur les cours sources
 
-Mise à jour : 19 octobre 2026.
+Mise à jour : 20 octobre 2026.
 
 ## Exigence retenue
 
@@ -42,14 +42,25 @@ TCF : trois ateliers originaux d’expression écrite sont intégrés, avec sais
 et brouillon persistant, exemples rédigés et relecture explicite. Ce découpage
 local correspond aux trois formats FEI ; il ne prétend pas être un programme
 officiel ou une préparation complète. Voir `tcf-writing-authoring-notes.md`.
-L’écoute, la production orale et le reste de la préparation restent requis.
+L’écoute dispose maintenant de trois documents originaux intégrés, six questions,
+voix de synthèse, transcription en correction et mode lecture accessible distinct.
+Les lecteurs natifs sont implémentés ; les contrôles Android/iOS de ce nouveau lot
+restent requis. Trois ateliers de production orale sont implémentés avec capture,
+stockage local et réécoute, mais attendent la vérification native des permissions
+et de l’enregistrement. Le reste de la préparation reste à rédiger.
 
 MIT 18.06SC Fall 2011 est rédigé et intégré : 40 séances (32 cours, quatre
 révisions, quatre examens adaptés), 131 exercices et 83 contrôles exacts
 SymPy liés aux réponses du fichier publié. Voir la note de provenance associée.
 
-Total actuellement rédigé : 154 leçons/ateliers et 421 exercices, dont
-151 séances universitaires et trois ateliers TCF. Aucun décompte de cours
+MIT 6.100L Fall 2022 est rédigé et intégré : 26 conférences, 104 exercices,
+dont 70 extraits Python exécutés et comparés aux réponses. Récitations, PS0–PS5
+et microquizzes sont distingués des conférences, sans prétention de les remplacer.
+
+Le décompte reproductible à jour figure dans `AUTHORED-COVERAGE.md`.
+MIT 6.042J Fall 2010 ajoute 28 séances et 117 exercices ; Learn Prolog Now!
+ajoute 12 chapitres et 60 exercices, relus manuellement sans moteur Prolog exécuté.
+Aucun décompte de cours
 achevés n’est déduit des seules pages d’accueil de l’inventaire OSSU.
 
 Le manifeste 18.01SC conserve le statut `not_authored` de la collecte initiale :

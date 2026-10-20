@@ -44,6 +44,11 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
     val awardedXp by viewModel.lastAwardedXp.collectAsState()
     val reviewedCriteria by viewModel.reviewedCriteria.collectAsState()
     val persistenceStatus by viewModel.persistenceStatus.collectAsState()
+    val heardAudioPaths by viewModel.heardAudioPaths.collectAsState()
+    val transcriptModePaths by viewModel.transcriptModePaths.collectAsState()
+    val recordingMillis by viewModel.verifiedRecordingMillis.collectAsState()
+    val recordingReplayed by viewModel.recordingReplayed.collectAsState()
+    val recordingBusy by viewModel.spokenRecordingBusy.collectAsState()
     val lesson = activeLesson
     if (lesson == null) {
         Column { EmptyLearningState("Choisis une leçon", "Aucune leçon n’est ouverte."); LearningButton("Retour aux cours", { viewModel.navigateTo(AppScreen.LEARNING_PATH) }) }
@@ -57,6 +62,7 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
     val questionScrollState = key(lesson.id, showNotes, index) { rememberScrollState() }
     val unsupported = exercise is Exercise.MatchingPairs
     val written = exercise as? Exercise.WrittenProduction
+    val spoken = exercise as? Exercise.SpokenProduction
     val writtenResponse = written?.let { stats.writtenDrafts[it.id] }.orEmpty()
     Scaffold(backgroundColor = Paper,
         topBar = {
@@ -77,13 +83,21 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
         bottomBar = {
             Surface(color = White) {
                 Box(Modifier.fillMaxWidth().padding(16.dp), contentAlignment = Alignment.Center) {
+                    Column(Modifier.widthIn(max = 760.dp).fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    if (checked && !showNotes) Text(
+                        if (written != null || spoken != null) "Entraînement auto-évalué terminé" else if (correct) "Bonne réponse" else "À corriger · consulte l’explication puis réessaie",
+                        color = if (correct) Ink else ActionRed, fontWeight = FontWeight.Bold)
                     when {
                         showNotes -> LearningButton(if (lesson.exercises.isEmpty()) "Retour aux cours" else "Passer aux exercices", { if (lesson.exercises.isEmpty()) exit() else showNotes = false }, Modifier.widthIn(max = 760.dp).fillMaxWidth())
                         exercise == null || unsupported -> LearningButton("Retour aux cours", exit, Modifier.widthIn(max = 760.dp).fillMaxWidth())
                         checked && !correct -> LearningButton("Réessayer", viewModel::retryExercise, Modifier.widthIn(max = 760.dp).fillMaxWidth())
                         checked -> LearningButton("Continuer", viewModel::nextExercise, Modifier.widthIn(max = 760.dp).fillMaxWidth())
+                        spoken != null -> LearningButton("Terminer ma réécoute et mon bilan", viewModel::checkAnswer, Modifier.fillMaxWidth(), spoken.canFinishPractice(recordingMillis, recordingReplayed, recordingBusy, reviewedCriteria))
                         written != null -> LearningButton("Terminer ma relecture", viewModel::checkAnswer, Modifier.widthIn(max = 760.dp).fillMaxWidth(), written.canFinishPractice(writtenResponse, reviewedCriteria))
-                        else -> LearningButton("Vérifier ma réponse", viewModel::checkAnswer, Modifier.widthIn(max = 760.dp).fillMaxWidth(), selectedOption != null || selectedTokens.isNotEmpty())
+                        else -> LearningButton("Vérifier ma réponse", viewModel::checkAnswer, Modifier.widthIn(max = 760.dp).fillMaxWidth(),
+                            (selectedOption != null || selectedTokens.isNotEmpty()) &&
+                                (exercise !is Exercise.ListeningChoice || exercise.audioResourcePath in heardAudioPaths || exercise.audioResourcePath in transcriptModePaths))
+                    }
                     }
                 }
             }
@@ -98,6 +112,12 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
                         Text(exercise.prompt, fontSize = 26.sp, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
                         if (lesson.objective.isNotBlank()) Text("Objectif : ${lesson.objective}", color = Graphite)
                         when (exercise) {
+                            is Exercise.SpokenProduction -> SpokenProductionPractice(exercise, viewModel, checked)
+                            is Exercise.ListeningChoice -> {
+                                ListeningPractice(exercise, checked, exercise.audioResourcePath in heardAudioPaths,
+                                    exercise.audioResourcePath in transcriptModePaths, viewModel::markAudioCompleted, viewModel::enableTranscriptMode)
+                                OptionsList(exercise.options, selectedOption, checked, viewModel::selectOption)
+                            }
                             is Exercise.WrittenProduction -> WrittenProductionPractice(exercise, writtenResponse, reviewedCriteria, checked, persistenceStatus, viewModel::updateWrittenResponse, viewModel::toggleReviewCriterion)
                             is Exercise.CodeChallenge -> {
                                 Surface(color = Ink, shape = LearningShape) {
@@ -125,7 +145,7 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
                         }
                         if (checked) Surface(color = White, shape = LearningShape, modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite }) {
                             Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                                Text(if (written != null) "Relecture terminée" else if (correct) "Bien joué !" else "À retenir", color = if (correct) Ink else ActionRed, fontWeight = FontWeight.Bold, fontSize = 22.sp)
+                                Text(if (written != null || spoken != null) "Auto-évaluation terminée" else if (correct) "Bien joué !" else "À retenir", color = if (correct) Ink else ActionRed, fontWeight = FontWeight.Bold, fontSize = 22.sp)
                                 Text(exercise.explanation, fontSize = 16.sp)
                                 Text("${stats.hearts}/${stats.maxHearts} vies restantes", color = Graphite)
                             }

@@ -9,6 +9,7 @@
     <key>CFBundleShortVersionString</key><string>$(MARKETING_VERSION)</string>
     <key>CFBundleVersion</key><string>$(CURRENT_PROJECT_VERSION)</string>
     <key>LSRequiresIPhoneOS</key><true/>
+    <key>NSMicrophoneUsageDescription</key><string>Enregistre ta réponse orale pour la réécouter et la relire dans l’application. Le son reste stocké localement sur cet appareil.</string>
     <key>CADisableMinimumFrameDurationOnPhone</key><true/>
     <key>UILaunchScreen</key><dict/>
     <key>UIApplicationSceneManifest</key><dict>
