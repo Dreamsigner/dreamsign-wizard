@@ -110,3 +110,20 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   alternatives, 21 séquences non établies. Ce sont des preuves de sources,
   pas autant de cours pédagogiques rédigés. Le collecteur préserve désormais les
   manifestes et audits existants ; ses nouvelles collectes sont des candidats.
+
+## Reprise du 20 octobre à 07 h 18 (Douala)
+
+- Nouvelle interruption de quota entre les reprises ; aucun cours supplémentaire
+  n’est annoncé terminé pendant cette interruption.
+- Run `39353730474` du commit `c0c82e9` : Windows et Android SUCCESS, iOS FAILURE.
+  L’hôte contenait le mode d’accessibilité XCTest, mais le fichier de test avec
+  la variable d’environnement n’avait pas été inclus dans le commit. Cette
+  omission d’intégration est corrigée séparément avant une nouvelle validation.
+- Lot local suivant préservé : Python MIT 6.100L (26 leçons/104 exercices),
+  écoute originale TCF (trois documents/six questions), lecteurs audio natifs,
+  gestion arrière-plan, transcription et mode lecture accessible identifié dans
+  le profil. Catalogue local : 183 leçons/ateliers, 531 exercices. Tests desktop
+  verts avant interruption ; nouveaux builds natifs et inspection encore requis.
+- Les contributions 6.042J et enregistrement oral ont été interrompues au début.
+  Ne pas les traiter comme terminées, ni ajouter un écran de production orale
+  sans capture/relecture réelle et contrôle des permissions natives.
