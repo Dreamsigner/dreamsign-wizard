@@ -2,6 +2,10 @@
 
 Mise à jour : 20 octobre 2026.
 
+Périmètre actif : **Windows uniquement** suivant la dernière décision utilisateur.
+Android/iOS sont conservés en archive de code et sortent des développements et
+builds actifs. Voir `../DELIVERY-SCOPE.md`.
+
 ## Exigence retenue
 
 Une catégorie contient des unités correspondant à des cours complets.
@@ -79,9 +83,16 @@ et 78 réponses numériques recalculées). Voir les notes de provenance de chaqu
 cours pour les limites : ce sont des exercices adaptés, pas tous les travaux
 ouverts, laboratoires ou projets originaux.
 
-Le cours forall x: Calgary reste en brouillon hors catalogue. Un manifeste de
-48 chapitres ne constitue pas 48 leçons rédigées. Les quatre compétences TCF
-ont désormais chacune trois ateliers originaux ; la préparation reste partielle.
+Après rédaction et revue, forall x: Calgary contient 48 leçons et 98 exercices,
+une leçon par chapitre du manuel; les exemples de domaines finis sont contrôlés.
+La formulation sur les domaines vides a été corrigée avant intégration.
+Stanford CS364A Fall 2013 ajoute 20 leçons et 41 exercices; la distinction des
+modèles atomique/non atomique des séances 11–12 et les corrigés ont été revus.
+Le validateur confirme maintenant 15 unités, 391 leçons/ateliers et 1 190 exercices.
+Les notes de provenance distinguent les contrôles exacts des assertions
+conceptuelles et des problèmes ouverts non reproduits.
+Les quatre compétences TCF ont chacune trois ateliers originaux; la préparation
+reste partielle. Les autres cours OSSU restent à rédiger et vérifier.
 
 ## Suite requise avant livraison conforme
 

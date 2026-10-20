@@ -10,6 +10,12 @@
 
 **Spec:** `docs/superpowers/specs/2026-10-19-source-complete-curriculum-design.md`
 
+**Dernière décision utilisateur, 20 octobre : Windows uniquement.** Après
+l'estimation d'avancement à environ 40 % du périmètre complet, l'utilisateur
+retire Android et iOS des développements et builds actifs. Le code existant
+reste conservé. Cette décision remplace l'extension multiplateforme décrite
+ci-dessous pour la livraison active. Voir `docs/DELIVERY-SCOPE.md`.
+
 **Évolution d’exécution, 20 octobre :** la demande ultérieure de livraison native
 Windows/Android/iOS étend ce plan initialement centré sur Windows. La contrainte
 provisoire Kotlin/Compose ci-dessous est remplacée par la migration documentée

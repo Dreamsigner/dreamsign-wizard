@@ -247,3 +247,84 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   utilisent un catalogue miniature isolé, pas l'intégralité des textes des cours.
   Les contrôles de calcul des huit cours disposant d'un vérificateur passent
   à nouveau ; Prolog garde sa limite explicite d'absence d'exécution par moteur.
+
+## Lot de contenus et de reprise du cours choisi — 20 octobre 2026
+
+- `9a8982f` poussé sur la branche existante. Run `39488554876` : Windows et
+  Android SUCCESS; iOS encore en cours au présent relevé. Rapport Android
+  instrumenté téléchargé : trois tests de LearningAndroidUiTest exécutés,
+  zéro échec/erreur/ignoré sur émulateur API 34. Capture d'accueil Android
+  inspectée : charte, carte du vrai cours, navigation inférieure et zones
+  système séparées. Aucune manipulation Computer Use.
+- forall x: Calgary : 48 chapitres réellement rédigés, 98 exercices. Revue
+  indépendante des questions et comparaison ciblée aux sources quantificateurs,
+  identité, preuves et modalité. s023 reformulé pour distinguer D et D(x) et
+  éviter un faux positif anti-placeholder; s036_e03 ne présuppose plus des
+  domaines vides. Schéma, correspondances et vérifications finies PASS.
+- Stanford CS364A Fall 2013 : 20 leçons, 41 exercices. Revue indépendante :
+  IDs absents et option dupliquée corrigés; 40 corrigés enrichis de raisonnement.
+  Attribution corrigée : 4/3 non atomique affine en séance 11, 5/2 atomique en
+  séance 12. L'exemple 15/10 incompatible avec le modèle de s11 est remplacé
+  par Pigou 1/(3/4); s12 ajoute le cas 10/4. Les passages des deux PDF officiels
+  ont été vérifiés par le parent. Checker : 29 résultats recalculés et 12
+  assertions conceptuelles, ces dernières explicitement non indépendantes.
+- Catalogue validé/généré : 15 unités, 391 leçons/ateliers, 1190 exercices;
+  couverture OSSU/TCF toujours partielle. Les problèmes longs et projets
+  originaux ne sont pas déclarés réalisés par ces adaptations de pratique.
+- Affichage du numéro/type de séance ajouté dans le parcours et les notes.
+  Test rouge observé sur l'étiquette d'examen absente, puis suite verte après
+  ajout, sans changement des IDs publiés. Contrôle d'activation Entrée au
+  clavier réussi directement dans la scène Compose, sans événement système.
+- Test rouge observé : un choix de cours était perdu après reconstruction du
+  modèle. Ajout de selectedCourseIds par matière, valeur par défaut pour les
+  anciennes sauvegardes, sélection validée avant sauvegarde. Tests du JSON
+  legacy, du redémarrage, des sélections invalides/répétées et des catégories
+  indépendantes. Revue indépendante : aucun défaut P1/P2 trouvé dans ce lot.
+- Exécution avec catalogue étendu : 59 tests, un échec de fixture qui cherchait
+  un cours non encore composé hors viewport. La fixture utilise désormais le
+  défilement sémantique du LazyColumn; aucun contrôle produit n'est désactivé.
+  Nouvelle suite complète : BUILD SUCCESSFUL, 59 tests, zéro échec/erreur/ignoré,
+  journal `../work/expanded-course-list-green.log` hors Git.
+- Le paquet Windows a été reconstruit avec le catalogue étendu lors du même
+  lot (avant la correction de la fixture seulement). La relance finale et les
+  builds CI des changements non encore poussés restent à confirmer.
+- Rédaction indépendante du cours Northeastern OOD en cours, hors catalogue;
+  aucun décompte de leçons supplémentaires n'est encore annoncé pour ce cours.
+
+## Contrôle du paquet et périmètre Windows uniquement
+
+- Demande utilisateur : si avancement global sous 50 %, abandonner les
+  développements Android et iOS. Estimation annoncée : environ 40 % du
+  périmètre initial, notamment du fait du catalogue intégral encore incomplet.
+  Périmètre actif désormais Windows uniquement, décrit dans DELIVERY-SCOPE.md.
+  Sources mobiles conservées, jobs Android/iOS retirés du workflow actif;
+  aucune automatisation Codex réactivée. Le run 39488554876 est terminé avec
+  conclusion globale cancelled; ses jobs Windows et Android avaient réussi.
+  Aucune réussite iOS de ce run n'est revendiquée et sa poursuite n'est plus
+  un prérequis du travail demandé.
+- Diagnostic --self-check ajouté au véritable lanceur Windows : catalogue
+  généré, intégrité élémentaire des IDs/contenus et lecture des WAV via Res.
+  Pas de création de fenêtre, modèle de progression, lecteur ou microphone.
+  Le rapport est créé avec CREATE_NEW, sans remplacement de fichier existant.
+- Tests diagnostic : première tentative JUnit rejetée parce qu'un test à
+  expression renvoyait une exception plutôt que Unit. Signature corrigée,
+  puis RED observé sur les fonctions non implémentées avant réalisation.
+  L'intégration a ensuite révélé que Json omettait les valeurs par défaut :
+  nouveau test RED sur les drapeaux absents, corrigé avec encodeDefaults=true.
+- Dernière suite/package : BUILD SUCCESSFUL, 64 tests, zéro échec/erreur/ignoré.
+  Journal hors Git ../work/installation-final-suite-package.log. Le véritable
+  DuolingoKmpApp.exe a terminé son contrôle local avec exit 0 : 15 cours,
+  391 leçons/ateliers, 1190 exercices, trois SHA-256 audio exacts, drapeaux
+  uiStarted=false et userDataAccessed=false dans le JSON. Aucun Computer Use.
+- Rapport local conservé hors Git :
+  ../work/installation-check-9f09b6ee41af461a909d5017710c1231.json.
+  Le workflow Windows doit encore confirmer ce nouveau contrôle sur runner.
+- Revue indépendante du diagnostic demandée, mais interrompue par une limite
+  d'usage avant livraison de findings. Ne pas présenter cette revue comme faite;
+  le parent a inspecté le code et exécuté les tests et le lanceur réel.
+- Northeastern OOD : 24 leçons/48 exercices en brouillon hors catalogue sur
+  25 réunions sources (23 cours, deux examens; Thanksgiving exclu). La séance
+  JavaScript du 26 novembre n'a pas de support officiel trouvé; aucune leçon
+  n'est inventée depuis son titre. Checker volontairement PARTIAL, non inclus
+  dans les contrôles des seuls cours publiés. Ces 24 leçons ne s'ajoutent pas
+  au décompte publié de 391.

@@ -38,6 +38,19 @@ val Concrete = Color(0xFFD9D7D2)
 val White = Color(0xFFFFFFFF)
 val LearningShape = RoundedCornerShape(16.dp)
 
+/** Keep the source order visible without renaming stable published lesson IDs. */
+internal val Lesson.sourceSessionLabel: String?
+    get() {
+        val number = sourceSessionNumber ?: return null
+        val kind = when (sessionKind) {
+            "exam" -> "Entraînement à l’examen"
+            "review" -> "Révision"
+            "practice" -> "Atelier original"
+            else -> "Leçon"
+        }
+        return "$kind · $number"
+    }
+
 /** Material controls supply keyboard activation; this adds an explicit focus outline. */
 fun Modifier.learningFocus(source: MutableInteractionSource): Modifier = composed {
     val focused by source.collectIsFocusedAsState()
@@ -62,17 +75,11 @@ fun DuolingoApp(viewModel: AppViewModel = remember { AppViewModel() }) {
     val selectedId by viewModel.selectedSubjectId.collectAsState()
     val persistence by viewModel.persistenceStatus.collectAsState()
     val subject = subjects.find { it.id == selectedId } ?: subjects.firstOrNull()
-    // Lives above the quiz/profile branches, so returning keeps this subject's course.
-    val selectedUnitIds = remember { mutableStateMapOf<String, String>() }
     val selectedUnitId = subject?.let { current ->
-        selectedUnitIds[current.id]?.takeIf { selected -> current.units.any { it.id == selected } }
+        stats.selectedCourseIds[current.id]?.takeIf { selected -> current.units.any { it.id == selected } }
             ?: current.units.firstOrNull { course -> course.lessons.any { lesson ->
                 lesson.id !in stats.completedLessonIds && !lesson.isCompleted && current.isLessonUnlocked(lesson, stats.completedLessonIds)
             } }?.id ?: current.units.firstOrNull()?.id
-    }
-    LaunchedEffect(subject?.id, selectedUnitId) {
-        val subjectId = subject?.id
-        if (subjectId != null && selectedUnitId != null) selectedUnitIds[subjectId] = selectedUnitId
     }
     BoxWithConstraints(Modifier.fillMaxSize().background(Paper).windowInsetsPadding(WindowInsets.safeDrawing)) {
         val sidebar = maxWidth >= 1000.dp
@@ -87,7 +94,7 @@ fun DuolingoApp(viewModel: AppViewModel = remember { AppViewModel() }) {
                     bottomBar = { if (!rail) BottomNavigationBar(screen, viewModel::navigateTo) }) { padding ->
                     Box(Modifier.padding(padding).fillMaxSize()) {
                         when (screen) {
-                            AppScreen.LEARNING_PATH -> if (subject != null) LearningPathScreen(subject, stats.completedLessonIds, viewModel::startLesson, selectedUnitId) { selectedUnitIds[subject.id] = it }
+                            AppScreen.LEARNING_PATH -> if (subject != null) LearningPathScreen(subject, stats.completedLessonIds, viewModel::startLesson, selectedUnitId) { viewModel.selectCourse(subject.id, it) }
                                 else EmptyLearningState("Aucun cours disponible", "Les cours apparaîtront ici dès qu’ils seront disponibles.")
                             AppScreen.PROFILE -> ProfileScreen(stats, persistence)
                             AppScreen.LESSON_QUIZ -> Unit
@@ -256,6 +263,7 @@ fun LessonNodeItem(lesson: Lesson, isCompleted: Boolean, onClick: () -> Unit) {
             tint = if (isCompleted) ActionRed else Graphite, modifier = Modifier.size(32.dp))
         Spacer(Modifier.width(16.dp))
         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            lesson.sourceSessionLabel?.let { Text(it, fontSize = 13.sp, color = Graphite) }
             Text(lesson.title, fontSize = 16.sp, fontWeight = FontWeight.Bold)
             Text("${lesson.exercises.size} exercices · ${lesson.xpReward} XP à la première réussite", fontSize = 14.sp, color = Graphite)
             Text(state, fontSize = 14.sp, color = if (lesson.isLocked) Graphite else ActionRed)

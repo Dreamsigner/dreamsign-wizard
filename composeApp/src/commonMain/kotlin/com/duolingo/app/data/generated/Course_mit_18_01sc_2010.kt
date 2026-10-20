@@ -5,7 +5,7 @@ import com.duolingo.app.model.*
 
 internal object Course_mit_18_01sc_2010 {
     fun unit() = LearningUnit(
-        id = "mit_18_01sc_2010", unitNumber = 1,
+        id = "mit_18_01sc_2010", unitNumber = 2,
         title = "MIT 18.01SC — Calcul à une variable",
         description = "102 séances du programme source, avec révisions et évaluations identifiées.",
         lessons = listOf(lesson001(), lesson002(), lesson003(), lesson004(), lesson005(), lesson006(), lesson007(), lesson008(), lesson009(), lesson010(), lesson011(), lesson012(), lesson013(), lesson014(), lesson015(), lesson016(), lesson017(), lesson018(), lesson019(), lesson020(), lesson021(), lesson022(), lesson023(), lesson024(), lesson025(), lesson026(), lesson027(), lesson028(), lesson029(), lesson030(), lesson031(), lesson032(), lesson033(), lesson034(), lesson035(), lesson036(), lesson037(), lesson038(), lesson039(), lesson040(), lesson041(), lesson042(), lesson043(), lesson044(), lesson045(), lesson046(), lesson047(), lesson048(), lesson049(), lesson050(), lesson051(), lesson052(), lesson053(), lesson054(), lesson055(), lesson056(), lesson057(), lesson058(), lesson059(), lesson060(), lesson061(), lesson062(), lesson063(), lesson064(), lesson065(), lesson066(), lesson067(), lesson068(), lesson069(), lesson070(), lesson071(), lesson072(), lesson073(), lesson074(), lesson075(), lesson076(), lesson077(), lesson078(), lesson079(), lesson080(), lesson081(), lesson082(), lesson083(), lesson084(), lesson085(), lesson086(), lesson087(), lesson088(), lesson089(), lesson090(), lesson091(), lesson092(), lesson093(), lesson094(), lesson095(), lesson096(), lesson097(), lesson098(), lesson099(), lesson100(), lesson101(), lesson102()),

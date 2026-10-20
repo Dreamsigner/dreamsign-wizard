@@ -5,7 +5,7 @@ import com.duolingo.app.model.*
 
 internal object Course_mit_6_042j_2010 {
     fun unit() = LearningUnit(
-        id = "mit_6_042j_2010", unitNumber = 4,
+        id = "mit_6_042j_2010", unitNumber = 5,
         title = "MIT 6.042J — Mathématiques pour l’informatique",
         description = "Les 25 conférences de Fall 2010, une préparation au partiel et deux évaluations adaptées. Les récitations, devoirs longs et anciennes finales restent des compléments.",
         lessons = listOf(lesson001(), lesson002(), lesson003(), lesson004(), lesson005(), lesson006(), lesson007(), lesson008(), lesson009(), lesson010(), lesson011(), lesson012(), lesson013(), lesson014(), lesson015(), lesson016(), lesson017(), lesson018(), lesson019(), lesson020(), lesson021(), lesson022(), lesson023(), lesson024(), lesson025(), lesson026(), lesson027(), lesson028()),

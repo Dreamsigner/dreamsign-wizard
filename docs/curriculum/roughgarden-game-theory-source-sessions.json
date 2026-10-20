@@ -1,0 +1,450 @@
+{
+  "courseCode": "Stanford CS364A",
+  "inventoryId": "ossu_043",
+  "edition": "Fall 2013",
+  "instructor": "Tim Roughgarden",
+  "institution": "Stanford University, Department of Computer Science",
+  "sourceUrl": "https://timroughgarden.org/f13/f13.html",
+  "checkedOn": "2026-10-20",
+  "sessionCount": 20,
+  "countUnit": "lecture",
+  "sourceIndexUrl": "https://timroughgarden.org/f13/f13.html",
+  "sourceSequenceStatus": "lecture_notes_text_read_all_20; figures_not_visually_inspected",
+  "contentStatus": "20 original draft lessons authored; not integrated or release-validated",
+  "indexEvidence": {
+    "checkedOn": "2026-10-20",
+    "requestedUrl": "https://timroughgarden.org/f13/f13.html",
+    "resolvedUrl": "https://timroughgarden.org/f13/f13.html",
+    "accessStatus": "retrieved",
+    "sha256": "a86edfba31924cc72d1f170adace9cd7de02c396f1da8ffcaf5bb24442cc97a2"
+  },
+  "sessions": [
+    {
+      "number": 1,
+      "sourceNumber": 1,
+      "sourceTitle": "Introduction",
+      "sourceUrl": "https://timroughgarden.org/f13/l/l1.pdf",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_notes_pdf",
+          "url": "https://timroughgarden.org/f13/l/l1.pdf",
+          "retrievalStatus": "retrieved_http_200",
+          "sha256": "fb65027298ca9fc6e15cbac28f17d71d71345effd9a5ed6f4382da5e87dac0f9",
+          "fileBytes": 105283,
+          "pageCount": 8,
+          "extractedTextCharacters": 17613,
+          "textExtraction": "PyMuPDF page text layer, all pages",
+          "visualFiguresInspected": false
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "sourceNumber": 2,
+      "sourceTitle": "Mechanism Design Basics",
+      "sourceUrl": "https://timroughgarden.org/f13/l/l2.pdf",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_notes_pdf",
+          "url": "https://timroughgarden.org/f13/l/l2.pdf",
+          "retrievalStatus": "retrieved_http_200",
+          "sha256": "0a932e528fdeeea7a72d4b5bf7ed14a33974c67a7760b6e7347aee79fc9e17c5",
+          "fileBytes": 123894,
+          "pageCount": 7,
+          "extractedTextCharacters": 15706,
+          "textExtraction": "PyMuPDF page text layer, all pages",
+          "visualFiguresInspected": false
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "sourceNumber": 3,
+      "sourceTitle": "Myerson's Lemma",
+      "sourceUrl": "https://timroughgarden.org/f13/l/l3.pdf",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_notes_pdf",
+          "url": "https://timroughgarden.org/f13/l/l3.pdf",
+          "retrievalStatus": "retrieved_http_200",
+          "sha256": "cbc9f5f118d7ffd7bc9bf303b2f85befb5b6e20e8f1f034e6a768ee3da502185",
+          "fileBytes": 156845,
+          "pageCount": 9,
+          "extractedTextCharacters": 17332,
+          "textExtraction": "PyMuPDF page text layer, all pages",
+          "visualFiguresInspected": false
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "sourceNumber": 4,
+      "sourceTitle": "Algorithmic Mechanism Design",
+      "sourceUrl": "https://timroughgarden.org/f13/l/l4.pdf",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_notes_pdf",
+          "url": "https://timroughgarden.org/f13/l/l4.pdf",
+          "retrievalStatus": "retrieved_http_200",
+          "sha256": "f35e7ac67f2fab1ea21617072f6070ab312d4671c8d08725b114ac01356fb980",
+          "fileBytes": 210604,
+          "pageCount": 8,
+          "extractedTextCharacters": 19170,
+          "textExtraction": "PyMuPDF page text layer, all pages",
+          "visualFiguresInspected": false
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "sourceNumber": 5,
+      "sourceTitle": "Revenue-Maximizing Auctions",
+      "sourceUrl": "https://timroughgarden.org/f13/l/l5.pdf",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_notes_pdf",
+          "url": "https://timroughgarden.org/f13/l/l5.pdf",
+          "retrievalStatus": "retrieved_http_200",
+          "sha256": "34ccdb251a620788317e68b2b57f13a27b718f8b4db178747f09e1075496845c",
+          "fileBytes": 149183,
+          "pageCount": 8,
+          "extractedTextCharacters": 19485,
+          "textExtraction": "PyMuPDF page text layer, all pages",
+          "visualFiguresInspected": false
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "sourceNumber": 6,
+      "sourceTitle": "Simple Near-Optimal Auctions",
+      "sourceUrl": "https://timroughgarden.org/f13/l/l6.pdf",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_notes_pdf",
+          "url": "https://timroughgarden.org/f13/l/l6.pdf",
+          "retrievalStatus": "retrieved_http_200",
+          "sha256": "1a6ba00d7771d624ded8000f1ca60810f64c79b093def8ad0b768bf550c6e358",
+          "fileBytes": 148861,
+          "pageCount": 8,
+          "extractedTextCharacters": 20353,
+          "textExtraction": "PyMuPDF page text layer, all pages",
+          "visualFiguresInspected": false
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "sourceNumber": 7,
+      "sourceTitle": "VCG Mechanism",
+      "sourceUrl": "https://timroughgarden.org/f13/l/l7.pdf",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_notes_pdf",
+          "url": "https://timroughgarden.org/f13/l/l7.pdf",
+          "retrievalStatus": "retrieved_http_200",
+          "sha256": "7788c388bf1ae58ba3869a02b0898b72b625475c5017e9f47289271b417ca421",
+          "fileBytes": 126632,
+          "pageCount": 7,
+          "extractedTextCharacters": 17769,
+          "textExtraction": "PyMuPDF page text layer, all pages",
+          "visualFiguresInspected": false
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "sourceNumber": 8,
+      "sourceTitle": "Spectrum Auctions",
+      "sourceUrl": "https://timroughgarden.org/f13/l/l8.pdf",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_notes_pdf",
+          "url": "https://timroughgarden.org/f13/l/l8.pdf",
+          "retrievalStatus": "retrieved_http_200",
+          "sha256": "f3bb2884a0fde2a4548d98ec369d7503f1ed58482aeb1f31c6f9ec867dca036c",
+          "fileBytes": 117901,
+          "pageCount": 8,
+          "extractedTextCharacters": 23468,
+          "textExtraction": "PyMuPDF page text layer, all pages",
+          "visualFiguresInspected": false
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "sourceNumber": 9,
+      "sourceTitle": "Beyond Quasi-Linearity",
+      "sourceUrl": "https://timroughgarden.org/f13/l/l9.pdf",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_notes_pdf",
+          "url": "https://timroughgarden.org/f13/l/l9.pdf",
+          "retrievalStatus": "retrieved_http_200",
+          "sha256": "164c49cc14912c11caaa70e791e3e6b73dbc6ae3f81e39a7edbea7cd7d21f5ea",
+          "fileBytes": 146846,
+          "pageCount": 8,
+          "extractedTextCharacters": 20596,
+          "textExtraction": "PyMuPDF page text layer, all pages",
+          "visualFiguresInspected": false
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "sourceNumber": 10,
+      "sourceTitle": "Kidney Exchange, Stable Matching",
+      "sourceUrl": "https://timroughgarden.org/f13/l/l10.pdf",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_notes_pdf",
+          "url": "https://timroughgarden.org/f13/l/l10.pdf",
+          "retrievalStatus": "retrieved_http_200",
+          "sha256": "2b0217d8bc79f827573aade642ed8f9f600db3c2e30d875b71be8daabb0d3c5a",
+          "fileBytes": 168219,
+          "pageCount": 12,
+          "extractedTextCharacters": 26468,
+          "textExtraction": "PyMuPDF page text layer, all pages",
+          "visualFiguresInspected": false
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "sourceNumber": 11,
+      "sourceTitle": "Selfish Routing and the POA",
+      "sourceUrl": "https://timroughgarden.org/f13/l/l11.pdf",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_notes_pdf",
+          "url": "https://timroughgarden.org/f13/l/l11.pdf",
+          "retrievalStatus": "retrieved_http_200",
+          "sha256": "650f1343c58268f5d24c6fafc0b6eec9e5ad05802d55328e98831e30f137d7ca",
+          "fileBytes": 175885,
+          "pageCount": 9,
+          "extractedTextCharacters": 19329,
+          "textExtraction": "PyMuPDF page text layer, all pages",
+          "visualFiguresInspected": false
+        }
+      ]
+    },
+    {
+      "number": 12,
+      "sourceNumber": 12,
+      "sourceTitle": "Network Over-Provisioning",
+      "sourceUrl": "https://timroughgarden.org/f13/l/l12.pdf",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_notes_pdf",
+          "url": "https://timroughgarden.org/f13/l/l12.pdf",
+          "retrievalStatus": "retrieved_http_200",
+          "sha256": "529371227e5531672d2c3f2d5d77be3539be235ca05dd2107f2e8b82c560e408",
+          "fileBytes": 180812,
+          "pageCount": 9,
+          "extractedTextCharacters": 18527,
+          "textExtraction": "PyMuPDF page text layer, all pages",
+          "visualFiguresInspected": false
+        }
+      ]
+    },
+    {
+      "number": 13,
+      "sourceNumber": 13,
+      "sourceTitle": "Hierarchy of Equilibrium Concepts",
+      "sourceUrl": "https://timroughgarden.org/f13/l/l13.pdf",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_notes_pdf",
+          "url": "https://timroughgarden.org/f13/l/l13.pdf",
+          "retrievalStatus": "retrieved_http_200",
+          "sha256": "33b1d82024214fb478a0c294e0a7543740c733e85052a5b670e91ab047f021ba",
+          "fileBytes": 139763,
+          "pageCount": 8,
+          "extractedTextCharacters": 16977,
+          "textExtraction": "PyMuPDF page text layer, all pages",
+          "visualFiguresInspected": false
+        }
+      ]
+    },
+    {
+      "number": 14,
+      "sourceNumber": 14,
+      "sourceTitle": "Smooth Games",
+      "sourceUrl": "https://timroughgarden.org/f13/l/l14.pdf",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_notes_pdf",
+          "url": "https://timroughgarden.org/f13/l/l14.pdf",
+          "retrievalStatus": "retrieved_http_200",
+          "sha256": "46869b092ade4f0b4712c8dbaad261392b542cc11f76c3002af7df6e3710d3b6",
+          "fileBytes": 155505,
+          "pageCount": 9,
+          "extractedTextCharacters": 18546,
+          "textExtraction": "PyMuPDF page text layer, all pages",
+          "visualFiguresInspected": false
+        }
+      ]
+    },
+    {
+      "number": 15,
+      "sourceNumber": 15,
+      "sourceTitle": "Best-Case and Strong Nash Equilibria",
+      "sourceUrl": "https://timroughgarden.org/f13/l/l15.pdf",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_notes_pdf",
+          "url": "https://timroughgarden.org/f13/l/l15.pdf",
+          "retrievalStatus": "retrieved_http_200",
+          "sha256": "97d74de607a95250b7981810e6aecb086d709f6e52d25954eab38e68ff028e1f",
+          "fileBytes": 222879,
+          "pageCount": 10,
+          "extractedTextCharacters": 22697,
+          "textExtraction": "PyMuPDF page text layer, all pages",
+          "visualFiguresInspected": false
+        }
+      ]
+    },
+    {
+      "number": 16,
+      "sourceNumber": 16,
+      "sourceTitle": "Best-Response Dynamics",
+      "sourceUrl": "https://timroughgarden.org/f13/l/l16.pdf",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_notes_pdf",
+          "url": "https://timroughgarden.org/f13/l/l16.pdf",
+          "retrievalStatus": "retrieved_http_200",
+          "sha256": "aafef643246d04faa18f290e40227cdad201c6187f85a8c21245323bcda4bc97",
+          "fileBytes": 153493,
+          "pageCount": 8,
+          "extractedTextCharacters": 17163,
+          "textExtraction": "PyMuPDF page text layer, all pages",
+          "visualFiguresInspected": false
+        }
+      ]
+    },
+    {
+      "number": 17,
+      "sourceNumber": 17,
+      "sourceTitle": "No-Regret Dynamics",
+      "sourceUrl": "https://timroughgarden.org/f13/l/l17.pdf",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_notes_pdf",
+          "url": "https://timroughgarden.org/f13/l/l17.pdf",
+          "retrievalStatus": "retrieved_http_200",
+          "sha256": "eda737ce3103cdfc7845f80b3d2b80c68ff0241728cebdf1f85f663516194d1d",
+          "fileBytes": 159774,
+          "pageCount": 9,
+          "extractedTextCharacters": 20782,
+          "textExtraction": "PyMuPDF page text layer, all pages",
+          "visualFiguresInspected": false
+        }
+      ]
+    },
+    {
+      "number": 18,
+      "sourceNumber": 18,
+      "sourceTitle": "Swap Regret; Minimax",
+      "sourceUrl": "https://timroughgarden.org/f13/l/l18.pdf",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_notes_pdf",
+          "url": "https://timroughgarden.org/f13/l/l18.pdf",
+          "retrievalStatus": "retrieved_http_200",
+          "sha256": "eb61aef7b3fce5a68c60800d1161f19c4982480552cd6f1e44c1cd14ee1e01e0",
+          "fileBytes": 155464,
+          "pageCount": 9,
+          "extractedTextCharacters": 17737,
+          "textExtraction": "PyMuPDF page text layer, all pages",
+          "visualFiguresInspected": false
+        }
+      ]
+    },
+    {
+      "number": 19,
+      "sourceNumber": 19,
+      "sourceTitle": "Pure NE and PLS-Completeness",
+      "sourceUrl": "https://timroughgarden.org/f13/l/l19.pdf",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_notes_pdf",
+          "url": "https://timroughgarden.org/f13/l/l19.pdf",
+          "retrievalStatus": "retrieved_http_200",
+          "sha256": "71eae1d92c78261b48e3e3000a7b4b38acfce4d4eecf25cb0e09e9ccf4bedc66",
+          "fileBytes": 148090,
+          "pageCount": 9,
+          "extractedTextCharacters": 22461,
+          "textExtraction": "PyMuPDF page text layer, all pages",
+          "visualFiguresInspected": false
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "sourceNumber": 20,
+      "sourceTitle": "Mixed NE and PPAD-Completeness",
+      "sourceUrl": "https://timroughgarden.org/f13/l/l20.pdf",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_notes_pdf",
+          "url": "https://timroughgarden.org/f13/l/l20.pdf",
+          "retrievalStatus": "retrieved_http_200",
+          "sha256": "abfebdfb325a285e0fb061bed91ea56d440bd21c96f1b22f33b6e15cebc8c515",
+          "fileBytes": 178236,
+          "pageCount": 12,
+          "extractedTextCharacters": 29141,
+          "textExtraction": "PyMuPDF page text layer, all pages",
+          "visualFiguresInspected": false
+        }
+      ]
+    }
+  ],
+  "scopeNotes": [
+    "Every one of the 20 lecture-note PDFs was retrieved and all pages text-extracted; evidence is recorded per session.",
+    "Figures, diagrams and visual layout were not inspected; information available only in figures may be missing from text extraction.",
+    "The nine exercise sets, four problem sets and take-home final linked from the index were not read. Draft exercises are original, not copied from these banks.",
+    "The Fall 2013 notes identify Tim Roughgarden and Stanford CS364A; they point to the Cambridge book for a later version. This draft follows the requested Fall 2013 edition."
+  ],
+  "accessLimitations": []
+}

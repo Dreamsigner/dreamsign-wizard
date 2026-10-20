@@ -1,5 +1,9 @@
 # Duolingo KMP Learning App
 
+**Périmètre actif : Windows uniquement**, suivant la décision utilisateur du
+20 octobre 2026. Le code mobile existant est conservé, mais les développements
+et builds Android/iOS sont arrêtés. Voir [DELIVERY-SCOPE.md](docs/DELIVERY-SCOPE.md).
+
 Application d’apprentissage en Kotlin Multiplatform et Compose Multiplatform pour Windows, Android et iOS. L’interface reprend un parcours ludique et utilise la charte du cabinet : rouge signature `#E3262E`, rouge d’action `#C91E28`, encre `#141414`, graphite `#4A4A4A`, ivoire `#F7F5F0` et béton `#D9D7D2`. Le logo du cabinet n’est pas utilisé dans cette application.
 
 ## Parcours et contenus
@@ -24,6 +28,11 @@ trois ateliers de lecture et trois ateliers oraux originaux, avec prise de son
 locale, réécoute et bilan. La capture physique et ses permissions restent à
 vérifier sur appareils réels. Le catalogue intégral demandé n’est pas terminé.
 
+**forall x: Calgary**, édition Fall 2025, ajoute 48 chapitres et 98 exercices
+originaux. **Stanford CS364A — Algorithmic Game Theory, Fall 2013** ajoute
+20 conférences et 41 exercices. Ces adaptations guidées ne remplacent pas
+les banques de problèmes, projets et examens ouverts des sources.
+
 Les vrais écrans sont testables automatiquement sans Computer Use :
 `gradle :composeApp:desktopTest` rend Compose hors écran et produit rapports et
 captures compactes/PC. Voir [automated-testing.md](docs/automated-testing.md)
@@ -45,7 +54,7 @@ Le dépôt ne contient pas de wrapper Gradle. Si Gradle est installé localement
 gradle :composeApp:desktopRun
 ```
 
-La progression est enregistrée localement : fichier atomique dans `%LOCALAPPDATA%/AtelierApprentissage/progress.json` sur Windows, SharedPreferences sur Android, NSUserDefaults sur iOS. Les XP sont attribués une seule fois par leçon. Une sauvegarde illisible est préservée et signalée ; les erreurs d’écriture sont visibles. La synchronisation entre appareils reste absente. Voir `docs/platforms.md` pour les builds et les limites de signature iOS.
+La progression et le cours choisi par catégorie sont enregistrés localement : fichier atomique dans `%LOCALAPPDATA%/AtelierApprentissage/progress.json` sur Windows, SharedPreferences sur Android, NSUserDefaults sur iOS. Les XP sont attribués une seule fois par leçon. Les anciennes sauvegardes sont lues sans migration de fichiers. Une sauvegarde illisible est préservée et signalée ; les erreurs d’écriture sont visibles. La synchronisation entre appareils reste absente. Voir `docs/platforms.md` pour les builds et les limites de signature iOS.
 
 ## Cibles
 

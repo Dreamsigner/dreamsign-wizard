@@ -35,6 +35,10 @@ résultats XML dans `composeApp/build/test-results/desktopTest/`. Les tests
 - Compréhension écrite et production écrite avec limites de mots et relecture.
 - Positions des contrôles en viewport compact (400 × 900) et large (1400 × 900),
   et rendu de la vraie consigne de production orale à largeur compacte.
+- Ouverture indépendante de la première leçon de chaque cours du catalogue
+  publié, capture de notes réelles, et choix du cours conservé après redémarrage.
+- Activation au clavier de la navigation PC et affichage des numéros/type de
+  séance, en distinguant un entraînement adapté d'un examen officiel.
 - Écoute complète nécessaire, arrêt sans validation, ressource manquante,
   transcription accessible distincte de l'écoute.
 - Capture simulée, erreur de sauvegarde puis reprise, réécoute, bilan et
@@ -54,6 +58,27 @@ avec une activité et un stockage mémoire de test : voir `android-ui-testing.md
 Ils n'utilisent pas Computer Use. Ils sont distincts des tests hors écran JVM.
 Les tests Kotlin iOS et les XCTest de l'hôte iPhone/iPad s'exécutent sur le runner
 macOS du workflow `Build`, qui construit aussi l'archive appareil non signée.
+
+## Contrôle du lanceur Windows distribué
+
+Le lanceur accepte un mode de diagnostic séparé de l'interface :
+
+```powershell
+.\DuolingoKmpApp.exe --self-check --report "D:\chemin\nouveau-rapport.json"
+```
+
+Le fichier de sortie doit être nouveau et son dossier doit exister. Un fichier
+existant n'est jamais remplacé. Ce mode charge les vrais objets du catalogue,
+contrôle leurs identifiants et contenus requis, puis lit les vrais fichiers WAV
+via le lecteur de ressources de l'application et calcule leurs SHA-256.
+Il ne crée ni fenêtre, lecteur audio, microphone, modèle de progression ou
+stockage utilisateur. Un échec renvoie un code processus non nul.
+
+La CI Windows exécute ce mode sur le `.exe` produit avec son runtime embarqué,
+avec délai maximal de 60 secondes. Elle archive `installation-check.json` dans
+`Windows-checks`, en complément du contrôle Python des fichiers du paquet.
+Cela vérifie le démarrage du lanceur et la résolution des ressources; les vrais
+écrans sont vérifiés séparément par les tests Compose hors écran.
 
 ## Limites des preuves
 

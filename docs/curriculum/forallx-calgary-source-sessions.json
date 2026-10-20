@@ -1,0 +1,808 @@
+{
+  "courseCode": "forall x: Calgary",
+  "inventoryId": "ossu_053",
+  "edition": "Fall 2025, revision c5cb415, 2026-09-27",
+  "sourceUrl": "https://forallx.openlogicproject.org/html/",
+  "checkedOn": "2026-10-20",
+  "sequenceType": "source_chapters",
+  "sessionCount": 48,
+  "countUnit": "48 numbered textbook chapters; not official lecture sessions; appendices and selected solutions excluded",
+  "sourceAuthors": [
+    "P. D. Magnus",
+    "Tim Button",
+    "Robert Trueman",
+    "Richard Zach"
+  ],
+  "sourceContributors": [
+    "J. Robert Loftis",
+    "Aaron Thomas-Bolduc"
+  ],
+  "license": "CC BY 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "attribution": "Original French learning notes and new exercises based on the topics and definitions of forall x: Calgary, credited to the authors and contributors above. Adapted, shortened and reorganized for this application; no author endorsement.",
+  "readingMethod": "Official chapter HTML retrieved directly, SHA-256 of retrieved bytes; main exposition read as text with MathML alttext. Proof tables read as linearized text. Source diagrams were not visually inspected; authored finite models list every object and relation explicitly. Source exercise banks and appendices are not reproduced or claimed exhaustively reviewed.",
+  "sessions": [
+    {
+      "number": 1,
+      "sourceTitle": "Arguments",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch1.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "f76279b1a860e3484044569c07e8321766a616a4167d6ad797da5e9018bb804e",
+      "consultedSections": [
+        "Chapter 1 Arguments",
+        "1.1 Sentences",
+        "Questions",
+        "Imperatives",
+        "Exclamations"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 2,
+      "sourceTitle": "The scope of logic",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch2.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "336c77805768476bd25730af6bb89ae51d06bbf64df50f7604c2533bab6a37cd",
+      "consultedSections": [
+        "Chapter 2 The scope of logic",
+        "2.1 Consequence and validity",
+        "2.2 Cases and types of validity",
+        "2.3 Formal validity",
+        "2.4 Sound arguments",
+        "2.5 Inductive arguments"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 3,
+      "sourceTitle": "Other logical notions",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch3.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "7af32a9a3cb678dc7a6f80f46cfa9bd5d3999da6580bcdfb88da667cbc6ee88e",
+      "consultedSections": [
+        "Chapter 3 Other logical notions",
+        "3.1 Joint possibility",
+        "3.2 Necessary truths, necessary falsehoods, and contingency",
+        "3.3 Necessary equivalence",
+        "Summary of logical notions"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 4,
+      "sourceTitle": "First steps to symbolization",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch4.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "36280bcc8a6211bca6b44dbc3f495f4fca7e2811afd5f93d404b545a0546207e",
+      "consultedSections": [
+        "Chapter 4 First steps to symbolization",
+        "4.1 Validity in virtue of form",
+        "4.2 Validity for special reasons",
+        "4.3 Atomic sentences"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 5,
+      "sourceTitle": "Connectives",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch5.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "3e4e846ce5c427458ceabf2228c9c15c9941b7aacb219d6a7536732ffec83a10",
+      "consultedSections": [
+        "Chapter 5 Connectives",
+        "5.1 Negation",
+        "5.2 Conjunction",
+        "5.3 Disjunction",
+        "5.4 Conditional",
+        "5.5 Biconditional",
+        "5.6 Unless"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 6,
+      "sourceTitle": "Sentences of TFL",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch6.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "6d5d1af1e56ca3d6604bbb707bb08ee0f12fa2de5933aedf595ee3af45638cd0",
+      "consultedSections": [
+        "Chapter 6 Sentences of TFL",
+        "6.1 Expressions",
+        "6.2 Sentences",
+        "6.3 Bracketing conventions"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 7,
+      "sourceTitle": "Ambiguity",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch7.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "55e47c24982db10515a432321df1b2ba32320dc4f2ac29f19543b75cc0171295",
+      "consultedSections": [
+        "Chapter 7 Ambiguity"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 8,
+      "sourceTitle": "Use and mention",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch8.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "21a45349e4943704bc36344a94b9a2a216e78164553fef55c4203c650a8119b2",
+      "consultedSections": [
+        "Chapter 8 Use and mention",
+        "8.1 Quotation conventions",
+        "8.2 Object language and metalanguage",
+        "8.3 Metavariables",
+        "8.4 Quotation conventions for arguments"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 9,
+      "sourceTitle": "Characteristic truth tables",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch9.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "101e3ac8d89a07b55d9932c950bea4c55d3b7b6f6b3c8bb63712cd5e2f9c5eeb",
+      "consultedSections": [
+        "Chapter 9 Characteristic truth tables",
+        "Negation",
+        "Conjunction",
+        "Disjunction",
+        "Conditional",
+        "Biconditional"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 10,
+      "sourceTitle": "Truth-functional connectives",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch10.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "05113a35a94a410eec31e992f71c6b51772f4e5ab008acb25b7273a7f631f7f3",
+      "consultedSections": [
+        "Chapter 10 Truth-functional connectives",
+        "10.1 The idea of truth-functionality",
+        "10.2 Symbolizing versus translating",
+        "10.3 Indicative versus subjunctive conditionals"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 11,
+      "sourceTitle": "Complete truth tables",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch11.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "0e07854ca83bc9a7ec0adcd0e556fb448ba073434b9e8d53cd452e1121d042e3",
+      "consultedSections": [
+        "Chapter 11 Complete truth tables",
+        "11.1 A worked example",
+        "11.2 Building complete truth tables",
+        "11.3 More about brackets"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 12,
+      "sourceTitle": "Semantic concepts",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch12.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "fcba634c5e931ae551e69a64f09b3aafd2c866fd8b0f43c885b9eac041405b38",
+      "consultedSections": [
+        "Chapter 12 Semantic concepts",
+        "12.1 Tautologies and contradictions",
+        "12.2 Equivalence",
+        "12.3 Satisfiability",
+        "12.4 Entailment and validity",
+        "12.5 The double turnstile",
+        "12.6 ‘ ⊨ ’ versus ‘ → ’"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 13,
+      "sourceTitle": "Limitations of TFL",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch13.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "a5b1fc123071906f349917a29665a52d23700b70b09feec5243a5c6baf4ce981",
+      "consultedSections": [
+        "Chapter 13 Limitations of TFL"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 14,
+      "sourceTitle": "Truth table shortcuts",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch14.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "7f3eb0d8b828fdce4cb396d2416843a1238dbd7cf8c480b05ec406362ce80c20",
+      "consultedSections": [
+        "Chapter 14 Truth table shortcuts",
+        "14.1 Working through truth tables",
+        "14.2 Testing for validity and entailment"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 15,
+      "sourceTitle": "Partial truth tables",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch15.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "e7e55083495388d53c2a23c48a1b1d9e2a0059c56e17a51ec0ee1e39e3e098ee",
+      "consultedSections": [
+        "Chapter 15 Partial truth tables",
+        "Tautology",
+        "Contradictions",
+        "Equivalence",
+        "Joint satisfiability",
+        "Validity and entailment"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 16,
+      "sourceTitle": "The very idea of natural deduction",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch16.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "2ef2d4b76f2afd03e9cf254f566aab22d98a5a6ec30002d0ff05d2031562292b",
+      "consultedSections": [
+        "Chapter 16 The very idea of natural deduction"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 17,
+      "sourceTitle": "Basic rules for TFL",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch17.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "3811d132348e8d82bd07e0f191dbfe25e84d0484baa2370d090d13c36789bc28",
+      "consultedSections": [
+        "Chapter 17 Basic rules for TFL",
+        "17.1 The idea of a formal proof",
+        "17.2 Reiteration",
+        "17.3 Conjunction",
+        "17.4 Conditional",
+        "17.5 Additional assumptions and subproofs",
+        "17.6 Biconditional",
+        "17.7 Disjunction",
+        "17.8 Contradiction and negation"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 18,
+      "sourceTitle": "Constructing proofs",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch18.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "5fbd77fe74c9f503b1c68b2a55a0252316d3ccc8c8d7a961bd3e65cca8b13f2b",
+      "consultedSections": [
+        "Chapter 18 Constructing proofs",
+        "18.1 Working backward from what we want",
+        "Working backward from a conjunction",
+        "Working backward from a conditional",
+        "Working backward from a negated sentence",
+        "Working backward from a disjunction",
+        "18.2 Working forward from what we have",
+        "Working forward from a conjunction",
+        "Working forward from a disjunction",
+        "Working forward from a conditional",
+        "Working forward from a negated sentence",
+        "18.3 Strategies at work",
+        "18.4 Working forward from ⊥",
+        "18.5 Proceed indirectly",
+        "18.6 Indirect proof of excluded middle"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 19,
+      "sourceTitle": "Additional rules for TFL",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch19.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "67d42f0e6eb32a50aeac78ad9539bff663a4f9252992927c1f4f8e0519593505",
+      "consultedSections": [
+        "Chapter 19 Additional rules for TFL",
+        "19.1 Disjunctive syllogism",
+        "19.2 Modus tollens",
+        "19.3 Double-negation elimination",
+        "19.4 Excluded middle",
+        "19.5 De Morgan Rules"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 20,
+      "sourceTitle": "Proof-theoretic concepts",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch20.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "3585914f231abc33f72ec9fc47a11a74d352549f8f4d0cc3e10eab24167baa8a",
+      "consultedSections": [
+        "Chapter 20 Proof-theoretic concepts"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 21,
+      "sourceTitle": "Derived rules",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch21.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "172bee5120f1d56430e340ac6301f5a48f3756bad1528b2ce5baf23f47ae19b2",
+      "consultedSections": [
+        "Chapter 21 Derived rules",
+        "21.1 Derivation of Reiteration",
+        "21.2 Derivation of Disjunctive Syllogism",
+        "21.3 Derivation of Modus Tollens",
+        "21.4 Derivation of Double-Negation Elimination",
+        "21.5 Derivation of Excluded Middle",
+        "21.6 Derivation of De Morgan rules"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 22,
+      "sourceTitle": "Soundness and completeness",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch22.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "e692377c5b29d2dcecdfd961f5dc7ec17cb6e759c5923c7ac6ebc31a1b5e357a",
+      "consultedSections": [
+        "Chapter 22 Soundness and completeness"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 23,
+      "sourceTitle": "Building blocks of FOL",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch23.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "7c4bc35e4e57254a4bdb8db854d4aa8cf5a199be228e4bad9a806c82e028f035",
+      "consultedSections": [
+        "Chapter 23 Building blocks of FOL",
+        "23.1 The need to decompose sentences",
+        "23.2 Names",
+        "23.3 Predicates",
+        "23.4 Quantifiers",
+        "23.5 Domains",
+        "23.6 Non-referring terms"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 24,
+      "sourceTitle": "Sentences with one quantifier",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch24.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "3fc9c2c1af4f28d337a5dfe4dd4cc973111973b80855dee670a715f9e116bc19",
+      "consultedSections": [
+        "Chapter 24 Sentences with one quantifier",
+        "24.1 Common quantifier phrases",
+        "24.2 Empty predicates",
+        "24.3 Picking a domain",
+        "24.4 The utility of paraphrase",
+        "24.5 Quantifiers and scope",
+        "24.6 Ambiguous predicates"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 25,
+      "sourceTitle": "Multiple generality",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch25.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "f2bcda4d35e6166da2710bb20d3805595de2f918e7b3a8d5644f7320154ac758",
+      "consultedSections": [
+        "Chapter 25 Multiple generality",
+        "25.1 Many-placed predicates",
+        "25.2 Mind the gap(s)!",
+        "25.3 The order of quantifiers",
+        "25.4 Stepping-stones to symbolization",
+        "25.5 Supressed quantifiers"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 26,
+      "sourceTitle": "Identity",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch26.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "40dac4ddcc0e87987bd4b8c0ab1e63ed4d0e811078598ee6be583f064b11543d",
+      "consultedSections": [
+        "Chapter 26 Identity",
+        "26.1 Adding identity",
+        "26.2 ‘Only’ and ‘except’",
+        "26.3 There are at least…",
+        "26.4 There are at most…",
+        "26.5 There are exactly…"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 27,
+      "sourceTitle": "Sentences of FOL",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch27.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "a8af17629dd472eabd07c43609ae10199164122a22189ab8947081ead30ba423",
+      "consultedSections": [
+        "Chapter 27 Sentences of FOL",
+        "27.1 Expressions",
+        "27.2 Terms and formulas",
+        "27.3 Sentences and free variables",
+        "27.4 Bracketing conventions",
+        "27.5 Superscripts on predicates"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 28,
+      "sourceTitle": "Definite descriptions",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch28.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "980de9c661727bf8c49f4d1891f5c3210e99c2a9b6356c92cfd156dfc4dd16d7",
+      "consultedSections": [
+        "Chapter 28 Definite descriptions",
+        "28.1 Treating definite descriptions as terms",
+        "28.2 Russell’s analysis",
+        "28.3 Empty definite descriptions",
+        "28.4 Possessives, ‘both’, ‘neither’",
+        "28.5 The adequacy of Russell’s analysis"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 29,
+      "sourceTitle": "Ambiguity",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch29.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "0f230fa984df59672a90f1680ab4f875a60bfa72a6edadc9b1d039c210efafa9",
+      "consultedSections": [
+        "Chapter 29 Ambiguity"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 30,
+      "sourceTitle": "Extensionality",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch30.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "f70c0878a1f6959b195ec6b0fa0257d075857135834972d56d7fa39caf4b454c",
+      "consultedSections": [
+        "Chapter 30 Extensionality",
+        "30.1 Symbolizing versus translating",
+        "30.2 Extensions",
+        "30.3 Many-place predicates",
+        "30.4 Semantics for identity",
+        "30.5 Interpretations"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 31,
+      "sourceTitle": "Truth in FOL",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch31.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "6256ae2a38749edb8919079b6b3a1e03a3f836a8a162a924a8d3103f3bbeef6a",
+      "consultedSections": [
+        "Chapter 31 Truth in FOL",
+        "31.1 Atomic sentences",
+        "31.2 Sentential connectives",
+        "31.3 When the main logical operator is a quantifier"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 32,
+      "sourceTitle": "Semantic concepts",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch32.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "008dbd61ad4de5002378be6520bfbb7d0cf601d45df850f9ca5f841f5eb94085",
+      "consultedSections": [
+        "Chapter 32 Semantic concepts",
+        "32.1 Validities, entailment, etc.",
+        "32.2 Expressibility"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 33,
+      "sourceTitle": "Using interpretations",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch33.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "3f626d4df176584ae1f9d3783dc57ca676dc69f76ec93f616a5588847f45c2fb",
+      "consultedSections": [
+        "Chapter 33 Using interpretations",
+        "33.1 Validities and contradictions",
+        "33.2 Logical equivalence",
+        "33.3 Validity, entailment and satisfiability"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 34,
+      "sourceTitle": "Reasoning about interpretations",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch34.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "dc85f0dacd74a9aabc450aa30a75cd942bae8ba466ade46f41ca7be4365242b1",
+      "consultedSections": [
+        "Chapter 34 Reasoning about interpretations",
+        "34.1 Validities and contradictions",
+        "34.2 Other cases"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 35,
+      "sourceTitle": "Properties of relations",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch35.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "b9aaccd2d358a3fafb3b64c1a5d944b2eab6e8a72ebe52c7a8755fc97aea7fe4",
+      "consultedSections": [
+        "Chapter 35 Properties of relations"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 36,
+      "sourceTitle": "Basic rules for FOL",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch36.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "9d1fccb7473e0b2061a01793b41dfa6c8b2c4fc847594badbbaaea5d926abc99",
+      "consultedSections": [
+        "Chapter 36 Basic rules for FOL",
+        "36.1 Universal elimination",
+        "36.2 Existential introduction",
+        "36.3 Empty domains",
+        "36.4 Universal introduction",
+        "36.5 Existential elimination",
+        "36.6 Quantifier rules and vacuous quantification"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 37,
+      "sourceTitle": "Proofs with quantifiers",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch37.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "4df4a3cd0145eec4e5f5a52b501eac63118cba660c572272c26bdf63902ace71",
+      "consultedSections": [
+        "Chapter 37 Proofs with quantifiers"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 38,
+      "sourceTitle": "Conversion of quantifiers",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch38.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "cdab443c7a4cba3ca545a838d1384ee4ed697ee1eb76b22a8d77aee65bf90c37",
+      "consultedSections": [
+        "Chapter 38 Conversion of quantifiers"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 39,
+      "sourceTitle": "Rules for identity",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch39.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "003aa3332760fcd3ae2098d50f324d21d0b0021dac700e7d1271f6d9d1d3bbb9",
+      "consultedSections": [
+        "Chapter 39 Rules for identity"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 40,
+      "sourceTitle": "Derived rules",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch40.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "dafc58c81b0d143c7de53ce04ead903a920ec7b915b0d6843140bfcfa7b0714f",
+      "consultedSections": [
+        "Chapter 40 Derived rules"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 41,
+      "sourceTitle": "Proofs and semantics",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch41.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "1efb8426cd43786b05b1de6c5c0bc5515ca2d73f92de063a90935b45e7ec1035",
+      "consultedSections": [
+        "Chapter 41 Proofs and semantics"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 42,
+      "sourceTitle": "Introducing modal logic",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch42.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "2ff64a5afb5f91d80dab628223d3aee43c2fe42bc0da4703c433bb627ad2aad9",
+      "consultedSections": [
+        "Chapter 42 Introducing modal logic",
+        "42.1 The Language of ML"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 43,
+      "sourceTitle": "Natural deduction for ML",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch43.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "927c3bf571da3092ee0e7935f602ca07c539dfcaad839bbc726cb4fa41c64be6",
+      "consultedSections": [
+        "Chapter 43 Natural deduction for ML",
+        "43.1 System 𝐊",
+        "43.2 Possibility",
+        "43.3 System 𝐓",
+        "43.4 System 𝐒𝟒",
+        "43.5 System 𝐒𝟓"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 44,
+      "sourceTitle": "Semantics for ML",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch44.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "ece39795c606a6bdc675d82f8b62e2a3c1eb33d042a2a15170952f117c285873",
+      "consultedSections": [
+        "Chapter 44 Semantics for ML",
+        "44.1 Interpretations of ML",
+        "44.2 A Semantics for System 𝐊",
+        "44.3 A Semantics for System 𝐓",
+        "44.4 A Semantics for 𝐒𝟒",
+        "44.5 A Semantics for 𝐒𝟓"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 45,
+      "sourceTitle": "Normal forms",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch45.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "5365045697bbae9dd75773d55fcd9b08dcb5a3daa0bd033e7226afd83f72724f",
+      "consultedSections": [
+        "Chapter 45 Normal forms",
+        "45.1 Disjunctive normal form",
+        "45.2 Proof of DNF Theorem via truth tables",
+        "45.3 Conjunctive normal form"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 46,
+      "sourceTitle": "Functional completeness",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch46.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "b78d49116a19147c8c1e9af160ebcdd762b8d45f31bb56717ad607c094948528",
+      "consultedSections": [
+        "Chapter 46 Functional completeness",
+        "46.1 Individually functionally complete connectives",
+        "46.2 Failures of functional completeness"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 47,
+      "sourceTitle": "Proving equivalences",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch47.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "2786e6d216e993f1d92d720dec1ed290d087a0e7bf98606bff04fc3e3dc39338",
+      "consultedSections": [
+        "Chapter 47 Proving equivalences",
+        "47.1 Substitutability of equivalents",
+        "47.2 Chains of equivalences",
+        "47.3 Finding equivalent normal forms"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    },
+    {
+      "number": 48,
+      "sourceTitle": "Soundness",
+      "sourceUrl": "https://forallx.openlogicproject.org/html/Ch48.html",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "chapterSha256": "ece620db8f3bde52b29fcee65a71133cb1d94b34404d41bd21b0c89100d3fc9b",
+      "consultedSections": [
+        "Chapter 48 Soundness"
+      ],
+      "readingStatus": "main_exposition_read_html_and_mathml",
+      "sourceExerciseBank": "not_reproduced; no claim of exhaustive exercise-bank reading"
+    }
+  ]
+}

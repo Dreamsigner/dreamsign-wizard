@@ -228,6 +228,7 @@ private fun LessonNotes(lesson: Lesson) {
     val uriHandler = LocalUriHandler.current
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         Text("Comprendre avant de pratiquer", fontSize = 24.sp, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
+        lesson.sourceSessionLabel?.let { Text(it, color = Graphite, fontWeight = FontWeight.Medium) }
         if (lesson.objective.isNotBlank()) Text("Objectif : ${lesson.objective}", fontSize = 16.sp, fontWeight = FontWeight.Medium)
         Text(lesson.learningNotes.ifBlank { "Les notes de cette leçon ne sont pas encore disponibles. Consulte les ressources de référence lorsqu’elles sont proposées." }, fontSize = 16.sp, lineHeight = 25.sp)
         if (lesson.sourceTitle.isNotBlank()) Text("Source : ${lesson.sourceTitle}", color = Graphite)

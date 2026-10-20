@@ -4,6 +4,14 @@
 
 `LearningAndroidUiTest.kt` est rédigé ; **aucune compilation ni exécution Android n’est revendiquée par ce lot**. Le parent applique les dépendances et exécute la CI. Les tests desktop antérieurs et ces tests Android sont deux preuves distinctes.
 
+**Preuve d'intégration ultérieure, 20 octobre 2026 :** le run
+[`39488554876`, commit `9a8982f`](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/runs/39488554876)
+a terminé son job Android avec succès. Son rapport XML d'instrumentation,
+récupéré dans l'artefact `Android-checks`, contient les trois méthodes de cette
+classe : trois tests exécutés, zéro échec/erreur/ignoré sur émulateur API 34.
+Le journal indique également « Starting 3 tests » et « Finished 3 tests ».
+Cette preuve ne couvre pas les changements ultérieurs à ce commit.
+
 Trois tests instrumentés montent les vrais `DuolingoApp` et `LessonQuizScreen`, avec `LearningAppTheme`, dans l’activité Android hôte de Compose :
 
 1. Notes avant la question, validation désactivée sans choix, mauvaise réponse, absence d’avance, retry, correction, fin et XP persistés dans le stockage mémoire.

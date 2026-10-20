@@ -188,6 +188,18 @@ class AppViewModel(
         persist()
     }
 
+    /** Persist the learner's course choice without awarding or transferring progress. */
+    fun selectCourse(subjectId: String, courseId: String) {
+        val subject = _subjects.value.firstOrNull { it.id == subjectId } ?: return
+        if (subject.units.none { it.id == courseId }) return
+        val stats = _userStats.value
+        _selectedSubjectId.value = subjectId
+        if (stats.activeSubjectId == subjectId && stats.selectedCourseIds[subjectId] == courseId) return
+        _userStats.value = stats.copy(activeSubjectId = subjectId,
+            selectedCourseIds = stats.selectedCourseIds + (subjectId to courseId))
+        persist()
+    }
+
     fun navigateTo(screen: AppScreen) {
         if (screen == AppScreen.LESSON_QUIZ && _activeLesson.value == null) return
         if (pendingDraftSave != null) persist()
@@ -198,6 +210,8 @@ class AppViewModel(
         val subject = _subjects.value.firstOrNull { item -> item.units.any { u -> u.lessons.any { it.id == lesson.id } } } ?: return
         val canonical = subject.units.flatMap { it.lessons }.first { it.id == lesson.id }
         if (canonical.exercises.isEmpty() || !subject.isLessonUnlocked(canonical, _userStats.value.completedLessonIds)) return
+        val course = subject.units.first { unit -> unit.lessons.any { it.id == canonical.id } }
+        selectCourse(subject.id, course.id)
         _activeLesson.value = canonical
         _heardAudioPaths.value = emptySet()
         _transcriptModePaths.value = emptySet()

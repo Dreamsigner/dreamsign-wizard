@@ -8,6 +8,60 @@ import kotlinx.serialization.json.Json
 import kotlin.test.*
 
 class LearningProgressTest {
+    @Test fun legacySaveRestoresProgressAndCourseChoiceDefaultsWithoutMigration() {
+        val store = MemoryStore("""{"xp":45,"hearts":3,"completedLessonIds":["a"],"activeSubjectId":"math_vectors"}""")
+        val one = vm(store)
+        assertEquals(45, one.userStats.value.xp)
+        assertEquals(3, one.userStats.value.hearts)
+        assertEquals(setOf("a"), one.userStats.value.completedLessonIds)
+        assertTrue(one.userStats.value.selectedCourseIds.isEmpty())
+        one.selectCourse("math_vectors", "u2")
+        one.close()
+        val restored = vm(store)
+        try {
+            assertEquals("u2", restored.userStats.value.selectedCourseIds["math_vectors"])
+            assertEquals(45, restored.userStats.value.xp)
+            assertEquals(setOf("a"), restored.userStats.value.completedLessonIds)
+        } finally { restored.close() }
+    }
+
+    @Test fun unknownOrRepeatedCourseSelectionDoesNotChangeSavedProgress() {
+        val store = MemoryStore()
+        val one = vm(store)
+        try {
+            one.selectCourse("math_vectors", "u2")
+            val saved = store.value
+            val writes = store.writes
+            one.selectCourse("unknown", "u1")
+            one.selectCourse("math_vectors", "unknown")
+            one.selectCourse("math_vectors", "u2")
+            assertEquals(saved, store.value)
+            assertEquals(writes, store.writes)
+            assertEquals(mapOf("math_vectors" to "u2"), one.userStats.value.selectedCourseIds)
+            assertEquals(0, one.userStats.value.xp)
+        } finally { one.close() }
+    }
+
+    @Test fun courseChoicesAreStoredPerSubjectAndRejectAnotherSubjectsCourse() {
+        val code = subject.copy(id = "code", category = SubjectCategory.COMPUTER_SCIENCE,
+            units = listOf(LearningUnit("code_unit", 1, "Code", "", listOf(other.copy(id = "code_first")))))
+        val store = MemoryStore()
+        val one = AppViewModel(store, { "2026-10-20" }, listOf(subject, code))
+        one.selectCourse(subject.id, "u2")
+        one.selectCourse(code.id, "code_unit")
+        val saved = store.value
+        one.selectCourse(subject.id, "code_unit")
+        assertEquals(saved, store.value)
+        assertEquals(code.id, one.selectedSubjectId.value)
+        one.close()
+        val restored = AppViewModel(store, { "2026-10-20" }, listOf(subject, code))
+        try {
+            assertEquals(mapOf(subject.id to "u2", code.id to "code_unit"), restored.userStats.value.selectedCourseIds)
+            assertEquals(code.id, restored.selectedSubjectId.value)
+            assertTrue(restored.userStats.value.completedLessonIds.isEmpty())
+        } finally { restored.close() }
+    }
+
     private class MemoryStore(var value: String? = null) : ProgressStore {
         var writes = 0
         var fail = false

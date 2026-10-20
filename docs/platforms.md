@@ -1,3 +1,9 @@
+# Périmètre actif : Windows uniquement
+
+La décision utilisateur du 20 octobre 2026 retire Android et iOS du développement
+et de la CI actifs. Les sections mobiles ci-dessous documentent le travail
+antérieur conservé, sans engagement de livraison mobile. Voir `DELIVERY-SCOPE.md`.
+
 # Construire et tester les applications
 
 Les trois applications utilisent les mêmes écrans Compose et la même logique Kotlin.

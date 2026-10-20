@@ -176,5 +176,7 @@ data class UserStats(
     val lastStudyDate: String? = null,
     val writtenDrafts: Map<String, String> = emptyMap(),
     val textModeCompletedLessonIds: Set<String> = emptySet(),
-    val spokenRecordingDurationsMillis: Map<String, Long> = emptyMap()
+    val spokenRecordingDurationsMillis: Map<String, Long> = emptyMap(),
+    /** Subject ID -> stable course ID; absent in older saves and safe to default. */
+    val selectedCourseIds: Map<String, String> = emptyMap()
 )

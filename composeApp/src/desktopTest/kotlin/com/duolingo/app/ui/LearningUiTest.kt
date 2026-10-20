@@ -11,6 +11,10 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.asSkiaBitmap
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEvent
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.UriHandler
 import androidx.compose.ui.test.*
@@ -40,6 +44,95 @@ import kotlin.test.assertTrue
  * Requires ui-test:1.9.3 and the project's existing kotlin-test-junit dependency.
  */
 class LearningUiTest {
+    @Test
+    fun theChosenPublishedCourseSurvivesModelRecreation() = runDesktopComposeUiTest(width = 1400, height = 900, testTimeout = 60.seconds) {
+        val store = MemoryProgressStore()
+        var model by mutableStateOf(AppViewModel(store, today = { "2026-10-20" }))
+        try {
+            setContent { FixtureTheme { key(model) { DuolingoApp(model) } } }
+            val subject = model.subjects.value.first { it.category == SubjectCategory.MATHEMATICS }
+            val chosen = subject.units.last()
+            onNode(hasText(chosen.title) and hasClickAction()).performScrollTo().performClick()
+            val continueLabel = "Continuer · ${chosen.lessons.first().title}"
+            onNodeWithText(continueLabel).performScrollTo().assertIsDisplayed()
+            runOnIdle {
+                model.close()
+                model = AppViewModel(store, today = { "2026-10-20" })
+            }
+            onNodeWithText(continueLabel).assertExists()
+            runOnIdle {
+                assertEquals(0, model.userStats.value.xp)
+                assertTrue(model.userStats.value.completedLessonIds.isEmpty())
+            }
+        } finally {
+            model.close()
+        }
+    }
+
+    @Test
+    fun notesIdentifyTheSourceNumberAndTheAdaptedExam() = runComposeUiTest(testTimeout = 60.seconds) {
+        val exam = quizLesson().copy(sourceSessionNumber = 22, sessionKind = "exam", sourceTitle = "Exam 1")
+        val fixture = Fixture(listOf(exam))
+        setContent { FixtureTheme { DuolingoApp(fixture.model) } }
+        onNodeWithText("Entraînement à l’examen · 22").assertIsDisplayed()
+        onNodeWithText("Continuer · ${exam.title}").performScrollTo().performClick()
+        onNodeWithText("Entraînement à l’examen · 22").assertIsDisplayed()
+        onNodeWithText("Source : Exam 1").assertExists()
+        onNodeWithText("Passer aux exercices").assertIsEnabled()
+    }
+
+    @OptIn(androidx.compose.ui.InternalComposeUiApi::class)
+    @Test
+    fun keyboardEnterActivatesTheFocusedNavigationControl() = runDesktopComposeUiTest(width = 1400, height = 900, testTimeout = 60.seconds) {
+        val fixture = Fixture(listOf(quizLesson()))
+        setContent { FixtureTheme { DuolingoApp(fixture.model) } }
+        val profile = onNodeWithText("Profil")
+        profile.performSemanticsAction(SemanticsActions.RequestFocus) { it() }
+        profile.assertIsFocused()
+        // The event is delivered to the Compose scene, never the operating system.
+        // Constructor and helper are pinned to the official Compose 1.9.3 sources:
+        // https://github.com/JetBrains/compose-multiplatform-core/blob/v1.9.3/compose/ui/ui/src/skikoMain/kotlin/androidx/compose/ui/input/key/KeyEvent.skiko.kt
+        profile.performKeyPress(KeyEvent(Key.Enter, KeyEventType.KeyDown))
+        profile.performKeyPress(KeyEvent(Key.Enter, KeyEventType.KeyUp))
+        onNodeWithText("Mon parcours").assertIsDisplayed()
+        onNodeWithText("Profil").assertIsSelected()
+    }
+
+    @Test
+    fun everyPublishedCourseOpensItsActualFirstLessonIndependently() = runDesktopComposeUiTest(width = 1400, height = 900, testTimeout = 120.seconds) {
+        val store = MemoryProgressStore()
+        // Default catalogue is the generated, published content; only persistence is replaced.
+        val model = AppViewModel(store, today = { "2026-10-20" })
+        try {
+            setContent { FixtureTheme { DuolingoApp(model) } }
+            val subjects = model.subjects.value
+            assertEquals(3, subjects.size)
+            subjects.forEach { subject ->
+                runOnIdle { model.selectSubject(subject.id) }
+                subject.units.forEachIndexed { index, course ->
+                    // Lazy rows outside the viewport have no node yet. Scroll the leading
+                    // course list to compose the target instead of looking for it directly.
+                    onAllNodes(hasScrollToIndexAction()).onFirst()
+                        .performScrollToNode(hasText(course.title) and hasClickAction())
+                    onNode(hasText(course.title) and hasClickAction()).performScrollTo().performClick()
+                    val first = course.lessons.first()
+                    onNodeWithText("Continuer · ${first.title}").performScrollTo().performClick()
+                    onNodeWithText("Comprendre avant de pratiquer").assertIsDisplayed()
+                    onNodeWithText(first.learningNotes).assertExists()
+                    onNodeWithText("Passer aux exercices").assertIsEnabled()
+                    if (index == 0) saveSnapshot("published-notes-${subject.category.name.lowercase()}")
+                    onNodeWithContentDescription("Quitter la leçon").performClick()
+                    runOnIdle {
+                        assertEquals(0, model.userStats.value.xp)
+                        assertTrue(model.userStats.value.completedLessonIds.isEmpty())
+                    }
+                }
+            }
+        } finally {
+            model.close()
+        }
+    }
+
     @Test
     fun profileAndCoursesNavigationUsesActualScreens() = runComposeUiTest(testTimeout = 60.seconds) {
         val fixture = Fixture(listOf(quizLesson()))
