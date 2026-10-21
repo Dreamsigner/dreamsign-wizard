@@ -446,3 +446,22 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
 - Nouvelle suite avec un répertoire de cache de polices vide : 94 tests réussis,
   zéro échec/erreur/ignoré, aucune collecte système de polices dans les journaux.
   Journal ../work/pdf-cold-font-cache-green.log. Nouvelle CI encore requise.
+
+### Livraison Windows intégrée — 21 octobre 2026
+
+- Commit applicatif 9b8681637313c1dc6005b334f675cddac7cd4414 : les runs
+  push 39515363231 et pull_request 39515370212 ont tous deux réussi.
+  XML du paquet Windows-checks 12307103912 : 20 suites, 94 tests,
+  zéro échec, erreur ou test ignoré. Diagnostic du lanceur : 15 cours,
+  391 leçons/ateliers, 1190 exercices; PDF et LaTeX rendus avec succès,
+  trois WAV vérifiés; aucune fenêtre ni donnée utilisateur ouverte.
+- Reconstruction locale et sourcePdfSmokeTest également réussis
+  (../work/pdf-cold-fix-package-smoke.log). Ce dernier valide le chargement
+  et le rendu d'un vrai support MIT, indépendamment de la suite hors réseau.
+- PR #2 intégrée dans main : merge 8aabafe8123c2e073a32e83e83c5926683fec27b.
+  Artefact Windows testé par la CI : 12308001751, run 39515363231.
+  https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/runs/39515363231
+- Cette preuve concerne le code 9b86816 et son merge sans modification de
+  contenu. Elle ne constitue pas une validation de l'intégralité OSSU/TCF,
+  du microphone physique ou d'un lecteur d'écran; les limites précédentes
+  demeurent. Android/iOS et Computer Use restent hors du périmètre de reprise.
