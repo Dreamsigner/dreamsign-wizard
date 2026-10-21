@@ -9,7 +9,7 @@ Ce bilan complète le registre; il ne transforme pas l'inventaire OSSU en cours 
 - Ordre pédagogique OSSU documenté, glossaire français Prolog, reprise différée des questions ratées jusqu'à correction.
 - Lecture des notes par cours, liens appariés aux exercices, lecteur PDF natif, formules composées localement, explications et icônes originales.
 - Dernière validation locale : 116 tests desktop, 30 tests Python et contrôleurs pédagogiques réussis. Le contrôle global des fractions parcourt 9 535 champs et rend 1 425 fractions sans erreur ni barre non classée hors code. Captures Compose de calcul différentiel inspectées à 500 et 1 100 px. Diagnostic de l’EXE produit réussi pour LaTeX, PDF et audio sans accès aux données utilisateur.
-- Code applicatif des corrections de fractions : `2dfe292`. Le ZIP Windows contient son runtime Java, ses notices et le guide de démarrage. CI Windows réussie : [run 39681467646](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/runs/39681467646), artefact applicatif `12384767059`. Le rapport archivé confirme les 113 tests, les 1 425 fractions rendues et le diagnostic LaTeX/PDF du paquet.
+- Code applicatif : `7a337b5` (fractions et lecteur PDF continu). CI Windows réussie : [run 39686861477](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/runs/39686861477), artefact applicatif `12386053808`. Le ZIP inclut Java, les notices et le guide de démarrage. Les rapports archivés confirment 116 tests sans échec et le diagnostic LaTeX/PDF du paquet.
 - Génération IA retirée. Android/iOS conservés sans développement actif. Aucun Computer Use utilisé.
 
 ## 1. Couverture pédagogique complète — chantier majeur restant

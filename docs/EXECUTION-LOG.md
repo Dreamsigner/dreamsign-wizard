@@ -574,3 +574,9 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   Le diagnostic de l’EXE réussit pour PDF/LaTeX/audio, sans fenêtre ni données
   utilisateur. Le contenu des cours et la progression enregistrée sont inchangés.
   Confirmation de la CI et du ZIP de ce lot : après publication.
+
+- Livraison distante confirmée : code `7a337b5`, CI `39686861477` réussie,
+  ZIP Windows `12386053808` (61 692 771 octets). Les preuves `12386148981`
+  ont été téléchargées et relues : 116 tests sans échec/erreur/ignoré,
+  captures du lecteur continu à 500/1 100 px et diagnostic de l’EXE du paquet
+  positif pour LaTeX/PDF, sans accès aux données utilisateur ni fenêtre.
