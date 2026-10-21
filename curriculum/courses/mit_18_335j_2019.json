@@ -532,7 +532,7 @@
       "kind": "lesson",
       "title": "Gram-Schmidt modifié et réflecteurs de Householder",
       "objective": "Améliorer la robustesse de QR.",
-      "learningNotes": "Améliorer la robustesse de QR. Gram-Schmidt modifié actualise les vecteurs après chaque projection. Householder emploie H=I−2vv*/(v*v), transformation orthogonale ou unitaire qui annule des composantes. Le signe du vecteur de réflexion est choisi pour éviter une soustraction presque compensée. Une matrice Q orthogonale préserve la norme euclidienne.",
+      "learningNotes": "Améliorer la robustesse de QR. Gram-Schmidt modifié actualise les vecteurs après chaque projection. Householder emploie $H=I-2\\frac{vv^{*}}{v^{*}v}$, transformation orthogonale ou unitaire qui annule des composantes. Le signe du vecteur de réflexion est choisi pour éviter une soustraction presque compensée. Une matrice Q orthogonale préserve la norme euclidienne.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-4/#lecture-10-modified-gram-schmidt-and-householder-qr",
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/24dd28c58f71fa98f333597707ff8684_MIT18_335JS19_lec10.pdf"
@@ -1219,7 +1219,7 @@
       "kind": "lesson",
       "title": "Convergence du gradient conjugué",
       "objective": "Interpréter les bornes sans les surpromettre.",
-      "learningNotes": "Interpréter les bornes sans les surpromettre. Pour A définie positive, une borne classique utilise ρ=(√κ−1)/(√κ+1) et ‖eₖ‖A/‖e₀‖A≤2ρᵏ. Cette borne peut être pessimiste lorsque les valeurs propres sont groupées. L’arrêt exact en au plus n étapes appartient à l’arithmétique exacte et ne garantit pas ce résultat en machine.",
+      "learningNotes": "Interpréter les bornes sans les surpromettre. Pour A définie positive, une borne classique utilise ρ=(√κ−1)/(√κ+1) et $\\frac{\\lVert e_k\\rVert_A}{\\lVert e_0\\rVert_A}\\le 2\\rho^{k}$. Cette borne peut être pessimiste lorsque les valeurs propres sont groupées. L’arrêt exact en au plus n étapes appartient à l’arithmétique exacte et ne garantit pas ce résultat en machine.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-8/#lecture-22-convergence-of-conjugate-gradient"
       ],
@@ -1449,7 +1449,7 @@
       "kind": "lesson",
       "title": "Calculer un gradient par méthode adjointe",
       "objective": "Éviter une résolution indépendante par paramètre.",
-      "learningNotes": "Éviter une résolution indépendante par paramètre. Pour A(p)u=b(p) et un objectif réel g(u,p), choisir λ par Aᵀλ=∂g/∂u. Alors dg/dp=∂g/∂p+λᵀ(db/dp−(dA/dp)u). Les signes dépendent de la convention du Lagrangien. Garder une convention cohérente. Un objectif scalaire avec beaucoup de paramètres rend l’adjoint particulièrement intéressant.",
+      "learningNotes": "Éviter une résolution indépendante par paramètre. Pour A(p)u=b(p) et un objectif réel g(u,p), choisir λ par $A^{T}\\lambda=\\frac{\\partial g}{\\partial u}$. Alors $\\frac{dg}{dp}=\\frac{\\partial g}{\\partial p}+\\lambda^{T}\\left(\\frac{db}{dp}-\\frac{dA}{dp}u\\right)$. Les signes dépendent de la convention du Lagrangien. Garder une convention cohérente. Un objectif scalaire avec beaucoup de paramètres rend l’adjoint particulièrement intéressant.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-9/#lecture-26-adjoint-methods",
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/35b30d8c4896f95264ee1b135fe031f2_MIT18_335JS19_lec26.pdf"
@@ -1588,7 +1588,7 @@
         {
           "id": "mit_18_335j_2019_s028_e02",
           "type": "math",
-          "prompt": "Si la réduction prévue vaut 4 et la réduction réelle vaut 1, quel est leur rapport ρ=réelle/prévue ?",
+          "prompt": "Si la réduction prévue vaut 4 et la réduction réelle vaut 1, quel est leur rapport ρ=$\\frac{\\text{réelle}}{\\text{prévue}}$ ?",
           "options": [
             "3",
             "−3",

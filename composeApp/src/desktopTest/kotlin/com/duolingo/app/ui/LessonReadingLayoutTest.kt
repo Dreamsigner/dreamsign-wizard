@@ -56,6 +56,29 @@ class LessonReadingLayoutTest {
         }
     }
 
+    @Test fun actualCalculusNotesRenderTheirCompleteFractionsAtTwoWidths() {
+        listOf(1100, 500).forEach { width ->
+            listOf(0, 1).forEach { index ->
+                runDesktopComposeUiTest(width = width, height = 1000) {
+                    val lesson = SampleData.sampleSubjects.flatMap { it.units }.first { it.id == "mit_18_01sc_2010" }.lessons[index]
+                    setContent { LearningAppTheme { MathRenderingProvider(DesktopMathRenderer) {
+                        Surface(color = White) {
+                            Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(24.dp)) { LessonNotes(lesson, typesetMath = true) }
+                        }
+                    } } }
+                    val formulas = com.duolingo.app.ui.math.parseLearningText(lesson.learningNotes, true)
+                        .filterIsInstance<com.duolingo.app.ui.math.LearningTextSegment.Math>()
+                    formulas.forEach { formula ->
+                        assertTrue(com.duolingo.app.ui.math.renderMathBitmap(formula.latex, 24f, Ink, formula.display) != null, formula.latex)
+                    }
+                    // Explicit TeX display blocks must reach the renderer, including ones without a backslash.
+                    onNodeWithText(if (index == 0) "y=f(a)+f'(a)(x-a)" else "(x^{n})'=nx^{n-1}", substring = false).assertDoesNotExist()
+                    save("lesson-calculus-fractions-${index + 1}-$width")
+                }
+            }
+        }
+    }
+
     @Test fun linearAlgebraPreviewDisplaysAuthoredMatrixBlocksAndWorkedExample() = runDesktopComposeUiTest(width = 1100, height = 1000) {
         val lesson = SampleData.sampleSubjects.flatMap { it.units }.first { it.id == "mit_18_06sc_2011" }.lessons[1]
         setContent { LearningAppTheme { MathRenderingProvider(DesktopMathRenderer) {

@@ -16,7 +16,7 @@
       "kind": "lesson",
       "title": "Décrire des faits et interroger des règles",
       "objective": "Écrire des termes et suivre une conjonction de buts.",
-      "learningNotes": "Un programme Prolog décrit des relations par des faits et des règles. Un fait comme couleur(ciel,bleu). affirme une relation. Une règle visible(X):-eclaire(X),present(X). exige de prouver les deux buts de son corps. Une requête cherche une preuve et peut fournir des substitutions pour ses variables. Les atomes commencent généralement par une minuscule, les variables par une majuscule ou un souligné. Un terme composé possède un foncteur et une arité : trajet(a,b) appartient à trajet/2, différent de trajet/3. La virgule signifie une conjonction de buts, et le point termine une clause ou une requête. Une variable partage sa valeur entre ses occurrences dans une même clause. Une autre clause possède ses propres variables. Un échec signifie que cette recherche n'a pas trouvé de preuve dans le programme, sans devenir automatiquement une affirmation universelle sur le monde.",
+      "learningNotes": "Un programme Prolog décrit des relations par des faits et des règles. Un fait comme couleur(ciel,bleu). affirme une relation. Une règle visible(X):-eclaire(X),present(X). exige de prouver les deux buts de son corps. Une requête cherche une preuve et peut fournir des substitutions pour ses variables. Les atomes commencent généralement par une minuscule, les variables par une majuscule ou un souligné. Un terme composé possède un foncteur et une arité : trajet(a,b) appartient à `trajet/2`, différent de `trajet/3`. La virgule signifie une conjonction de buts, et le point termine une clause ou une requête. Une variable partage sa valeur entre ses occurrences dans une même clause. Une autre clause possède ses propres variables. Un échec signifie que cette recherche n'a pas trouvé de preuve dans le programme, sans devenir automatiquement une affirmation universelle sur le monde.",
       "sourceUrls": [
         "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlch1",
         "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse1",
@@ -81,7 +81,7 @@
             "3"
           ],
           "correctOptionIndex": 3,
-          "explanation": "Le foncteur livraison possède trois arguments. Le prédicat est donc livraison/3.",
+          "explanation": "Le foncteur livraison possède trois arguments. Le prédicat est donc `livraison/3`.",
           "hint": "Compte seulement les arguments entre parenthèses.",
           "codeSnippet": "livraison(colis,paris,lyon)."
         }
@@ -175,7 +175,7 @@
             "Un terme ne peut contenir l’atome a."
           ],
           "correctOptionIndex": 1,
-          "explanation": "Un même nom de foncteur ne suffit pas : f/1 et f/2 sont des structures distinctes.",
+          "explanation": "Un même nom de foncteur ne suffit pas : `f/1` et `f/2` sont des structures distinctes.",
           "hint": "Compare nombre d’arguments et nom de foncteur.",
           "codeSnippet": "?- f(a) = f(a,b)."
         },
@@ -441,7 +441,7 @@
             "Q = 3"
           ],
           "correctOptionIndex": 3,
-          "explanation": "L’opérateur // exprime ici la division entière positive : sept contient trois groupes de deux.",
+          "explanation": "L’opérateur `//` exprime ici la division entière positive : sept contient trois groupes de deux.",
           "hint": "Tous les opérandes sont positifs dans cet exemple.",
           "codeSnippet": "?- Q is 7 // 2."
         },
@@ -747,7 +747,7 @@
       "kind": "lesson",
       "title": "Examiner les termes et lire les opérateurs",
       "objective": "Distinguer identité et unification et décomposer une structure.",
-      "learningNotes": "Les termes peuvent être inspectés sans toujours chercher à les unifier. Le test == vérifie l'identité actuelle de deux termes sans créer de liaison. = essaie au contraire de rendre les termes identiques par substitution. Deux variables fraîchement distinctes ne sont donc pas identiques, mais peuvent être unifiées. Un terme clos, ou ground, ne contient aucune variable, même dans ses sous-termes. functor/3 extrait le foncteur et l'arité. Arg/3 accède à un argument, et =.. relie un terme à la liste formée de son foncteur puis de ses arguments. Les opérateurs changent la notation et le groupement syntaxique, pas automatiquement la valeur : 2+3*4 représente une structure imbriquée avant toute évaluation. Une inspection correcte tient donc compte des priorités et du type de comparaison réellement demandé.",
+      "learningNotes": "Les termes peuvent être inspectés sans toujours chercher à les unifier. Le test == vérifie l'identité actuelle de deux termes sans créer de liaison. = essaie au contraire de rendre les termes identiques par substitution. Deux variables fraîchement distinctes ne sont donc pas identiques, mais peuvent être unifiées. Un terme clos, ou ground, ne contient aucune variable, même dans ses sous-termes. `functor/3` extrait le foncteur et l'arité. `Arg/3` accède à un argument, et =.. relie un terme à la liste formée de son foncteur puis de ses arguments. Les opérateurs changent la notation et le groupement syntaxique, pas automatiquement la valeur : 2+3*4 représente une structure imbriquée avant toute évaluation. Une inspection correcte tient donc compte des priorités et du type de comparaison réellement demandé.",
       "sourceUrls": [
         "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlch9",
         "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse37",
@@ -815,7 +815,7 @@
             "X = 8"
           ],
           "correctOptionIndex": 3,
-          "explanation": "arg/3 utilise ici des positions commençant à un : le deuxième argument de point(3,8) est 8.",
+          "explanation": "`arg/3` utilise ici des positions commençant à un : le deuxième argument de point(3,8) est 8.",
           "hint": "Ne transpose pas l’indexation à partir de zéro des autres langages.",
           "codeSnippet": "?- arg(2,point(3,8),X)."
         },
@@ -1040,7 +1040,7 @@
         {
           "id": "learn_prolog_now_2026_s011_e05",
           "type": "code",
-          "prompt": "La base dynamique p/1 est initialement vide. Quel ordre retrouve findall après ces ajouts ?",
+          "prompt": "La base dynamique `p/1` est initialement vide. Quel ordre retrouve findall après ces ajouts ?",
           "options": [
             "L = [a,b,c]",
             "L = [b,c,a]",
@@ -1061,7 +1061,7 @@
       "kind": "lesson",
       "title": "Organiser les modules et manipuler des flux",
       "objective": "Distinguer chargement de code, lecture de termes et sorties vers un fichier.",
-      "learningNotes": "Répartir un programme sur plusieurs fichiers exige de distinguer le chargement des clauses et la lecture de données. Le système de modules rend explicites les prédicats exportés et limite les conflits entre définitions auxiliaires de même nom. Pour les données, open/3 fournit un flux que l'on transmet aux opérations de lecture ou d'écriture, puis close/1 libère cette ressource. Le mode write remplace le contenu du fichier visé. Append ajoute à la suite. read/2 lit des termes Prolog terminés par un point, et non une ligne de texte quelconque. get_code/2 traite plutôt des codes de caractères. Une boucle de lecture doit reconnaître le marqueur de fin et cesser de récursiver. Tester le marqueur après avoir déjà demandé une lecture supplémentaire peut manquer la bonne frontière. Les opérations de ce chapitre sont étudiées ici comme code et contrats, sans accès réel à des fichiers.",
+      "learningNotes": "Répartir un programme sur plusieurs fichiers exige de distinguer le chargement des clauses et la lecture de données. Le système de modules rend explicites les prédicats exportés et limite les conflits entre définitions auxiliaires de même nom. Pour les données, `open/3` fournit un flux que l'on transmet aux opérations de lecture ou d'écriture, puis `close/1` libère cette ressource. Le mode write remplace le contenu du fichier visé. Append ajoute à la suite. `read/2` lit des termes Prolog terminés par un point, et non une ligne de texte quelconque. `get_code/2` traite plutôt des codes de caractères. Une boucle de lecture doit reconnaître le marqueur de fin et cesser de récursiver. Tester le marqueur après avoir déjà demandé une lecture supplémentaire peut manquer la bonne frontière. Les opérations de ce chapitre sont étudiées ici comme code et contrats, sans accès réel à des fichiers.",
       "sourceUrls": [
         "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlch12",
         "https://www.let.rug.nl/bos/lpn/lpnpage.php?pagetype=html&pageid=lpn-htmlse52",
@@ -1075,7 +1075,7 @@
         {
           "id": "learn_prolog_now_2026_s012_e01",
           "type": "code",
-          "prompt": "Quel mode de open/3 ajoute une sortie à la fin d’un fichier existant ?",
+          "prompt": "Quel mode de `open/3` ajoute une sortie à la fin d’un fichier existant ?",
           "options": [
             "write",
             "read",
@@ -1090,7 +1090,7 @@
         {
           "id": "learn_prolog_now_2026_s012_e02",
           "type": "choice",
-          "prompt": "Que doit contenir un fichier pour que read/2 lise directement deux termes successifs ?",
+          "prompt": "Que doit contenir un fichier pour que `read/2` lise directement deux termes successifs ?",
           "options": [
             "Un unique caractère obligatoirement numérique.",
             "Seulement des commentaires sans terme.",
@@ -1098,13 +1098,13 @@
             "Deux lignes quelconques sans syntaxe particulière."
           ],
           "correctOptionIndex": 2,
-          "explanation": "read/2 analyse la syntaxe des termes. Une ligne seule ne constitue pas nécessairement une unité de lecture.",
+          "explanation": "`read/2` analyse la syntaxe des termes. Une ligne seule ne constitue pas nécessairement une unité de lecture.",
           "hint": "Le délimiteur des termes n’est pas simplement le retour à la ligne."
         },
         {
           "id": "learn_prolog_now_2026_s012_e03",
           "type": "code",
-          "prompt": "Pourquoi transmettre le même Flux à write/2 puis close/1 ?",
+          "prompt": "Pourquoi transmettre le même Flux à `write/2` puis `close/1` ?",
           "options": [
             "Il remplace automatiquement tous les termes lus par [].",
             "Il identifie la ressource ouverte à utiliser puis à fermer.",
@@ -1112,16 +1112,16 @@
             "Il doit être un prédicat exporté du module."
           ],
           "correctOptionIndex": 1,
-          "explanation": "Le flux retourné par open/3 sert de référence aux opérations suivantes ; sa valeur précise n’a pas besoin d’être inventée par le programme.",
+          "explanation": "Le flux retourné par `open/3` sert de référence aux opérations suivantes ; sa valeur précise n’a pas besoin d’être inventée par le programme.",
           "hint": "Distingue nom du fichier, contenu et référence de flux.",
           "codeSnippet": "open(Nom,write,Flux),\nwrite(Flux,resultat(ok)),\nclose(Flux)."
         },
         {
           "id": "learn_prolog_now_2026_s012_e04",
           "type": "code",
-          "prompt": "Une déclaration de module exporte analyse/2 mais pas aide/1. Quel est son objectif d’organisation ?",
+          "prompt": "Une déclaration de module exporte `analyse/2` mais pas `aide/1`. Quel est son objectif d’organisation ?",
           "options": [
-            "Fournir une interface publique analyse/2 et garder aide/1 comme détail interne.",
+            "Fournir une interface publique `analyse/2` et garder `aide/1` comme détail interne.",
             "Exporter automatiquement tous les prédicats de tous les fichiers.",
             "Évaluer des expressions arithmétiques sans is.",
             "Transformer chaque atome en variable."

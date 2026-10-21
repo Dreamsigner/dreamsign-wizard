@@ -40,13 +40,13 @@
           "type": "code",
           "prompt": "Sous Bash, /tmp/atelier/src existe et les deux cd réussissent. Quel répertoire affiche pwd ?",
           "options": [
-            "/tmp",
+            "`/tmp`",
             "/tmp/atelier",
             "/tmp/atelier/src",
             "/tmp/docs"
           ],
           "correctOptionIndex": 1,
-          "explanation": "src/.. remonte de src vers atelier et le dernier point désigne le dossier actuel.",
+          "explanation": "`src/..` remonte de src vers atelier et le dernier point désigne le dossier actuel.",
           "hint": "Simplifier les composants . et .. du chemin.",
           "codeSnippet": "cd /tmp/atelier\ncd src/../.\npwd",
           "id": "mit_missing_semester_2026_s001_e02"
@@ -839,7 +839,7 @@
           "type": "code",
           "prompt": "Avec Python re.fullmatch, quelle chaîne correspond à ce motif sans pour autant être une date valide ?",
           "options": [
-            "2026/01/09",
+            "`2026/01/09`",
             "texte",
             "2026-01-99",
             "26-01-09"

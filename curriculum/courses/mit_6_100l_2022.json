@@ -62,7 +62,7 @@
             "5 ** 2",
             "5 * 2",
             "5 + 2",
-            "5 / 2"
+            "`5 / 2`"
           ],
           "correctOptionIndex": 0,
           "explanation": "La surface est côté multiplié par lui-même, donc 25, et non son périmètre.",
@@ -1964,10 +1964,10 @@
         {
           "id": "mit_6_100l_2022_s026_e05",
           "type": "choice",
-          "prompt": "Pourquoi calculer la moyenne des durées volume/debit pour chaque débit simulé ?",
+          "prompt": "Pourquoi calculer la moyenne des durées $\\frac{\\text{volume}}{\\text{débit}}$ pour chaque débit simulé ?",
           "options": [
             "Une simulation impose toujours une durée entière.",
-            "La moyenne de volume/debit n’est généralement pas volume divisé par la moyenne des débits.",
+            "La moyenne de $\\frac{\\text{volume}}{\\text{débit}}$ n’est généralement pas volume divisé par la moyenne des débits.",
             "La division est toujours linéaire en son dénominateur.",
             "Les débits doivent tous être identiques par définition."
           ],

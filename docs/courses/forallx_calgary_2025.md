@@ -762,7 +762,7 @@ Une valuation attribue vrai ou faux à chaque lettre propositionnelle pertinente
 
 **Indice**
 
-<p>Chaque lettre ajoute un choix vrai/faux indépendant.</p>
+<p>Chaque lettre ajoute un choix vrai ou faux indépendant.</p>
 
 **Correction / retour**
 
@@ -867,7 +867,7 @@ Une formule de TFL est une tautologie si elle est vraie sous toute valuation. Un
 **Séance source :** Limitations of TFL<br>
 **Objectif :** Identifier quand une formalisation atomique efface une relation ou une nuance naturelle.
 
-La TFL traite chaque lettre propositionnelle comme une unité indivisible. Elle ne décrit ni la structure interne d’un prédicat ni les relations entre individus. Ainsi « Daisy a quatre pattes » implique « Daisy a plus de deux pattes » en raison du sens des expressions, mais représenter ces phrases par F et T ne rend pas l’inférence valide par la seule forme TFL. Les cas vagues, comme « chauve », peuvent également résister à l’hypothèse bivalente vraie/fausse. Enfin, la conditionnelle matérielle ne capture pas toute intuition causale ou contrefactuelle de « si… alors ». Il faut choisir une représentation plus expressive, reformuler, ou reconnaître la limite plutôt que prétendre que la table résout tout.
+La TFL traite chaque lettre propositionnelle comme une unité indivisible. Elle ne décrit ni la structure interne d’un prédicat ni les relations entre individus. Ainsi « Daisy a quatre pattes » implique « Daisy a plus de deux pattes » en raison du sens des expressions, mais représenter ces phrases par F et T ne rend pas l’inférence valide par la seule forme TFL. Les cas vagues, comme « chauve », peuvent également résister à l’hypothèse bivalente vraie ou fausse. Enfin, la conditionnelle matérielle ne capture pas toute intuition causale ou contrefactuelle de « si… alors ». Il faut choisir une représentation plus expressive, reformuler, ou reconnaître la limite plutôt que prétendre que la table résout tout.
 
 ### Références de cette séance
 

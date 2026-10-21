@@ -96,4 +96,5 @@ jobs:
             composeApp/build/test-results/desktopTest/
             composeApp/build/reports/ui-snapshots/
             composeApp/build/reports/installation-check.json
+            composeApp/build/reports/fraction-coverage/
           retention-days: 14

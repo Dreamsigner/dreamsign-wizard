@@ -20,8 +20,23 @@ fenced code and inline code remain literal. See [lesson presentation](lesson-pre
 The default is strict: text without delimiters stays one ordinary Compose `Text`
 node. On known math fields only, pass `recognizeLegacyMath = true` to also
 recognize numeric matrices, explicit ASCII powers (`x^2`), Unicode powers and
-indices (`x²`, `u₁`), and standalone numeric fractions (`3/4`). It deliberately
-leaves composite divisions such as `x/2+3` in their original form.
+indices (`x²`, `u₁`), and quotient expressions (`3/4`, `x/2+3`, `[f(a+h)-f(a)]/h`).
+A balanced expression parser preserves operator precedence, grouping, factorials,
+function arguments and powers, including nested fractions. It produces LaTeX
+`\frac{numerator}{denominator}` for display in the local renderer. Complex
+notation such as integrals, norms and adjoints is explicitly authored in LaTeX
+in the canonical course JSON instead of inferred from ambiguous plain text.
+
+Source code, URLs, filesystem paths, dates and Prolog predicate arities remain
+literal. Code examples use code spans or fenced blocks, so `/` retains its
+programming meaning. Textual ratios and physical units have explicit LaTeX
+annotations. The catalogue-wide `FractionCorpusCoverageTest` visits every
+published teaching field and renders each detected fraction through the actual
+desktop engine. It fails on unclassified slashes outside code and on invalid
+fraction rendering; reports are saved under `build/reports/fraction-coverage`.
+This gate covers the bundled course text, not the contents of external PDFs
+or videos. Visual Compose tests also render the first two calculus lessons at
+wide and narrow reading widths.
 `LearningFormula` accepts one LaTeX expression and an optional `description`
 for screen readers. Without a provider, common code displays a readable text
 fallback, so Android and iOS remain usable without platform-specific math code.

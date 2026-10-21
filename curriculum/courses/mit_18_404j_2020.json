@@ -1430,7 +1430,7 @@
       "kind": "lesson",
       "title": "Comprendre NL et son complément par le comptage",
       "objective": "Utiliser des compteurs logarithmiques sans inverser naïvement des branches.",
-      "learningNotes": "Un calcul en espace logarithmique peut mémoriser un nombre constant de positions ou de compteurs bornés polynomialement, mais pas une liste entière de sommets. PATH appartient à NL : on devine successivement les sommets d'un chemin et on conserve la position courante avec un compteur de longueur bornée. Le théorème NL=coNL est plus subtil que l'échange accepter/rejeter d'une machine non déterministe. Une acceptation exige une branche réussie, tandis que son complément exigerait l'échec de toutes les branches. La preuve compte progressivement les sommets accessibles jusqu'à une distance donnée et vérifie ce compte avec des certificats non déterministes contrôlés. Elle garde le nombre atteint et les informations de l'étape courante, sans stocker tous les ensembles. Les réductions logarithmiques peuvent aussi produire une sortie polynomiale en la réécrivant morceau par morceau.",
+      "learningNotes": "Un calcul en espace logarithmique peut mémoriser un nombre constant de positions ou de compteurs bornés polynomialement, mais pas une liste entière de sommets. PATH appartient à NL : on devine successivement les sommets d'un chemin et on conserve la position courante avec un compteur de longueur bornée. Le théorème NL=coNL est plus subtil que l'échange accepter ou rejeter d'une machine non déterministe. Une acceptation exige une branche réussie, tandis que son complément exigerait l'échec de toutes les branches. La preuve compte progressivement les sommets accessibles jusqu'à une distance donnée et vérifie ce compte avec des certificats non déterministes contrôlés. Elle garde le nombre atteint et les informations de l'étape courante, sans stocker tous les ensembles. Les réductions logarithmiques peuvent aussi produire une sortie polynomiale en la réécrivant morceau par morceau.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/resources/lecture-20-l-and-nl-nl-conl/",
         "https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/c9b742bd624556b45ac75ea2fb133b32_MIT18_404f20_lec20.pdf",
@@ -1455,7 +1455,7 @@
         {
           "id": "mit_18_404j_2020_s020_e02",
           "type": "choice",
-          "prompt": "Pourquoi échanger les états acceptant/rejetant d’une machine non déterministe ne prouve-t-il pas directement la fermeture par complément ?",
+          "prompt": "Pourquoi échanger les états acceptant ou rejetant d’une machine non déterministe ne prouve-t-il pas directement la fermeture par complément ?",
           "options": [
             "Le complément d’un langage est toujours vide.",
             "Toutes les branches ont nécessairement la même réponse.",

@@ -61,6 +61,7 @@ private fun parseLegacyMath(source: String): List<LearningTextSegment> {
     val matrixCell = "[-−+]?(?:\\d+(?:\\.\\d+)?|\\d+/\\d+)"
     val matrixRow = "\\[\\s*$matrixCell(?:\\s*,\\s*$matrixCell)+\\s*\\]"
     val candidates = buildList {
+        findFractionExpressions(source).forEach { span -> add(MathCandidate(span.start, span.end, span.latex)) }
         Regex("\\[$matrixRow(?:\\s*,\\s*$matrixRow)+\\]").findAll(source).forEach { match ->
             normalizeMathFormula(match.value)?.let { add(MathCandidate(match.range.first, match.range.last + 1, it)) }
         }
@@ -73,10 +74,6 @@ private fun parseLegacyMath(source: String): List<LearningTextSegment> {
         powerPatterns.forEach { pattern -> pattern.findAll(source).forEach { match ->
                 normalizeMathFormula(match.value)?.let { add(MathCandidate(match.range.first, match.range.last + 1, it)) }
             } }
-        // A date (2026/01/09), path or chained division is not a standalone fraction.
-        Regex("(?<![A-Za-z0-9_./])\\d+/\\d+(?![A-Za-z0-9_/])(?!\\.[A-Za-z0-9])").findAll(source).forEach { match ->
-            normalizeMathFormula(match.value)?.let { add(MathCandidate(match.range.first, match.range.last + 1, it)) }
-        }
     }.sortedWith(compareBy<MathCandidate> { it.start }.thenByDescending { it.end })
 
     if (candidates.isEmpty()) return listOf(LearningTextSegment.Text(source))
@@ -132,6 +129,7 @@ fun normalizeMathFormula(source: String): String? {
     replaceNumericMatrix(value)?.let { return it }
     if ("[[" in value || "]]" in value) return null
     if ('\\' in value) return value // Explicit LaTeX supplied by curriculum authors.
+    formatFractionExpression(value)?.let { return it }
     Regex("^([A-Za-z0-9]+)\\s*/\\s*([A-Za-z0-9]+)$").matchEntire(value)?.let {
         return "\\frac{${it.groupValues[1]}}{${it.groupValues[2]}}"
     }

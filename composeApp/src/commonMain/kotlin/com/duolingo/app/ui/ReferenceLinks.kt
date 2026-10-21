@@ -38,7 +38,7 @@ internal fun ReferenceLinks(resources: List<CourseResource>) {
                 }
                 Text(format, style = TextStyle(color = ActionRed, fontWeight = FontWeight.SemiBold, fontSize = 14.sp, lineHeight = 20.sp, letterSpacing = 0.sp))
                 Text(resource.title.substringBeforeLast(" — ", resource.title), style = TextStyle(color = Ink, fontWeight = FontWeight.Medium, fontSize = 16.sp, lineHeight = 23.sp, letterSpacing = 0.sp))
-                Text("${if (resource.language == "fr") "Français" else "Anglais"} · connexion Internet", style = TextStyle(color = Graphite, fontSize = 13.sp, lineHeight = 20.sp, letterSpacing = 0.sp))
+                Text("${if (resource.language == "fr") "Français" else "Anglais"} · Disponible online", style = TextStyle(color = Graphite, fontSize = 13.sp, lineHeight = 20.sp, letterSpacing = 0.sp))
                 if (resource.notes.isNotBlank()) Text(resource.notes, color = Graphite)
             }
         }

@@ -31,8 +31,8 @@ class LessonDocumentParserTest {
             LearningTextSegment.Math("x^{2}", false)), parseLearningText("x₁ et x²", true))
     }
 
-    @Test fun datesPathsAndChainedDivisionAreNotInferredAsFractions() {
-        listOf("2026/01/09", "/tmp/3/4", "3/4.txt", "x=1/2/3", "2026-02-31").forEach { value ->
+    @Test fun datesAndPathsAreNotInferredAsFractions() {
+        listOf("2026/01/09", "/tmp/3/4", "3/4.txt", "2026-02-31").forEach { value ->
             assertEquals(listOf(LearningTextSegment.Text(value)), parseLearningText(value, true))
         }
         assertEquals(listOf(LearningTextSegment.Math("\\frac{3}{4}", false)), parseLearningText("3/4", true))

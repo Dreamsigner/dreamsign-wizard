@@ -39,7 +39,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Facts, Rules, and Queries<br>
 **Objectif :** Écrire des termes et suivre une conjonction de buts.
 
-Un programme Prolog décrit des relations par des faits et des règles. Un fait comme couleur(ciel,bleu). affirme une relation. Une règle visible(X):-eclaire(X),present(X). exige de prouver les deux buts de son corps. Une requête cherche une preuve et peut fournir des substitutions pour ses variables. Les atomes commencent généralement par une minuscule, les variables par une majuscule ou un souligné. Un terme composé possède un foncteur et une arité : trajet(a,b) appartient à trajet/2, différent de trajet/3. La virgule signifie une conjonction de buts, et le point termine une clause ou une requête. Une variable partage sa valeur entre ses occurrences dans une même clause. Une autre clause possède ses propres variables. Un échec signifie que cette recherche n'a pas trouvé de preuve dans le programme, sans devenir automatiquement une affirmation universelle sur le monde.
+Un programme Prolog décrit des relations par des faits et des règles. Un fait comme couleur(ciel,bleu). affirme une relation. Une règle visible(X):-eclaire(X),present(X). exige de prouver les deux buts de son corps. Une requête cherche une preuve et peut fournir des substitutions pour ses variables. Les atomes commencent généralement par une minuscule, les variables par une majuscule ou un souligné. Un terme composé possède un foncteur et une arité : trajet(a,b) appartient à `trajet/2`, différent de `trajet/3`. La virgule signifie une conjonction de buts, et le point termine une clause ou une requête. Une variable partage sa valeur entre ses occurrences dans une même clause. Une autre clause possède ses propres variables. Un échec signifie que cette recherche n'a pas trouvé de preuve dans le programme, sans devenir automatiquement une affirmation universelle sur le monde.
 
 ### Références de cette séance
 
@@ -168,7 +168,7 @@ visible(X) :- eclaire(X), present(X).
 
 **Correction / retour**
 
-<p>Le foncteur livraison possède trois arguments. Le prédicat est donc livraison/3.</p>
+<p>Le foncteur livraison possède trois arguments. Le prédicat est donc `livraison/3`.</p>
 
 </details>
 
@@ -338,7 +338,7 @@ r(X) :- p(X), q(X).
 
 **Correction / retour**
 
-<p>Un même nom de foncteur ne suffit pas : f/1 et f/2 sont des structures distinctes.</p>
+<p>Un même nom de foncteur ne suffit pas : `f/1` et `f/2` sont des structures distinctes.</p>
 
 </details>
 
@@ -807,7 +807,7 @@ Une expression comme 2+3 reste d'abord un terme composé. L'unification ne la re
 
 **Correction / retour**
 
-<p>L’opérateur // exprime ici la division entière positive : sept contient trois groupes de deux.</p>
+<p>L’opérateur `//` exprime ici la division entière positive : sept contient trois groupes de deux.</p>
 
 </details>
 
@@ -1361,7 +1361,7 @@ vp(verbe(dort)) --&gt; [dort].
 **Séance source :** A Closer Look at Terms<br>
 **Objectif :** Distinguer identité et unification et décomposer une structure.
 
-Les termes peuvent être inspectés sans toujours chercher à les unifier. Le test == vérifie l'identité actuelle de deux termes sans créer de liaison. = essaie au contraire de rendre les termes identiques par substitution. Deux variables fraîchement distinctes ne sont donc pas identiques, mais peuvent être unifiées. Un terme clos, ou ground, ne contient aucune variable, même dans ses sous-termes. functor/3 extrait le foncteur et l'arité. Arg/3 accède à un argument, et =.. relie un terme à la liste formée de son foncteur puis de ses arguments. Les opérateurs changent la notation et le groupement syntaxique, pas automatiquement la valeur : 2+3*4 représente une structure imbriquée avant toute évaluation. Une inspection correcte tient donc compte des priorités et du type de comparaison réellement demandé.
+Les termes peuvent être inspectés sans toujours chercher à les unifier. Le test == vérifie l'identité actuelle de deux termes sans créer de liaison. = essaie au contraire de rendre les termes identiques par substitution. Deux variables fraîchement distinctes ne sont donc pas identiques, mais peuvent être unifiées. Un terme clos, ou ground, ne contient aucune variable, même dans ses sous-termes. `functor/3` extrait le foncteur et l'arité. `Arg/3` accède à un argument, et =.. relie un terme à la liste formée de son foncteur puis de ses arguments. Les opérateurs changent la notation et le groupement syntaxique, pas automatiquement la valeur : 2+3*4 représente une structure imbriquée avant toute évaluation. Une inspection correcte tient donc compte des priorités et du type de comparaison réellement demandé.
 
 ### Références de cette séance
 
@@ -1489,7 +1489,7 @@ Les termes peuvent être inspectés sans toujours chercher à les unifier. Le te
 
 **Correction / retour**
 
-<p>arg/3 utilise ici des positions commençant à un : le deuxième argument de point(3,8) est 8.</p>
+<p>`arg/3` utilise ici des positions commençant à un : le deuxième argument de point(3,8) est 8.</p>
 
 </details>
 
@@ -1923,7 +1923,7 @@ couleur(chien,brun).
 
 #### Lecture de code
 
-<p>La base dynamique p/1 est initialement vide. Quel ordre retrouve findall après ces ajouts ?</p>
+<p>La base dynamique `p/1` est initialement vide. Quel ordre retrouve findall après ces ajouts ?</p>
 
 **Extrait de code**
 
@@ -1953,7 +1953,7 @@ couleur(chien,brun).
 **Séance source :** Working With Files<br>
 **Objectif :** Distinguer chargement de code, lecture de termes et sorties vers un fichier.
 
-Répartir un programme sur plusieurs fichiers exige de distinguer le chargement des clauses et la lecture de données. Le système de modules rend explicites les prédicats exportés et limite les conflits entre définitions auxiliaires de même nom. Pour les données, open/3 fournit un flux que l'on transmet aux opérations de lecture ou d'écriture, puis close/1 libère cette ressource. Le mode write remplace le contenu du fichier visé. Append ajoute à la suite. read/2 lit des termes Prolog terminés par un point, et non une ligne de texte quelconque. get_code/2 traite plutôt des codes de caractères. Une boucle de lecture doit reconnaître le marqueur de fin et cesser de récursiver. Tester le marqueur après avoir déjà demandé une lecture supplémentaire peut manquer la bonne frontière. Les opérations de ce chapitre sont étudiées ici comme code et contrats, sans accès réel à des fichiers.
+Répartir un programme sur plusieurs fichiers exige de distinguer le chargement des clauses et la lecture de données. Le système de modules rend explicites les prédicats exportés et limite les conflits entre définitions auxiliaires de même nom. Pour les données, `open/3` fournit un flux que l'on transmet aux opérations de lecture ou d'écriture, puis `close/1` libère cette ressource. Le mode write remplace le contenu du fichier visé. Append ajoute à la suite. `read/2` lit des termes Prolog terminés par un point, et non une ligne de texte quelconque. `get_code/2` traite plutôt des codes de caractères. Une boucle de lecture doit reconnaître le marqueur de fin et cesser de récursiver. Tester le marqueur après avoir déjà demandé une lecture supplémentaire peut manquer la bonne frontière. Les opérations de ce chapitre sont étudiées ici comme code et contrats, sans accès réel à des fichiers.
 
 ### Références de cette séance
 
@@ -1975,7 +1975,7 @@ Répartir un programme sur plusieurs fichiers exige de distinguer le chargement 
 
 #### Lecture de code
 
-<p>Quel mode de open/3 ajoute une sortie à la fin d’un fichier existant ?</p>
+<p>Quel mode de `open/3` ajoute une sortie à la fin d’un fichier existant ?</p>
 
 **Extrait de code**
 
@@ -2004,7 +2004,7 @@ Répartir un programme sur plusieurs fichiers exige de distinguer le chargement 
 
 #### Question à choix
 
-<p>Que doit contenir un fichier pour que read/2 lise directement deux termes successifs ?</p>
+<p>Que doit contenir un fichier pour que `read/2` lise directement deux termes successifs ?</p>
 
 **Propositions**
 
@@ -2018,7 +2018,7 @@ Répartir un programme sur plusieurs fichiers exige de distinguer le chargement 
 
 **Correction / retour**
 
-<p>read/2 analyse la syntaxe des termes. Une ligne seule ne constitue pas nécessairement une unité de lecture.</p>
+<p>`read/2` analyse la syntaxe des termes. Une ligne seule ne constitue pas nécessairement une unité de lecture.</p>
 
 </details>
 
@@ -2029,7 +2029,7 @@ Répartir un programme sur plusieurs fichiers exige de distinguer le chargement 
 
 #### Lecture de code
 
-<p>Pourquoi transmettre le même Flux à write/2 puis close/1 ?</p>
+<p>Pourquoi transmettre le même Flux à `write/2` puis `close/1` ?</p>
 
 **Extrait de code**
 
@@ -2049,7 +2049,7 @@ close(Flux).</code></pre>
 
 **Correction / retour**
 
-<p>Le flux retourné par open/3 sert de référence aux opérations suivantes ; sa valeur précise n’a pas besoin d’être inventée par le programme.</p>
+<p>Le flux retourné par `open/3` sert de référence aux opérations suivantes ; sa valeur précise n’a pas besoin d’être inventée par le programme.</p>
 
 </details>
 
@@ -2060,7 +2060,7 @@ close(Flux).</code></pre>
 
 #### Lecture de code
 
-<p>Une déclaration de module exporte analyse/2 mais pas aide/1. Quel est son objectif d’organisation ?</p>
+<p>Une déclaration de module exporte `analyse/2` mais pas `aide/1`. Quel est son objectif d’organisation ?</p>
 
 **Extrait de code**
 
@@ -2069,9 +2069,9 @@ close(Flux).</code></pre>
 
 **Propositions**
 
-<ol><li>Fournir une interface publique analyse/2 et garder aide/1 comme détail interne.</li><li>Exporter automatiquement tous les prédicats de tous les fichiers.</li><li>Évaluer des expressions arithmétiques sans is.</li><li>Transformer chaque atome en variable.</li></ol>
+<ol><li>Fournir une interface publique `analyse/2` et garder `aide/1` comme détail interne.</li><li>Exporter automatiquement tous les prédicats de tous les fichiers.</li><li>Évaluer des expressions arithmétiques sans is.</li><li>Transformer chaque atome en variable.</li></ol>
 
-**Réponse attendue :** Fournir une interface publique analyse/2 et garder aide/1 comme détail interne.
+**Réponse attendue :** Fournir une interface publique `analyse/2` et garder `aide/1` comme détail interne.
 
 **Indice**
 

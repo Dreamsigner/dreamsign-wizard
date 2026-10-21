@@ -195,7 +195,7 @@
       "exercises": [
         {
           "type": "choice",
-          "prompt": "Capacité 10 : A=(12,6), B=(10,5), C=(9,3), format valeur/taille. Quel ensemble maximise la valeur ?",
+          "prompt": "Capacité 10 : A=(12,6), B=(10,5), C=(9,3), format (valeur, taille). Quel ensemble maximise la valeur ?",
           "options": [
             "A et C : 21",
             "B et C : 19",
@@ -631,7 +631,7 @@
       "kind": "lesson",
       "title": "Surcapacités et congestion atomique",
       "objective": "Calculer le délai avec capacité accrue et distinguer les modèles de routage.",
-      "learningNotes": "La première partie étudie le surdimensionnement en routage non atomique. Pour une file M/M/1, le délai d’une arête de capacité u et de charge x est 1/(u−x), lorsque x<u. Augmenter la capacité éloigne le réseau de la saturation. Le théorème de la séance garantit que le coût d’un flux d’équilibre de taux r est au plus celui d’un flux optimal de taux 2r. La deuxième partie change de modèle : dans le routage atomique, il y a k joueurs finis, chacun contrôlant une unité de trafic et choisissant seul un chemin. Une déviation ajoute une unité à la charge des arêtes nouvellement empruntées. Pour les coûts affines c_e(x)=a_e x+b_e avec a_e,b_e≥0, le théorème 2.1 prouve une borne POA de 5/2, atteinte dans l’exemple à quatre joueurs (coût optimal 4, pire équilibre 10). Cette borne atomique 5/2 est distincte de la borne non atomique 4/3 démontrée la séance précédente.",
+      "learningNotes": "La première partie étudie le surdimensionnement en routage non atomique. Pour une file `M/M/1`, le délai d’une arête de capacité u et de charge x est 1/(u−x), lorsque x<u. Augmenter la capacité éloigne le réseau de la saturation. Le théorème de la séance garantit que le coût d’un flux d’équilibre de taux r est au plus celui d’un flux optimal de taux 2r. La deuxième partie change de modèle : dans le routage atomique, il y a k joueurs finis, chacun contrôlant une unité de trafic et choisissant seul un chemin. Une déviation ajoute une unité à la charge des arêtes nouvellement empruntées. Pour les coûts affines c_e(x)=a_e x+b_e avec a_e,b_e≥0, le théorème 2.1 prouve une borne POA de 5/2, atteinte dans l’exemple à quatre joueurs (coût optimal 4, pire équilibre 10). Cette borne atomique 5/2 est distincte de la borne non atomique 4/3 démontrée la séance précédente.",
       "sourceUrls": [
         "https://timroughgarden.org/f13/l/l12.pdf"
       ],
@@ -648,7 +648,7 @@
           ],
           "correctOptionIndex": 0,
           "hint": "Soustrais la charge de la capacité, puis prends l’inverse.",
-          "explanation": "La formule donne 1/(10−8)=1/2 unité de temps. La capacité excède ici le taux d’arrivée de 2; la formule M/M/1 suppose une charge λ<μ.",
+          "explanation": "La formule donne 1/(10−8)=1/2 unité de temps. La capacité excède ici le taux d’arrivée de 2; la formule `M/M/1` suppose une charge λ<μ.",
           "verification": {
             "kind": "queue_delay",
             "capacity": 10,
@@ -988,7 +988,7 @@
             "8"
           ],
           "correctOptionIndex": 0,
-          "hint": "(coût joué moins coût fixe)/nombre de tours.",
+          "hint": "$\\frac{\\text{coût joué}-\\text{coût fixe}}{\\text{nombre de tours}}$.",
           "explanation": "Le meilleur comparateur fixe coûte 3. Le regret cumulé est 5−3=2; divisé par les 4 tours, cela donne 2/4=1/2. Ce calcul compare à une action constante, pas au meilleur choix différent à chaque tour.",
           "verification": {
             "kind": "regret",

@@ -60,8 +60,9 @@ fun LearningFormula(
     description: String = mathAccessibilityDescription(latex),
     style: TextStyle = TextStyle.Default,
     display: Boolean = true,
+    alreadyLatex: Boolean = false,
 ) {
-    val normalized = normalizeMathFormula(latex)
+    val normalized = if (alreadyLatex) latex else normalizeMathFormula(latex)
     if (normalized == null) {
         Text(
             text = latex,
@@ -121,7 +122,7 @@ fun LearningText(
             val formula = block.singleOrNull() as? LearningTextSegment.Math
             if (formula?.display == true) {
                 Box(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(vertical = 8.dp)) {
-                    LearningFormula(formula.latex, style = style, display = true)
+                    LearningFormula(formula.latex, style = style, display = true, alreadyLatex = true)
                 }
             } else InlineMathParagraph(block, Modifier, style)
         }

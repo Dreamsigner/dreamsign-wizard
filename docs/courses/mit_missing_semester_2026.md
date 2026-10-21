@@ -116,7 +116,7 @@ pwd</code></pre>
 
 **Propositions**
 
-<ol><li>/tmp</li><li>/tmp/atelier</li><li>/tmp/atelier/src</li><li>/tmp/docs</li></ol>
+<ol><li>`/tmp`</li><li>/tmp/atelier</li><li>/tmp/atelier/src</li><li>/tmp/docs</li></ol>
 
 **Réponse attendue :** /tmp/atelier
 
@@ -126,7 +126,7 @@ pwd</code></pre>
 
 **Correction / retour**
 
-<p>src/.. remonte de src vers atelier et le dernier point désigne le dossier actuel.</p>
+<p>`src/..` remonte de src vers atelier et le dernier point désigne le dossier actuel.</p>
 
 </details>
 
@@ -1608,7 +1608,7 @@ Des contrôles complémentaires renforcent la confiance, mais aucun indicateur i
 
 **Propositions**
 
-<ol><li>2026/01/09</li><li>texte</li><li>2026-01-99</li><li>26-01-09</li></ol>
+<ol><li>`2026/01/09`</li><li>texte</li><li>2026-01-99</li><li>26-01-09</li></ol>
 
 **Réponse attendue :** 2026-01-99
 

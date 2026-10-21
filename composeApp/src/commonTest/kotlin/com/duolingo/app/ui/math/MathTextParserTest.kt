@@ -50,8 +50,8 @@ class MathTextParserTest {
                 LearningTextSegment.Math("x^{2}", false),
                 LearningTextSegment.Text(", "),
                 LearningTextSegment.Math("u_{1}", false),
-                LearningTextSegment.Text(" et P="),
-                LearningTextSegment.Math("\\frac{5}{8}", false),
+                LearningTextSegment.Text(" et "),
+                LearningTextSegment.Math("P=\\frac{5}{8}", false),
                 LearningTextSegment.Text("."),
             ),
             parseLearningText("Pour x², u₁ et P=5/8.", true),
@@ -69,8 +69,8 @@ class MathTextParserTest {
         assertEquals("x^{2}+2x+1", normalizeMathFormula("x²+2x+1"))
         assertEquals("x_{10}^{2}", normalizeMathFormula("x_10^2"))
         assertEquals("\\frac{3}{4}", normalizeMathFormula("3/4"))
-        assertEquals("x/2+3", normalizeMathFormula("x/2+3"))
-        assertEquals("x^{2}/3+1", normalizeMathFormula("x²/3+1"))
+        assertEquals("\\frac{x}{2}+3", normalizeMathFormula("x/2+3"))
+        assertEquals("\\frac{x^{2}}{3}+1", normalizeMathFormula("x²/3+1"))
         assertEquals("\\sqrt{x^{2}+y^{2}}", normalizeMathFormula("√(x²+y²)"))
         assertEquals("\\lim_{x\\to 1} f(x)", normalizeMathFormula("limₓ→₁ f(x)"))
         assertEquals("\\lim_{x\\to a} f(x)", normalizeMathFormula("lim_{x->a} f(x)"))

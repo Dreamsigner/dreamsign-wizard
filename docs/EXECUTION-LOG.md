@@ -503,3 +503,40 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   du lecteur page par page dans ce lot. La couverture pédagogique globale reste
   partielle. Voir docs/lesson-presentation.md pour la charte éditoriale et les
   références W3C/IES, sans extrapolation de résultats d'apprentissage.
+
+
+## 2026-10-21 — Fractions dans l’ensemble du catalogue Windows
+
+- Ajout d’un parseur partagé de quotients équilibrés : fractions imbriquées,
+  parenthèses, puissances/indices Unicode, fonctions, factorielles et signes.
+  Le rendu produit des fractions LaTeX superposées dans les notes, objectifs,
+  énoncés, options, indices, corrections et champs de formule. Le code et les
+  chemins restent littéraux ; les arités Prolog sont balisées comme code.
+- Réécriture explicite en LaTeX des notations ambiguës : rapports en français,
+  unités, intégrales pondérées, normes, adjoints, reste de Taylor et somme de
+  Riemann. Les deux premières notes de calcul différentiel ont des explications
+  structurées et des exemples résolus avec fractions complètes.
+- Contrôle du catalogue généré réel : 9 535 champs, 1 425 occurrences de
+  fractions rendues par le moteur desktop, aucune barre oblique non classée
+  hors code et aucune fraction invalide. Les contenus externes PDF/vidéo ne
+  sont pas réécrits par ce contrôle. Les tests algébriques ciblés vérifient
+  les priorités des opérateurs et les limites des numérateurs/dénominateurs.
+- Diagnostic visuel : les captures Compose ont aussi révélé que les équations
+  LaTeX en bloc sans commande antislash repassaient par le normaliseur de
+  texte ancien. Le composant transmet désormais les blocs explicitement
+  balisés au moteur LaTeX directement. Un test d’intégration couvre ce cas.
+- Libellé des supports externes : « Disponible online ».
+- Les 30 tests Python et les contrôleurs des dix cours techniques passent.
+  Quatre empreintes d’énoncés d’architecture ont été revues après modification
+  du seul balisage : données numériques, choix et réponses inchangés.
+- Les rapports de couverture des fractions sont archivés par la CI avec les
+  autres preuves Windows. Compilation, tests et inspection finale du paquet
+  de ce lot : à confirmer ci-dessous après exécution complète.
+
+- Vérification locale finale : 113 tests desktop, zéro échec/erreur/ignoré,
+  createDistributable réussi (`../work/fraction-delivery-verified.log`).
+  L’EXE produit réussit son diagnostic PDF/LaTeX/audio sans ouvrir de fenêtre
+  ni accéder aux données utilisateur. Captures Compose réinspectées à 500 et
+  1 100 px : fractions complètes et équations en bloc rendues correctement.
+  Le contrôle symbolique des dix cours techniques et les 30 tests Python ont
+  été relancés dans ce lot. La CI distante reste à confirmer après publication.

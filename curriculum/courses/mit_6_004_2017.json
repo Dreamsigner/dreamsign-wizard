@@ -535,7 +535,7 @@
       "exercises": [
         {
           "type": "math",
-          "prompt": "Dans le modèle Pdyn∝CV²f, C et l’activité restent constants. V passe de 1 à 0,8 et f de 1 à 1,25. Quel est le rapport Pnouvelle/Pancienne ?",
+          "prompt": "Dans le modèle Pdyn∝CV²f, C et l’activité restent constants. V passe de 1 à 0,8 et f de 1 à 1,25. Quel est le rapport $\\frac{P_{\\text{nouvelle}}}{P_{\\text{ancienne}}}$ ?",
           "options": [
             "5/4",
             "16/25",
@@ -1121,7 +1121,7 @@
       "exercises": [
         {
           "type": "math",
-          "prompt": "Dans le pipeline IF/RF/ALU/MEM/WB du support, le LD est en IF au cycle 1. Son consommateur immédiat arrive en RF au cycle 3 et ne peut recevoir la donnée que lorsque LD est en WB, cycle 5. Combien de cycles RF faut-il bloquer ?",
+          "prompt": "Dans le pipeline `IF/RF/ALU/MEM/WB` du support, le LD est en IF au cycle 1. Son consommateur immédiat arrive en RF au cycle 3 et ne peut recevoir la donnée que lorsque LD est en WB, cycle 5. Combien de cycles RF faut-il bloquer ?",
           "options": [
             "3",
             "2",
@@ -1613,7 +1613,7 @@
         },
         {
           "type": "math",
-          "prompt": "Un message de 12000 bits emprunte un lien de débit 1000000000 bits/s. Quelle durée minimale de sérialisation, en µs, hors en-têtes et propagation ?",
+          "prompt": "Un message de 12000 bits emprunte un lien de débit 1000000000 $\\frac{\\mathrm{bits}}{\\mathrm{s}}$. Quelle durée minimale de sérialisation, en µs, hors en-têtes et propagation ?",
           "options": [
             "12000",
             "12",
@@ -1666,7 +1666,7 @@
           ],
           "correctOptionIndex": 1,
           "explanation": "Le nouveau temps relatif vaut 1/5+(4/5)/4=2/5 ; le gain est son inverse, 5/2.",
-          "hint": "Pondère les temps, puis prends le rapport ancien/nouveau.",
+          "hint": "Pondère les temps, puis prends le rapport $\\frac{\\text{ancien}}{\\text{nouveau}}$.",
           "id": "mit_6_004_2017_s026_e01"
         },
         {
@@ -1850,7 +1850,7 @@
         },
         {
           "type": "math",
-          "prompt": "Un lien série de 2000000 bits/s doit émettre 4000 bits sans surcharge. Quel temps de sérialisation en millisecondes ?",
+          "prompt": "Un lien série de 2000000 $\\frac{\\mathrm{bits}}{\\mathrm{s}}$ doit émettre 4000 bits sans surcharge. Quel temps de sérialisation en millisecondes ?",
           "options": [
             "2",
             "1/2",

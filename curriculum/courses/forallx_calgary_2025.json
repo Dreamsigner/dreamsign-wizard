@@ -466,7 +466,7 @@
           ],
           "correctOptionIndex": 2,
           "explanation": "Il y a 2³ valuations possibles, donc huit lignes.",
-          "hint": "Chaque lettre ajoute un choix vrai/faux indépendant."
+          "hint": "Chaque lettre ajoute un choix vrai ou faux indépendant."
         },
         {
           "id": "forallx_calgary_2025_s011_e02",
@@ -534,7 +534,7 @@
       "kind": "lesson",
       "title": "Repérer les limites expressives de la TFL",
       "objective": "Identifier quand une formalisation atomique efface une relation ou une nuance naturelle.",
-      "learningNotes": "La TFL traite chaque lettre propositionnelle comme une unité indivisible. Elle ne décrit ni la structure interne d’un prédicat ni les relations entre individus. Ainsi « Daisy a quatre pattes » implique « Daisy a plus de deux pattes » en raison du sens des expressions, mais représenter ces phrases par F et T ne rend pas l’inférence valide par la seule forme TFL. Les cas vagues, comme « chauve », peuvent également résister à l’hypothèse bivalente vraie/fausse. Enfin, la conditionnelle matérielle ne capture pas toute intuition causale ou contrefactuelle de « si… alors ». Il faut choisir une représentation plus expressive, reformuler, ou reconnaître la limite plutôt que prétendre que la table résout tout.",
+      "learningNotes": "La TFL traite chaque lettre propositionnelle comme une unité indivisible. Elle ne décrit ni la structure interne d’un prédicat ni les relations entre individus. Ainsi « Daisy a quatre pattes » implique « Daisy a plus de deux pattes » en raison du sens des expressions, mais représenter ces phrases par F et T ne rend pas l’inférence valide par la seule forme TFL. Les cas vagues, comme « chauve », peuvent également résister à l’hypothèse bivalente vraie ou fausse. Enfin, la conditionnelle matérielle ne capture pas toute intuition causale ou contrefactuelle de « si… alors ». Il faut choisir une représentation plus expressive, reformuler, ou reconnaître la limite plutôt que prétendre que la table résout tout.",
       "sourceUrls": [
         "https://forallx.openlogicproject.org/html/Ch13.html"
       ],

@@ -285,7 +285,7 @@ Dans l’enchère de sac à dos, tailles et capacité sont publiques. Les valeur
 
 #### Question à choix
 
-<p>Capacité 10 : A=(12,6), B=(10,5), C=(9,3), format valeur/taille. Quel ensemble maximise la valeur ?</p>
+<p>Capacité 10 : A=(12,6), B=(10,5), C=(9,3), format (valeur, taille). Quel ensemble maximise la valeur ?</p>
 
 **Propositions**
 
@@ -860,7 +860,7 @@ Cette séance traite le routage non atomique : chaque conducteur contrôle une q
 **Séance source :** Network Over-Provisioning<br>
 **Objectif :** Calculer le délai avec capacité accrue et distinguer les modèles de routage.
 
-La première partie étudie le surdimensionnement en routage non atomique. Pour une file M/M/1, le délai d’une arête de capacité u et de charge x est 1/(u−x), lorsque x&lt;u. Augmenter la capacité éloigne le réseau de la saturation. Le théorème de la séance garantit que le coût d’un flux d’équilibre de taux r est au plus celui d’un flux optimal de taux 2r. La deuxième partie change de modèle : dans le routage atomique, il y a k joueurs finis, chacun contrôlant une unité de trafic et choisissant seul un chemin. Une déviation ajoute une unité à la charge des arêtes nouvellement empruntées. Pour les coûts affines c_e(x)=a_e x+b_e avec a_e,b_e≥0, le théorème 2.1 prouve une borne POA de 5/2, atteinte dans l’exemple à quatre joueurs (coût optimal 4, pire équilibre 10). Cette borne atomique 5/2 est distincte de la borne non atomique 4/3 démontrée la séance précédente.
+La première partie étudie le surdimensionnement en routage non atomique. Pour une file `M/M/1`, le délai d’une arête de capacité u et de charge x est 1/(u−x), lorsque x&lt;u. Augmenter la capacité éloigne le réseau de la saturation. Le théorème de la séance garantit que le coût d’un flux d’équilibre de taux r est au plus celui d’un flux optimal de taux 2r. La deuxième partie change de modèle : dans le routage atomique, il y a k joueurs finis, chacun contrôlant une unité de trafic et choisissant seul un chemin. Une déviation ajoute une unité à la charge des arêtes nouvellement empruntées. Pour les coûts affines c_e(x)=a_e x+b_e avec a_e,b_e≥0, le théorème 2.1 prouve une borne POA de 5/2, atteinte dans l’exemple à quatre joueurs (coût optimal 4, pire équilibre 10). Cette borne atomique 5/2 est distincte de la borne non atomique 4/3 démontrée la séance précédente.
 
 ### Références de cette séance
 
@@ -891,7 +891,7 @@ La première partie étudie le surdimensionnement en routage non atomique. Pour 
 
 **Correction / retour**
 
-<p>La formule donne 1/(10−8)=1/2 unité de temps. La capacité excède ici le taux d’arrivée de 2; la formule M/M/1 suppose une charge λ&lt;μ.</p>
+<p>La formule donne 1/(10−8)=1/2 unité de temps. La capacité excède ici le taux d’arrivée de 2; la formule `M/M/1` suppose une charge λ&lt;μ.</p>
 
 **Vérification**
 
@@ -1315,7 +1315,7 @@ Le regret externe compare le coût cumulé à la meilleure action fixe rétrospe
 
 **Indice**
 
-<p>(coût joué moins coût fixe)/nombre de tours.</p>
+<p>$\frac{\text{coût joué}-\text{coût fixe}}{\text{nombre de tours}}$.</p>
 
 **Correction / retour**
 
