@@ -88,7 +88,13 @@ durant la reprise, l’ordre OSSU et les références de chaque exercice. Les te
 Compose vérifient l’objectif au-dessus de la question, le bouton d’explication,
 la lecture de sections verrouillées sans XP et le rendu du véritable catalogue.
 Le lecteur PDF utilise des documents originaux générés en mémoire dans les tests :
-chargement, erreur/réessai, pages, zoom et fermeture des sessions sont contrôlés.
+chargement, erreur/réessai, défilement vertical continu, zoom et fermeture des
+sessions sont contrôlés. Une liste paresseuse ne rasterise que les pages
+composées autour de la fenêtre visible. Le test d’un document de 200 pages
+rejoint directement la page 100 puis défile vers la suivante sans pré-rendre
+l’ensemble du manuel. Les dimensions de chaque page, rotation comprise, sont
+connues avant le rendu pour conserver une hauteur stable pendant le chargement.
+Les captures du lecteur utilisent des pages PDF réellement rendues par PDFBox.
 
 Un test réseau distinct s’exécute uniquement sur demande :
 

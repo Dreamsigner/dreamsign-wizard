@@ -81,6 +81,13 @@ internal class PdfBoxDocumentSession(
     private val disposed = AtomicBoolean(false)
     private val renderLock = ReentrantLock()
     override val pageCount: Int = document.numberOfPages
+    private val aspectRatios = FloatArray(pageCount) { index ->
+        val page = document.getPage(index)
+        val box = page.cropBox
+        val ratio = if (page.rotation % 180 != 0) box.height / box.width else box.width / box.height
+        if (ratio.isFinite() && ratio > 0f) ratio else 1f / 1.41421356f
+    }
+    override fun pageAspectRatio(pageIndex: Int): Float = aspectRatios[pageIndex]
 
     override suspend fun renderPage(pageIndex: Int, targetWidthPx: Int): ImageBitmap {
         if (closed.get()) throw PdfReaderException("Le document PDF est fermé.")

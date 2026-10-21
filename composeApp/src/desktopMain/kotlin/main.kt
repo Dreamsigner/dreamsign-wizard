@@ -41,7 +41,12 @@ private fun desktopApplication() = application {
         state = rememberWindowState(width = 1280.dp, height = 840.dp)
     ) {
         window.minimumSize = Dimension(360, 480)
-        PdfReaderProvider(androidx.compose.runtime.remember { DesktopPdfDocumentReader() }) {
+        PdfReaderProvider(
+            androidx.compose.runtime.remember { DesktopPdfDocumentReader() },
+            scrollbar = { state, modifier -> androidx.compose.foundation.VerticalScrollbar(
+                adapter = androidx.compose.foundation.rememberScrollbarAdapter(state), modifier = modifier,
+            ) },
+        ) {
             MathRenderingProvider(DesktopMathRenderer) { App() }
         }
     }

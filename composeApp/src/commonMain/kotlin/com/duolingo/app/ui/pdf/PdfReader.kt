@@ -1,11 +1,19 @@
 package com.duolingo.app.ui.pdf
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.focusable
+import androidx.compose.foundation.gestures.scrollBy
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.input.key.*
+import androidx.compose.ui.platform.testTag
+import kotlinx.coroutines.launch
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,7 +27,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
@@ -62,6 +69,8 @@ interface PdfDocumentReader {
 
 interface PdfDocumentSession {
     val pageCount: Int
+    /** Width / height after rotation; known before rasterization to keep scrolling stable. */
+    fun pageAspectRatio(pageIndex: Int): Float = 1f / 1.41421356f
     suspend fun renderPage(pageIndex: Int, targetWidthPx: Int): ImageBitmap
     fun close()
 }
@@ -75,10 +84,16 @@ private val fallbackReader = object : PdfDocumentReader {
 
 private val LocalPdfDocumentReader = staticCompositionLocalOf<PdfDocumentReader> { fallbackReader }
 
-/** Install a platform PDF implementation around the app subtree. */
+private val LocalPdfScrollbar = staticCompositionLocalOf<@Composable (LazyListState, Modifier) -> Unit> { { _, _ -> } }
+
+/** Install a platform PDF implementation and optional native scrollbar. */
 @Composable
-fun PdfReaderProvider(reader: PdfDocumentReader, content: @Composable () -> Unit) {
-    CompositionLocalProvider(LocalPdfDocumentReader provides reader, content = content)
+fun PdfReaderProvider(
+    reader: PdfDocumentReader,
+    scrollbar: @Composable (LazyListState, Modifier) -> Unit = { _, _ -> },
+    content: @Composable () -> Unit,
+) {
+    CompositionLocalProvider(LocalPdfDocumentReader provides reader, LocalPdfScrollbar provides scrollbar, content = content)
 }
 
 /**
@@ -105,24 +120,22 @@ fun PdfDocumentDialog(resource: CourseResource, onClose: () -> Unit) {
 }
 
 @Composable
-@OptIn(ExperimentalLayoutApi::class)
 internal fun PdfDocumentContent(resource: CourseResource, reader: PdfDocumentReader, onClose: () -> Unit) {
     var retryCount by remember(resource.id) { mutableIntStateOf(0) }
     var session by remember(resource.id) { mutableStateOf<PdfDocumentSession?>(null) }
     var error by remember(resource.id) { mutableStateOf<String?>(null) }
     var opening by remember(resource.id) { mutableStateOf(true) }
-    var pageIndex by remember(resource.id) { mutableIntStateOf(0) }
+    val listState = remember(resource.id) { LazyListState() }
+    val scope = rememberCoroutineScope()
+    val pageIndex by remember(listState) { derivedStateOf { listState.firstVisibleItemIndex } }
+    val scrollbar = LocalPdfScrollbar.current
     var zoom by remember(resource.id) { mutableStateOf(1f) }
-    var pageBitmap by remember(resource.id) { mutableStateOf<ImageBitmap?>(null) }
-    var pageLoading by remember(resource.id) { mutableStateOf(false) }
     val uriHandler = LocalUriHandler.current
 
     LaunchedEffect(resource.id, resource.url, retryCount, reader) {
         session = null
         error = null
         opening = true
-        pageIndex = 0
-        pageBitmap = null
         try {
             if (!isApprovedPdfResource(resource)) {
                 throw PdfReaderException("Ce PDF ne fait pas partie des supports officiels du cours.")
@@ -156,39 +169,25 @@ internal fun PdfDocumentContent(resource: CourseResource, reader: PdfDocumentRea
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {
                 Text(resource.title, style = MaterialTheme.typography.h6, fontWeight = FontWeight.SemiBold)
-                Text("Lecture du PDF original · connexion Internet", style = MaterialTheme.typography.caption)
+                Text("PDF original · Disponible online · Défilement continu", style = MaterialTheme.typography.caption)
             }
             TextButton(onClick = onClose, modifier = Modifier.semantics { contentDescription = "Fermer le lecteur PDF" }) {
                 Text("Fermer")
             }
         }
 
-        FlowRow(
+        Row(
             Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
-            verticalArrangement = Arrangement.spacedBy(0.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            TextButton(
-                onClick = { pageIndex--; pageBitmap = null },
-                enabled = session != null && pageIndex > 0,
-                modifier = Modifier.semantics { contentDescription = "Page précédente" },
-            ) {
-                Text("‹ Précédente")
-            }
             Text(
                 if (session == null) "Page — / —" else "Page ${pageIndex + 1} / ${session!!.pageCount}",
                 modifier = Modifier.semantics { contentDescription = "Page ${pageIndex + 1} sur ${session?.pageCount ?: 0}" },
                 style = MaterialTheme.typography.subtitle2,
             )
             TextButton(
-                onClick = { pageIndex++; pageBitmap = null },
-                enabled = session != null && pageIndex < session!!.pageCount - 1,
-                modifier = Modifier.semantics { contentDescription = "Page suivante" },
-            ) {
-                Text("Suivante ›")
-            }
-            TextButton(
-                onClick = { zoom = (zoom - ZOOM_STEP).coerceAtLeast(MIN_ZOOM); pageBitmap = null },
+                onClick = { zoom = (zoom - ZOOM_STEP).coerceAtLeast(MIN_ZOOM) },
                 enabled = zoom > MIN_ZOOM,
                 modifier = Modifier.semantics { contentDescription = "Réduire le zoom" },
             ) {
@@ -196,7 +195,7 @@ internal fun PdfDocumentContent(resource: CourseResource, reader: PdfDocumentRea
             }
             Text("${(zoom * 100).toInt()} %")
             TextButton(
-                onClick = { zoom = (zoom + ZOOM_STEP).coerceAtMost(MAX_ZOOM); pageBitmap = null },
+                onClick = { zoom = (zoom + ZOOM_STEP).coerceAtMost(MAX_ZOOM) },
                 enabled = zoom < MAX_ZOOM,
                 modifier = Modifier.semantics { contentDescription = "Augmenter le zoom" },
             ) {
@@ -224,41 +223,69 @@ internal fun PdfDocumentContent(resource: CourseResource, reader: PdfDocumentRea
             contentAlignment = Alignment.TopCenter,
         ) {
             val density = LocalDensity.current
-            val widthPx = with(density) { (maxWidth * zoom).roundToPx().coerceIn(320, MAX_RENDER_WIDTH_PX) }
+            val imageWidth = (maxWidth - 16.dp).coerceAtLeast(1.dp) * zoom
+            val widthPx = with(density) { imageWidth.roundToPx().coerceIn(320, MAX_RENDER_WIDTH_PX) }
             val page = session
-            LaunchedEffect(page, pageIndex, widthPx) {
-                pageBitmap = null
-                if (page != null) {
-                    pageLoading = true
-                    try {
-                        pageBitmap = page.renderPage(pageIndex, widthPx)
-                    } catch (cancelled: CancellationException) {
-                        throw cancelled
-                    } catch (_: Exception) {
-                        error = "Cette page ne peut pas être affichée. Réessaie ou ouvre le PDF dans le navigateur."
-                    } finally {
-                        pageLoading = false
+            if (opening) CircularProgressIndicator(Modifier.align(Alignment.Center).size(34.dp))
+            if (page != null) {
+                Box(Modifier.fillMaxSize().padding(end = 16.dp).horizontalScroll(rememberScrollState()), contentAlignment = Alignment.TopCenter) {
+                    LazyColumn(
+                        state = listState,
+                        modifier = Modifier.width(imageWidth).fillMaxHeight().testTag("pdf-pages")
+                            .onPreviewKeyEvent { event ->
+                                if (event.type != KeyEventType.KeyDown) false else {
+                                    val distance = listState.layoutInfo.viewportSize.height * 0.9f
+                                    when (event.key) {
+                                        Key.PageDown -> { scope.launch { listState.scrollBy(distance) }; true }
+                                        Key.PageUp -> { scope.launch { listState.scrollBy(-distance) }; true }
+                                        Key.DirectionDown -> { scope.launch { listState.scrollBy(48f) }; true }
+                                        Key.DirectionUp -> { scope.launch { listState.scrollBy(-48f) }; true }
+                                        Key.MoveHome -> { scope.launch { listState.scrollToItem(0) }; true }
+                                        Key.MoveEnd -> { scope.launch { listState.scrollToItem(page.pageCount - 1) }; true }
+                                        else -> false
+                                    }
+                                }
+                            }.focusable(),
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        items(page.pageCount, key = { it }) { index ->
+                            PdfPage(page, index, widthPx, resource.title) {
+                                error = "Cette page ne peut pas être affichée. Réessaie ou ouvre le PDF dans le navigateur."
+                            }
+                        }
                     }
                 }
-            }
-            val bitmap = pageBitmap
-            if (opening || pageLoading || (page != null && bitmap == null)) {
-                CircularProgressIndicator(Modifier.align(Alignment.Center).size(34.dp))
-            }
-            if (bitmap != null) {
-                val imageWidth = maxWidth * zoom
-                Column(
-                    Modifier.fillMaxSize().horizontalScroll(rememberScrollState()).verticalScroll(rememberScrollState()),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Image(
-                        bitmap = bitmap,
-                        contentDescription = "Page ${pageIndex + 1} du PDF ${resource.title}",
-                        modifier = Modifier.width(imageWidth).aspectRatio(bitmap.width.toFloat() / bitmap.height),
-                    )
-                }
+                scrollbar(listState, Modifier.align(Alignment.CenterEnd).fillMaxHeight())
             }
         }
+    }
+}
+
+/** Each lazy item owns only its current-resolution bitmap; disposed items release their images. */
+@Composable
+private fun PdfPage(session: PdfDocumentSession, index: Int, widthPx: Int, title: String, onFailure: () -> Unit) {
+    var bitmap by remember(session, index, widthPx) { mutableStateOf<ImageBitmap?>(null) }
+    val aspect = remember(session, index) { session.pageAspectRatio(index).takeIf { it.isFinite() && it > 0f } ?: (1f / 1.41421356f) }.coerceIn(0.1f, 10f)
+    LaunchedEffect(session, index, widthPx) {
+        try {
+            val rendered = session.renderPage(index, widthPx)
+            currentCoroutineContext().ensureActive()
+            bitmap = rendered
+        } catch (cancelled: CancellationException) {
+            throw cancelled
+        } catch (_: Exception) {
+            currentCoroutineContext().ensureActive()
+            onFailure()
+        }
+    }
+    Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+        androidx.compose.foundation.layout.Box(Modifier.fillMaxWidth().aspectRatio(aspect).background(Color.White), contentAlignment = Alignment.Center) {
+            val image = bitmap
+            if (image == null) CircularProgressIndicator(Modifier.size(28.dp))
+            else Image(image, "Page ${index + 1} du PDF $title", Modifier.fillMaxSize())
+        }
+        Text("${index + 1} / ${session.pageCount}", Modifier.padding(vertical = 4.dp), style = MaterialTheme.typography.caption)
     }
 }
 

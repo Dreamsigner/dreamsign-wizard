@@ -546,3 +546,31 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   `12383319440` ont été téléchargées et relues : 113 tests sans échec, 9 535
   champs / 1 425 fractions / zéro non classé ou invalide; diagnostic du véritable
   EXE du paquet positif pour LaTeX/PDF, sans interface ni données utilisateur.
+
+
+## 2026-10-21 — Lecteur PDF à défilement vertical continu
+
+- Remplacement de l’affichage d’une seule page par une liste verticale continue.
+  Les pages visibles sont rendues à la demande et leurs bitmaps sont attachés
+  aux éléments de la liste, sans collection globale d’images du document.
+  Les dimensions avant rendu tiennent compte du format et de la rotation pour
+  stabiliser les emplacements pendant le chargement. Les rapports de forme
+  extrêmes sont bornés pour protéger les contraintes de mise en page.
+- Barre de défilement desktop native, zoom 75–200 %, défilement horizontal
+  lorsque nécessaire et compteur de page visible. Navigation clavier dans
+  la zone de lecture : flèches, Page haut/bas, Début et Fin. Les boutons de
+  changement de page ne sont plus nécessaires et ont été retirés.
+- Tests ajoutés : document de 200 pages, accès à la page 100 puis geste de
+  défilement, rendu limité aux pages demandées, accès clavier à la dernière et
+  à la première page, géométrie portrait/paysage/rotation et captures Compose
+  à 500 et 1 100 px montrant deux pages dans la même fenêtre. Les scénarios
+  existants de zoom, erreur/réessai et fermeture de document restent couverts.
+- Régression reproduite avant modification : le test de défilement échouait
+  car l’ancien lecteur n’exposait aucune liste continue. Pendant l’intégration,
+  un repositionnement avant création de la liste suspendait l’ouverture du
+  document ; ce repositionnement a été retiré avant validation.
+- Validation locale : 116 tests desktop sans échec/erreur/ignoré et création
+  de distribution réussie. Captures du passage entre deux pages inspectées.
+  Le diagnostic de l’EXE réussit pour PDF/LaTeX/audio, sans fenêtre ni données
+  utilisateur. Le contenu des cours et la progression enregistrée sont inchangés.
+  Confirmation de la CI et du ZIP de ce lot : après publication.

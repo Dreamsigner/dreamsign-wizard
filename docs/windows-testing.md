@@ -24,7 +24,9 @@ les leçons, corrections et documents audio sont intégrés.
 - Dans les ateliers TCF, essayer l'écoute, la saisie et, si un microphone est
   disponible, l'enregistrement puis sa réécoute.
 - Ouvrir « Lire le cours et les supports » : consulter une section via le
-  sommaire, puis un support PDF avec une connexion Internet et ses pages/zoom.
+  sommaire, puis un support PDF disponible online : les pages s’enchaînent par
+  défilement vertical, avec barre de défilement et zoom. Dans la zone de lecture,
+  les touches Page haut/bas, les flèches, Début et Fin permettent aussi de naviguer.
 
 L'exécution réelle du microphone, les réglages audio et le comportement du
 gestionnaire de fenêtres restent distincts des tests Compose hors écran.

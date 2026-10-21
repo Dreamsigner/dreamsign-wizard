@@ -17,6 +17,17 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performScrollToIndex
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.swipeUp
+import androidx.compose.ui.test.performSemanticsAction
+import androidx.compose.ui.test.performKeyPress
+import androidx.compose.ui.test.runDesktopComposeUiTest
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEvent
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.semantics.SemanticsActions
 import com.duolingo.app.data.CourseResource
 import com.duolingo.app.data.CourseResources
 import kotlinx.coroutines.runBlocking
@@ -121,7 +132,9 @@ class DesktopPdfDocumentReaderTest {
         setContent {
             LearningAppTheme {
                 Surface {
-                    PdfReaderProvider(reader) { PdfDocumentContent(resource, reader) {} }
+                    PdfReaderProvider(reader, scrollbar = { state, modifier ->
+                        androidx.compose.foundation.VerticalScrollbar(androidx.compose.foundation.rememberScrollbarAdapter(state), modifier)
+                    }) { PdfDocumentContent(resource, reader) {} }
                 }
             }
         }
@@ -161,12 +174,12 @@ class DesktopPdfDocumentReaderTest {
             skiaImage.close()
             snapshot.close()
         }
-        onNodeWithText("Suivante ›").performClick()
+        onNodeWithTag("pdf-pages").performScrollToIndex(1)
         waitUntil(timeoutMillis = 10000) { onAllNodesWithContentDescription("Page 2 du PDF ${resource.title}").fetchSemanticsNodes().isNotEmpty() }
         onNodeWithText("Page 2 / 2").assertExists()
         onNodeWithContentDescription("Augmenter le zoom").performClick()
         onNodeWithText("125 %").assertExists()
-        onNodeWithText("‹ Précédente").performClick()
+        onNodeWithTag("pdf-pages").performScrollToIndex(0)
         waitUntil(timeoutMillis = 10000) { onAllNodesWithContentDescription("Page 1 du PDF ${resource.title}").fetchSemanticsNodes().isNotEmpty() }
         onNodeWithText("Page 1 / 2").assertExists()
     }
@@ -196,7 +209,9 @@ class DesktopPdfDocumentReaderTest {
         setContent {
             LearningAppTheme {
                 Surface {
-                    PdfReaderProvider(reader) {
+                    PdfReaderProvider(reader, scrollbar = { state, modifier ->
+                        androidx.compose.foundation.VerticalScrollbar(androidx.compose.foundation.rememberScrollbarAdapter(state), modifier)
+                    }) {
                         if (visible) PdfDocumentContent(resource, reader) { visible = false }
                     }
                 }
@@ -211,6 +226,80 @@ class DesktopPdfDocumentReaderTest {
         runOnIdle { visible = false }
         waitForIdle()
         assertEquals(2, closes)
+    }
+
+    @OptIn(androidx.compose.ui.InternalComposeUiApi::class)
+    @Test
+    fun continuousScrollingReachesLaterPagesWithoutRenderingTheWholeDocument() = runComposeUiTest(testTimeout = 60.seconds) {
+        val resource = publishedPdfResource()
+        val rendered = mutableSetOf<Int>()
+        val reader = object : PdfDocumentReader {
+            override suspend fun open(resource: CourseResource) = object : PdfDocumentSession {
+                override val pageCount = 200
+                override suspend fun renderPage(pageIndex: Int, targetWidthPx: Int): androidx.compose.ui.graphics.ImageBitmap {
+                    rendered += pageIndex
+                    return androidx.compose.ui.graphics.ImageBitmap(600, 780)
+                }
+                override fun close() = Unit
+            }
+        }
+        setContent { LearningAppTheme { Surface { PdfDocumentContent(resource, reader) {} } } }
+        waitUntil(timeoutMillis = 10000) { onAllNodesWithContentDescription("Page 1 du PDF ${resource.title}").fetchSemanticsNodes().isNotEmpty() }
+        runOnIdle { assertTrue(rendered.size < 10, "Only viewport pages may be rasterized: $rendered") }
+        onNodeWithTag("pdf-pages").performScrollToIndex(99)
+        waitUntil(timeoutMillis = 10000) { onAllNodesWithContentDescription("Page 100 du PDF ${resource.title}").fetchSemanticsNodes().isNotEmpty() }
+        onNodeWithContentDescription("Page 100 du PDF ${resource.title}").assertIsDisplayed()
+        onNodeWithTag("pdf-pages").performTouchInput { swipeUp() }
+        waitUntil(timeoutMillis = 10000) { rendered.any { it > 99 } }
+        runOnIdle { assertTrue(rendered.size < 15, "Scrolling must not eagerly render 200 pages: $rendered") }
+        val pages = onNodeWithTag("pdf-pages")
+        pages.performSemanticsAction(SemanticsActions.RequestFocus) { it() }
+        pages.performKeyPress(KeyEvent(Key.MoveEnd, KeyEventType.KeyDown))
+        waitUntil(timeoutMillis = 10000) { onAllNodesWithContentDescription("Page 200 du PDF ${resource.title}").fetchSemanticsNodes().isNotEmpty() }
+        onNodeWithContentDescription("Page 200 du PDF ${resource.title}").assertIsDisplayed()
+        pages.performKeyPress(KeyEvent(Key.MoveHome, KeyEventType.KeyDown))
+        waitUntil(timeoutMillis = 10000) { onAllNodesWithContentDescription("Page 1 du PDF ${resource.title}").fetchSemanticsNodes().isNotEmpty() }
+        onNodeWithContentDescription("Page 1 du PDF ${resource.title}").assertIsDisplayed()
+    }
+
+    @Test
+    fun pageGeometryIncludesPageSizeAndRotationBeforeRasterizing() {
+        val document = PDDocument().apply {
+            addPage(PDPage(PDRectangle.LETTER))
+            addPage(PDPage(PDRectangle(800f, 400f)))
+            addPage(PDPage(PDRectangle(400f, 800f)).apply { rotation = 90 })
+        }
+        val session = PdfBoxDocumentSession(document)
+        try {
+            assertEquals(612f / 792f, session.pageAspectRatio(0), 0.0001f)
+            assertEquals(2f, session.pageAspectRatio(1), 0.0001f)
+            assertEquals(2f, session.pageAspectRatio(2), 0.0001f)
+        } finally { session.close() }
+    }
+
+    @Test
+    fun continuousPdfPagesShareTheViewportAtWideAndNarrowWidths() {
+        listOf(1100, 500).forEach { width ->
+            runDesktopComposeUiTest(width = width, height = 900, testTimeout = 60.seconds) {
+                val resource = publishedPdfResource()
+                val reader = DesktopPdfDocumentReader { createOnePagePdf(2) }
+                setContent { LearningAppTheme { Surface {
+                    PdfReaderProvider(reader, scrollbar = { state, modifier ->
+                        androidx.compose.foundation.VerticalScrollbar(androidx.compose.foundation.rememberScrollbarAdapter(state), modifier)
+                    }) { PdfDocumentContent(resource, reader) {} }
+                } } }
+                waitUntil(timeoutMillis = 10000) { onAllNodesWithContentDescription("Page 1 du PDF ${resource.title}").fetchSemanticsNodes().isNotEmpty() }
+                onNodeWithTag("pdf-pages").performSemanticsAction(SemanticsActions.ScrollBy) { it(0f, (width - 48) * 792f / 612f - 280f) }
+                waitUntil(timeoutMillis = 10000) { onAllNodesWithContentDescription("Page 2 du PDF ${resource.title}").fetchSemanticsNodes().isNotEmpty() }
+                onNodeWithContentDescription("Page 1 du PDF ${resource.title}").assertIsDisplayed()
+                onNodeWithContentDescription("Page 2 du PDF ${resource.title}").assertIsDisplayed()
+                val output = File("build/reports/ui-snapshots/pdf-continuous-$width.png")
+                output.parentFile.mkdirs()
+                Image.makeFromBitmap(onRoot().captureToImage().asSkiaBitmap()).use { image ->
+                    image.encodeToData()!!.use { output.writeBytes(it.bytes) }
+                }
+            }
+        }
     }
 
     private fun publishedPdfResource(): CourseResource =
