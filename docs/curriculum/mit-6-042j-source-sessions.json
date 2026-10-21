@@ -1,0 +1,653 @@
+{
+  "courseCode": "MIT 6.042J",
+  "inventoryId": "ossu_010",
+  "edition": "Fall 2010",
+  "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/",
+  "checkedOn": "2026-10-20",
+  "sourceIndexUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/video_galleries/video-lectures/",
+  "assessmentIndexUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/pages/exams/",
+  "sessionCount": 28,
+  "countUnit": "25 numbered lectures, one midterm practice review, two Fall 2010 examinations",
+  "sessions": [
+    {
+      "number": 1,
+      "sourceLectureNumber": 1,
+      "sourceTitle": "Lecture 1: Introduction and Proofs",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-1-introduction-and-proofs/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/35948f025420c52f2c6c18d2da9e266b_L3LMbpZIKhQ.pdf",
+          "sha256": "130524ac53c40c3fec8e72fa0aba9885eb2a2c13190ba20a920476f1445fb504"
+        },
+        {
+          "kind": "course_notes",
+          "chapter": 1,
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/7853d585044ef21bce5f48ce5fc89d28_MIT6_042JF10_chap01.pdf",
+          "sha256": "b49f0bfdb43dd9b5893fb24a52036807a47adc12d534f589f81564593d4c160f"
+        },
+        {
+          "kind": "course_notes",
+          "chapter": 2,
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/38ca8d7baeedd6aa476010a0cbd041d0_MIT6_042JF10_chap02.pdf",
+          "sha256": "6d9bd1cd8f084725ac9da7123526a1e81bd2adc17149c4a03dc44bffe72cfd06"
+        }
+      ],
+      "readingFocus": "Implication, tables de vérité, contraposée, axiomes et contre-exemples ; limites d’une vérification par exemples."
+    },
+    {
+      "number": 2,
+      "sourceLectureNumber": 2,
+      "sourceTitle": "Lecture 2: Induction",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-2-induction/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/3e3c5ae1dd04aab8de88a9cf9f16544f_z8HKWUWS-lA.pdf",
+          "sha256": "55ad31bee11164b22b7cd45abb47677f59c3983cbbada29ce21cb0d321aadfea"
+        },
+        {
+          "kind": "course_notes",
+          "chapter": 3,
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/e5079d6e1b0dc66d426df26e05dee250_MIT6_042JF10_chap03.pdf",
+          "sha256": "5c2dcdeff834b03e89b246c858e3f645bda8ada4149a6034cfc2d3362e9e1856"
+        }
+      ],
+      "readingFocus": "Initialisation et passage de récurrence, sommes d’impairs, divisibilité de n³-n ; diagnostic des faux passages."
+    },
+    {
+      "number": 3,
+      "sourceLectureNumber": 3,
+      "sourceTitle": "Lecture 3: Strong Induction",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-3-strong-induction/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/45f6debd41091c3e1a78c3d72be1d8cb_NuGDkmwEObM.pdf",
+          "sha256": "583a5701a8cf8906cccc28d47443b7b0207a003af693152bcb1a585f8a3879b4"
+        },
+        {
+          "kind": "course_notes",
+          "chapter": 3,
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/e5079d6e1b0dc66d426df26e05dee250_MIT6_042JF10_chap03.pdf",
+          "sha256": "5c2dcdeff834b03e89b246c858e3f645bda8ada4149a6034cfc2d3362e9e1856"
+        }
+      ],
+      "readingFocus": "Récurrence forte sur des facteurs plus petits et invariants de jeux ; inversions et conservation de parité."
+    },
+    {
+      "number": 4,
+      "sourceLectureNumber": 4,
+      "sourceTitle": "Lecture 4: Number Theory I",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-4-number-theory-i/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/e5842da6cbc94ba2b8f61bedca94c518_NuY7szYSXSw.pdf",
+          "sha256": "387f5ac8e9396e00b88cd44710fbe305faf3f25e59bdb25cb3b1d3fa0dd41299"
+        },
+        {
+          "kind": "course_notes",
+          "chapter": 4,
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/a608e339ab265c79de46c7c3830a49cb_MIT6_042JF10_chap04.pdf",
+          "sha256": "09f1c22981dfde3d6ca57c1d58a08a2ae25fbd22fe30b0990936d2434ee69ef9"
+        }
+      ],
+      "readingFocus": "Divisibilité, Euclide, combinaisons linéaires de Bézout ; conservation du pgcd et domaines des coefficients."
+    },
+    {
+      "number": 5,
+      "sourceLectureNumber": 5,
+      "sourceTitle": "Lecture 5: Number Theory II",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-5-number-theory-ii/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/c2c73b8f33d9c0595ef6abb372271200_XX7ePR21Ook.pdf",
+          "sha256": "5064352aa071cb34c86903748487737dbd81ef5434d8bf9e7844af6d29d3197a"
+        },
+        {
+          "kind": "course_notes",
+          "chapter": 4,
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/a608e339ab265c79de46c7c3830a49cb_MIT6_042JF10_chap04.pdf",
+          "sha256": "09f1c22981dfde3d6ca57c1d58a08a2ae25fbd22fe30b0990936d2434ee69ef9"
+        }
+      ],
+      "readingFocus": "Congruences, inverses, théorèmes d’Euler/Fermat et chiffrement pédagogique ; annulation conditionnée par le pgcd."
+    },
+    {
+      "number": 6,
+      "sourceLectureNumber": 6,
+      "sourceTitle": "Lecture 6: Graph Theory and Coloring",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-6-graph-theory-and-coloring/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/1ccaf180bcd244fddd32e60789fa922f_h9wxtqoa1jY.pdf",
+          "sha256": "cca2c6802a29c48951ecad31ee8d536339e89b5ff79878149c9ecbdd974d295b"
+        },
+        {
+          "kind": "course_notes",
+          "chapter": 5,
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/f471f7b7034fabe8bbba5507df7d307f_MIT6_042JF10_chap05.pdf",
+          "sha256": "e9bdbe2fc04bdb7ab5f6ae6066eadbf0848dcbd99b72b5487762d6a035be1416"
+        }
+      ],
+      "readingFocus": "Graphes simples, degrés, coloriage glouton et borne Δ+1 ; planning de conflits et double comptage des degrés."
+    },
+    {
+      "number": 7,
+      "sourceLectureNumber": 7,
+      "sourceTitle": "Lecture 7: Matching Problems",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-7-matching-problems/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/c53bca93ceaede29a7983409ec7e233c_5RSMLgy06Ew.pdf",
+          "sha256": "e16d1675669d2ef7ec8a805065271cced93afe9bc897c5d8f8b692dd4149851c"
+        },
+        {
+          "kind": "course_notes",
+          "chapter": 5,
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/f471f7b7034fabe8bbba5507df7d307f_MIT6_042JF10_chap05.pdf",
+          "sha256": "e9bdbe2fc04bdb7ab5f6ae6066eadbf0848dcbd99b72b5487762d6a035be1416"
+        }
+      ],
+      "readingFocus": "Appariements, propositions différées, rejets, stabilité et justice du résultat ; paires bloquantes."
+    },
+    {
+      "number": 8,
+      "sourceLectureNumber": 8,
+      "sourceTitle": "Lecture 8: Graph Theory II: Minimum Spanning Trees",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-8-graph-theory-ii-minimum-spanning-trees/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/4cd9e7dafa48708210af272844003398_GJpt_3ie4WU.pdf",
+          "sha256": "a4b131282fe0e5152ae59386c3209c02b238fa8ab7f6ca04ba3b8410f55e4f9d"
+        },
+        {
+          "kind": "course_notes",
+          "chapter": 5,
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/f471f7b7034fabe8bbba5507df7d307f_MIT6_042JF10_chap05.pdf",
+          "sha256": "e9bdbe2fc04bdb7ab5f6ae6066eadbf0848dcbd99b72b5487762d6a035be1416"
+        }
+      ],
+      "readingFocus": "Connexité, chemins, arbres couvrants, suppression d’arêtes de cycles ; choix de poids minimal et échanges."
+    },
+    {
+      "number": 9,
+      "sourceLectureNumber": 9,
+      "sourceTitle": "Lecture 9: Communication Networks",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-9-communication-networks/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/fca5cc3f1014121da9b7059254f58466_bTyxpoi2dmM.pdf",
+          "sha256": "fcc01e6ffd449e164ae09e6270770e3fb89f3f1ef25c62f8f5221928a7445e55"
+        },
+        {
+          "kind": "course_notes",
+          "chapter": 6,
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/e6db7638031b754f5f68012946af4763_MIT6_042JF10_chap06.pdf",
+          "sha256": "cffe5c45ed70737eb5df6f284af5011cc96032c1c442bffc89e71ab1cfc422bb"
+        }
+      ],
+      "readingFocus": "Topologies de communication, diamètre, nombre de commutateurs, congestion et réseaux papillon indexés en binaire."
+    },
+    {
+      "number": 10,
+      "sourceLectureNumber": 10,
+      "sourceTitle": "Lecture 10: Graph Theory III",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-10-graph-theory-iii/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/116f983b7d45c3199eaa66a91d817db4_DOIp5D7VMS4.pdf",
+          "sha256": "77dc5d7520cb45dd25b4ef7954af18bdf7ce2fc6ddb3547a0b56b8f6d2db9227"
+        },
+        {
+          "kind": "course_notes",
+          "chapter": 6,
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/e6db7638031b754f5f68012946af4763_MIT6_042JF10_chap06.pdf",
+          "sha256": "cffe5c45ed70737eb5df6f284af5011cc96032c1c442bffc89e71ab1cfc422bb"
+        }
+      ],
+      "readingFocus": "Graphes dirigés, tournois, DAG, connexité forte, marches, Euler/Hamilton et matrices d’adjacence."
+    },
+    {
+      "number": 11,
+      "sourceLectureNumber": 11,
+      "sourceTitle": "Lecture 11: Relations, Partial Orders, and Scheduling",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-11-relations-partial-orders-and-scheduling/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/df48391c844a4a9a03de190cc289cf10_1nScXLQAQ9A.pdf",
+          "sha256": "4c1fef05e403e09c51cf0730a0ef1e3a1c38c634afe8c2f4fcb524e94cedb489"
+        },
+        {
+          "kind": "course_notes",
+          "chapter": 7,
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/efac321fdc8d0b27586ca35b04aab808_MIT6_042JF10_chap07.pdf",
+          "sha256": "2242c3f97d3c85d99f44fb5383c3784a6b387823a6b89e08ea54fb6220fc1422"
+        }
+      ],
+      "readingFocus": "Relations et classes d’équivalence ; ordres larges/stricts, diagrammes de Hasse, ordres topologiques et ordonnancement."
+    },
+    {
+      "number": 12,
+      "sourceLectureNumber": 12,
+      "sourceTitle": "Lecture 12: Sums",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-12-sums/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/35c5b44faacb08f9bcd51cdf5d22506e_fAeShezAGLE.pdf",
+          "sha256": "94ea394aebf2803e07440940286e792ca7319c2bdd773ea08a8b252c2e5b9c14"
+        },
+        {
+          "kind": "course_notes",
+          "chapter": 9,
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/c110f2c1483fd57a9c97ebde0be38f75_MIT6_042JF10_chap09.pdf",
+          "sha256": "d9bdae15f707abefafc9fcab02f6a67642c7cc05e1736e6f56a12755559ce349"
+        }
+      ],
+      "readingFocus": "Sommes géométriques et pondérées, soustraction/perturbation, dérivation et cas de convergence ; sommes arithmétiques."
+    },
+    {
+      "number": 13,
+      "sourceLectureNumber": 13,
+      "sourceTitle": "Lecture 13: Sums and Asymptotics",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-13-sums-and-asymptotics/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/0ee7810a0f2b2cded346b7ae55814e21_X9eErxRjQEI.pdf",
+          "sha256": "f7580ee1f142d13c09b70cab1c86c39b961af9057331dc2eb3be40b048726823"
+        },
+        {
+          "kind": "course_notes",
+          "chapter": 9,
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/c110f2c1483fd57a9c97ebde0be38f75_MIT6_042JF10_chap09.pdf",
+          "sha256": "d9bdae15f707abefafc9fcab02f6a67642c7cc05e1736e6f56a12755559ce349"
+        }
+      ],
+      "readingFocus": "Bornes intégrales, harmoniques, factorielle et Stirling ; distinction O/Θ/équivalence par quotients."
+    },
+    {
+      "number": 14,
+      "sourceLectureNumber": 14,
+      "sourceTitle": "Lecture 14: Divide and Conquer Recurrences",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-14-divide-and-conquer-recurrences/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/fa1c71923e2802c8415a16fadb541bb0_Kqf0uO0oV6s.pdf",
+          "sha256": "be99511875be074ccafecad4d2bd4274f5d6608ecabfe96a6bb277325e6c53e5"
+        },
+        {
+          "kind": "course_notes",
+          "chapter": 10,
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/18b5495f7408055f9679e3afebb108ab_MIT6_042JF10_chap10.pdf",
+          "sha256": "51edf05f0f5ffc39504391ea94d1ee9a83bbba884fab514034ce98901c12e92c"
+        }
+      ],
+      "readingFocus": "Hanoï, récurrences de division, arbre de fusion et tailles plancher/plafond ; conjecture puis preuve."
+    },
+    {
+      "number": 15,
+      "sourceTitle": "Midterm Practice Problems",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/mit6_042jf10_mid_practice/",
+      "kind": "review",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "assessment_material",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/3179fb7a80dcb5a10c5c85cf2b9ab585_MIT6_042JF10_mid_practice.pdf",
+          "sha256": "1ae542f4683e5a7fbbfbf96d0108c95befabd20e96465f1238b7eb7b31271f63"
+        },
+        {
+          "kind": "exam_solutions",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/b7bffa977868220bb3c262f4cb8875eb_MIT6_042JF10_mid_pctce_sol.pdf",
+          "sha256": "158e62e3ff29986e569df488f32cf9b1adb462daeb26ba12acea4c049b361b19"
+        }
+      ],
+      "readingFocus": "Préparation publiée : NOR, récurrence forte, inversions du puzzle, inverse modulaire, graphes, coloriage et asymptotique ; corrigé consulté."
+    },
+    {
+      "number": 16,
+      "sourceTitle": "Midterm",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/mit6_042jf10_midterm/",
+      "kind": "exam",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "assessment_material",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/4ee24d59458be01224204a330cff7eca_MIT6_042JF10_midterm.pdf",
+          "sha256": "74de6a83d98cb016555420ea921998939830f397d4e36879852a4c4c1a9ee50c"
+        },
+        {
+          "kind": "exam_solutions",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/6ed3117782fbe0bdacb11d65476a21f6_MIT6_042JF10_midterm_sol.pdf",
+          "sha256": "2d43480efa1cc06908cea3cc47df43f54009db6f19f8e7977403f2ee3bf310c5"
+        }
+      ],
+      "readingFocus": "Partiel du 27 octobre 2010 : implications, récurrence, terminaison/parité, modularité, graphes, cycles et bornes ; corrigé consulté."
+    },
+    {
+      "number": 17,
+      "sourceLectureNumber": 15,
+      "sourceTitle": "Lecture 15: Linear Recurrences",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-15-linear-recurrences/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/eb8fc3c5ca462d307112e4fcedda39da_TWBB-JlmYUc.pdf",
+          "sha256": "17a8fb805b0d4ed30bdaec067f320431a5d12cce03072cd67fd49db705fb99d0"
+        },
+        {
+          "kind": "course_notes",
+          "chapter": 10,
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/18b5495f7408055f9679e3afebb108ab_MIT6_042JF10_chap10.pdf",
+          "sha256": "51edf05f0f5ffc39504391ea94d1ee9a83bbba884fab514034ce98901c12e92c"
+        }
+      ],
+      "readingFocus": "Équation caractéristique, racines distinctes ou répétées, conditions initiales, Fibonacci et modélisation par récurrences."
+    },
+    {
+      "number": 18,
+      "sourceLectureNumber": 16,
+      "sourceTitle": "Lecture 16: Counting Rules I",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-16-counting-rules-i/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/d9cfa23d44c5aa8f81fae627d0bb30dd_pNt5Ll6hGqo.pdf",
+          "sha256": "cf15e2018bc9279a3de111e8c874e859b1e3c55990d062b207ac0b2dbc3ee474"
+        },
+        {
+          "kind": "course_notes",
+          "chapter": 11,
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/fd14182dfb1a679eda5cbd38c48c8bb5_MIT6_042JF10_chap11.pdf",
+          "sha256": "75d660bbccc2fada51f487067310303eca68615716a91a8064f3c15706c6773c"
+        }
+      ],
+      "readingFocus": "Bijections et applications, règles de somme/produit/division, tiroirs et preuves d’existence non constructives."
+    },
+    {
+      "number": 19,
+      "sourceLectureNumber": 17,
+      "sourceTitle": "Lecture 17: Counting Rules II",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-17-counting-rules-ii/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/545c0e4f7df07d15c4fbf6d3d0ed77dc_09yIb3VHhMI.pdf",
+          "sha256": "8eeb437229fd897df7d34a75c5a20a77f9dc6fd03dd3374b1712e3cc68d78f3b"
+        },
+        {
+          "kind": "course_notes",
+          "chapter": 11,
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/fd14182dfb1a679eda5cbd38c48c8bb5_MIT6_042JF10_chap11.pdf",
+          "sha256": "75d660bbccc2fada51f487067310303eca68615716a91a8064f3c15706c6773c"
+        }
+      ],
+      "readingFocus": "Sous-ensembles, règle des coefficients multinomiaux, inclusion-exclusion et descriptions de mains de cartes."
+    },
+    {
+      "number": 20,
+      "sourceLectureNumber": 18,
+      "sourceTitle": "Lecture 18: Probability Introduction",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-18-probability-introduction/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/e38df7d17bc4b9e21ac6c9347279a8d0_SmFwFdESMHI.pdf",
+          "sha256": "3e76cbf9a2842541d8831df251bb388211bdecdd30d3a0519d3773f197a6acef"
+        },
+        {
+          "kind": "course_notes",
+          "chapter": 14,
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/67563e626df1b795165a7bf1426cc166_MIT6_042JF10_chap14.pdf",
+          "sha256": "720d787a2a3d76f7d74a2cfc25ebd738084cc05a1abf485f9248a53f826a38d8"
+        }
+      ],
+      "readingFocus": "Espaces probabilisés, arbres et poids des feuilles, exemple des trois portes et dés non uniformes en somme."
+    },
+    {
+      "number": 21,
+      "sourceLectureNumber": 19,
+      "sourceTitle": "Lecture 19: Conditional Probability",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-19-conditional-probability/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/472fb084c579c044b7c3ee7a0f86d8ff_E6FbvM-FGZ8.pdf",
+          "sha256": "400b246ae734807584bb536d28f9b4310c4658bcbb2a966965dcb5e579a94037"
+        },
+        {
+          "kind": "course_notes",
+          "chapter": 15,
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/d642d816867bcd205926eefaa116edd8_MIT6_042JF10_chap15.pdf",
+          "sha256": "435b7948ec74850d4b8f85693a47fa569af53bef53e7df57414cb93076a87417"
+        }
+      ],
+      "readingFocus": "Conditionnement, Bayes, probabilités totales et rôle des fréquences préalables ; exemples d’information inversée."
+    },
+    {
+      "number": 22,
+      "sourceLectureNumber": 20,
+      "sourceTitle": "Lecture 20: Independence",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-20-independence/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/6388bd9f7ac0cad66c505d5f76c4ffef_l1BCv3qqW4A.pdf",
+          "sha256": "8e9c00aa9f6167da33d5b917d5c81055dd06557ad46265b82c06debb4931aff1"
+        },
+        {
+          "kind": "course_notes",
+          "chapter": 16,
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/9907ae0740731964bce45d8fc06989d2_MIT6_042JF10_chap16.pdf",
+          "sha256": "1b6264decc9d8dee50fa321902c31981fa3cd37c01cb4e82e06bc24d85f57e06"
+        }
+      ],
+      "readingFocus": "Indépendance de deux événements, indépendance mutuelle, collisions et anniversaires ; importance des hypothèses."
+    },
+    {
+      "number": 23,
+      "sourceLectureNumber": 21,
+      "sourceTitle": "Lecture 21: Random Variables",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-21-random-variables/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/26637c51d9ed01c61aa160f5f4a20e26_MOfhhFaQdjw.pdf",
+          "sha256": "96d7b46fef0308d74f4a43ede02479e71c5f00648dcc075cba46640e5378ff43"
+        },
+        {
+          "kind": "course_notes",
+          "chapter": 17,
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/6942723a3a99c1e7cfe0c3210b6f13ca_MIT6_042JF10_chap17.pdf",
+          "sha256": "8f72e300bf0fb7ad4f5b34646269b1145567d836907481dbf8b453b3fbc20ae2"
+        }
+      ],
+      "readingFocus": "Variables et lois, regroupement d’issues, fonctions de distribution et loi binomiale."
+    },
+    {
+      "number": 24,
+      "sourceLectureNumber": 22,
+      "sourceTitle": "Lecture 22: Expectation I",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-22-expectation-i/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/8d9320ea601c41975fb1e2cdc0c99c40_gGlMSe7uEkA.pdf",
+          "sha256": "c14d29f661801ae4db765ee013da2528c2e96b866702b8614b0b084660b403aa"
+        },
+        {
+          "kind": "course_notes",
+          "chapter": 18,
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/b61628dbe4b2e1d264f12c8ada491766_MIT6_042JF10_chap18.pdf",
+          "sha256": "756857505395307b8695e09a3e32b9e9804eba785cedf341b3b1daf8285e8202"
+        }
+      ],
+      "readingFocus": "Espérance, somme par valeurs ou par issues, indicatrices et problème des chapeaux ; formule des queues."
+    },
+    {
+      "number": 25,
+      "sourceLectureNumber": 23,
+      "sourceTitle": "Lecture 23: Expectation II",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-23-expectation-ii/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/dc4f198af215cde514be1c46c806d063_oI9fMUqgfxY.pdf",
+          "sha256": "ab6b39ec11c7ada8e51280809515786a9116afec5b1b575752912541288cce0e"
+        },
+        {
+          "kind": "course_notes",
+          "chapter": 18,
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/b61628dbe4b2e1d264f12c8ada491766_MIT6_042JF10_chap18.pdf",
+          "sha256": "756857505395307b8695e09a3e32b9e9804eba785cedf341b3b1daf8285e8202"
+        },
+        {
+          "kind": "course_notes",
+          "chapter": 19,
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/6c942e0720244be28959e968aae62e16_MIT6_042JF10_chap19.pdf",
+          "sha256": "74a6c04886a2cec4c18a34ae33cfc10addbd68958657c155df4537d225e8b3d2"
+        }
+      ],
+      "readingFocus": "Linéarité, nombre d’événements, dépendance, variance et écart type ; limites d’une conclusion à partir de la moyenne seule."
+    },
+    {
+      "number": 26,
+      "sourceLectureNumber": 24,
+      "sourceTitle": "Lecture 24: Large Deviations",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-24-large-deviations/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/9f082671fda66fa7b8639a4922bd48fd_q4mwO2qS2z4.pdf",
+          "sha256": "2a5ae913e6ea489901061976a517372cdb3c3bec8e9c56f02b490e1a4def3624"
+        },
+        {
+          "kind": "course_notes",
+          "chapter": 19,
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/6c942e0720244be28959e968aae62e16_MIT6_042JF10_chap19.pdf",
+          "sha256": "74a6c04886a2cec4c18a34ae33cfc10addbd68958657c155df4537d225e8b3d2"
+        }
+      ],
+      "readingFocus": "Markov, Chebyshev, Chernoff, transformation exponentielle, positivité et indépendance ; bornes et non probabilités exactes."
+    },
+    {
+      "number": 27,
+      "sourceLectureNumber": 25,
+      "sourceTitle": "Lecture 25: Random Walks",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-25-random-walks/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "lecture_transcript",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/1d5106863bee19ab21a7ac49503d3403_56iFMY8QW2k.pdf",
+          "sha256": "92c8d5e96987faf8379edb01551014c42af6c1c57b882d1a5dea2b718c86f900"
+        },
+        {
+          "kind": "course_notes",
+          "chapter": 20,
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/eb5072ea046760bb81e5ce6bc1c97b37_MIT6_042JF10_chap20.pdf",
+          "sha256": "e708630ae79007ae73a1ea8598348f3828ec8125377850818e438b4d22204570"
+        }
+      ],
+      "readingFocus": "Marches équitables et biaisées, ruine du joueur, récurrences d’atteinte/durée et conditions aux frontières."
+    },
+    {
+      "number": 28,
+      "sourceTitle": "Final Exam",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/mit6_042jf10_final/",
+      "kind": "exam",
+      "contentStatus": "authored",
+      "consultedMaterials": [
+        {
+          "kind": "assessment_material",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/23dc3226199eb8825acea5e7590f7caf_MIT6_042JF10_final.pdf",
+          "sha256": "7b0397d6063a164a2f9eace8c0f5568ac50f04d86f8268ac59a49c7ca60c35c4"
+        }
+      ],
+      "readingFocus": "Final du 14 décembre 2010 : récurrences, dénombrements, graphes et indicatrices, moments, dés et marches ; aucun corrigé officiel disponible."
+    }
+  ],
+  "supplementalResources": [
+    {
+      "sourceTitle": "Recitations",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/pages/recitations/",
+      "count": 23,
+      "note": "Separate worked practice materials; not numbered main lectures."
+    },
+    {
+      "sourceTitle": "Assignments",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/pages/assignments/",
+      "note": "Problem sets complement the guided authored lessons."
+    },
+    {
+      "sourceTitle": "2004 final exam; 2006 final exam; 2008 final exam",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/pages/exams/",
+      "note": "Historical practice papers, not examinations sat in the selected Fall 2010 edition."
+    }
+  ],
+  "knownSourceLimitations": [
+    "Chapter 8: State machines is explicitly unavailable on OCW; the relevant lecture transcripts remain available.",
+    "Official solutions for Final Exam 2010 are explicitly unavailable."
+  ],
+  "sequencePolicy": "Original lecture numbers retained as sourceLectureNumber; sourceSessionNumber follows the flattened 28-item course. Midterm practice review inserted pedagogically before Midterm; Midterm follows Lecture 14 in the official calendar; Final follows Lecture 25."
+}

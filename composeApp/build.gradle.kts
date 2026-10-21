@@ -1,22 +1,25 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
-    kotlin("plugin.serialization") version "2.0.0"
+    alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {
+    jvmToolchain(17)
     androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "17"
-            }
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
         }
     }
     
     // Desktop target (Windows)
-    jvm("desktop")
+    jvm("desktop") {
+        compilerOptions { jvmTarget.set(JvmTarget.JVM_17) }
+    }
     
     // iOS target (iPad & iPhone)
     listOf(
@@ -31,11 +34,30 @@ kotlin {
     }
 
     sourceSets {
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+        }
+        androidInstrumentedTest.dependencies {
+            implementation("androidx.compose.ui:ui-test-junit4:1.9.4")
+            implementation("androidx.test.ext:junit:1.2.1")
+            implementation("androidx.test:runner:1.6.2")
+        }
+        val desktopTest by getting {
+            dependencies {
+                implementation(kotlin("test-junit"))
+                // Native Compose semantics tests, independent of desktop UI automation.
+                // https://kotlinlang.org/docs/multiplatform/compose-desktop-ui-testing.html
+                implementation(compose.desktop.uiTestJUnit4)
+            }
+        }
         val commonMain by getting {
             dependencies {
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material)
+                // Material no longer supplies these icons transitively since Compose 1.8.
+                // https://github.com/JetBrains/compose-multiplatform/releases/tag/v1.8.0
+                implementation("org.jetbrains.compose.material:material-icons-core:1.7.3")
                 implementation(compose.ui)
                 implementation(compose.components.resources)
                 implementation(libs.kotlinx.coroutines.core)
@@ -52,6 +74,13 @@ kotlin {
         val desktopMain by getting {
             dependencies {
                 implementation(compose.desktop.currentOs)
+                implementation("org.apache.pdfbox:pdfbox:3.0.8")
+                implementation("org.scilab.forge:jlatexmath:1.0.7") {
+                    // The core math glyphs (including \alpha and \sum) work without these
+                    // optional language-font modules; do not bundle their extra font sets.
+                    exclude(group = "org.scilab.forge", module = "jlatexmath-font-greek")
+                    exclude(group = "org.scilab.forge", module = "jlatexmath-font-cyrillic")
+                }
             }
         }
     }
@@ -59,7 +88,7 @@ kotlin {
 
 android {
     namespace = "com.duolingo.app"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.duolingo.app"
@@ -67,6 +96,7 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0.0"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -74,10 +104,35 @@ android {
     }
 }
 
+dependencies {
+    // Isolated test activity; never included in the release application.
+    add("debugImplementation", "androidx.compose.ui:ui-test-manifest:1.9.4")
+}
+
+// Compose scene tests render offscreen; no desktop, display server or Computer Use required.
+tasks.withType<org.gradle.api.tasks.testing.Test>().configureEach {
+    systemProperty("java.awt.headless", "true")
+}
+
+val desktopTestTask = tasks.named<org.gradle.api.tasks.testing.Test>("desktopTest") {
+    exclude("**/SourcePdfSmokeTest.class")
+}
+tasks.register<org.gradle.api.tasks.testing.Test>("sourcePdfSmokeTest") {
+    description = "Opt-in network check of an official MIT PDF with the production desktop reader."
+    group = "verification"
+    dependsOn("desktopTestClasses")
+    testClassesDirs = desktopTestTask.get().testClassesDirs
+    classpath = desktopTestTask.get().classpath
+    filter.includeTestsMatching("com.duolingo.app.ui.pdf.SourcePdfSmokeTest")
+}
+
 compose.desktop {
     application {
         mainClass = "MainKt"
         nativeDistributions {
+            // PDFBox 3 uses sun.misc.Unsafe.invokeCleaner via this module. The reduced
+            // jlink runtime otherwise falls back to inaccessible Java 8 internals.
+            modules("jdk.unsupported")
             targetFormats(org.jetbrains.compose.desktop.application.dsl.TargetFormat.Msi, org.jetbrains.compose.desktop.application.dsl.TargetFormat.Exe)
             packageName = "DuolingoKmpApp"
             packageVersion = "1.0.0"

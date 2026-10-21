@@ -1,0 +1,14 @@
+{
+  "courseCode": "TCF Canada · atelier écoute",
+  "edition": "Préparation originale 2026 · format FEI",
+  "sourceUrl": "https://www.france-education-international.fr/test/tcf-canada",
+  "sequenceType": "original_practice_formats",
+  "notice": "Trois documents et leur progression sont des créations locales, sans prétention de programme ou de sujets officiels FEI.",
+  "checkedOn": "2026-10-20",
+  "sessionCount": 3,
+  "sessions": [
+    {"number": 1, "sourceTitle": "Atelier original — annonce pratique", "sourceUrl": "https://www.france-education-international.fr/test/tcf-canada", "kind": "practice"},
+    {"number": 2, "sourceTitle": "Atelier original — message professionnel", "sourceUrl": "https://www.france-education-international.fr/test/tcf-canada", "kind": "practice"},
+    {"number": 3, "sourceTitle": "Atelier original — opinion argumentée", "sourceUrl": "https://www.france-education-international.fr/test/tcf-canada", "kind": "practice"}
+  ]
+}

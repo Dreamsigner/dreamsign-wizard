@@ -1,0 +1,685 @@
+{
+  "courseCode": "MIT 6.004",
+  "inventoryIds": [
+    "ossu_038",
+    "ossu_039",
+    "ossu_040"
+  ],
+  "equivalenceGroup": "mit_computation_structures",
+  "edition": "Spring 2017",
+  "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/",
+  "checkedOn": "2026-10-20",
+  "sessionCount": 28,
+  "countUnit": "24 scheduled lectures and four separately scheduled quizzes, in calendar order; 21 annotated topic units",
+  "sourceIndexUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/",
+  "calendarUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar/",
+  "syllabusUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/syllabus/",
+  "lectureCount": 24,
+  "quizCount": 4,
+  "materialUnitCount": 21,
+  "sessions": [
+    {
+      "number": 1,
+      "sourceNumber": "L1",
+      "sourceTitle": "Unit 1: Basics of information: entropy, encodings, error correction",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "materialUnits": [
+        1
+      ],
+      "consultedMaterials": [
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c1/c1s1/",
+          "sha256": "0e103fb4e5e3f3cf9f1e3ab1a2aaed5b39f9b642f3b306148ed10234587d5d3a"
+        }
+      ],
+      "readingFocus": "Unité 1 : Information et entropie, codage préfixe/Huffman, complément à deux et distance de Hamming."
+    },
+    {
+      "number": 2,
+      "sourceNumber": "L2",
+      "sourceTitle": "Unit 2: The digital abstraction: combinational logic, voltage-based encoding",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "materialUnits": [
+        2
+      ],
+      "consultedMaterials": [
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c2/c2s1/",
+          "sha256": "26fa10d4cd95df387b6307e5866f6a202643c25e9a2ff35eae8579e2088f6c2a"
+        }
+      ],
+      "readingFocus": "Unité 2 : Discipline statique, plages de tension, marges de bruit, composition combinatoire acyclique."
+    },
+    {
+      "number": 3,
+      "sourceNumber": "L3",
+      "sourceTitle": "Unit 3: CMOS: MOSFETs, gate design; timing",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "materialUnits": [
+        3
+      ],
+      "consultedMaterials": [
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c3/c3s1/",
+          "sha256": "414b8cda82b595dbc8a2fd4d3d9ad511e01c5b66808ab960e271328b6127a055"
+        }
+      ],
+      "readingFocus": "Unité 3 : Réseaux NFET/PFET complémentaires, NAND/NOR, délais de propagation et de contamination."
+    },
+    {
+      "number": 4,
+      "sourceNumber": "L4",
+      "sourceTitle": "Unit 4: Combinational logic: canonical forms, synthesis, simplification",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "materialUnits": [
+        4
+      ],
+      "consultedMaterials": [
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c4/c4s1/",
+          "sha256": "b0fee854cd93cc4c4d4d33aaf5256cbd4492b748af608e71cdbcee3c61c588ff"
+        }
+      ],
+      "readingFocus": "Unité 4 : Sommes de produits, simplification, cartes de Karnaugh, consensus/leniency, MUX et ROM."
+    },
+    {
+      "number": 5,
+      "sourceNumber": "L5",
+      "sourceTitle": "Unit 5: Sequential logic: latches, registers, timing",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "materialUnits": [
+        5
+      ],
+      "consultedMaterials": [
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c5/c5s1/",
+          "sha256": "5ec71573a110d95a12252d7e6f40950e66f85b4a2e43402195abf8378daf742b"
+        }
+      ],
+      "readingFocus": "Unité 5 : Latch transparent, registre à front, montage maître-esclave, setup/hold et chemins min/max."
+    },
+    {
+      "number": 6,
+      "sourceNumber": "L6",
+      "sourceTitle": "Unit 6: Finite-state machines (FSMs); asynchronous inputs and metastability",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "materialUnits": [
+        6
+      ],
+      "consultedMaterials": [
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c6/c6s1/",
+          "sha256": "7d8af15e374e8885e42f1756e00634a3fc34e63294ec17cd1b2396b1b142b1bf"
+        }
+      ],
+      "readingFocus": "Unité 6 : Transitions et équivalence de FSM, encodage des états, RoboAnt, métastabilité et quarantaine."
+    },
+    {
+      "number": 7,
+      "sourceNumber": "L7",
+      "sourceTitle": "Unit 7: Performance measures: throughput and latency, pipelining",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "materialUnits": [
+        7
+      ],
+      "consultedMaterials": [
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c7/c7s1/",
+          "sha256": "937f208106c9d309b9138d0da1151644e3491e669bc8b3e9219748a95a194189"
+        }
+      ],
+      "readingFocus": "Unité 7 : Latence/débit, contours de pipeline, équilibrage et entrelacement de ressources."
+    },
+    {
+      "number": 8,
+      "sourceNumber": "Quiz 1",
+      "sourceTitle": "Quiz 1 (L1–L5)",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar/",
+      "kind": "exam",
+      "contentStatus": "authored",
+      "materialUnits": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "consultedMaterials": [
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c1/c1s1/",
+          "sha256": "0e103fb4e5e3f3cf9f1e3ab1a2aaed5b39f9b642f3b306148ed10234587d5d3a"
+        },
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c2/c2s1/",
+          "sha256": "26fa10d4cd95df387b6307e5866f6a202643c25e9a2ff35eae8579e2088f6c2a"
+        },
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c3/c3s1/",
+          "sha256": "414b8cda82b595dbc8a2fd4d3d9ad511e01c5b66808ab960e271328b6127a055"
+        },
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c4/c4s1/",
+          "sha256": "b0fee854cd93cc4c4d4d33aaf5256cbd4492b748af608e71cdbcee3c61c588ff"
+        },
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c5/c5s1/",
+          "sha256": "5ec71573a110d95a12252d7e6f40950e66f85b4a2e43402195abf8378daf742b"
+        }
+      ],
+      "readingFocus": "Unité 1 : Information et entropie, codage préfixe/Huffman, complément à deux et distance de Hamming. Unité 2 : Discipline statique, plages de tension, marges de bruit, composition combinatoire acyclique. Unité 3 : Réseaux NFET/PFET complémentaires, NAND/NOR, délais de propagation et de contamination. Unité 4 : Sommes de produits, simplification, cartes de Karnaugh, consensus/leniency, MUX et ROM. Unité 5 : Latch transparent, registre à front, montage maître-esclave, setup/hold et chemins min/max."
+    },
+    {
+      "number": 9,
+      "sourceNumber": "L8",
+      "sourceTitle": "Unit 8: Design tradeoffs: power, speed, area, throughput",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "materialUnits": [
+        8
+      ],
+      "consultedMaterials": [
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c8/c8s1/",
+          "sha256": "d112e7b59124965f0fde8fb59b203bde72f21807d6827be52f61daa0a6c31885"
+        }
+      ],
+      "readingFocus": "Unité 8 : Puissance statique/dynamique CMOS, carry-select/carry-lookahead, multiplication et réutilisation séquentielle."
+    },
+    {
+      "number": 10,
+      "sourceNumber": "L9",
+      "sourceTitle": "Unit 9: von Neumann architectures, Beta instruction set",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "materialUnits": [
+        9
+      ],
+      "consultedMaterials": [
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c9/c9s1/",
+          "sha256": "ab238dca2141cc554e36e0046038e3b36fc17479c0b5791742abd4725f405765"
+        }
+      ],
+      "readingFocus": "Unité 9 : Programme enregistré, registres et R31, littéraux signés, adressage octet et branches PC+4."
+    },
+    {
+      "number": 11,
+      "sourceNumber": "L10",
+      "sourceTitle": "Unit 10: Assmbly language",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "materialUnits": [
+        10
+      ],
+      "consultedMaterials": [
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c10/c10s1/",
+          "sha256": "f143844718effb8d9878501add7ec36616d1e7c74a5b9ee7b4da1b3c314e22e0"
+        }
+      ],
+      "readingFocus": "Unité 10 : UASM, labels et macros/pseudo-instructions, trace de factorielle, modèles universels et arrêt."
+    },
+    {
+      "number": 12,
+      "sourceNumber": "L11",
+      "sourceTitle": "Unit 11: Compiling expressions and statements",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "materialUnits": [
+        11
+      ],
+      "consultedMaterials": [
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c11/c11s1/",
+          "sha256": "d85fb39fd14b1c96de5b4019c58d200f3641f1956e98a0a854075f789804420a"
+        }
+      ],
+      "readingFocus": "Unité 11 : Compilation d’expressions/conditions/boucles, IR et optimisations préservant les dépendances."
+    },
+    {
+      "number": 13,
+      "sourceNumber": "L12",
+      "sourceTitle": "Unit 12: Stacks and procedures",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "materialUnits": [
+        12
+      ],
+      "consultedMaterials": [
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c12/c12s1/",
+          "sha256": "1037241782333314e6824eb9926bd3e1d8cd7a4e0c1ed1c43f683d40d1b658f0"
+        }
+      ],
+      "readingFocus": "Unité 12 : Convention de pile Beta croissante, SP premier mot libre, cadres et sauvegarde de liaison."
+    },
+    {
+      "number": 14,
+      "sourceNumber": "L13",
+      "sourceTitle": "Unit 13: Beta implementation",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "materialUnits": [
+        13
+      ],
+      "consultedMaterials": [
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c13/c13s1/",
+          "sha256": "5f6f4c3971a69c7f71e53f1c07eb59f9a076ef598dc1bb4d252728a0d7dbe0d4"
+        }
+      ],
+      "readingFocus": "Unité 13 : Ports du fichier de registres, ALU/LD/ST/branches, multiplexeurs et ROM de contrôle."
+    },
+    {
+      "number": 15,
+      "sourceNumber": "Quiz 2",
+      "sourceTitle": "Quiz 2 (L6–L12)",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar/",
+      "kind": "exam",
+      "contentStatus": "authored",
+      "materialUnits": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "consultedMaterials": [
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c6/c6s1/",
+          "sha256": "7d8af15e374e8885e42f1756e00634a3fc34e63294ec17cd1b2396b1b142b1bf"
+        },
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c7/c7s1/",
+          "sha256": "937f208106c9d309b9138d0da1151644e3491e669bc8b3e9219748a95a194189"
+        },
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c8/c8s1/",
+          "sha256": "d112e7b59124965f0fde8fb59b203bde72f21807d6827be52f61daa0a6c31885"
+        },
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c9/c9s1/",
+          "sha256": "ab238dca2141cc554e36e0046038e3b36fc17479c0b5791742abd4725f405765"
+        },
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c10/c10s1/",
+          "sha256": "f143844718effb8d9878501add7ec36616d1e7c74a5b9ee7b4da1b3c314e22e0"
+        },
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c11/c11s1/",
+          "sha256": "d85fb39fd14b1c96de5b4019c58d200f3641f1956e98a0a854075f789804420a"
+        },
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c12/c12s1/",
+          "sha256": "1037241782333314e6824eb9926bd3e1d8cd7a4e0c1ed1c43f683d40d1b658f0"
+        }
+      ],
+      "readingFocus": "Unité 6 : Transitions et équivalence de FSM, encodage des états, RoboAnt, métastabilité et quarantaine. Unité 7 : Latence/débit, contours de pipeline, équilibrage et entrelacement de ressources. Unité 8 : Puissance statique/dynamique CMOS, carry-select/carry-lookahead, multiplication et réutilisation séquentielle. Unité 9 : Programme enregistré, registres et R31, littéraux signés, adressage octet et branches PC+4. Unité 10 : UASM, labels et macros/pseudo-instructions, trace de factorielle, modèles universels et arrêt. Unité 11 : Compilation d’expressions/conditions/boucles, IR et optimisations préservant les dépendances. Unité 12 : Convention de pile Beta croissante, SP premier mot libre, cadres et sauvegarde de liaison."
+    },
+    {
+      "number": 16,
+      "sourceNumber": "L14",
+      "sourceTitle": "Unit 14: Multilevel memories: locality, performance, caches",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "materialUnits": [
+        14
+      ],
+      "consultedMaterials": [
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c14/c14s1/",
+          "sha256": "549ce395e2514c539bb04d73216de83811727ca7c987a53c9a48a61c78e4f63b"
+        }
+      ],
+      "readingFocus": "Unité 14 : Technologies et localité, tag/indice/déplacement, conflits et associativité, write-back/dirty."
+    },
+    {
+      "number": 17,
+      "sourceNumber": "L15",
+      "sourceTitle": "Unit 14: Cache design issues (continued)",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "materialUnits": [
+        14
+      ],
+      "consultedMaterials": [
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c14/c14s1/",
+          "sha256": "549ce395e2514c539bb04d73216de83811727ca7c987a53c9a48a61c78e4f63b"
+        }
+      ],
+      "readingFocus": "Unité 14 : Technologies et localité, tag/indice/déplacement, conflits et associativité, write-back/dirty."
+    },
+    {
+      "number": 18,
+      "sourceNumber": "L16",
+      "sourceTitle": "Unit 15: Pipelining the Beta: pipeline diagrams, data hazards",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "materialUnits": [
+        15
+      ],
+      "consultedMaterials": [
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c15/c15s1/",
+          "sha256": "00eacb494bcb6d526b67aaed27156c69eeb096eb305772152b54be0d463bac71"
+        }
+      ],
+      "readingFocus": "Unité 15 : IF/RF/ALU/MEM/WB, bypass vers RF, deux stalls load-to-use, annulation des branches."
+    },
+    {
+      "number": 19,
+      "sourceNumber": "L17",
+      "sourceTitle": "Unit 15: Pipelining the Beta: control hazards, dealing with exceptions (continued)",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "materialUnits": [
+        15
+      ],
+      "consultedMaterials": [
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c15/c15s1/",
+          "sha256": "00eacb494bcb6d526b67aaed27156c69eeb096eb305772152b54be0d463bac71"
+        }
+      ],
+      "readingFocus": "Unité 15 : IF/RF/ALU/MEM/WB, bypass vers RF, deux stalls load-to-use, annulation des branches."
+    },
+    {
+      "number": 20,
+      "sourceNumber": "L18",
+      "sourceTitle": "Unit 16: Virtual memory: mapping, protection, contexts",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "materialUnits": [
+        16
+      ],
+      "consultedMaterials": [
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c16/c16s1/",
+          "sha256": "fac3ee7773ad3421a8156eb34433841ab3df1aa5671067a036213aee5737bd07"
+        }
+      ],
+      "readingFocus": "Unité 16 : Pagination, déplacement invariant, table plate/hiérarchique, TLB, défauts de page et contextes."
+    },
+    {
+      "number": 21,
+      "sourceNumber": "Quiz 3",
+      "sourceTitle": "Quiz 3 (L13–L17)",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar/",
+      "kind": "exam",
+      "contentStatus": "authored",
+      "materialUnits": [
+        13,
+        14,
+        15
+      ],
+      "consultedMaterials": [
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c13/c13s1/",
+          "sha256": "5f6f4c3971a69c7f71e53f1c07eb59f9a076ef598dc1bb4d252728a0d7dbe0d4"
+        },
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c14/c14s1/",
+          "sha256": "549ce395e2514c539bb04d73216de83811727ca7c987a53c9a48a61c78e4f63b"
+        },
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c15/c15s1/",
+          "sha256": "00eacb494bcb6d526b67aaed27156c69eeb096eb305772152b54be0d463bac71"
+        }
+      ],
+      "readingFocus": "Unité 13 : Ports du fichier de registres, ALU/LD/ST/branches, multiplexeurs et ROM de contrôle. Unité 14 : Technologies et localité, tag/indice/déplacement, conflits et associativité, write-back/dirty. Unité 15 : IF/RF/ALU/MEM/WB, bypass vers RF, deux stalls load-to-use, annulation des branches."
+    },
+    {
+      "number": 22,
+      "sourceNumber": "L19",
+      "sourceTitle": "Unit 17: Virtual machines: timesharing, OS kernels, supervisor calls",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "materialUnits": [
+        17
+      ],
+      "consultedMaterials": [
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c17/c17s1/",
+          "sha256": "187db69e836f5615f0000f0bdb36e6fc0db8ecf6b091f4f50932133b0f5c7f9c"
+        }
+      ],
+      "readingFocus": "Unité 17 : État des processus, interruption de timer, commutation, mode noyau et appels superviseur."
+    },
+    {
+      "number": 23,
+      "sourceNumber": "L20",
+      "sourceTitle": "Unit 18: Devices and interrupts; real-time",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "materialUnits": [
+        18
+      ],
+      "consultedMaterials": [
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c18/c18s1/",
+          "sha256": "90958cd0ba3f3428134cc5931a9e4d7f3f574a19d634fe5e3ac28f40d9ed20ea"
+        }
+      ],
+      "readingFocus": "Unité 18 : Périphériques asynchrones, tampon de clavier, attente/suspension, latence et contraintes temps réel."
+    },
+    {
+      "number": 24,
+      "sourceNumber": "L21",
+      "sourceTitle": "Unit 19: Communicating processes: semaphores, synchronization, atomicity, deadlock",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "materialUnits": [
+        19
+      ],
+      "consultedMaterials": [
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c19/c19s1/",
+          "sha256": "66824ffe170bf293c2e6145e1108d23027c1eac79f4fb2b4aa298828341dea7d"
+        }
+      ],
+      "readingFocus": "Unité 19 : Tampon borné, WAIT/SIGNAL non négatifs, exclusion atomique et interblocage/ordre global."
+    },
+    {
+      "number": 25,
+      "sourceNumber": "L22",
+      "sourceTitle": "Unit 20: System-level communication",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "materialUnits": [
+        20
+      ],
+      "consultedMaterials": [
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c20/c20s1/",
+          "sha256": "acb05ad2cdc4a6b352308d6a629e19a7c21574c08336d1a80063a3d7ff811ed7"
+        }
+      ],
+      "readingFocus": "Unité 20 : Interfaces et fils réels, bus et liens série point à point, topologies et couches réseau."
+    },
+    {
+      "number": 26,
+      "sourceNumber": "L23",
+      "sourceTitle": "Unit 21: Parallel processing: performance limits, data- and thread-level parallelism",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "materialUnits": [
+        21
+      ],
+      "consultedMaterials": [
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c21/c21s1/",
+          "sha256": "b1bcdecefba09febd9f2b88a765d715ad1f2a699d82ece4779c1d974896b6185"
+        }
+      ],
+      "readingFocus": "Unité 21 : ILP/vectoriel/multicœur, Amdahl, cohérence séquentielle, MESI et barrières."
+    },
+    {
+      "number": 27,
+      "sourceNumber": "L24",
+      "sourceTitle": "Building a Better Beta: tips for the design project",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar/",
+      "kind": "lesson",
+      "contentStatus": "authored",
+      "materialUnits": [
+        8,
+        13,
+        15,
+        21
+      ],
+      "consultedMaterials": [
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c8/c8s1/",
+          "sha256": "d112e7b59124965f0fde8fb59b203bde72f21807d6827be52f61daa0a6c31885"
+        },
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c13/c13s1/",
+          "sha256": "5f6f4c3971a69c7f71e53f1c07eb59f9a076ef598dc1bb4d252728a0d7dbe0d4"
+        },
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c15/c15s1/",
+          "sha256": "00eacb494bcb6d526b67aaed27156c69eeb096eb305772152b54be0d463bac71"
+        },
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c21/c21s1/",
+          "sha256": "b1bcdecefba09febd9f2b88a765d715ad1f2a699d82ece4779c1d974896b6185"
+        }
+      ],
+      "readingFocus": "Unité 8 : Puissance statique/dynamique CMOS, carry-select/carry-lookahead, multiplication et réutilisation séquentielle. Unité 13 : Ports du fichier de registres, ALU/LD/ST/branches, multiplexeurs et ROM de contrôle. Unité 15 : IF/RF/ALU/MEM/WB, bypass vers RF, deux stalls load-to-use, annulation des branches. Unité 21 : ILP/vectoriel/multicœur, Amdahl, cohérence séquentielle, MESI et barrières."
+    },
+    {
+      "number": 28,
+      "sourceNumber": "Quiz 4",
+      "sourceTitle": "Quiz 4 (L18–L22)",
+      "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar/",
+      "kind": "exam",
+      "contentStatus": "authored",
+      "materialUnits": [
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "consultedMaterials": [
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c16/c16s1/",
+          "sha256": "fac3ee7773ad3421a8156eb34433841ab3df1aa5671067a036213aee5737bd07"
+        },
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c17/c17s1/",
+          "sha256": "187db69e836f5615f0000f0bdb36e6fc0db8ecf6b091f4f50932133b0f5c7f9c"
+        },
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c18/c18s1/",
+          "sha256": "90958cd0ba3f3428134cc5931a9e4d7f3f574a19d634fe5e3ac28f40d9ed20ea"
+        },
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c19/c19s1/",
+          "sha256": "66824ffe170bf293c2e6145e1108d23027c1eac79f4fb2b4aa298828341dea7d"
+        },
+        {
+          "kind": "annotated_slides_html",
+          "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c20/c20s1/",
+          "sha256": "acb05ad2cdc4a6b352308d6a629e19a7c21574c08336d1a80063a3d7ff811ed7"
+        }
+      ],
+      "readingFocus": "Unité 16 : Pagination, déplacement invariant, table plate/hiérarchique, TLB, défauts de page et contextes. Unité 17 : État des processus, interruption de timer, commutation, mode noyau et appels superviseur. Unité 18 : Périphériques asynchrones, tampon de clavier, attente/suspension, latence et contraintes temps réel. Unité 19 : Tampon borné, WAIT/SIGNAL non négatifs, exclusion atomique et interblocage/ordre global. Unité 20 : Interfaces et fils réels, bus et liens série point à point, topologies et couches réseau."
+    }
+  ],
+  "scopeLimits": [
+    "The calendar explicitly excludes labs. Seven labs and the full design project are not authored or claimed complete.",
+    "Four quiz lessons are original practice within the official scheduled scope, not official papers or MIT grading. No final examination is scheduled.",
+    "L24 has a calendar entry but no separate annotated chapter in this edition; its authored design synthesis explicitly reuses consulted units 8, 13, 15 and 21.",
+    "L14/L15 share unit 14; L16/L17 share unit 15. The teaching focus and exercises are distinct.",
+    "Annotated HTML slide explanations were consulted; no video playback, electrical simulation, HDL execution or complete processor construction is claimed."
+  ],
+  "indexEvidence": [
+    {
+      "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar/",
+      "sha256": "5a901f00494360936fa6570b93384b949802e58635849fed245b651ad89945fb"
+    },
+    {
+      "sourceUrl": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/syllabus/",
+      "sha256": "e4246323c404a70241bfd9da575c9be128397dee1b62849e176d138ca5b8db68"
+    }
+  ]
+}

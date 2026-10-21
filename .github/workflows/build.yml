@@ -10,66 +10,90 @@ on:
 permissions:
   contents: read
 
-jobs:
-  compile-desktop:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out source
-        uses: actions/checkout@v6
-      - name: Set up Java
-        uses: actions/setup-java@v5
-        with:
-          distribution: temurin
-          java-version: '17'
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v4
-        with:
-          packages: 'platform-tools platforms;android-34 build-tools;34.0.0'
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v6
-        with:
-          gradle-version: '8.2.1'
-      - name: Compile desktop target
-        run: gradle :composeApp:compileKotlinDesktop
+concurrency:
+  group: build-${{ github.ref }}
+  # Keep platform evidence from a running build while the next batch queues.
+  cancel-in-progress: false
 
+env:
+  GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs=-Xmx4g
+
+jobs:
   package-windows:
     runs-on: windows-latest
+    timeout-minutes: 30
     steps:
-      - name: Check out source
-        uses: actions/checkout@v6
-      - name: Set up Java
-        uses: actions/setup-java@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Validate source coverage and generated curriculum
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          function Invoke-PythonCheck { & python @args; if ($LASTEXITCODE -ne 0) { throw 'Python check failed.' } }
+          Invoke-PythonCheck -m pip install sympy==1.12
+          Invoke-PythonCheck -m unittest discover -s tools -p 'test_*.py'
+          Invoke-PythonCheck tools/check_calculus_math.py
+          Invoke-PythonCheck tools/check_linear_algebra_math.py
+          Invoke-PythonCheck tools/check_missing_semester_scenarios.py
+          Invoke-PythonCheck tools/check_intro_python.py
+          Invoke-PythonCheck tools/check_discrete_math.py
+          Invoke-PythonCheck tools/check_computation_theory.py
+          Invoke-PythonCheck tools/check_computer_architecture.py
+          Invoke-PythonCheck tools/check_numerical_methods.py
+          Invoke-PythonCheck tools/check_formal_logic.py
+          Invoke-PythonCheck tools/check_algorithmic_game_theory.py
+          Invoke-PythonCheck tools/validate_course_resources.py
+          Invoke-PythonCheck tools/export_course_notes.py --check
+          Invoke-PythonCheck tools/validate_curriculum.py --generate
+          git diff --exit-code -- composeApp/src/commonMain/kotlin/com/duolingo/app/data/generated/ docs/curriculum/AUTHORED-COVERAGE.md
+          if ($LASTEXITCODE -ne 0) { throw 'Generated catalogue is stale.' }
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v4
+      - uses: gradle/actions/setup-gradle@v6
         with:
-          packages: 'platform-tools platforms;android-34 build-tools;34.0.0'
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v6
-        with:
-          gradle-version: '8.2.1'
-      - name: Build Windows app image
-        run: gradle :composeApp:createDistributable
-      - name: Prepare Windows test package
+          gradle-version: '8.11.1'
+      - name: Test and build Windows app image
+        run: gradle :composeApp:desktopTest :composeApp:createDistributable --stacktrace
+      - name: Prepare Windows package
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
           $launcher = Get-ChildItem 'composeApp/build/compose/binaries' -Filter 'DuolingoKmpApp.exe' -File -Recurse | Select-Object -First 1
           if (-not $launcher) { throw 'Windows app launcher was not produced.' }
-          $stage = Join-Path $env:RUNNER_TEMP 'DuolingoKmpApp'
-          New-Item -ItemType Directory -Path $stage -Force | Out-Null
-          Copy-Item -Path $launcher.Directory.FullName -Destination $stage -Recurse
-          Set-Content -Path (Join-Path $stage 'LISEZ-MOI.txt') -Value @'
-          Pour tester l'application : extrayez ce dossier, puis lancez DuolingoKmpApp.exe.
-          Il s'agit d'une version de démonstration. La progression n'est pas conservée après fermeture.
-          '@
-          Compress-Archive -Path (Join-Path $stage '*') -DestinationPath (Join-Path $env:RUNNER_TEMP 'DuolingoKmpApp-Windows.zip')
-      - name: Upload Windows test package
-        uses: actions/upload-artifact@v7
+          $runtimeRelease = Join-Path $launcher.Directory.FullName 'runtime/release'
+          if (-not (Select-String -LiteralPath $runtimeRelease -SimpleMatch 'jdk.unsupported' -Quiet)) { throw 'PDFBox runtime module is missing.' }
+          Get-ChildItem -LiteralPath 'docs/licences' -Filter '*.txt' -File | ForEach-Object { Copy-Item -LiteralPath $_.FullName -Destination (Join-Path $launcher.Directory.FullName $_.Name) }
+          Copy-Item -LiteralPath 'docs/windows-testing.md' -Destination (Join-Path $launcher.Directory.FullName 'LISEZ-MOI.md')
+          python tools/verify_bundled_audio.py --desktop-dir $launcher.Directory.FullName
+          if ($LASTEXITCODE -ne 0) { throw 'Bundled audio verification failed.' }
+          $taskReport = Join-Path $PWD 'composeApp/build/reports/installation-check.json'
+          $checkProcess = Start-Process -FilePath $launcher.FullName -ArgumentList @('--self-check', '--report', ('"{0}"' -f $taskReport)) -PassThru -WindowStyle Hidden
+          if (-not $checkProcess.WaitForExit(60000)) {
+            $checkProcess.Kill()
+            throw 'The packaged installation check timed out.'
+          }
+          if ($checkProcess.ExitCode -ne 0 -or -not (Test-Path -LiteralPath $taskReport)) { throw 'The packaged installation check failed.' }
+          $checks = Get-Content -Raw -LiteralPath $taskReport | ConvertFrom-Json
+          if ($checks.courses -lt 1 -or $checks.lessons -lt 1 -or $checks.exercises -lt 1 -or $checks.uiStarted -ne $false -or $checks.userDataAccessed -ne $false) { throw 'Invalid installation report.' }
+          if ($checks.mathRenderingVerified -ne $true -or $checks.pdfRenderingVerified -ne $true) { throw 'The distributed document engines failed verification.' }
+          Compress-Archive -Path (Join-Path $launcher.Directory.FullName '*') -DestinationPath (Join-Path $env:RUNNER_TEMP 'DuolingoKmpApp-Windows.zip')
+      - uses: actions/upload-artifact@v7
         with:
           name: DuolingoKmpApp-Windows
           path: ${{ runner.temp }}\DuolingoKmpApp-Windows.zip
           if-no-files-found: error
+          retention-days: 14
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: Windows-checks
+          path: |
+            composeApp/build/reports/tests/
+            composeApp/build/test-results/desktopTest/
+            composeApp/build/reports/ui-snapshots/
+            composeApp/build/reports/installation-check.json
           retention-days: 14

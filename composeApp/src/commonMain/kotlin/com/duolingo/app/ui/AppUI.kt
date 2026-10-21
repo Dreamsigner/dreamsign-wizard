@@ -1,298 +1,298 @@
 package com.duolingo.app.ui
 
-import androidx.compose.animation.*
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.semantics.*
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.duolingo.app.model.*
 import com.duolingo.app.viewmodel.AppScreen
 import com.duolingo.app.viewmodel.AppViewModel
-import kotlinx.coroutines.launch
 
-val DuoGreen = Color(0xFF58CC02)
-val DuoDarkGreen = Color(0xFF46A302)
-val DuoRed = Color(0xFFFF4B4B)
-val DuoBlue = Color(0xFF1CB0F6)
-val DuoYellow = Color(0xFFFFC800)
-val DuoPurple = Color(0xFFCE82FF)
-val DuoBgGray = Color(0xFFF7F7F7)
+val BrandRed = Color(0xFFE3262E)
+val ActionRed = Color(0xFFC91E28)
+val Ink = Color(0xFF141414)
+val Graphite = Color(0xFF4A4A4A)
+val Paper = Color(0xFFF7F5F0)
+val Concrete = Color(0xFFD9D7D2)
+val White = Color(0xFFFFFFFF)
+val LearningShape = RoundedCornerShape(16.dp)
+
+/** Keep the source order visible without renaming stable published lesson IDs. */
+internal val Lesson.sourceSessionLabel: String?
+    get() {
+        val number = sourceSessionNumber ?: return null
+        val kind = when (sessionKind) {
+            "exam" -> "Entraînement à l’examen"
+            "review" -> "Révision"
+            "practice" -> "Atelier original"
+            else -> "Leçon"
+        }
+        return "$kind · $number"
+    }
+
+/** Material controls supply keyboard activation; this adds an explicit focus outline. */
+fun Modifier.learningFocus(source: MutableInteractionSource): Modifier = composed {
+    val focused by source.collectIsFocusedAsState()
+    border(if (focused) 3.dp else 0.dp, if (focused) Ink else Color.Transparent, LearningShape)
+}
+
+@Composable
+fun LearningButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier, enabled: Boolean = true) {
+    val interaction = remember { MutableInteractionSource() }
+    Button(onClick, modifier.heightIn(min = 48.dp).learningFocus(interaction), enabled = enabled,
+        interactionSource = interaction, shape = LearningShape,
+        colors = ButtonDefaults.buttonColors(backgroundColor = ActionRed, contentColor = White),
+        elevation = ButtonDefaults.elevation(0.dp, 0.dp, 0.dp)) { Text(text, fontWeight = FontWeight.Bold) }
+}
 
 @Composable
 fun DuolingoApp(viewModel: AppViewModel = remember { AppViewModel() }) {
-    val currentScreen by viewModel.currentScreen.collectAsState()
+    DisposableEffect(viewModel) { onDispose { viewModel.close() } }
+    val screen by viewModel.currentScreen.collectAsState()
     val stats by viewModel.userStats.collectAsState()
     val subjects by viewModel.subjects.collectAsState()
-    val selectedSubjectId by viewModel.selectedSubjectId.collectAsState()
-
-    val currentSubject = subjects.find { it.id == selectedSubjectId } ?: subjects.first()
-
-    Scaffold(
-        topBar = {
-            if (currentScreen != AppScreen.LESSON_QUIZ) {
-                TopStatsHeader(stats = stats, subjects = subjects, selectedSubject = currentSubject, onSelectSubject = { viewModel.selectSubject(it) })
-            }
-        },
-        bottomBar = {
-            if (currentScreen != AppScreen.LESSON_QUIZ) {
-                BottomNavigationBar(currentScreen = currentScreen, onNavigate = { viewModel.navigateTo(it) })
-            }
-        },
-        backgroundColor = DuoBgGray
-    ) { innerPadding ->
-        Box(modifier = Modifier.padding(innerPadding).fillMaxSize()) {
-            when (currentScreen) {
-                AppScreen.LEARNING_PATH -> LearningPathScreen(
-                    subject = currentSubject,
-                    completedLessonIds = stats.completedLessonIds,
-                    onStartLesson = { lesson -> viewModel.startLesson(lesson) }
-                )
-                AppScreen.LESSON_QUIZ -> LessonQuizScreen(viewModel = viewModel)
-                AppScreen.AI_IMPORTER -> AiImporterScreen(viewModel = viewModel)
-                AppScreen.PROFILE -> ProfileScreen(stats = stats)
+    val selectedId by viewModel.selectedSubjectId.collectAsState()
+    val persistence by viewModel.persistenceStatus.collectAsState()
+    val subject = subjects.find { it.id == selectedId } ?: subjects.firstOrNull()
+    val selectedUnitId = subject?.let { current ->
+        stats.selectedCourseIds[current.id]?.takeIf { selected -> current.units.any { it.id == selected } }
+            ?: current.units.firstOrNull { course -> course.lessons.any { lesson ->
+                lesson.id !in stats.completedLessonIds && !lesson.isCompleted && current.isLessonUnlocked(lesson, stats.completedLessonIds)
+            } }?.id ?: current.units.firstOrNull()?.id
+    }
+    BoxWithConstraints(Modifier.fillMaxSize().background(Paper).windowInsetsPadding(WindowInsets.safeDrawing)) {
+        val sidebar = maxWidth >= 1000.dp
+        val rail = maxWidth >= 700.dp
+        if (screen == AppScreen.COURSE_READER && subject != null && selectedUnitId != null) {
+            val unit = subject.units.first { it.id == selectedUnitId }
+            CourseReaderScreen(unit, { subject.isLessonUnlocked(it, stats.completedLessonIds) }, viewModel::startLesson,
+                onClose = { viewModel.navigateTo(AppScreen.LEARNING_PATH) }, typesetMath = subject.category == SubjectCategory.MATHEMATICS)
+        } else if (screen == AppScreen.LESSON_QUIZ) {
+            LessonQuizScreen(viewModel)
+        } else {
+            Row(Modifier.fillMaxSize()) {
+                if (rail) AppNavigation(screen, stats, sidebar, viewModel::navigateTo)
+                Scaffold(backgroundColor = Paper, modifier = Modifier.weight(1f),
+                    topBar = { if (subject != null) TopStatsHeader(stats, subjects, subject, viewModel::selectSubject) },
+                    bottomBar = { if (!rail) BottomNavigationBar(screen, viewModel::navigateTo) }) { padding ->
+                    Box(Modifier.padding(padding).fillMaxSize()) {
+                        when (screen) {
+                            AppScreen.LEARNING_PATH -> if (subject != null) LearningPathScreen(subject, stats.completedLessonIds, viewModel::startLesson, selectedUnitId,
+                                onOpenCourse = { viewModel.navigateTo(AppScreen.COURSE_READER) }) { viewModel.selectCourse(subject.id, it) }
+                                else EmptyLearningState("Aucun cours disponible", "Les cours apparaîtront ici dès qu’ils seront disponibles.")
+                            AppScreen.PROFILE -> ProfileScreen(stats, persistence)
+                            AppScreen.LESSON_QUIZ, AppScreen.COURSE_READER -> Unit
+                        }
+                    }
+                }
             }
         }
     }
 }
 
 @Composable
-fun TopStatsHeader(
-    stats: UserStats,
-    subjects: List<Subject>,
-    selectedSubject: Subject,
-    onSelectSubject: (String) -> Unit
-) {
-    var dropdownExpanded by remember { mutableStateOf(false) }
+private fun AppNavigation(screen: AppScreen, stats: UserStats, expanded: Boolean, navigate: (AppScreen) -> Unit) {
+    Column(Modifier.width(if (expanded) 224.dp else 104.dp).fillMaxHeight().verticalScroll(rememberScrollState()).padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        PixelIcon(LearningSymbol.BOOK, Modifier.size(40.dp))
+        Text(if (expanded) "Atelier\nd’apprentissage" else "Atelier", fontWeight = FontWeight.ExtraBold, fontSize = if (expanded) 20.sp else 16.sp)
+        Spacer(Modifier.height(20.dp))
+        NavigationChoice("Cours", Icons.Default.Home, screen == AppScreen.LEARNING_PATH, expanded) { navigate(AppScreen.LEARNING_PATH) }
+        NavigationChoice("Profil", Icons.Default.Person, screen == AppScreen.PROFILE, expanded) { navigate(AppScreen.PROFILE) }
+        Spacer(Modifier.height(32.dp))
+        if (expanded) {
+            Text("À petits pas,\nchaque jour.", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            SymbolValue(LearningSymbol.COMPLETED, "${stats.completedLessonIds.size} leçons terminées")
+            SymbolValue(LearningSymbol.XP, "${stats.xp} XP accumulés")
+            VoxelBookshelf()
+        }
+    }
+}
 
-    Surface(
-        color = Color.White,
-        elevation = 3.dp
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            // Subject Dropdown Selector
-            Box {
-                Row(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(Color(0xFFF0F0F0))
-                        .clickable { dropdownExpanded = true }
-                        .padding(horizontal = 12.dp, vertical = 6.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(selectedSubject.icon, fontSize = 20.sp)
-                    Spacer(Modifier.width(6.dp))
-                    Text(selectedSubject.title.take(15) + "...", fontWeight = FontWeight.Bold, fontSize = 14.sp)
-                    Icon(Icons.Default.ArrowDropDown, contentDescription = null)
-                }
+@Composable
+private fun NavigationChoice(label: String, icon: ImageVector, selected: Boolean, expanded: Boolean, onClick: () -> Unit) {
+    val interaction = remember { MutableInteractionSource() }
+    TextButton(onClick, Modifier.fillMaxWidth().heightIn(min = 56.dp).learningFocus(interaction).semantics { this.selected = selected },
+        interactionSource = interaction, shape = LearningShape,
+        colors = ButtonDefaults.textButtonColors(backgroundColor = if (selected) Concrete else Color.Transparent, contentColor = Ink)) {
+        if (expanded) Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            Icon(icon, null); Spacer(Modifier.width(12.dp)); Text(label, fontWeight = FontWeight.Bold)
+        } else Column(horizontalAlignment = Alignment.CenterHorizontally) { Icon(icon, null); Text(label, fontSize = 12.sp) }
+    }
+}
 
-                DropdownMenu(
-                    expanded = dropdownExpanded,
-                    onDismissRequest = { dropdownExpanded = false }
-                ) {
-                    subjects.forEach { subj ->
-                        DropdownMenuItem(onClick = {
-                            onSelectSubject(subj.id)
-                            dropdownExpanded = false
-                        }) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text(subj.icon, fontSize = 18.sp)
-                                Spacer(Modifier.width(8.dp))
-                                Text(subj.title, fontWeight = FontWeight.Medium)
-                            }
-                        }
+@Composable
+fun TopStatsHeader(stats: UserStats, subjects: List<Subject>, selectedSubject: Subject, onSelectSubject: (String) -> Unit) {
+    var expanded by remember { mutableStateOf(false) }
+    BoxWithConstraints(Modifier.fillMaxWidth().background(White).padding(horizontal = 16.dp, vertical = 8.dp)) {
+        val compact = maxWidth < 480.dp
+        Column {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(Modifier.weight(1f)) {
+                    TextButton({ expanded = true }, Modifier.fillMaxWidth().heightIn(min = 48.dp), colors = ButtonDefaults.textButtonColors(contentColor = Ink)) {
+                        Text(selectedSubject.title, Modifier.weight(1f), fontWeight = FontWeight.Bold)
+                        Icon(Icons.Default.ArrowDropDown, "Choisir une matière")
+                    }
+                    DropdownMenu(expanded, { expanded = false }, Modifier.widthIn(max = 360.dp)) {
+                        subjects.forEach { subject -> DropdownMenuItem({ onSelectSubject(subject.id); expanded = false }, Modifier.heightIn(min = 48.dp)) { Text(subject.title) } }
                     }
                 }
+                if (!compact) { Spacer(Modifier.width(24.dp)); StatsStrip(stats) }
             }
-
-            // Stats Badges (Streak, XP, Hearts)
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                // Streak
-                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(end = 12.dp)) {
-                    Text("🔥", fontSize = 18.sp)
-                    Spacer(Modifier.width(4.dp))
-                    Text("${stats.streakDays}", fontWeight = FontWeight.Bold, color = DuoYellow, fontSize = 16.sp)
-                }
-
-                // XP
-                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(end = 12.dp)) {
-                    Text("⚡", fontSize = 18.sp)
-                    Spacer(Modifier.width(4.dp))
-                    Text("${stats.xp}", fontWeight = FontWeight.Bold, color = DuoBlue, fontSize = 16.sp)
-                }
-
-                // Hearts
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text("❤️", fontSize = 18.sp)
-                    Spacer(Modifier.width(4.dp))
-                    Text("${stats.hearts}", fontWeight = FontWeight.Bold, color = DuoRed, fontSize = 16.sp)
-                }
-            }
+            if (compact) StatsStrip(stats)
         }
     }
 }
 
 @Composable
 fun BottomNavigationBar(currentScreen: AppScreen, onNavigate: (AppScreen) -> Unit) {
-    BottomNavigation(
-        backgroundColor = Color.White,
-        elevation = 8.dp
-    ) {
-        BottomNavigationItem(
-            selected = currentScreen == AppScreen.LEARNING_PATH,
-            onClick = { onNavigate(AppScreen.LEARNING_PATH) },
-            icon = { Icon(Icons.Default.Home, contentDescription = "Leçons") },
-            label = { Text("Leçons") },
-            selectedContentColor = DuoGreen,
-            unselectedContentColor = Color.Gray
-        )
-        BottomNavigationItem(
-            selected = currentScreen == AppScreen.AI_IMPORTER,
-            onClick = { onNavigate(AppScreen.AI_IMPORTER) },
-            icon = { Icon(Icons.Default.AddCircle, contentDescription = "Import de démonstration") },
-            label = { Text("Import démo") },
-            selectedContentColor = DuoPurple,
-            unselectedContentColor = Color.Gray
-        )
-        BottomNavigationItem(
-            selected = currentScreen == AppScreen.PROFILE,
-            onClick = { onNavigate(AppScreen.PROFILE) },
-            icon = { Icon(Icons.Default.Person, contentDescription = "Profil") },
-            label = { Text("Profil") },
-            selectedContentColor = DuoBlue,
-            unselectedContentColor = Color.Gray
-        )
+    BottomNavigation(backgroundColor = White, elevation = 0.dp) {
+        BottomNavigationItem(currentScreen == AppScreen.LEARNING_PATH, { onNavigate(AppScreen.LEARNING_PATH) },
+            icon = { Icon(Icons.Default.Home, null) }, label = { Text("Cours") }, selectedContentColor = ActionRed, unselectedContentColor = Graphite)
+        BottomNavigationItem(currentScreen == AppScreen.PROFILE, { onNavigate(AppScreen.PROFILE) },
+            icon = { Icon(Icons.Default.Person, null) }, label = { Text("Profil") }, selectedContentColor = ActionRed, unselectedContentColor = Graphite)
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun StatsStrip(stats: UserStats) {
+    FlowRow(horizontalArrangement = Arrangement.spacedBy(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        SymbolValue(LearningSymbol.FLAME, "${stats.streakDays} j")
+        SymbolValue(LearningSymbol.XP, "${stats.xp} XP")
+        SymbolValue(LearningSymbol.HEART, "${stats.hearts}/${stats.maxHearts}")
     }
 }
 
 @Composable
-fun LearningPathScreen(
-    subject: Subject,
-    completedLessonIds: Set<String>,
-    onStartLesson: (Lesson) -> Unit
-) {
-    val lockedLessonIds = buildSet {
-        var previousLessonCompleted = true
-        subject.units.flatMap { it.lessons }.forEach { lesson ->
-            val completed = completedLessonIds.contains(lesson.id) || lesson.isCompleted
-            if (lesson.isLocked && !completed && !previousLessonCompleted) add(lesson.id)
-            previousLessonCompleted = completed
-        }
-    }
-
-    LazyColumn(
-        modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
-        contentPadding = PaddingValues(vertical = 16.dp)
-    ) {
-        item {
-            Card(
-                modifier = Modifier.fillMaxWidth().padding(bottom = 20.dp),
-                shape = RoundedCornerShape(16.dp),
-                backgroundColor = DuoGreen,
-                elevation = 4.dp
-            ) {
-                Column(modifier = Modifier.padding(20.dp)) {
-                    Text(
-                        text = "${subject.icon} ${subject.title}",
-                        color = Color.White,
-                        fontSize = 22.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Spacer(Modifier.height(6.dp))
-                    Text(
-                        text = subject.description,
-                        color = Color.White.copy(alpha = 0.9f),
-                        fontSize = 14.sp
-                    )
+fun LearningPathScreen(subject: Subject, completedLessonIds: Set<String>, onStartLesson: (Lesson) -> Unit, selectedUnitId: String?, onOpenCourse: () -> Unit = {}, onSelectUnit: (String) -> Unit) {
+    val lessons = subject.units.flatMap { it.lessons }
+    val completed = completedLessonIds + lessons.filter { it.isCompleted }.map { it.id }
+    val lockedIds = lessons.filterNot { subject.isLessonUnlocked(it, completed) }.map { it.id }.toSet()
+    val unit = subject.units.find { it.id == selectedUnitId } ?: subject.units.firstOrNull()
+    val courseListState = key(subject.id) { rememberLazyListState() }
+    val lessonListState = key(subject.id, unit?.id) { rememberLazyListState() }
+    BoxWithConstraints(Modifier.fillMaxSize()) {
+        val split = maxWidth >= 880.dp
+        val gutter = if (maxWidth >= 600.dp) 24.dp else 16.dp
+        // Desktop: 260 dp course column + 24 dp gutter + flexible lesson workspace.
+        Row(Modifier.fillMaxSize().padding(gutter), horizontalArrangement = Arrangement.spacedBy(24.dp)) {
+            if (split) LazyColumn(Modifier.width(260.dp).fillMaxHeight(), state = courseListState, verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                item { Text("Mes cours", fontSize = 28.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.semantics { heading() }) }
+                item { Text(subject.description, color = Graphite) }
+                items(subject.units, key = { it.id }) { course -> CourseChoice(course, course.id == unit?.id, completed) { onSelectUnit(course.id) } }
+            }
+            LazyColumn(Modifier.weight(1f).fillMaxHeight(), state = lessonListState, verticalArrangement = Arrangement.spacedBy(16.dp), contentPadding = PaddingValues(bottom = 24.dp)) {
+                if (!split) {
+                    item { Text("Mes cours", fontSize = 28.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.semantics { heading() }) }
+                    item { CoursePicker(subject.units, unit, onSelectUnit) }
+                }
+                if (unit == null) item { EmptyLearningState("Aucune leçon", "Ce cours ne contient pas encore de leçon.") }
+                else {
+                    item { CourseOverview(unit, completed) }
+                    item { OutlinedButton(onOpenCourse, Modifier.fillMaxWidth().heightIn(min = 48.dp), shape = LearningShape) {
+                        PixelIcon(LearningSymbol.BOOK, description = null); Spacer(Modifier.width(10.dp)); Text("Lire le cours et les supports")
+                    } }
+                    val next = unit.lessons.firstOrNull { it.id !in completed && it.id !in lockedIds }
+                    if (next != null) item { LearningButton("Continuer · ${next.title}", { onStartLesson(next.copy(isLocked = false)) }, Modifier.fillMaxWidth()) }
+                    item { Text("Les leçons", fontSize = 20.sp, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() }) }
+                    items(unit.lessons, key = { it.id }) { lesson ->
+                        val display = lesson.copy(isLocked = lesson.id in lockedIds)
+                        LessonNodeItem(display, lesson.id in completed) { onStartLesson(display) }
+                    }
                 }
             }
         }
+    }
+}
 
-        subject.units.forEach { unit ->
-            item {
-                Text(
-                    text = "UNITÉ ${unit.unitNumber}: ${unit.title.uppercase()}",
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Gray,
-                    fontSize = 14.sp,
-                    modifier = Modifier.padding(vertical = 12.dp)
-                )
-            }
+@Composable
+private fun CourseChoice(unit: LearningUnit, selected: Boolean, completed: Set<String>, onClick: () -> Unit) {
+    val source = remember { MutableInteractionSource() }
+    OutlinedButton(onClick, Modifier.fillMaxWidth().learningFocus(source).semantics { this.selected = selected }, interactionSource = source,
+        shape = LearningShape, border = BorderStroke(if (selected) 2.dp else 1.dp, if (selected) Ink else Concrete),
+        colors = ButtonDefaults.outlinedButtonColors(backgroundColor = if (selected) White else Paper, contentColor = Ink), contentPadding = PaddingValues(16.dp)) {
+        Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            if (unit.courseCode.isNotBlank()) Text(unit.courseCode, color = ActionRed, fontWeight = FontWeight.Bold)
+            Text(unit.title, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+            Text("${unit.lessons.count { it.id in completed }} / ${unit.lessons.size} leçons", color = Graphite)
+        }
+    }
+}
 
-            items(unit.lessons) { lesson ->
-                val isCompleted = completedLessonIds.contains(lesson.id) || lesson.isCompleted
-                val lessonForDisplay = lesson.copy(isLocked = lesson.id in lockedLessonIds)
-                LessonNodeItem(lesson = lessonForDisplay, isCompleted = isCompleted, onClick = { onStartLesson(lessonForDisplay) })
-                Spacer(Modifier.height(16.dp))
-            }
+@Composable
+private fun CoursePicker(units: List<LearningUnit>, selected: LearningUnit?, onSelect: (String) -> Unit) {
+    var expanded by remember { mutableStateOf(false) }
+    Box {
+        OutlinedButton({ expanded = true }, Modifier.fillMaxWidth().heightIn(min = 56.dp), shape = LearningShape) {
+            Text(selected?.title ?: "Choisir un cours", Modifier.weight(1f)); Icon(Icons.Default.ArrowDropDown, null)
+        }
+        DropdownMenu(expanded, { expanded = false }) {
+            units.forEach { unit -> DropdownMenuItem({ onSelect(unit.id); expanded = false }, Modifier.heightIn(min = 48.dp)) { Text(unit.title) } }
+        }
+    }
+}
+
+@Composable
+private fun CourseOverview(unit: LearningUnit, completed: Set<String>) {
+    val count = unit.lessons.count { it.id in completed }
+    Surface(shape = LearningShape, color = White) {
+        Column(Modifier.fillMaxWidth().padding(24.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            if (unit.courseCode.isNotBlank() || unit.edition.isNotBlank()) Text(listOf(unit.courseCode, unit.edition).filter { it.isNotBlank() }.joinToString(" · "), color = Graphite)
+            Text(unit.title, fontSize = 26.sp, fontWeight = FontWeight.ExtraBold)
+            if (unit.description.isNotBlank()) Text(unit.description, color = Graphite, fontSize = 16.sp)
+            Text("$count / ${unit.lessons.size} leçons terminées", fontWeight = FontWeight.Bold)
+            LinearProgressIndicator(if (unit.lessons.isEmpty()) 0f else count.toFloat() / unit.lessons.size, Modifier.fillMaxWidth().height(8.dp), color = BrandRed, backgroundColor = Concrete)
+            val expected = unit.expectedLessonCount
+            if (expected != null && expected != unit.lessons.size) Text("${unit.lessons.size} leçons disponibles sur $expected prévues dans la source.", color = Graphite)
         }
     }
 }
 
 @Composable
 fun LessonNodeItem(lesson: Lesson, isCompleted: Boolean, onClick: () -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
-            .background(Color.White)
-            .border(2.dp, if (isCompleted) DuoGreen else if (!lesson.isLocked) DuoBlue else Color(0xFFE0E0E0), RoundedCornerShape(16.dp))
-            .clickable(enabled = !lesson.isLocked) { onClick() }
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Box(
-            modifier = Modifier
-                .size(48.dp)
-                .clip(CircleShape)
-                .background(if (isCompleted) DuoGreen else if (!lesson.isLocked) DuoBlue else Color.LightGray),
-            contentAlignment = Alignment.Center
-        ) {
-            if (isCompleted) {
-                Icon(Icons.Default.Check, contentDescription = null, tint = Color.White)
-            } else if (!lesson.isLocked) {
-                Icon(Icons.Default.PlayArrow, contentDescription = null, tint = Color.White)
-            } else {
-                Icon(Icons.Default.Lock, contentDescription = null, tint = Color.White)
-            }
-        }
-
+    val interaction = remember { MutableInteractionSource() }
+    val state = when { isCompleted -> "Terminée · Réviser"; lesson.isLocked -> "Verrouillée · Terminer les prérequis"; else -> "Disponible · Commencer" }
+    OutlinedButton(onClick, Modifier.fillMaxWidth().heightIn(min = 88.dp).learningFocus(interaction).semantics { stateDescription = state },
+        enabled = !lesson.isLocked, interactionSource = interaction, shape = LearningShape,
+        border = BorderStroke(1.dp, if (isCompleted) BrandRed else Concrete),
+        colors = ButtonDefaults.outlinedButtonColors(backgroundColor = White, contentColor = Ink, disabledContentColor = Graphite), contentPadding = PaddingValues(16.dp)) {
+        Icon(when { isCompleted -> Icons.Default.CheckCircle; lesson.isLocked -> Icons.Default.Lock; else -> Icons.Default.PlayArrow }, null,
+            tint = if (isCompleted) ActionRed else Graphite, modifier = Modifier.size(32.dp))
         Spacer(Modifier.width(16.dp))
-
-        Column(modifier = Modifier.weight(1f)) {
-            Text(lesson.title, fontWeight = FontWeight.Bold, fontSize = 16.sp)
-            Spacer(Modifier.height(4.dp))
-            Text("${lesson.exercises.size} exercices • +${lesson.xpReward} XP", fontSize = 13.sp, color = Color.Gray)
+        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            lesson.sourceSessionLabel?.let { Text(it, fontSize = 13.sp, color = Graphite) }
+            Text(lesson.title, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+            Text("${lesson.exercises.size} exercices · ${lesson.xpReward} XP à la première réussite", fontSize = 14.sp, color = Graphite)
+            Text(state, fontSize = 14.sp, color = if (lesson.isLocked) Graphite else ActionRed)
         }
+    }
+}
 
-        if (!lesson.isLocked) {
-            Button(
-                onClick = onClick,
-                colors = ButtonDefaults.buttonColors(backgroundColor = if (isCompleted) DuoGreen else DuoBlue),
-                shape = RoundedCornerShape(12.dp)
-            ) {
-                Text(if (isCompleted) "Revoir" else "COMMENCER", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 12.sp)
-            }
-        }
+@Composable
+fun EmptyLearningState(title: String, message: String) {
+    Column(Modifier.fillMaxWidth().padding(24.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        Text(title, fontSize = 24.sp, fontWeight = FontWeight.Bold); Text(message, color = Graphite)
     }
 }

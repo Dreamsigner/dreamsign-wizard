@@ -1,0 +1,1170 @@
+{
+  "courseId": "roughgarden_algorithmic_game_theory_2013",
+  "title": "Théorie algorithmique des jeux",
+  "sourceTitle": "Algorithmic Game Theory",
+  "institution": "Stanford University",
+  "instructor": "Tim Roughgarden",
+  "edition": "Fall 2013, CS364A",
+  "category": "COMPUTER_SCIENCE",
+  "sourceUrl": "https://timroughgarden.org/f13/f13.html",
+  "manifest": "docs/curriculum/roughgarden-game-theory-source-sessions.json",
+  "expectedLessonCount": 20,
+  "authoredLessonCount": 20,
+  "validatedLessonCount": 20,
+  "status": "reviewed_for_catalogue",
+  "description": "Adaptation originale française des 20 conférences CS364A. Exercices originaux; aucune banque source copiée.",
+  "lessons": [
+    {
+      "id": "roughgarden_ag2013_s01",
+      "sourceSessionNumber": 1,
+      "sourceTitle": "Introduction",
+      "kind": "lesson",
+      "title": "Quand les règles changent les choix",
+      "objective": "Modéliser joueurs, stratégies, préférences et objectif collectif.",
+      "learningNotes": "La théorie des jeux décrit des choix interdépendants. Dans le tournoi olympique de badminton étudié dans les notes, le tableau rend parfois une défaite préférable pour éviter un rival redouté. Les équipes agissent rationnellement selon les règles, même si cela contrarie l’objectif des organisateurs. Le concepteur doit donc examiner les incitations créées par les règles. Le cours étudie mécanismes, efficacité des équilibres et leur calcul ou apprentissage.",
+      "sourceUrls": [
+        "https://timroughgarden.org/f13/l/l1.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "type": "choice",
+          "prompt": "Une équipe perd pour obtenir un meilleur tableau. Quelle leçon ?",
+          "options": [
+            "Analyser les incitations des règles",
+            "Les joueurs ne sont pas rationnels",
+            "Tout tournoi a un équilibre dominant",
+            "Prévoir les scores suffit"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "La règle encourage-t-elle le résultat souhaité ?.",
+          "explanation": "Les équipes répondent aux gains que le tableau rend possibles : éviter un adversaire peut valoir plus qu’une victoire immédiate. Le concepteur doit donc évaluer les incitations induites par le format, pas supposer que chaque équipe poursuit spontanément l’objectif sportif.",
+          "verification": {
+            "kind": "identity",
+            "result": "Analyser les incitations des règles"
+          },
+          "id": "roughgarden_ag2013_s01_e01"
+        },
+        {
+          "type": "choice",
+          "prompt": "Quel élément d’un jeu énumère les choix possibles ?",
+          "options": [
+            "Stratégies",
+            "Prix optimal",
+            "Paiement",
+            "Social surplus"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "Cherche l’ensemble des actions offertes.",
+          "explanation": "Les stratégies sont les choix accessibles aux joueurs, par exemple les chemins ou les offres. Les gains décrivent ensuite les conséquences de chaque combinaison de ces choix.",
+          "verification": {
+            "kind": "identity",
+            "result": "Stratégies"
+          },
+          "id": "roughgarden_ag2013_s01_e02"
+        }
+      ]
+    },
+    {
+      "id": "roughgarden_ag2013_s02",
+      "sourceSessionNumber": 2,
+      "sourceTitle": "Mechanism Design Basics",
+      "kind": "lesson",
+      "title": "Enchères scellées et vérité des offres",
+      "objective": "Calculer l’utilité et reconnaître l’incitation à dire sa vraie valeur en second prix.",
+      "learningNotes": "Au premier prix, le gagnant paie son offre, et peut arbitrer entre marge et chance de gagner. En enchère Vickrey, le gagnant paie la meilleure offre adverse. Si sa valeur est v et son prix p, son utilité vaut v−p. Enchérir sa vraie valeur est dominant : surenchérir peut faire acheter à perte, sous-enchérir faire manquer une transaction profitable. Les annonces sponsorisées étendent l’idée à des positions de valeur différente.",
+      "sourceUrls": [
+        "https://timroughgarden.org/f13/l/l2.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "type": "choice",
+          "prompt": "A offre 10 et B offre 7. Qui gagne en second prix, et à quel prix ?",
+          "options": [
+            "A, 7",
+            "A, 10",
+            "B, 7",
+            "A, 0"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "Le gagnant paie la meilleure offre concurrente.",
+          "explanation": "A offre 10 contre 7 : l’offre la plus élevée gagne. En second prix, A paie l’offre de l’autre enchérisseur, soit 7, et non sa propre offre de 10; son surplus est 10−7=3.",
+          "verification": {
+            "kind": "second_price",
+            "bids": {
+              "A": 10,
+              "B": 7
+            }
+          },
+          "id": "roughgarden_ag2013_s02_e01"
+        },
+        {
+          "type": "choice",
+          "prompt": "Ta valeur vaut 12, l’offre adverse 9. Ton utilité si tu offres 12 ?",
+          "options": [
+            "3",
+            "12",
+            "9",
+            "0"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "Soustrais le prix payé à ta valeur.",
+          "explanation": "L’offre de 12 gagne face à 9. Le paiement est le prix concurrent, 9; avec la valeur privée 12, l’utilité quasi linéaire est 12−9=3. Cette comparaison suppose qu’il n’y a qu’un seul autre enchérisseur.",
+          "verification": {
+            "kind": "second_price_utility",
+            "values": {
+              "A": 12,
+              "B": 9
+            },
+            "bids": {
+              "A": 12,
+              "B": 9
+            },
+            "player": "A"
+          },
+          "id": "roughgarden_ag2013_s02_e02"
+        }
+      ]
+    },
+    {
+      "id": "roughgarden_ag2013_s03",
+      "sourceSessionNumber": 3,
+      "sourceTitle": "Myerson's Lemma",
+      "kind": "lesson",
+      "title": "Du choix d’allocation au paiement",
+      "objective": "Expliquer monotonie et seuil critique du lemme de Myerson.",
+      "learningNotes": "Dans un environnement à un paramètre, une allocation est monotone si hausser sa propre offre ne réduit pas la quantité reçue, à offres adverses fixes. Le lemme de Myerson relie cette propriété à l’existence d’un paiement incitatif. Pour une allocation binaire, le gagnant paie son offre critique minimale, pas nécessairement son offre annoncée. Pour une allocation fractionnaire, le paiement correspond à l’aire sous la courbe d’allocation.",
+      "sourceUrls": [
+        "https://timroughgarden.org/f13/l/l3.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "type": "choice",
+          "prompt": "Deux offres se disputent un bien. L’autre offre 6. Quelle offre adverse fixe le seuil critique de victoire ?",
+          "options": [
+            "6",
+            "0",
+            "12",
+            "7"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "Le seuil est fixé par l’offre adverse.",
+          "explanation": "Le seuil critique est déterminé par l’offre adverse, ici 6. Au-dessus de ce seuil, l’agent gagne; le traitement exact d’une offre égale à 6 dépend de la règle de départage des égalités.",
+          "verification": {
+            "kind": "critical_bid",
+            "otherBids": [
+              6
+            ]
+          },
+          "id": "roughgarden_ag2013_s03_e01"
+        },
+        {
+          "type": "choice",
+          "prompt": "Ton allocation baisse de 1/2 à 1/3 quand ton offre monte. La règle est-elle monotone ?",
+          "options": [
+            "Non",
+            "Oui",
+            "Seulement si paiement nul",
+            "Indéterminé"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "Une hausse d’offre ne doit jamais réduire l’allocation.",
+          "explanation": "La monotonie exige qu’une offre personnelle plus élevée ne diminue pas l’allocation, toutes les autres offres étant fixes. Passer de 1/2 à 1/3 viole cette condition; la règle ne satisfait donc pas le test nécessaire de Myerson.",
+          "verification": {
+            "kind": "identity",
+            "result": "Non"
+          },
+          "id": "roughgarden_ag2013_s03_e02"
+        }
+      ]
+    },
+    {
+      "id": "roughgarden_ag2013_s04",
+      "sourceSessionNumber": 4,
+      "sourceTitle": "Algorithmic Mechanism Design",
+      "kind": "lesson",
+      "title": "Mécanismes algorithmiques et compromis",
+      "objective": "Relier l’enchère de sac à dos aux compromis d’optimalité, incitations et calcul efficace.",
+      "learningNotes": "Dans l’enchère de sac à dos, tailles et capacité sont publiques; les valeurs sont privées. Le surplus optimal est un problème NP-difficile. Une allocation monotone permet des paiements critiques, mais n’assure pas un calcul polynomial. Une approximation gloutonne peut être plus rapide; sa monotonie doit être prouvée avant d’appliquer Myerson. La qualité de l’allocation, les incitations et le coût de calcul sont trois objectifs distincts.",
+      "sourceUrls": [
+        "https://timroughgarden.org/f13/l/l4.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "type": "choice",
+          "prompt": "Capacité 10 : A=(12,6), B=(10,5), C=(9,3), format valeur/taille. Quel ensemble maximise la valeur ?",
+          "options": [
+            "A et C : 21",
+            "B et C : 19",
+            "A et B : 22",
+            "A seule : 12"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "Compare les ensembles faisables de taille totale au plus 10.",
+          "explanation": "Énumérons les ensembles faisables : A+C pèse 6+3=9 et vaut 12+9=21; B+C pèse 8 et vaut 19; A+B pèse 11 et dépasse la capacité, comme A+B+C. Le meilleur ensemble admissible est donc A+C.",
+          "verification": {
+            "kind": "knapsack",
+            "capacity": 10,
+            "items": {
+              "A": [
+                12,
+                6
+              ],
+              "B": [
+                10,
+                5
+              ],
+              "C": [
+                9,
+                3
+              ]
+            }
+          },
+          "id": "roughgarden_ag2013_s04_e01"
+        },
+        {
+          "type": "choice",
+          "prompt": "Pourquoi l’allocation optimale du sac à dos n’implique-t-elle pas un calcul polynomial ?",
+          "options": [
+            "Le sac à dos est NP-difficile",
+            "Les paiements sont négatifs",
+            "La monotonie exige un tirage",
+            "Les offres ne sont pas numériques"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "C’est le sous-problème algorithmique d’allocation qui pose problème.",
+          "explanation": "L’algorithme exact doit résoudre une instance générale du sac à dos, un problème NP-difficile. Cela empêche de conclure à un algorithme polynomial sans hypothèse supplémentaire (par exemple P=NP); une allocation incitative n’est pas automatiquement calculable efficacement.",
+          "verification": {
+            "kind": "identity",
+            "result": "Le sac à dos est NP-difficile"
+          },
+          "id": "roughgarden_ag2013_s04_e02"
+        }
+      ]
+    },
+    {
+      "id": "roughgarden_ag2013_s05",
+      "sourceSessionNumber": 5,
+      "sourceTitle": "Revenue-Maximizing Auctions",
+      "kind": "lesson",
+      "title": "Revenu et surplus",
+      "objective": "Calculer le revenu espéré d’un prix affiché et le distinguer du surplus.",
+      "learningNotes": "Le surplus mesure la valeur de l’allocation; le revenu, les paiements au vendeur. Pour un prix r et une valeur aléatoire V, le revenu espéré vaut r·Pr(V≥r). Le prix nul maximise le surplus d’un bien isolé, mais pas forcément son revenu. Avec plusieurs enchérisseurs, les valeurs virtuelles traduisent la maximisation de revenu en maximisation de surplus virtuel; les réserves optimales supposent une distribution régulière.",
+      "sourceUrls": [
+        "https://timroughgarden.org/f13/l/l5.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "type": "choice",
+          "prompt": "Une valeur vaut 10 ou 2, chacune avec probabilité 1/2. Revenu espéré au prix 8 ?",
+          "options": [
+            "4",
+            "8",
+            "5",
+            "2"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "Le prix est accepté dans la moitié des cas.",
+          "explanation": "Le bien n’est vendu que si la valeur vaut 10, événement de probabilité 1/2. Le vendeur reçoit alors 8; sinon il ne vend rien : revenu espéré = (1/2)×8+(1/2)×0=4.",
+          "verification": {
+            "kind": "expected_revenue",
+            "price": 8,
+            "valueProbabilities": [
+              [
+                10,
+                0.5
+              ],
+              [
+                2,
+                0.5
+              ]
+            ]
+          },
+          "id": "roughgarden_ag2013_s05_e01"
+        },
+        {
+          "type": "choice",
+          "prompt": "Prix 12 et probabilité d’achat 1/4. Revenu espéré ?",
+          "options": [
+            "3",
+            "12",
+            "48",
+            "9"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "Prix multiplié par probabilité de vente.",
+          "explanation": "Le paiement de 12 survient dans 1 cas sur 4 et vaut zéro dans les autres cas. L’espérance du revenu est donc 12×(1/4)=3.",
+          "verification": {
+            "kind": "multiply",
+            "a": 12,
+            "b": 0.25
+          },
+          "id": "roughgarden_ag2013_s05_e02"
+        }
+      ]
+    },
+    {
+      "id": "roughgarden_ag2013_s06",
+      "sourceSessionNumber": 6,
+      "sourceTitle": "Simple Near-Optimal Auctions",
+      "kind": "lesson",
+      "title": "Enchères simples presque optimales",
+      "objective": "Expliquer l’intérêt de réserves et de prix simples sous incertitude.",
+      "learningNotes": "La maximisation du surplus virtuel peut être complexe, surtout avec distributions hétérogènes ou irrégulières. Les notes étudient alors des mécanismes simples avec garanties, tels que Vickrey avec réserve ou des prix tirés d’un échantillon. Le lemme du prophète compare une décision en ligne à un décideur informé des valeurs futures. Bulow–Klemperer montre qu’ajouter un enchérisseur peut compenser la sophistication d’une enchère optimale, sous hypothèses de valeurs i.i.d. Les garanties dépendent du modèle probabiliste.",
+      "sourceUrls": [
+        "https://timroughgarden.org/f13/l/l6.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "type": "choice",
+          "prompt": "Deux acheteurs indépendants acceptent un prix avec probabilité 1/2 chacun. Probabilité qu’au moins un accepte ?",
+          "options": [
+            "3/4",
+            "1/2",
+            "1/4",
+            "1"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "Calcule le complément : aucun n’accepte.",
+          "explanation": "Par indépendance, la probabilité qu’aucun acheteur n’accepte est (1−1/2)²=1/4. L’événement complémentaire — au moins un accepte — a donc la probabilité 1−1/4=3/4.",
+          "verification": {
+            "kind": "prob_at_least_one",
+            "probabilities": [
+              0.5,
+              0.5
+            ]
+          },
+          "id": "roughgarden_ag2013_s06_e01"
+        },
+        {
+          "type": "choice",
+          "prompt": "Prix 6, probabilité de vente 1/5. Quel revenu espéré ?",
+          "options": [
+            "6/5",
+            "6",
+            "1/5",
+            "30"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "Prix × probabilité de vente.",
+          "explanation": "Le revenu est 6 quand la vente a lieu et zéro autrement. Son espérance est 6×(1/5)=6/5; le calcul ne requiert pas de connaître le nombre d’acheteurs une fois cette probabilité donnée.",
+          "verification": {
+            "kind": "multiply",
+            "a": 6,
+            "b": 0.2
+          },
+          "id": "roughgarden_ag2013_s06_e02"
+        }
+      ]
+    },
+    {
+      "id": "roughgarden_ag2013_s07",
+      "sourceSessionNumber": 7,
+      "sourceTitle": "VCG Mechanism",
+      "kind": "lesson",
+      "title": "Le mécanisme VCG",
+      "objective": "Calculer un paiement d’externalité dans un mécanisme VCG.",
+      "learningNotes": "Avec plusieurs paramètres privés, chaque agent peut valoriser différemment chaque issue. VCG choisit l’issue maximisant la somme des valeurs déclarées. L’agent i paie le dommage qu’il impose aux autres : leur meilleur bien-être sans lui moins leur bien-être dans l’issue choisie avec lui. Cela rend la déclaration sincère dominante sous utilité quasi-linéaire, même si l’optimisation combinatoire peut être difficile.",
+      "sourceUrls": [
+        "https://timroughgarden.org/f13/l/l7.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "type": "choice",
+          "prompt": "Le bien-être des autres sans A vaut 13, et avec A il vaut 6. Paiement VCG de A ?",
+          "options": [
+            "7",
+            "6",
+            "13",
+            "19"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "Soustrais le bien-être des autres avec A du meilleur bien-être sans A.",
+          "explanation": "VCG fait payer à A le dommage externe imposé aux autres : bien-être maximal des autres sans A (13), moins leur bien-être dans l’allocation choisie avec A (6). Le paiement est 13−6=7, sous le mécanisme pivot standard.",
+          "verification": {
+            "kind": "vcg_payment",
+            "othersWithout": 13,
+            "othersWith": 6
+          },
+          "id": "roughgarden_ag2013_s07_e01"
+        },
+        {
+          "type": "choice",
+          "prompt": "Si ces deux valeurs sont 15 sans i et 9 avec i, quel paiement ?",
+          "options": [
+            "6",
+            "9",
+            "15",
+            "24"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "Le paiement mesure l’externalité imposée.",
+          "explanation": "Le paiement externe est la différence entre 15 de bien-être possible aux autres sans l’agent et 9 dans l’issue retenue avec lui. Le transfert vaut donc 15−9=6; il mesure le coût de l’agent pour les autres, pas sa propre valeur.",
+          "verification": {
+            "kind": "subtract",
+            "a": 15,
+            "b": 9
+          },
+          "id": "roughgarden_ag2013_s07_e02"
+        }
+      ]
+    },
+    {
+      "id": "roughgarden_ag2013_s08",
+      "sourceSessionNumber": 8,
+      "sourceTitle": "Spectrum Auctions",
+      "kind": "lesson",
+      "title": "Vendre plusieurs biens et gérer le spectre",
+      "objective": "Comprendre les enchères simultanées ascendantes et le risque de complémentarité.",
+      "learningNotes": "Pour m biens non identiques, déclarer la valeur de chacun des 2^m lots devient vite impossible. Une enchère ascendante simultanée vend les biens en parallèle et laisse les participants déplacer leur demande selon les prix. Des règles d’activité forcent une participation utile aux rondes. Les complémentarités posent un risque d’exposition : gagner une partie du lot recherché peut valoir peu. Les enchères de spectre arbitrent découverte des prix, simplicité et incitations.",
+      "sourceUrls": [
+        "https://timroughgarden.org/f13/l/l8.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "type": "choice",
+          "prompt": "Combien de sous-ensembles ont 3 biens, lot vide compris ?",
+          "options": [
+            "8",
+            "6",
+            "9",
+            "3"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "Un ensemble de m éléments a 2^m sous-ensembles.",
+          "explanation": "Chaque bien peut être soit présent, soit absent d’un sous-ensemble; avec 3 choix binaires, il existe 2×2×2=2³=8 sous-ensembles, dont l’ensemble vide.",
+          "verification": {
+            "kind": "power_two",
+            "n": 3
+          },
+          "id": "roughgarden_ag2013_s08_e01"
+        },
+        {
+          "type": "choice",
+          "prompt": "A et B valent 10 uniquement lorsqu’ils sont acquis ensemble. Quel risque existe en enchères séparées ?",
+          "options": [
+            "Gagner un seul bien sans le complément",
+            "Impossible d’offrir sur A",
+            "Le prix est toujours nul",
+            "Les biens deviennent identiques"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "La valeur du lot dépend de la présence des deux biens.",
+          "explanation": "La seule valeur positive porte sur le lot complet {A,B}. Si les biens sont vendus séparément, l’acheteur peut gagner A mais perdre B (ou l’inverse) et payer pour un lot auquel il n’attribue aucune valeur; c’est le risque d’exposition aux complémentarités.",
+          "verification": {
+            "kind": "identity",
+            "result": "Gagner un seul bien sans le complément"
+          },
+          "id": "roughgarden_ag2013_s08_e02"
+        }
+      ]
+    },
+    {
+      "id": "roughgarden_ag2013_s09",
+      "sourceSessionNumber": 9,
+      "sourceTitle": "Beyond Quasi-Linearity",
+      "kind": "lesson",
+      "title": "Budgets et mécanismes sans argent",
+      "objective": "Modéliser la contrainte de budget et le besoin de mécanismes sans paiement.",
+      "learningNotes": "L’utilité quasi-linéaire suppose valeur moins paiement. Une contrainte de budget plafonne le paiement, même quand la valeur déclarée est plus grande. Dans une enchère progressive, il faut suivre prix, allocations provisoires et plafonds. Le mécanisme clinching attribue un bien lorsque la demande des autres ne pourrait plus satisfaire la capacité. Quand l’argent n’est pas disponible, une règle d’échange ou de priorité remplace le prix et soulève d’autres arbitrages d’équité et d’incitation.",
+      "sourceUrls": [
+        "https://timroughgarden.org/f13/l/l9.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "type": "choice",
+          "prompt": "Budget 5; paiement demandé 7. Est-ce admissible ?",
+          "options": [
+            "Non, le paiement dépasse le budget",
+            "Oui, si valeur supérieure à 7",
+            "Oui, le budget compte après",
+            "Cela dépend des autres"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "Compare le montant demandé au plafond individuel.",
+          "explanation": "Un paiement admissible doit respecter le plafond budgétaire. Ici 7>5, donc l’agent ne peut pas honorer ce paiement, même si sa valeur pour l’allocation était élevée.",
+          "verification": {
+            "kind": "budget_check",
+            "budget": 5,
+            "payment": 7
+          },
+          "id": "roughgarden_ag2013_s09_e01"
+        },
+        {
+          "type": "choice",
+          "prompt": "Budgets 4 et 9 : quel paiement cumulé maximal respecte les deux plafonds ?",
+          "options": [
+            "13",
+            "5",
+            "9",
+            "36"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "Additionne les budgets.",
+          "explanation": "Les plafonds individuels permettent respectivement 4 et 9 unités. En supposant que chacun paie au plus son propre budget, le total maximal est 4+9=13.",
+          "verification": {
+            "kind": "sum",
+            "values": [
+              4,
+              9
+            ]
+          },
+          "id": "roughgarden_ag2013_s09_e02"
+        }
+      ]
+    },
+    {
+      "id": "roughgarden_ag2013_s10",
+      "sourceSessionNumber": 10,
+      "sourceTitle": "Kidney Exchange, Stable Matching",
+      "kind": "lesson",
+      "title": "Échanges de reins et appariement stable",
+      "objective": "Modéliser un cycle de donneurs et détecter une paire bloquante.",
+      "learningNotes": "Un donneur incompatible avec son patient peut convenir à un autre patient. Un graphe orienté représente les compatibilités; un cycle correspond à des échanges simultanés. Les cycles longs augmentent les possibilités mais compliquent l’organisation. Dans un appariement biparti, une affectation est stable si aucune paire non appariée ne préfère mutuellement l’autre à son partenaire. L’acceptation différée construit un appariement stable sous préférences strictes; stratégies de déclaration et logistique restent des questions différentes.",
+      "sourceUrls": [
+        "https://timroughgarden.org/f13/l/l10.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "type": "choice",
+          "prompt": "A donne à B, B à C et C à A : quelle structure ?",
+          "options": [
+            "Cycle d’échange de longueur 3",
+            "Cycle de longueur 2",
+            "Aucun cycle",
+            "Chemin sans retour"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "Suis les arcs jusqu’au retour au point de départ.",
+          "explanation": "En suivant les arcs A→B→C→A, on revient au sommet de départ après trois transferts. Il s’agit donc d’un cycle orienté de longueur 3, réalisable si les échanges sont exécutés de façon coordonnée.",
+          "verification": {
+            "kind": "identity",
+            "result": "Cycle d’échange de longueur 3"
+          },
+          "id": "roughgarden_ag2013_s10_e01"
+        },
+        {
+          "type": "choice",
+          "prompt": "A préfère Y à X et Y préfère A à B; ils sont appariés à X et B. L’affectation est-elle stable ?",
+          "options": [
+            "Non, (A,Y) bloque",
+            "Oui, ils ont chacun un partenaire",
+            "Oui, les préférences sont inutiles",
+            "Non, il y a deux paires"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "Une paire bloque si chacun préfère l’autre à son partenaire.",
+          "explanation": "A préfère Y à son partenaire X et Y préfère A à son partenaire B. Ils forment ainsi une paire bloquante; une définition de stabilité qui exclut toute paire mutuellement préférée est violée.",
+          "verification": {
+            "kind": "identity",
+            "result": "Non, (A,Y) bloque"
+          },
+          "id": "roughgarden_ag2013_s10_e02"
+        }
+      ]
+    },
+    {
+      "id": "roughgarden_ag2013_s11",
+      "sourceSessionNumber": 11,
+      "sourceTitle": "Selfish Routing and the POA",
+      "kind": "lesson",
+      "title": "Routage égoïste et prix de l’anarchie",
+      "objective": "Calculer un POA et expliquer pourquoi l’équilibre peut être inefficace.",
+      "learningNotes": "Cette séance traite le routage non atomique : chaque conducteur contrôle une quantité négligeable de trafic, et l’équilibre de Wardrop répartit le flux sur des chemins de coût minimal. Le POA est le coût total à l’équilibre divisé par le coût total optimal. Dans l’exemple de Pigou, les coûts affines sont x et 1 : tous choisissent le premier lien à l’équilibre (coût moyen 1), tandis qu’une moitié sur chaque lien donne le coût moyen optimal 3/4, soit un ratio 4/3. Le théorème de la séance établit que 4/3 est la borne serrée pour toute classe de réseaux à coûts affines non négatifs; avec des polynômes de degré d, la borne dépend de d. Le paradoxe de Braess illustre aussi un POA de 4/3 après ajout d’un raccourci. La séance suivante change de modèle et étudie les joueurs atomiques.",
+      "sourceUrls": [
+        "https://timroughgarden.org/f13/l/l11.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "type": "choice",
+          "prompt": "Dans l’exemple de Pigou non atomique, le coût moyen à l’équilibre vaut 1 et le coût optimal 3/4. Quel est le POA ?",
+          "options": [
+            "4/3",
+            "3/2",
+            "5/4",
+            "2"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "Coût du pire équilibre divisé par coût optimal.",
+          "explanation": "Le prix de l’anarchie est C(équilibre)/C(optimum)=1/(3/4)=4/3. Dans Pigou, les coûts affines sont x et 1 : le flux choisit entièrement le lien x à l’équilibre, alors que partager le flux à moitié donne le coût moyen minimal 3/4. Cette instance atteint la borne serrée prouvée dans cette séance pour le routage non atomique affine.",
+          "verification": {
+            "kind": "ratio",
+            "numerator": 1,
+            "denominator": "3/4"
+          },
+          "id": "roughgarden_ag2013_s11_e01"
+        },
+        {
+          "type": "choice",
+          "prompt": "Le meilleur itinéraire individuel minimise quoi ?",
+          "options": [
+            "Le coût du conducteur compte tenu du trafic",
+            "Le coût total optimal nécessairement",
+            "Le nombre d’arêtes toujours",
+            "Le coût historique"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "La meilleure réponse prend les choix des autres comme donnés.",
+          "explanation": "Un conducteur choisit une meilleure réponse au trafic tenu fixe : il minimise son propre coût de trajet compte tenu des chemins des autres. Cela ne garantit pas de minimiser le coût total, car il peut ignorer la congestion qu’il impose aux autres.",
+          "verification": {
+            "kind": "identity",
+            "result": "Le coût du conducteur compte tenu du trafic"
+          },
+          "id": "roughgarden_ag2013_s11_e02"
+        }
+      ]
+    },
+    {
+      "id": "roughgarden_ag2013_s12",
+      "sourceSessionNumber": 12,
+      "sourceTitle": "Network Over-Provisioning",
+      "kind": "lesson",
+      "title": "Surcapacités et congestion atomique",
+      "objective": "Calculer le délai avec capacité accrue et distinguer les modèles de routage.",
+      "learningNotes": "La première partie étudie le surdimensionnement en routage non atomique. Pour une file M/M/1, le délai d’une arête de capacité u et de charge x est 1/(u−x), lorsque x<u; augmenter la capacité éloigne le réseau de la saturation. Le théorème de la séance garantit que le coût d’un flux d’équilibre de taux r est au plus celui d’un flux optimal de taux 2r. La deuxième partie change de modèle : dans le routage atomique, il y a k joueurs finis, chacun contrôlant une unité de trafic et choisissant seul un chemin. Une déviation ajoute une unité à la charge des arêtes nouvellement empruntées. Pour les coûts affines c_e(x)=a_e x+b_e avec a_e,b_e≥0, le théorème 2.1 prouve une borne POA de 5/2, atteinte dans l’exemple à quatre joueurs (coût optimal 4, pire équilibre 10). Cette borne atomique 5/2 est distincte de la borne non atomique 4/3 démontrée la séance précédente.",
+      "sourceUrls": [
+        "https://timroughgarden.org/f13/l/l12.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "type": "choice",
+          "prompt": "Dans 1/(μ−λ), μ=10 et λ=8. Quel délai ?",
+          "options": [
+            "1/2",
+            "2",
+            "1/10",
+            "4"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "Soustrais la charge de la capacité, puis prends l’inverse.",
+          "explanation": "La formule donne 1/(10−8)=1/2 unité de temps. La capacité excède ici le taux d’arrivée de 2; la formule M/M/1 suppose une charge λ<μ.",
+          "verification": {
+            "kind": "queue_delay",
+            "capacity": 10,
+            "load": 8
+          },
+          "id": "roughgarden_ag2013_s12_e01"
+        },
+        {
+          "type": "choice",
+          "prompt": "Si μ passe à 12 et λ reste 8, quel est le délai ?",
+          "options": [
+            "1/4",
+            "1/2",
+            "4",
+            "1/12"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "Réapplique 1/(μ−λ).",
+          "explanation": "Après hausse de capacité, le délai est 1/(12−8)=1/4. L’écart capacité-charge passe de 2 à 4, ce qui divise le délai calculé par deux selon cette fonction.",
+          "verification": {
+            "kind": "queue_delay",
+            "capacity": 12,
+            "load": 8
+          },
+          "id": "roughgarden_ag2013_s12_e02"
+        },
+        {
+          "id": "roughgarden_ag2013_s12_e03",
+          "type": "choice",
+          "prompt": "Dans le modèle atomique affine de cette séance, une instance a un coût optimal de 4 et un pire équilibre de coût 10. Quel est son prix de l’anarchie ?",
+          "options": [
+            "5/2",
+            "4/3",
+            "2",
+            "3"
+          ],
+          "correctOptionIndex": 0,
+          "explanation": "Le rapport porte sur la même instance et le même trafic : 10/4=5/2. Ici chaque joueur déplace une unité entière; il s’agit du modèle atomique affine. Cette instance atteint sa borne serrée, distincte de la borne non atomique 4/3 de la séance précédente. Cela ne signifie pas que chaque instance atomique atteint 5/2.",
+          "hint": "Divise le coût du pire équilibre par le coût optimal; identifie le modèle avant de comparer les bornes.",
+          "verification": {
+            "kind": "ratio",
+            "numerator": 10,
+            "denominator": 4
+          }
+        }
+      ]
+    },
+    {
+      "id": "roughgarden_ag2013_s13",
+      "sourceSessionNumber": 13,
+      "sourceTitle": "Hierarchy of Equilibrium Concepts",
+      "kind": "lesson",
+      "title": "Jeux de potentiel et hiérarchie des équilibres",
+      "objective": "Vérifier un Nash pur et différencier les principaux concepts d’équilibre.",
+      "learningNotes": "Le potentiel de Rosenthal somme, sur chaque ressource, les coûts marginaux de ses utilisateurs successifs. Une déviation profitable réduit ce potentiel; un minimum local est donc un équilibre pur. La hiérarchie distingue Nash pur, Nash mixte, équilibre corrélé et CCE : le type de déviation autorisé change. Un Nash pur exclut les améliorations unilatérales depuis le profil observé. Un équilibre corrélé permet une recommandation commune, sans déviation profitable après la recommandation; CCE compare aux actions fixes avant celle-ci.",
+      "sourceUrls": [
+        "https://timroughgarden.org/f13/l/l13.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "type": "choice",
+          "prompt": "Coûts ligne [[1,3],[2,1]], colonne [[1,2],[3,1]], minimisés. Quelles cases sont Nash purs ?",
+          "options": [
+            "(A,X) et (B,Y)",
+            "(A,Y) seulement",
+            "(B,X) seulement",
+            "Aucune"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "Vérifie que chaque action est meilleure réponse à l’autre.",
+          "explanation": "À X, la ligne préfère A (coûts 1 contre 2) et la colonne préfère X (1 contre 2), donc (A,X) est Nash. À Y, la ligne préfère B (1 contre 3) et la colonne préfère Y (1 contre 3), donc (B,Y) l’est aussi; les deux cases croisées permettent une déviation profitable.",
+          "verification": {
+            "kind": "pure_nash",
+            "rowCosts": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                1
+              ]
+            ],
+            "columnCosts": [
+              [
+                1,
+                2
+              ],
+              [
+                3,
+                1
+              ]
+            ],
+            "rowActions": [
+              "A",
+              "B"
+            ],
+            "columnActions": [
+              "X",
+              "Y"
+            ]
+          },
+          "id": "roughgarden_ag2013_s13_e01"
+        },
+        {
+          "type": "choice",
+          "prompt": "Quel concept interdit une déviation unilatérale profitable du profil pur ?",
+          "options": [
+            "Nash pur",
+            "Équilibre corrélé",
+            "CCE seulement",
+            "Minimax"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "Il porte sur le profil courant et une déviation individuelle.",
+          "explanation": "Un Nash pur est un profil déterministe où aucun joueur ne peut réduire seul son coût en changeant d’action, les choix adverses restant fixes. CE et CCE portent plutôt sur des distributions ou recommandations et n’exigent pas que chaque profil observé soit un Nash pur.",
+          "verification": {
+            "kind": "identity",
+            "result": "Nash pur"
+          },
+          "id": "roughgarden_ag2013_s13_e02"
+        }
+      ]
+    },
+    {
+      "id": "roughgarden_ag2013_s14",
+      "sourceSessionNumber": 14,
+      "sourceTitle": "Smooth Games",
+      "kind": "lesson",
+      "title": "Preuves robustes du prix de l’anarchie",
+      "objective": "Réarranger une inégalité de coûts pour obtenir une borne de POA.",
+      "learningNotes": "La preuve canonique utilise l’inégalité de déviation de Nash vers le chemin optimal. On additionne par joueur, borne le terme mêlant état d’équilibre et état optimal, puis isole le rapport de coûts. Les jeux lisses encapsulent cette dernière étape par des paramètres λ et μ et donnent des bornes robustes pour tous les équilibres sous les hypothèses indiquées. La démarche algébrique se réutilise; la validité de la déviation et de l’inégalité dépend du jeu.",
+      "sourceUrls": [
+        "https://timroughgarden.org/f13/l/l14.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "type": "choice",
+          "prompt": "C(e) ≤ 2C(o)+C(e)/2. Quelle borne sur C(e)/C(o) ?",
+          "options": [
+            "4",
+            "2",
+            "3",
+            "5/2"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "Soustrais C(e)/2 puis divise par C(o).",
+          "explanation": "Soustrayons C(e)/2 des deux côtés : C(e)/2≤2C(o). En multipliant par 2 puis en divisant par C(o)>0, on obtient C(e)/C(o)≤4.",
+          "verification": {
+            "kind": "bound_ratio",
+            "lambda": 2,
+            "mu": 0.5
+          },
+          "id": "roughgarden_ag2013_s14_e01"
+        },
+        {
+          "type": "choice",
+          "prompt": "C(e) ≤ 3C(o)+C(e)/4. Quel ratio maximal ?",
+          "options": [
+            "4",
+            "3",
+            "12",
+            "5"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "Isole C(e), puis divise par C(o).",
+          "explanation": "On regroupe les termes en C(e) : (1−1/4)C(e)≤3C(o), soit (3/4)C(e)≤3C(o). En divisant par 3C(o)/4, le ratio est au plus 4.",
+          "verification": {
+            "kind": "bound_ratio",
+            "lambda": 3,
+            "mu": 0.25
+          },
+          "id": "roughgarden_ag2013_s14_e02"
+        }
+      ]
+    },
+    {
+      "id": "roughgarden_ag2013_s15",
+      "sourceSessionNumber": 15,
+      "sourceTitle": "Best-Case and Strong Nash Equilibria",
+      "kind": "lesson",
+      "title": "Stabilité, coalitions et meilleurs équilibres",
+      "objective": "Calculer un facteur harmonique et distinguer prix de stabilité et prix d’anarchie.",
+      "learningNotes": "Les jeux de partage des coûts présentent une externalité positive : plusieurs joueurs financent une arête. Ils peuvent posséder plusieurs équilibres aux coûts différents. Le prix de stabilité utilise le meilleur équilibre, le prix d’anarchie le pire, chaque fois rapporté à l’optimum. Un équilibre fort résiste aux déviations coordonnées d’une coalition. Le facteur harmonique H_k=Σ1/j apparaît dans les bornes de partage; un bon équilibre existe sans que le jeu garantisse qu’il sera atteint.",
+      "sourceUrls": [
+        "https://timroughgarden.org/f13/l/l15.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "type": "choice",
+          "prompt": "Quelle est la valeur H₃=1+1/2+1/3 ?",
+          "options": [
+            "11/6",
+            "3/2",
+            "5/3",
+            "2"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "Additionne les trois fractions.",
+          "explanation": "Mettons au même dénominateur : 1+1/2+1/3=6/6+3/6+2/6=11/6, soit environ 1,833.",
+          "verification": {
+            "kind": "harmonic",
+            "n": 3
+          },
+          "id": "roughgarden_ag2013_s15_e01"
+        },
+        {
+          "type": "choice",
+          "prompt": "Meilleur équilibre 12, optimum 8. Prix de stabilité ?",
+          "options": [
+            "3/2",
+            "2/3",
+            "4",
+            "20"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "C’est le meilleur équilibre divisé par l’optimum.",
+          "explanation": "Le prix de stabilité utilise le meilleur équilibre : 12/8=1,5=3/2. Le prix d’anarchie utiliserait le plus coûteux des équilibres; il ne peut être calculé avec les seules données fournies.",
+          "verification": {
+            "kind": "ratio",
+            "numerator": 12,
+            "denominator": 8
+          },
+          "id": "roughgarden_ag2013_s15_e02"
+        }
+      ]
+    },
+    {
+      "id": "roughgarden_ag2013_s16",
+      "sourceSessionNumber": 16,
+      "sourceTitle": "Best-Response Dynamics",
+      "kind": "lesson",
+      "title": "Apprentissage par meilleures réponses",
+      "objective": "Exécuter une meilleure réponse et expliquer l’arrêt d’une dynamique de potentiel.",
+      "learningNotes": "À chaque étape, un joueur choisit une action de coût minimal face aux actions adverses. Dans un jeu de potentiel, chaque amélioration stricte fait baisser une fonction potentielle. Avec un nombre fini de profils, la trajectoire s’arrête donc à un équilibre pur, mais pas nécessairement en temps polynomial. Une dynamique est un processus; l’équilibre est une propriété du profil.",
+      "sourceUrls": [
+        "https://timroughgarden.org/f13/l/l16.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "type": "choice",
+          "prompt": "Tes coûts A,B,C sont 4,2,3. Quelle meilleure réponse ?",
+          "options": [
+            "B",
+            "A",
+            "C",
+            "A ou C"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "Choisis le coût minimal.",
+          "explanation": "La meilleure réponse minimise le coût parmi les trois actions : A coûte 4, B coûte 2 et C coûte 3. L’action B donne donc le coût le plus faible face au profil adverse courant.",
+          "verification": {
+            "kind": "minimum",
+            "values": {
+              "A": 4,
+              "B": 2,
+              "C": 3
+            }
+          },
+          "id": "roughgarden_ag2013_s16_e01"
+        },
+        {
+          "type": "choice",
+          "prompt": "Une fonction de potentiel baisse strictement à chaque mouvement. Peut-on revisiter un profil ?",
+          "options": [
+            "Non, son potentiel ne pourrait pas baisser",
+            "Oui, après deux tours",
+            "Oui, si le jeu est fini",
+            "Toujours"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "Un retour au profil rétablirait la même valeur.",
+          "explanation": "Si le profil revenait, la fonction potentielle reprendrait sa valeur antérieure, contredisant la baisse stricte à chaque mouvement. Comme il n’y a qu’un nombre fini de profils, aucun profil ne se répète; la dynamique s’arrête.",
+          "verification": {
+            "kind": "identity",
+            "result": "Non, son potentiel ne pourrait pas baisser"
+          },
+          "id": "roughgarden_ag2013_s16_e02"
+        }
+      ]
+    },
+    {
+      "id": "roughgarden_ag2013_s17",
+      "sourceSessionNumber": 17,
+      "sourceTitle": "No-Regret Dynamics",
+      "kind": "lesson",
+      "title": "Apprentissage sans regret",
+      "objective": "Calculer le regret externe et relier apprentissage à l’équilibre CCE.",
+      "learningNotes": "Le regret externe compare le coût cumulé à la meilleure action fixe rétrospectivement, pas au meilleur choix différent à chaque tour. Les poids multiplicatifs augmentent le poids des actions peu coûteuses et obtiennent un regret moyen décroissant comme √(log n/T) pour des coûts bornés. Si chaque joueur a peu de regret externe, l’historique moyen approche un équilibre corrélé grossier, pas nécessairement Nash. Le modèle suppose l’observation du vecteur de coût complet.",
+      "sourceUrls": [
+        "https://timroughgarden.org/f13/l/l17.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "type": "choice",
+          "prompt": "Tu choisis A puis B, coût 1 à chaque tour. Coûts A=(1,0), B=(0,1). Regret moyen ?",
+          "options": [
+            "1/2",
+            "3/2",
+            "1",
+            "−1/2"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "Compare ton total 2 au total de chaque action fixe, égal à 1.",
+          "explanation": "Le coût joué est 1+1=2. L’action fixe A aurait coûté 1+0=1, et B aurait coûté 0+1=1; le meilleur comparateur coûte donc 1. Le regret cumulé est 2−1=1, puis le regret moyen 1/2 par tour.",
+          "verification": {
+            "kind": "external_regret",
+            "chosenCosts": [
+              1,
+              1
+            ],
+            "actionCosts": {
+              "A": [
+                1,
+                0
+              ],
+              "B": [
+                0,
+                1
+              ]
+            }
+          },
+          "id": "roughgarden_ag2013_s17_e01"
+        },
+        {
+          "type": "choice",
+          "prompt": "Ton coût vaut 5 sur 4 tours; une action fixe aurait coûté 3. Regret moyen ?",
+          "options": [
+            "1/2",
+            "2",
+            "1/4",
+            "8"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "(coût joué moins coût fixe)/nombre de tours.",
+          "explanation": "Le meilleur comparateur fixe coûte 3. Le regret cumulé est 5−3=2; divisé par les 4 tours, cela donne 2/4=1/2. Ce calcul compare à une action constante, pas au meilleur choix différent à chaque tour.",
+          "verification": {
+            "kind": "regret",
+            "chosenTotal": 5,
+            "fixedTotal": 3,
+            "rounds": 4
+          },
+          "id": "roughgarden_ag2013_s17_e02"
+        }
+      ]
+    },
+    {
+      "id": "roughgarden_ag2013_s18",
+      "sourceSessionNumber": 18,
+      "sourceTitle": "Swap Regret; Minimax",
+      "kind": "lesson",
+      "title": "Regret de permutation et minimax",
+      "objective": "Distinguer les regrets et calculer la stratégie minimax dans pile-ou-face.",
+      "learningNotes": "Le regret de permutation compare l’historique à toute règle qui remplace une action observée par une autre; il généralise le regret externe. Si chaque joueur le réduit, la moyenne temporelle approche un équilibre corrélé. Dans un jeu à somme nulle, le théorème minimax égalise la garantie du joueur ligne et la perte que peut imposer le joueur colonne. Le mélange uniforme équilibre pile-ou-face. L’apprentissage approche ces équilibres; un programme linéaire peut aussi les calculer.",
+      "sourceUrls": [
+        "https://timroughgarden.org/f13/l/l18.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "type": "choice",
+          "prompt": "Quelle probabilité de pile rend l’adversaire indifférent dans pile-ou-face ?",
+          "options": [
+            "1/2",
+            "0",
+            "1",
+            "Toutes"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "Égalise les gains espérés adverses.",
+          "explanation": "Si l’adversaire joue pile avec probabilité q, le gain espéré d’une réponse pile vaut 2q−1 et celui d’une réponse face vaut 1−2q. Les égaler donne 2q−1=1−2q, donc q=1/2; le mélange empêche une réponse pure avantageuse.",
+          "verification": {
+            "kind": "matching_pennies",
+            "probabilities": [
+              0.5,
+              0.5
+            ]
+          },
+          "id": "roughgarden_ag2013_s18_e01"
+        },
+        {
+          "type": "choice",
+          "prompt": "Coût 24 en 10 tours; action fixe 20. Regret moyen ?",
+          "options": [
+            "2/5",
+            "4",
+            "2",
+            "1/5"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "(24−20)/10.",
+          "explanation": "Le regret cumulé par rapport à cette action fixe est 24−20=4. Sur 10 tours, le regret moyen est 4/10=2/5 par tour.",
+          "verification": {
+            "kind": "regret",
+            "chosenTotal": 24,
+            "fixedTotal": 20,
+            "rounds": 10
+          },
+          "id": "roughgarden_ag2013_s18_e02"
+        }
+      ]
+    },
+    {
+      "id": "roughgarden_ag2013_s19",
+      "sourceSessionNumber": 19,
+      "sourceTitle": "Pure NE and PLS-Completeness",
+      "kind": "lesson",
+      "title": "Recherche locale et classe PLS",
+      "objective": "Identifier un optimum local et interpréter la PLS-complétude.",
+      "learningNotes": "Dans Max-Cut, déplacer un sommet est un mouvement local. Une coupe est localement optimale si aucun retournement ne l’améliore; cela ne signifie pas optimum global. Une amélioration stricte d’un objectif exclut les cycles, mais pas une longue exécution. PLS formalise recherche initiale, voisinage et objectif calculables. PLS-complétude signifie que les autres problèmes PLS se réduisent à celui-ci; elle n’exclut pas un algorithme polynomial.",
+      "sourceUrls": [
+        "https://timroughgarden.org/f13/l/l19.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "type": "choice",
+          "prompt": "Une coupe vaut 7, ses voisins valent 6,7,5. Est-elle localement optimale ?",
+          "options": [
+            "Oui",
+            "Non, pas globale",
+            "Non, il faut bouger",
+            "Inconnu"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "Compare uniquement aux voisins autorisés.",
+          "explanation": "Aucun voisin n’a une valeur supérieure à 7 : les valeurs sont 6, 7 et 5. Aucun retournement simple de sommet n’améliore donc la coupe; elle est localement optimale pour ce voisinage, sans être nécessairement globale.",
+          "verification": {
+            "kind": "local_optimum",
+            "current": 7,
+            "neighbors": [
+              6,
+              7,
+              5
+            ]
+          },
+          "id": "roughgarden_ag2013_s19_e01"
+        },
+        {
+          "type": "choice",
+          "prompt": "Parmi 16 solutions, combien au plus peuvent être visitées sous amélioration stricte sans répétition ?",
+          "options": [
+            "16",
+            "17",
+            "15",
+            "1"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "Une solution répétée rétablirait sa valeur passée.",
+          "explanation": "Une amélioration stricte empêche de revisiter une solution déjà vue, car son objectif aurait la même valeur qu’avant. Il existe seulement 16 solutions distinctes; la trajectoire peut donc en visiter au plus 16 avant de s’arrêter, sans garantie de polynomialité quand l’espace est grand.",
+          "verification": {
+            "kind": "identity",
+            "result": "16"
+          },
+          "id": "roughgarden_ag2013_s19_e02"
+        }
+      ]
+    },
+    {
+      "id": "roughgarden_ag2013_s20",
+      "sourceSessionNumber": 20,
+      "sourceTitle": "Mixed NE and PPAD-Completeness",
+      "kind": "lesson",
+      "title": "Équilibres mixtes et PPAD",
+      "objective": "Comprendre l’équilibre mixte, TFNP et PPAD.",
+      "learningNotes": "Dans un jeu bimatrice, chaque joueur mélange des actions et maximise son gain espéré face à la distribution adverse. Dans pile-ou-face, le mélange uniforme rend l’autre indifférent. L’existence d’un équilibre dans tout jeu fini place la recherche dans TFNP, où une solution est garantie. PPAD formalise la recherche d’un point terminal au moyen d’un graphe de degré entrant et sortant bornés et d’un argument de parité. La PPAD-complétude signale une difficulté pour les réductions, mais ne prouve pas l’impossibilité d’un algorithme polynomial.",
+      "sourceUrls": [
+        "https://timroughgarden.org/f13/l/l20.pdf"
+      ],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "type": "choice",
+          "prompt": "À pile ou face, quelle probabilité attribuer à pile dans le mélange d’équilibre ?",
+          "options": [
+            "1/2",
+            "0",
+            "1",
+            "1/4"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "Égalise les gains espérés adverses.",
+          "explanation": "Dans pile-ou-face à somme nulle, le mélange uniforme rend les deux réponses pures de l’adversaire équivalentes. Il attribue donc probabilité 1/2 à pile et 1/2 à face; aucune action pure n’est exploitable.",
+          "verification": {
+            "kind": "matching_pennies",
+            "probabilities": [
+              0.5,
+              0.5
+            ]
+          },
+          "id": "roughgarden_ag2013_s20_e01"
+        },
+        {
+          "type": "choice",
+          "prompt": "Quelle propriété caractérise TFNP ?",
+          "options": [
+            "Une solution existe pour chaque instance valide",
+            "Une solution se calcule en temps constant",
+            "L’équilibre est unique",
+            "Le problème est NP-complet"
+          ],
+          "correctOptionIndex": 0,
+          "hint": "La recherche promise garantit l’existence d’un témoin.",
+          "explanation": "TFNP regroupe des problèmes de recherche dont chaque instance valide possède un témoin. Cette garantie d’existence ne promet ni unicité du témoin ni calcul en temps polynomial; PPAD décrit une sous-classe pertinente pour les équilibres mixtes.",
+          "verification": {
+            "kind": "identity",
+            "result": "Une solution existe pour chaque instance valide"
+          },
+          "id": "roughgarden_ag2013_s20_e02"
+        }
+      ]
+    }
+  ]
+}

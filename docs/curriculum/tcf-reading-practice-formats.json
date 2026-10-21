@@ -1,0 +1,29 @@
+{
+  "courseCode": "TCF Canada · atelier lecture",
+  "edition": "Préparation originale 2026 · format de QCM FEI",
+  "sourceUrl": "https://www.france-education-international.fr/test/tcf-canada",
+  "sequenceType": "original_practice_formats",
+  "notice": "Trois ateliers locaux, quatre documents fictifs originaux et douze questions. Le regroupement et leur progression ne sont pas un programme FEI, ni une épreuve complète de compréhension écrite. Aucune question de banque FEI, TV5MONDE ou RFI n’est reproduite.",
+  "checkedOn": "2026-10-20",
+  "sessionCount": 3,
+  "sessions": [
+    {
+      "number": 1,
+      "sourceTitle": "Atelier original — message pratique",
+      "sourceUrl": "https://www.france-education-international.fr/test/tcf-canada",
+      "kind": "practice"
+    },
+    {
+      "number": 2,
+      "sourceTitle": "Atelier original — annonce détaillée",
+      "sourceUrl": "https://www.france-education-international.fr/test/tcf-canada",
+      "kind": "practice"
+    },
+    {
+      "number": 3,
+      "sourceTitle": "Atelier original — comparaison d’arguments",
+      "sourceUrl": "https://www.france-education-international.fr/test/tcf-canada",
+      "kind": "practice"
+    }
+  ]
+}

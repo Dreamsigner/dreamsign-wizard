@@ -1,0 +1,303 @@
+{
+  "courseCode": "MIT 18.06SC",
+  "edition": "Fall 2011",
+  "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/",
+  "checkedOn": "2026-10-19",
+  "sessionCount": 40,
+  "sessions": [
+    {
+      "number": 1,
+      "sourceTitle": "The Geometry of Linear Equations",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/the-geometry-of-linear-equations/",
+      "kind": "lesson",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 2,
+      "sourceTitle": "An Overview of Key Ideas",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/an-overview-of-key-ideas/",
+      "kind": "lesson",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 3,
+      "sourceTitle": "Elimination with Matrices",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/elimination-with-matrices/",
+      "kind": "lesson",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 4,
+      "sourceTitle": "Multiplication and Inverse Matrices",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/multiplication-and-inverse-matrices/",
+      "kind": "lesson",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 5,
+      "sourceTitle": "Factorization into A = LU",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/factorization-into-a-lu/",
+      "kind": "lesson",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 6,
+      "sourceTitle": "Transposes, Permutations, Vector Spaces",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/transposes-permutations-vector-spaces/",
+      "kind": "lesson",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 7,
+      "sourceTitle": "Column Space and Nullspace",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/column-space-and-nullspace/",
+      "kind": "lesson",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 8,
+      "sourceTitle": "Solving Ax = 0: Pivot Variables, Special Solutions",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/solving-ax-0-pivot-variables-special-solutions/",
+      "kind": "lesson",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 9,
+      "sourceTitle": "Solving Ax = b: Row Reduced Form R",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/solving-ax-b-row-reduced-form-r/",
+      "kind": "lesson",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 10,
+      "sourceTitle": "Independence, Basis and Dimension",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/independence-basis-and-dimension/",
+      "kind": "lesson",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 11,
+      "sourceTitle": "The Four Fundamental Subspaces",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/the-four-fundamental-subspaces/",
+      "kind": "lesson",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 12,
+      "sourceTitle": "Matrix Spaces; Rank 1; Small World Graphs",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/matrix-spaces-rank-1-small-world-graphs/",
+      "kind": "lesson",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 13,
+      "sourceTitle": "Graphs, Networks, Incidence Matrices",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/graphs-networks-incidence-matrices/",
+      "kind": "lesson",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 14,
+      "sourceTitle": "Exam 1 Review",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/exam-1-review/",
+      "kind": "review",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 15,
+      "sourceTitle": "Exam 1",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/exam-1/",
+      "kind": "exam",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 16,
+      "sourceTitle": "Orthogonal Vectors and Subspaces",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/least-squares-determinants-and-eigenvalues/orthogonal-vectors-and-subspaces/",
+      "kind": "lesson",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 17,
+      "sourceTitle": "Projections onto Subspaces",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/least-squares-determinants-and-eigenvalues/projections-onto-subspaces/",
+      "kind": "lesson",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 18,
+      "sourceTitle": "Projection Matrices and Least Squares",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/least-squares-determinants-and-eigenvalues/projection-matrices-and-least-squares/",
+      "kind": "lesson",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 19,
+      "sourceTitle": "Orthogonal Matrices and Gram-Schmidt",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/least-squares-determinants-and-eigenvalues/orthogonal-matrices-and-gram-schmidt/",
+      "kind": "lesson",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 20,
+      "sourceTitle": "Properties of Determinants",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/least-squares-determinants-and-eigenvalues/properties-of-determinants/",
+      "kind": "lesson",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 21,
+      "sourceTitle": "Determinant Formulas and Cofactors",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/least-squares-determinants-and-eigenvalues/determinant-formulas-and-cofactors/",
+      "kind": "lesson",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 22,
+      "sourceTitle": "Cramer's Rule, Inverse Matrix and Volume",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/least-squares-determinants-and-eigenvalues/cramers-rule-inverse-matrix-and-volume/",
+      "kind": "lesson",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 23,
+      "sourceTitle": "Eigenvalues and Eigenvectors",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/least-squares-determinants-and-eigenvalues/eigenvalues-and-eigenvectors/",
+      "kind": "lesson",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 24,
+      "sourceTitle": "Diagonalization and Powers of A",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/least-squares-determinants-and-eigenvalues/diagonalization-and-powers-of-a/",
+      "kind": "lesson",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 25,
+      "sourceTitle": "Differential Equations and exp(At)",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/least-squares-determinants-and-eigenvalues/differential-equations-and-exp-at/",
+      "kind": "lesson",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 26,
+      "sourceTitle": "Markov Matrices; Fourier Series",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/least-squares-determinants-and-eigenvalues/markov-matrices-fourier-series/",
+      "kind": "lesson",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 27,
+      "sourceTitle": "Exam 2 Review",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/least-squares-determinants-and-eigenvalues/exam-2-review/",
+      "kind": "review",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 28,
+      "sourceTitle": "Exam 2",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/least-squares-determinants-and-eigenvalues/exam-2/",
+      "kind": "exam",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 29,
+      "sourceTitle": "Symmetric Matrices and Positive Definiteness",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/positive-definite-matrices-and-applications/symmetric-matrices-and-positive-definiteness/",
+      "kind": "lesson",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 30,
+      "sourceTitle": "Complex Matrices; Fast Fourier Transform (FFT)",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/positive-definite-matrices-and-applications/complex-matrices-fast-fourier-transform-fft/",
+      "kind": "lesson",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 31,
+      "sourceTitle": "Positive Definite Matrices and Minima",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/positive-definite-matrices-and-applications/positive-definite-matrices-and-minima/",
+      "kind": "lesson",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 32,
+      "sourceTitle": "Similar Matrices and Jordan Form",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/positive-definite-matrices-and-applications/similar-matrices-and-jordan-form/",
+      "kind": "lesson",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 33,
+      "sourceTitle": "Singular Value Decomposition",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/positive-definite-matrices-and-applications/singular-value-decomposition/",
+      "kind": "lesson",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 34,
+      "sourceTitle": "Linear Transformations and their Matrices",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/positive-definite-matrices-and-applications/linear-transformations-and-their-matrices/",
+      "kind": "lesson",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 35,
+      "sourceTitle": "Change of Basis; Image Compression",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/positive-definite-matrices-and-applications/change-of-basis-image-compression/",
+      "kind": "lesson",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 36,
+      "sourceTitle": "Left and Right Inverses; Pseudoinverse",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/positive-definite-matrices-and-applications/left-and-right-inverses-pseudoinverse/",
+      "kind": "lesson",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 37,
+      "sourceTitle": "Exam 3 Review",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/positive-definite-matrices-and-applications/exam-3-review/",
+      "kind": "review",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 38,
+      "sourceTitle": "Exam 3",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/positive-definite-matrices-and-applications/exam-3/",
+      "kind": "exam",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 39,
+      "sourceTitle": "Final Course Review",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/final-course-review/",
+      "kind": "review",
+      "contentStatus": "authored"
+    },
+    {
+      "number": 40,
+      "sourceTitle": "Final Exam",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/final-exam/",
+      "kind": "exam",
+      "contentStatus": "authored"
+    }
+  ],
+  "supplementalResources": [
+    {
+      "sourceTitle": "Final 18.06 Lecture 2023",
+      "sourceUrl": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/final-1806-lecture-2023/",
+      "reason": "Retrospective lecture from 2023, not a session of the Fall 2011 sequence."
+    }
+  ],
+  "countUnit": "ordered session pages including reviews and exams",
+  "finalizedOn": "2026-10-20",
+  "sessionKindCounts": {
+    "lesson": 32,
+    "review": 4,
+    "exam": 4
+  }
+}

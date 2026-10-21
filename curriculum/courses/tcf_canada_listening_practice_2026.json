@@ -1,0 +1,111 @@
+{
+  "courseId": "tcf_canada_listening_practice_2026",
+  "title": "TCF Canada — Atelier de compréhension orale",
+  "sourceTitle": "TCF Canada — entraînement original de compréhension orale",
+  "edition": "Préparation originale 2026 · format FEI",
+  "category": "LANGUAGES",
+  "sourceUrl": "https://www.france-education-international.fr/test/tcf-canada",
+  "manifest": "docs/curriculum/tcf-listening-practice-formats.json",
+  "description": "Trois documents audio originaux avec voix de synthèse, six questions de compréhension et transcription en correction. Atelier partiel, sans score officiel.",
+  "lessons": [
+    {
+      "id": "tcf_listening_2026_announcement",
+      "sourceSessionNumber": 1,
+      "sourceTitle": "Atelier original — annonce pratique",
+      "kind": "practice",
+      "title": "Repérer une information modifiée dans une annonce",
+      "objective": "Identifier le nouvel horaire et les démarches utiles dans un document sonore.",
+      "learningNotes": "Une annonce pratique rassemble souvent une situation initiale et une modification. Écoute les marqueurs qui opposent ces informations : finalement, reporté, au lieu de, ou désormais. Une date entendue au début n’est pas forcément la date à retenir ; il faut comprendre ce qui change. Repère aussi à qui s’adressent les consignes : tous les participants ou seulement les nouveaux inscrits. Pendant cet atelier, tu peux réécouter le document pour apprendre à distinguer l’essentiel des détails. Cette possibilité relève de l’entraînement, pas d’une simulation intégrale de l’examen. Le texte sonore est original, lu par une voix de synthèse française. La transcription apparaît en correction pour comparer précisément ce que tu as compris avec les paroles prononcées.",
+      "sourceUrls": ["https://www.france-education-international.fr/test/tcf-canada"],
+      "xpReward": 15,
+      "exercises": [
+        {
+          "id": "tcf_listening_2026_announcement_e1", "type": "listening",
+          "prompt": "À quel moment l’atelier aura-t-il finalement lieu ?",
+          "audioResourcePath": "files/audio/tcf_announcement.wav",
+          "transcript": "Bonjour à toutes et à tous. L’atelier prévu mercredi à dix-huit heures est reporté au jeudi à dix-sept heures trente. Il se tiendra dans la salle bleue du premier étage. L’entrée est gratuite, mais une réservation à l’accueil est nécessaire. Les personnes déjà inscrites n’ont aucune démarche à refaire. Merci de votre attention.",
+          "options": ["Mercredi à dix-huit heures", "Jeudi à dix-sept heures trente", "Jeudi à dix-huit heures", "Mercredi à dix-sept heures trente"],
+          "correctOptionIndex": 1,
+          "hint": "Distingue l’horaire prévu de celui annoncé après le mot « reporté ».",
+          "explanation": "L’horaire initial est mercredi à dix-huit heures, mais l’annonce le remplace explicitement par jeudi à dix-sept heures trente. La question demande le moment finalement retenu."
+        },
+        {
+          "id": "tcf_listening_2026_announcement_e2", "type": "listening",
+          "prompt": "Que doit faire une personne qui était déjà inscrite ?",
+          "audioResourcePath": "files/audio/tcf_announcement.wav",
+          "transcript": "Bonjour à toutes et à tous. L’atelier prévu mercredi à dix-huit heures est reporté au jeudi à dix-sept heures trente. Il se tiendra dans la salle bleue du premier étage. L’entrée est gratuite, mais une réservation à l’accueil est nécessaire. Les personnes déjà inscrites n’ont aucune démarche à refaire. Merci de votre attention.",
+          "options": ["Payer sa place à l’accueil", "Réserver une seconde fois", "Aucune démarche supplémentaire", "Changer obligatoirement de salle"],
+          "correctOptionIndex": 2,
+          "hint": "Écoute la dernière consigne et le groupe de personnes auquel elle s’applique.",
+          "explanation": "La réservation est nécessaire, mais les personnes déjà inscrites sont explicitement dispensées de refaire une démarche. Il faut appliquer la consigne au bon public."
+        }
+      ]
+    },
+    {
+      "id": "tcf_listening_2026_voicemail",
+      "sourceSessionNumber": 2,
+      "sourceTitle": "Atelier original — message professionnel",
+      "kind": "practice",
+      "title": "Comprendre une demande dans un message vocal",
+      "objective": "Distinguer une explication, une décision et la demande adressée au destinataire.",
+      "learningNotes": "Dans un message vocal, la personne qui parle peut expliquer un problème avant de formuler sa demande. Sépare ces fonctions : ce qui s’est passé, ce qu’elle va faire et ce qu’elle demande au destinataire. Les pronoms et les formes verbales aident à suivre les responsabilités : je t’envoie ne signifie pas envoie-moi. Une justification peut occuper plusieurs phrases, sans être l’objectif principal de l’appel. Après une première écoute, reformule mentalement le message en une phrase simple. Vérifie ensuite les détails qui permettent de répondre aux questions. Le document de cet atelier est une fiction originale destinée à l’écoute guidée. Sa synthèse vocale et les réécoutes autorisées ne reproduisent pas toutes les conditions d’une épreuve officielle.",
+      "sourceUrls": ["https://www.france-education-international.fr/test/tcf-canada"],
+      "xpReward": 15,
+      "exercises": [
+        {
+          "id": "tcf_listening_2026_voicemail_e1", "type": "listening",
+          "prompt": "Quelle demande Karim adresse-t-il à Léa ?",
+          "audioResourcePath": "files/audio/tcf_voicemail.wav",
+          "transcript": "Bonjour Léa, c’est Karim. Mon train a été supprimé ce matin. Je participerai donc à la réunion en visioconférence depuis chez moi. Peux-tu ouvrir la salle et accueillir les autres participants ? Je t’envoie les documents avant neuf heures pour que tu puisses les afficher. La réunion commence bien à neuf heures trente, comme prévu. Merci beaucoup pour ton aide.",
+          "options": ["Annuler la réunion", "Lui réserver un autre train", "Modifier l’heure de la réunion", "Ouvrir la salle et accueillir les participants"],
+          "correctOptionIndex": 3,
+          "hint": "Cherche l’action introduite par la question « Peux-tu… ».",
+          "explanation": "Karim explique son problème de transport puis demande à Léa d’ouvrir la salle et d’accueillir les participants. Il ne lui demande pas d’annuler la réunion ou de résoudre le problème du train."
+        },
+        {
+          "id": "tcf_listening_2026_voicemail_e2", "type": "listening",
+          "prompt": "Quelle organisation de la réunion est annoncée ?",
+          "audioResourcePath": "files/audio/tcf_voicemail.wav",
+          "transcript": "Bonjour Léa, c’est Karim. Mon train a été supprimé ce matin. Je participerai donc à la réunion en visioconférence depuis chez moi. Peux-tu ouvrir la salle et accueillir les autres participants ? Je t’envoie les documents avant neuf heures pour que tu puisses les afficher. La réunion commence bien à neuf heures trente, comme prévu. Merci beaucoup pour ton aide.",
+          "options": ["Karim participe à distance et l’horaire reste inchangé", "Tous les participants restent obligatoirement chez eux", "La réunion commence avant neuf heures", "Les documents seront envoyés après la réunion"],
+          "correctOptionIndex": 0,
+          "hint": "Compare le changement de participation de Karim et la précision finale sur l’horaire.",
+          "explanation": "Karim passe en visioconférence, tandis que la réunion commence toujours à neuf heures trente. L’envoi des documents avant neuf heures n’est pas l’heure de début de la réunion."
+        }
+      ]
+    },
+    {
+      "id": "tcf_listening_2026_opinion",
+      "sourceSessionNumber": 3,
+      "sourceTitle": "Atelier original — opinion argumentée",
+      "kind": "practice",
+      "title": "Identifier une opinion et ses conditions",
+      "objective": "Reconnaître une position nuancée et les mesures proposées pour la mettre à l’épreuve.",
+      "learningNotes": "Une opinion peut être favorable à une idée tout en refusant certaines façons de l’appliquer. Les expressions à condition que, cependant ou à mon avis indiquent comment les arguments s’articulent. Ne classe donc pas automatiquement une personne parmi les opposants parce qu’elle décrit un risque. Cherche sa conclusion et les conditions qui l’accompagnent. Distingue aussi un constat présenté comme certain d’une proposition à tester. Reformule ensuite le point de vue sans en supprimer la nuance. L’atelier utilise une prise de parole fictive et originale ; aucune étude ni statistique réelle n’est affirmée par ce document. La transcription et la correction permettent de vérifier l’interprétation à partir des paroles, sans calculer de niveau officiel de langue.",
+      "sourceUrls": ["https://www.france-education-international.fr/test/tcf-canada"],
+      "xpReward": 20,
+      "exercises": [
+        {
+          "id": "tcf_listening_2026_opinion_e1", "type": "listening",
+          "prompt": "Quelle est la position de la personne sur la semaine de quatre jours ?",
+          "audioResourcePath": "files/audio/tcf_opinion.wav",
+          "transcript": "On présente parfois la semaine de quatre jours comme une solution miracle. À mon avis, elle peut réduire la fatigue, mais seulement si l’on réorganise réellement le travail. Concentrer les mêmes réunions inutiles et quarante heures de tâches sur quatre journées ne résoudrait pas le problème. Je suis donc favorable à une expérimentation de quelques mois, avec l’avis de tous les salariés et un bilan précis avant de prendre une décision définitive.",
+          "options": ["Elle refuse toute expérimentation", "Elle soutient une expérimentation avec une vraie réorganisation", "Elle promet un résultat positif dans toutes les entreprises", "Elle propose uniquement de prolonger les journées"],
+          "correctOptionIndex": 1,
+          "hint": "Repère la conclusion introduite par « Je suis donc… » et les conditions qui suivent.",
+          "explanation": "La personne est favorable à un essai, avec réorganisation et bilan. Ses réserves portent sur une simple compression du travail ; elles ne constituent pas un refus du principe."
+        },
+        {
+          "id": "tcf_listening_2026_opinion_e2", "type": "listening",
+          "prompt": "Que recommande la personne avant une décision définitive ?",
+          "audioResourcePath": "files/audio/tcf_opinion.wav",
+          "transcript": "On présente parfois la semaine de quatre jours comme une solution miracle. À mon avis, elle peut réduire la fatigue, mais seulement si l’on réorganise réellement le travail. Concentrer les mêmes réunions inutiles et quarante heures de tâches sur quatre journées ne résoudrait pas le problème. Je suis donc favorable à une expérimentation de quelques mois, avec l’avis de tous les salariés et un bilan précis avant de prendre une décision définitive.",
+          "options": ["Conserver toutes les réunions actuelles", "Se fier uniquement à l’avis de la direction", "Tester le dispositif, consulter les salariés puis faire un bilan", "Généraliser immédiatement le dispositif"],
+          "correctOptionIndex": 2,
+          "hint": "Écoute les étapes proposées à la fin de la prise de parole.",
+          "explanation": "La proposition comporte une période d’essai, la consultation de tous les salariés et un bilan avant décision. Une adoption immédiate ou un avis unique ferait disparaître ces conditions."
+        }
+      ]
+    }
+  ]
+}
