@@ -1,72 +1,120 @@
 <p align="center">
-  <img src="docs/images/atelier-banner.svg" alt="Atelier d’apprentissage — des livres et des marches de blocs rouges" width="100%">
+  <img src="docs/images/atelier-banner.svg" alt="Atelier d’apprentissage" width="100%">
 </p>
 
 # Atelier d’apprentissage
 
-Une application native **Windows**, en français, pour comprendre un cours, pratiquer et reprendre ses erreurs. Développée avec Kotlin et Compose Multiplatform dans le dépôt **Duolingo KMP Learning App**.
+Application d’apprentissage en français pour Windows, développée en Kotlin avec Compose Multiplatform. Elle réunit des cours de mathématiques et d’informatique ainsi que des ateliers de préparation au TCF Canada, avec exercices interactifs et suivi de progression.
 
 [![Build Windows](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/workflows/build.yml)
 
-[Tester sur Windows](docs/windows-testing.md) · [Lire les cours et exercices](docs/courses/README.md) · [Couverture vérifiable](docs/curriculum/AUTHORED-COVERAGE.md) · [Sources et supports](docs/curriculum/course-resources-notes.md)
+[Installation](#installation) · [Développement](#développement) · [Catalogue des cours](docs/courses/README.md) · [Documentation](#documentation)
 
-## Apprendre, puis pratiquer
+## Fonctionnalités
 
-| Dans l’application | Fonctionnement |
-| --- | --- |
-| **Cours et supports** | Toutes les notes françaises d’un cours réunies dans un lecteur, avec sommaire et exercices associés. Les PDF officiels se lisent dans l’application avec pages et zoom. Les notes restent lisibles avant de débloquer les exercices. |
-| **Questions et corrections** | Objectif au-dessus de l’énoncé, réponses juste après la question, indice et bouton « Pourquoi cette réponse ? ». |
-| **Reprise des erreurs** | Une erreur permet d’avancer; les questions ratées reviennent en fin de séance jusqu’à leur correction. |
-| **Mathématiques composées** | Rendu LaTeX local et reconnaissance prudente des matrices, fractions et puissances dans les champs mathématiques. Les formes non reconnues restent visibles sous leur forme source. |
-| **Progression locale** | Cours choisi, leçons terminées, XP, série et brouillons conservés sur cet appareil. Les XP d’une leçon sont attribués une seule fois. |
-| **Ateliers TCF** | Lecture, écoute de documents originaux, saisie et production orale avec réécoute et auto-évaluation; aucun score officiel ni correction automatique de langue. |
+- Lecture des notes de cours avec sommaire, ressources de référence et exercices associés.
+- Consultation des supports PDF dans l’application, avec navigation par page et zoom.
+- Exercices avec indices, corrections expliquées et reprise des questions incorrectes en fin de séance.
+- Affichage des expressions mathématiques avec un moteur de rendu LaTeX local.
+- Ateliers TCF de compréhension écrite et orale, rédaction et production orale avec réécoute et auto-évaluation.
+- Sauvegarde locale de la progression, des XP, du cours sélectionné et des brouillons.
+- Interface de bureau avec navigation latérale et disposition adaptée au redimensionnement.
 
-L’interface PC utilise une navigation latérale et un espace de lecture adapté à la largeur. La charte rouge, encre et ivoire accompagne des illustrations pixel/voxel originales; aucune texture ni aucun personnage Minecraft n’est inclus.
-
-![Catalogue natif Windows, rendu Compose du véritable contenu publié](docs/images/windows-catalogue.png)
+![Catalogue des cours sur Windows](docs/images/windows-catalogue.png)
 
 <details>
-<summary>Voir un exercice d’algèbre linéaire avec matrice composée</summary>
+<summary>Exemple d’exercice de mathématiques</summary>
 
-![Exercice avec objectif au-dessus, matrice composée et réponses directement sous la question](docs/images/windows-mathematics.png)
-
-Captures produites par les tests Compose hors écran avec le catalogue publié et une progression de test isolée.
+![Exercice d’algèbre linéaire](docs/images/windows-mathematics.png)
 
 </details>
 
-## Catalogue actuel
+## Catalogue pédagogique
 
-**15 unités, 391 leçons et ateliers, 1 190 exercices.** Une unité correspond à un cours identifié; les séances suivent son ordre source. Le classement des unités suit les sections OSSU, avec les adaptations locales documentées. Les notes et exercices sont rédigés pour ce projet et appariés aux références de leur séance.
+Le catalogue comprend **15 unités, 391 leçons et ateliers et 1 190 exercices**.
 
-| Parcours | Cours publiés |
+| Catégorie | Domaines |
 | --- | --- |
-| **Mathématiques** | Calcul à une variable · Mathématiques discrètes · Algèbre linéaire · Logique formelle · Méthodes numériques |
-| **Informatique** | Python · Outils du développeur · Architecture des ordinateurs · Prolog · Théorie du calcul · Théorie algorithmique des jeux |
-| **TCF Canada** | Ateliers originaux de compréhension orale, compréhension écrite, expression orale et expression écrite |
+| Mathématiques | Calcul à une variable, mathématiques discrètes, algèbre linéaire, logique formelle et méthodes numériques |
+| Informatique | Python, outils du développeur, architecture des ordinateurs, Prolog, théorie du calcul et théorie algorithmique des jeux |
+| TCF Canada | Compréhension orale et écrite, expression orale et écrite |
 
-Le cursus OSSU complet et la préparation TCF complète **restent à terminer**. Les adaptations guidées ne remplacent pas toutes les banques de problèmes, les projets et les examens ouverts des cours originaux. Un support PDF de séance n’est pas présenté comme un manuel complet. [Détails, provenance et limites](docs/curriculum/STATUS.md).
+Les cours s’appuient notamment sur OSSU, MIT OpenCourseWare et les références de France Éducation international. Chaque unité identifie son cours source; les notes et exercices sont des adaptations rédigées pour l’application.
 
-## Tester sans installer Gradle
+La couverture du cursus OSSU et de la préparation TCF est partielle. Les exercices adaptés ne remplacent pas l’ensemble des devoirs, projets et évaluations des cours sources. Les ateliers TCF ne délivrent pas de score officiel ni de correction automatique des productions.
 
-1. Ouvrir un [run Windows réussi](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/workflows/build.yml).
-2. Télécharger **DuolingoKmpApp-Windows**, extraire les archives et conserver ensemble l’exécutable, `app` et `runtime`.
-3. Lancer **DuolingoKmpApp.exe**. Java est inclus dans le paquet.
+Consulter le [catalogue détaillé](docs/courses/README.md) et la [couverture pédagogique](docs/curriculum/AUTHORED-COVERAGE.md).
 
-[Guide Windows et diagnostic sans fenêtre](docs/windows-testing.md). Les notes et documents audio sont intégrés; le lecteur PDF télécharge les supports officiels avec Internet et les vidéos restent des liens. La capture physique du microphone et la lecture d’écran native ne sont pas prouvées par les tests hors écran.
+## Installation
 
-## Contribuer au projet
+1. Ouvrir la page [GitHub Actions — Build](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/workflows/build.yml) et sélectionner une exécution réussie de la branche `main`.
+2. Télécharger l’artefact **DuolingoKmpApp-Windows** dans la section **Artifacts**. Une connexion GitHub peut être nécessaire.
+3. Extraire l’archive téléchargée, puis `DuolingoKmpApp-Windows.zip` si une seconde archive est présente.
+4. Lancer **DuolingoKmpApp.exe** en conservant les dossiers `app` et `runtime` à ses côtés.
 
-- [Architecture et plateformes](docs/platforms.md) — le périmètre actif est **Windows uniquement**; le code Android/iOS est conservé, leurs développements et builds sont arrêtés.
-- [Tests automatisés Compose, audio et persistance](docs/automated-testing.md) — scénarios sans Computer Use, rapports et captures.
-- [Rendu mathématique](docs/math-typesetting.md) · [Glossaire Prolog français/anglais](docs/curriculum/learn-prolog-now-fr-glossary-order-notes.md).
-- [Registre de progression](docs/EXECUTION-LOG.md) — distingue implémentation, tests, inspection visuelle et vérifications manquantes.
+Le paquet est portable et inclut Java : aucun JDK ni Gradle n’est nécessaire pour utiliser l’application. Les notes et documents audio sont intégrés; les supports PDF externes et les vidéos nécessitent une connexion Internet.
 
-Les contenus canoniques sont dans `curriculum/courses/`. `python tools/validate_curriculum.py --generate` valide les correspondances sources et génère Kotlin. Garder les identifiants publiés stables pour préserver la progression. Le dépôt n’a pas de wrapper Gradle : utiliser Gradle 8.11.1 et JDK 17 pour `gradle :composeApp:desktopTest :composeApp:createDistributable`.
+La progression est enregistrée dans `%LOCALAPPDATA%/AtelierApprentissage/progress.json`. Elle n’est pas synchronisée entre appareils.
 
-La progression Windows est enregistrée dans `%LOCALAPPDATA%/AtelierApprentissage/progress.json`; une sauvegarde illisible est préservée et signalée. Aucune génération IA dans l’application, aucun import automatique de PDF, aucune synchronisation cloud.
+Voir le [guide Windows](docs/windows-testing.md) pour le diagnostic et la gestion des données locales.
 
-## Références
+## Développement
 
-[OSSU Computer Science](https://github.com/ossu/computer-science) · [OSSU Math](https://github.com/ossu/math) · [MIT OpenCourseWare](https://ocw.mit.edu/) · [France Éducation international — TCF Canada](https://www.france-education-international.fr/test/tcf-canada)
+### Prérequis
 
-Les supports originaux restent sur leurs sites officiels. Leurs licences et exceptions ne sont pas étendues aux notes de ce projet. Les dépendances distribuées sont documentées dans [les notices tierces](docs/licences/THIRD-PARTY-NOTICES.txt).
+- Windows et JDK 17.
+- Gradle 8.11.1, disponible dans le `PATH`. Le dépôt ne contient pas de wrapper Gradle.
+- Python 3.12 pour les outils de contenu pédagogique; SymPy 1.12 pour les contrôleurs mathématiques.
+
+Versions du projet : Kotlin **2.2.21** et Compose Multiplatform **1.9.3**. Les dépendances sont déclarées dans `gradle/libs.versions.toml` et `composeApp/build.gradle.kts`.
+
+### Commandes
+
+À exécuter depuis la racine du dépôt :
+
+| Commande | Usage |
+| --- | --- |
+| `gradle :composeApp:compileKotlinDesktop` | Compiler l’application Windows |
+| `gradle :composeApp:desktopTest` | Exécuter les tests Kotlin et Compose desktop |
+| `gradle :composeApp:createDistributable` | Construire l’application portable avec son runtime |
+| `gradle :composeApp:sourcePdfSmokeTest` | Vérifier le lecteur avec un PDF officiel; nécessite Internet |
+| `python tools/validate_curriculum.py --generate` | Valider le catalogue et régénérer les données Kotlin |
+| `python tools/validate_course_resources.py` | Vérifier l’index des supports pédagogiques |
+| `python tools/export_course_notes.py --check` | Vérifier les exports Markdown des cours |
+
+Après construction, le lanceur se trouve dans `composeApp/build/compose/binaries/main/app/DuolingoKmpApp/`.
+
+### Structure du projet
+
+| Dossier | Rôle |
+| --- | --- |
+| `composeApp/src/commonMain/` | Interface Compose, modèles et logique d’apprentissage partagés |
+| `composeApp/src/desktopMain/` | Lanceur Windows, stockage local, audio et lecteurs de documents |
+| `composeApp/src/commonTest/`, `composeApp/src/desktopTest/` | Tests de logique, de persistance et d’interface |
+| `curriculum/courses/` | Contenus pédagogiques canoniques au format JSON |
+| `tools/` | Validation, contrôles pédagogiques et génération des contenus |
+| `docs/courses/` | Notes de cours et exercices consultables sur GitHub |
+| `.github/workflows/` | Vérifications et création du paquet Windows |
+
+Windows est la plateforme actuellement distribuée. Les cibles Android et iOS restent présentes dans le code Kotlin Multiplatform, sans distribution maintenue.
+
+### Contributions
+
+Pour modifier le contenu pédagogique, travailler dans `curriculum/courses/`, conserver les identifiants publiés et préciser les sources. Régénérer les fichiers dérivés avec les outils du dépôt plutôt que de modifier directement le catalogue Kotlin généré.
+
+Pour une modification applicative, ajouter ou adapter les tests concernés et décrire son comportement dans la pull request. Le workflow `Build` vérifie les contenus, exécute les tests desktop et construit le paquet Windows.
+
+## Documentation
+
+- [Utilisation et diagnostic Windows](docs/windows-testing.md)
+- [Tests automatisés](docs/automated-testing.md)
+- [Bibliothèque des cours](docs/courses/README.md)
+- [Couverture pédagogique](docs/curriculum/AUTHORED-COVERAGE.md)
+- [Sources et supports](docs/curriculum/course-resources-notes.md)
+- [Rendu mathématique](docs/math-typesetting.md)
+
+## Références et licences tierces
+
+[OSSU Computer Science](https://github.com/ossu/computer-science) · [MIT OpenCourseWare](https://ocw.mit.edu/) · [France Éducation international — TCF Canada](https://www.france-education-international.fr/test/tcf-canada)
+
+Les supports externes restent soumis aux licences de leurs éditeurs. Les licences et attributions des bibliothèques distribuées sont regroupées dans [`docs/licences/`](docs/licences/).
