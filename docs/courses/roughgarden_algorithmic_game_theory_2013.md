@@ -46,7 +46,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Introduction<br>
 **Objectif :** Modéliser joueurs, stratégies, préférences et objectif collectif.
 
-<p>La théorie des jeux décrit des choix interdépendants. Dans le tournoi olympique de badminton étudié dans les notes, le tableau rend parfois une défaite préférable pour éviter un rival redouté. Les équipes agissent rationnellement selon les règles, même si cela contrarie l’objectif des organisateurs. Le concepteur doit donc examiner les incitations créées par les règles. Le cours étudie mécanismes, efficacité des équilibres et leur calcul ou apprentissage.</p>
+La théorie des jeux décrit des choix interdépendants. Dans le tournoi olympique de badminton étudié dans les notes, le tableau rend parfois une défaite préférable pour éviter un rival redouté. Les équipes agissent rationnellement selon les règles, même si cela contrarie l’objectif des organisateurs. Le concepteur doit donc examiner les incitations créées par les règles. Le cours étudie mécanismes, efficacité des équilibres et leur calcul ou apprentissage.
 
 ### Références de cette séance
 
@@ -120,7 +120,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Mechanism Design Basics<br>
 **Objectif :** Calculer l’utilité et reconnaître l’incitation à dire sa vraie valeur en second prix.
 
-<p>Au premier prix, le gagnant paie son offre, et peut arbitrer entre marge et chance de gagner. En enchère Vickrey, le gagnant paie la meilleure offre adverse. Si sa valeur est v et son prix p, son utilité vaut v−p. Enchérir sa vraie valeur est dominant : surenchérir peut faire acheter à perte, sous-enchérir faire manquer une transaction profitable. Les annonces sponsorisées étendent l’idée à des positions de valeur différente.</p>
+Au premier prix, le gagnant paie son offre, et peut arbitrer entre marge et chance de gagner. En enchère Vickrey, le gagnant paie la meilleure offre adverse. Si sa valeur est v et son prix p, son utilité vaut v−p. Enchérir sa vraie valeur est dominant : surenchérir peut faire acheter à perte, sous-enchérir faire manquer une transaction profitable. Les annonces sponsorisées étendent l’idée à des positions de valeur différente.
 
 ### Références de cette séance
 
@@ -194,7 +194,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Myerson&#x27;s Lemma<br>
 **Objectif :** Expliquer monotonie et seuil critique du lemme de Myerson.
 
-<p>Dans un environnement à un paramètre, une allocation est monotone si hausser sa propre offre ne réduit pas la quantité reçue, à offres adverses fixes. Le lemme de Myerson relie cette propriété à l’existence d’un paiement incitatif. Pour une allocation binaire, le gagnant paie son offre critique minimale, pas nécessairement son offre annoncée. Pour une allocation fractionnaire, le paiement correspond à l’aire sous la courbe d’allocation.</p>
+Dans un environnement à un paramètre, une allocation est monotone si hausser sa propre offre ne réduit pas la quantité reçue, à offres adverses fixes. Le lemme de Myerson relie cette propriété à l’existence d’un paiement incitatif. Pour une allocation binaire, le gagnant paie son offre critique minimale, pas nécessairement son offre annoncée. Pour une allocation fractionnaire, le paiement correspond à l’aire sous la courbe d’allocation.
 
 ### Références de cette séance
 
@@ -268,7 +268,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Algorithmic Mechanism Design<br>
 **Objectif :** Relier l’enchère de sac à dos aux compromis d’optimalité, incitations et calcul efficace.
 
-<p>Dans l’enchère de sac à dos, tailles et capacité sont publiques; les valeurs sont privées. Le surplus optimal est un problème NP-difficile. Une allocation monotone permet des paiements critiques, mais n’assure pas un calcul polynomial. Une approximation gloutonne peut être plus rapide; sa monotonie doit être prouvée avant d’appliquer Myerson. La qualité de l’allocation, les incitations et le coût de calcul sont trois objectifs distincts.</p>
+Dans l’enchère de sac à dos, tailles et capacité sont publiques. Les valeurs sont privées. Le surplus optimal est un problème NP-difficile. Une allocation monotone permet des paiements critiques, mais n’assure pas un calcul polynomial. Une approximation gloutonne peut être plus rapide. Sa monotonie doit être prouvée avant d’appliquer Myerson. La qualité de l’allocation, les incitations et le coût de calcul sont trois objectifs distincts.
 
 ### Références de cette séance
 
@@ -342,7 +342,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Revenue-Maximizing Auctions<br>
 **Objectif :** Calculer le revenu espéré d’un prix affiché et le distinguer du surplus.
 
-<p>Le surplus mesure la valeur de l’allocation; le revenu, les paiements au vendeur. Pour un prix r et une valeur aléatoire V, le revenu espéré vaut r·Pr(V≥r). Le prix nul maximise le surplus d’un bien isolé, mais pas forcément son revenu. Avec plusieurs enchérisseurs, les valeurs virtuelles traduisent la maximisation de revenu en maximisation de surplus virtuel; les réserves optimales supposent une distribution régulière.</p>
+Le surplus mesure la valeur de l’allocation. Le revenu, les paiements au vendeur. Pour un prix r et une valeur aléatoire V, le revenu espéré vaut r·Pr(V≥r). Le prix nul maximise le surplus d’un bien isolé, mais pas forcément son revenu. Avec plusieurs enchérisseurs, les valeurs virtuelles traduisent la maximisation de revenu en maximisation de surplus virtuel. Les réserves optimales supposent une distribution régulière.
 
 ### Références de cette séance
 
@@ -416,7 +416,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Simple Near-Optimal Auctions<br>
 **Objectif :** Expliquer l’intérêt de réserves et de prix simples sous incertitude.
 
-<p>La maximisation du surplus virtuel peut être complexe, surtout avec distributions hétérogènes ou irrégulières. Les notes étudient alors des mécanismes simples avec garanties, tels que Vickrey avec réserve ou des prix tirés d’un échantillon. Le lemme du prophète compare une décision en ligne à un décideur informé des valeurs futures. Bulow–Klemperer montre qu’ajouter un enchérisseur peut compenser la sophistication d’une enchère optimale, sous hypothèses de valeurs i.i.d. Les garanties dépendent du modèle probabiliste.</p>
+La maximisation du surplus virtuel peut être complexe, surtout avec distributions hétérogènes ou irrégulières. Les notes étudient alors des mécanismes simples avec garanties, tels que Vickrey avec réserve ou des prix tirés d’un échantillon. Le lemme du prophète compare une décision en ligne à un décideur informé des valeurs futures. Bulow–Klemperer montre qu’ajouter un enchérisseur peut compenser la sophistication d’une enchère optimale, sous hypothèses de valeurs i.i.d. Les garanties dépendent du modèle probabiliste.
 
 ### Références de cette séance
 
@@ -490,7 +490,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** VCG Mechanism<br>
 **Objectif :** Calculer un paiement d’externalité dans un mécanisme VCG.
 
-<p>Avec plusieurs paramètres privés, chaque agent peut valoriser différemment chaque issue. VCG choisit l’issue maximisant la somme des valeurs déclarées. L’agent i paie le dommage qu’il impose aux autres : leur meilleur bien-être sans lui moins leur bien-être dans l’issue choisie avec lui. Cela rend la déclaration sincère dominante sous utilité quasi-linéaire, même si l’optimisation combinatoire peut être difficile.</p>
+Avec plusieurs paramètres privés, chaque agent peut valoriser différemment chaque issue. VCG choisit l’issue maximisant la somme des valeurs déclarées. L’agent i paie le dommage qu’il impose aux autres : leur meilleur bien-être sans lui moins leur bien-être dans l’issue choisie avec lui. Cela rend la déclaration sincère dominante sous utilité quasi-linéaire, même si l’optimisation combinatoire peut être difficile.
 
 ### Références de cette séance
 
@@ -564,7 +564,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Spectrum Auctions<br>
 **Objectif :** Comprendre les enchères simultanées ascendantes et le risque de complémentarité.
 
-<p>Pour m biens non identiques, déclarer la valeur de chacun des 2^m lots devient vite impossible. Une enchère ascendante simultanée vend les biens en parallèle et laisse les participants déplacer leur demande selon les prix. Des règles d’activité forcent une participation utile aux rondes. Les complémentarités posent un risque d’exposition : gagner une partie du lot recherché peut valoir peu. Les enchères de spectre arbitrent découverte des prix, simplicité et incitations.</p>
+Pour m biens non identiques, déclarer la valeur de chacun des 2^m lots devient vite impossible. Une enchère ascendante simultanée vend les biens en parallèle et laisse les participants déplacer leur demande selon les prix. Des règles d’activité forcent une participation utile aux rondes. Les complémentarités posent un risque d’exposition : gagner une partie du lot recherché peut valoir peu. Les enchères de spectre arbitrent découverte des prix, simplicité et incitations.
 
 ### Références de cette séance
 
@@ -638,7 +638,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Beyond Quasi-Linearity<br>
 **Objectif :** Modéliser la contrainte de budget et le besoin de mécanismes sans paiement.
 
-<p>L’utilité quasi-linéaire suppose valeur moins paiement. Une contrainte de budget plafonne le paiement, même quand la valeur déclarée est plus grande. Dans une enchère progressive, il faut suivre prix, allocations provisoires et plafonds. Le mécanisme clinching attribue un bien lorsque la demande des autres ne pourrait plus satisfaire la capacité. Quand l’argent n’est pas disponible, une règle d’échange ou de priorité remplace le prix et soulève d’autres arbitrages d’équité et d’incitation.</p>
+L’utilité quasi-linéaire suppose valeur moins paiement. Une contrainte de budget plafonne le paiement, même quand la valeur déclarée est plus grande. Dans une enchère progressive, il faut suivre prix, allocations provisoires et plafonds. Le mécanisme clinching attribue un bien lorsque la demande des autres ne pourrait plus satisfaire la capacité. Quand l’argent n’est pas disponible, une règle d’échange ou de priorité remplace le prix et soulève d’autres arbitrages d’équité et d’incitation.
 
 ### Références de cette séance
 
@@ -712,7 +712,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Kidney Exchange, Stable Matching<br>
 **Objectif :** Modéliser un cycle de donneurs et détecter une paire bloquante.
 
-<p>Un donneur incompatible avec son patient peut convenir à un autre patient. Un graphe orienté représente les compatibilités; un cycle correspond à des échanges simultanés. Les cycles longs augmentent les possibilités mais compliquent l’organisation. Dans un appariement biparti, une affectation est stable si aucune paire non appariée ne préfère mutuellement l’autre à son partenaire. L’acceptation différée construit un appariement stable sous préférences strictes; stratégies de déclaration et logistique restent des questions différentes.</p>
+Un donneur incompatible avec son patient peut convenir à un autre patient. Un graphe orienté représente les compatibilités. Un cycle correspond à des échanges simultanés. Les cycles longs augmentent les possibilités mais compliquent l’organisation. Dans un appariement biparti, une affectation est stable si aucune paire non appariée ne préfère mutuellement l’autre à son partenaire. L’acceptation différée construit un appariement stable sous préférences strictes. Stratégies de déclaration et logistique restent des questions différentes.
 
 ### Références de cette séance
 
@@ -786,7 +786,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Selfish Routing and the POA<br>
 **Objectif :** Calculer un POA et expliquer pourquoi l’équilibre peut être inefficace.
 
-<p>Cette séance traite le routage non atomique : chaque conducteur contrôle une quantité négligeable de trafic, et l’équilibre de Wardrop répartit le flux sur des chemins de coût minimal. Le POA est le coût total à l’équilibre divisé par le coût total optimal. Dans l’exemple de Pigou, les coûts affines sont x et 1 : tous choisissent le premier lien à l’équilibre (coût moyen 1), tandis qu’une moitié sur chaque lien donne le coût moyen optimal 3/4, soit un ratio 4/3. Le théorème de la séance établit que 4/3 est la borne serrée pour toute classe de réseaux à coûts affines non négatifs; avec des polynômes de degré d, la borne dépend de d. Le paradoxe de Braess illustre aussi un POA de 4/3 après ajout d’un raccourci. La séance suivante change de modèle et étudie les joueurs atomiques.</p>
+Cette séance traite le routage non atomique : chaque conducteur contrôle une quantité négligeable de trafic, et l’équilibre de Wardrop répartit le flux sur des chemins de coût minimal. Le POA est le coût total à l’équilibre divisé par le coût total optimal. Dans l’exemple de Pigou, les coûts affines sont x et 1 : tous choisissent le premier lien à l’équilibre (coût moyen 1), tandis qu’une moitié sur chaque lien donne le coût moyen optimal 3/4, soit un ratio 4/3. Le théorème de la séance établit que 4/3 est la borne serrée pour toute classe de réseaux à coûts affines non négatifs. Avec des polynômes de degré d, la borne dépend de d. Le paradoxe de Braess illustre aussi un POA de 4/3 après ajout d’un raccourci. La séance suivante change de modèle et étudie les joueurs atomiques.
 
 ### Références de cette séance
 
@@ -860,7 +860,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Network Over-Provisioning<br>
 **Objectif :** Calculer le délai avec capacité accrue et distinguer les modèles de routage.
 
-<p>La première partie étudie le surdimensionnement en routage non atomique. Pour une file M/M/1, le délai d’une arête de capacité u et de charge x est 1/(u−x), lorsque x&lt;u; augmenter la capacité éloigne le réseau de la saturation. Le théorème de la séance garantit que le coût d’un flux d’équilibre de taux r est au plus celui d’un flux optimal de taux 2r. La deuxième partie change de modèle : dans le routage atomique, il y a k joueurs finis, chacun contrôlant une unité de trafic et choisissant seul un chemin. Une déviation ajoute une unité à la charge des arêtes nouvellement empruntées. Pour les coûts affines c_e(x)=a_e x+b_e avec a_e,b_e≥0, le théorème 2.1 prouve une borne POA de 5/2, atteinte dans l’exemple à quatre joueurs (coût optimal 4, pire équilibre 10). Cette borne atomique 5/2 est distincte de la borne non atomique 4/3 démontrée la séance précédente.</p>
+La première partie étudie le surdimensionnement en routage non atomique. Pour une file M/M/1, le délai d’une arête de capacité u et de charge x est 1/(u−x), lorsque x&lt;u. Augmenter la capacité éloigne le réseau de la saturation. Le théorème de la séance garantit que le coût d’un flux d’équilibre de taux r est au plus celui d’un flux optimal de taux 2r. La deuxième partie change de modèle : dans le routage atomique, il y a k joueurs finis, chacun contrôlant une unité de trafic et choisissant seul un chemin. Une déviation ajoute une unité à la charge des arêtes nouvellement empruntées. Pour les coûts affines c_e(x)=a_e x+b_e avec a_e,b_e≥0, le théorème 2.1 prouve une borne POA de 5/2, atteinte dans l’exemple à quatre joueurs (coût optimal 4, pire équilibre 10). Cette borne atomique 5/2 est distincte de la borne non atomique 4/3 démontrée la séance précédente.
 
 ### Références de cette séance
 
@@ -963,7 +963,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Hierarchy of Equilibrium Concepts<br>
 **Objectif :** Vérifier un Nash pur et différencier les principaux concepts d’équilibre.
 
-<p>Le potentiel de Rosenthal somme, sur chaque ressource, les coûts marginaux de ses utilisateurs successifs. Une déviation profitable réduit ce potentiel; un minimum local est donc un équilibre pur. La hiérarchie distingue Nash pur, Nash mixte, équilibre corrélé et CCE : le type de déviation autorisé change. Un Nash pur exclut les améliorations unilatérales depuis le profil observé. Un équilibre corrélé permet une recommandation commune, sans déviation profitable après la recommandation; CCE compare aux actions fixes avant celle-ci.</p>
+Le potentiel de Rosenthal somme, sur chaque ressource, les coûts marginaux de ses utilisateurs successifs. Une déviation profitable réduit ce potentiel. Un minimum local est donc un équilibre pur. La hiérarchie distingue Nash pur, Nash mixte, équilibre corrélé et CCE : le type de déviation autorisé change. Un Nash pur exclut les améliorations unilatérales depuis le profil observé. Un équilibre corrélé permet une recommandation commune, sans déviation profitable après la recommandation. CCE compare aux actions fixes avant celle-ci.
 
 ### Références de cette séance
 
@@ -1037,7 +1037,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Smooth Games<br>
 **Objectif :** Réarranger une inégalité de coûts pour obtenir une borne de POA.
 
-<p>La preuve canonique utilise l’inégalité de déviation de Nash vers le chemin optimal. On additionne par joueur, borne le terme mêlant état d’équilibre et état optimal, puis isole le rapport de coûts. Les jeux lisses encapsulent cette dernière étape par des paramètres λ et μ et donnent des bornes robustes pour tous les équilibres sous les hypothèses indiquées. La démarche algébrique se réutilise; la validité de la déviation et de l’inégalité dépend du jeu.</p>
+La preuve canonique utilise l’inégalité de déviation de Nash vers le chemin optimal. On additionne par joueur, borne le terme mêlant état d’équilibre et état optimal, puis isole le rapport de coûts. Les jeux lisses encapsulent cette dernière étape par des paramètres λ et μ et donnent des bornes robustes pour tous les équilibres sous les hypothèses indiquées. La démarche algébrique se réutilise. La validité de la déviation et de l’inégalité dépend du jeu.
 
 ### Références de cette séance
 
@@ -1111,7 +1111,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Best-Case and Strong Nash Equilibria<br>
 **Objectif :** Calculer un facteur harmonique et distinguer prix de stabilité et prix d’anarchie.
 
-<p>Les jeux de partage des coûts présentent une externalité positive : plusieurs joueurs financent une arête. Ils peuvent posséder plusieurs équilibres aux coûts différents. Le prix de stabilité utilise le meilleur équilibre, le prix d’anarchie le pire, chaque fois rapporté à l’optimum. Un équilibre fort résiste aux déviations coordonnées d’une coalition. Le facteur harmonique H_k=Σ1/j apparaît dans les bornes de partage; un bon équilibre existe sans que le jeu garantisse qu’il sera atteint.</p>
+Les jeux de partage des coûts présentent une externalité positive : plusieurs joueurs financent une arête. Ils peuvent posséder plusieurs équilibres aux coûts différents. Le prix de stabilité utilise le meilleur équilibre, le prix d’anarchie le pire, chaque fois rapporté à l’optimum. Un équilibre fort résiste aux déviations coordonnées d’une coalition. Le facteur harmonique H_k=Σ1/j apparaît dans les bornes de partage. Un bon équilibre existe sans que le jeu garantisse qu’il sera atteint.
 
 ### Références de cette séance
 
@@ -1185,7 +1185,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Best-Response Dynamics<br>
 **Objectif :** Exécuter une meilleure réponse et expliquer l’arrêt d’une dynamique de potentiel.
 
-<p>À chaque étape, un joueur choisit une action de coût minimal face aux actions adverses. Dans un jeu de potentiel, chaque amélioration stricte fait baisser une fonction potentielle. Avec un nombre fini de profils, la trajectoire s’arrête donc à un équilibre pur, mais pas nécessairement en temps polynomial. Une dynamique est un processus; l’équilibre est une propriété du profil.</p>
+À chaque étape, un joueur choisit une action de coût minimal face aux actions adverses. Dans un jeu de potentiel, chaque amélioration stricte fait baisser une fonction potentielle. Avec un nombre fini de profils, la trajectoire s’arrête donc à un équilibre pur, mais pas nécessairement en temps polynomial. Une dynamique est un processus. L’équilibre est une propriété du profil.
 
 ### Références de cette séance
 
@@ -1259,7 +1259,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** No-Regret Dynamics<br>
 **Objectif :** Calculer le regret externe et relier apprentissage à l’équilibre CCE.
 
-<p>Le regret externe compare le coût cumulé à la meilleure action fixe rétrospectivement, pas au meilleur choix différent à chaque tour. Les poids multiplicatifs augmentent le poids des actions peu coûteuses et obtiennent un regret moyen décroissant comme √(log n/T) pour des coûts bornés. Si chaque joueur a peu de regret externe, l’historique moyen approche un équilibre corrélé grossier, pas nécessairement Nash. Le modèle suppose l’observation du vecteur de coût complet.</p>
+Le regret externe compare le coût cumulé à la meilleure action fixe rétrospectivement, pas au meilleur choix différent à chaque tour. Les poids multiplicatifs augmentent le poids des actions peu coûteuses et obtiennent un regret moyen décroissant comme √(log n/T) pour des coûts bornés. Si chaque joueur a peu de regret externe, l’historique moyen approche un équilibre corrélé grossier, pas nécessairement Nash. Le modèle suppose l’observation du vecteur de coût complet.
 
 ### Références de cette séance
 
@@ -1333,7 +1333,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Swap Regret; Minimax<br>
 **Objectif :** Distinguer les regrets et calculer la stratégie minimax dans pile-ou-face.
 
-<p>Le regret de permutation compare l’historique à toute règle qui remplace une action observée par une autre; il généralise le regret externe. Si chaque joueur le réduit, la moyenne temporelle approche un équilibre corrélé. Dans un jeu à somme nulle, le théorème minimax égalise la garantie du joueur ligne et la perte que peut imposer le joueur colonne. Le mélange uniforme équilibre pile-ou-face. L’apprentissage approche ces équilibres; un programme linéaire peut aussi les calculer.</p>
+Le regret de permutation compare l’historique à toute règle qui remplace une action observée par une autre. Il généralise le regret externe. Si chaque joueur le réduit, la moyenne temporelle approche un équilibre corrélé. Dans un jeu à somme nulle, le théorème minimax égalise la garantie du joueur ligne et la perte que peut imposer le joueur colonne. Le mélange uniforme équilibre pile-ou-face. L’apprentissage approche ces équilibres. Un programme linéaire peut aussi les calculer.
 
 ### Références de cette séance
 
@@ -1407,7 +1407,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Pure NE and PLS-Completeness<br>
 **Objectif :** Identifier un optimum local et interpréter la PLS-complétude.
 
-<p>Dans Max-Cut, déplacer un sommet est un mouvement local. Une coupe est localement optimale si aucun retournement ne l’améliore; cela ne signifie pas optimum global. Une amélioration stricte d’un objectif exclut les cycles, mais pas une longue exécution. PLS formalise recherche initiale, voisinage et objectif calculables. PLS-complétude signifie que les autres problèmes PLS se réduisent à celui-ci; elle n’exclut pas un algorithme polynomial.</p>
+Dans Max-Cut, déplacer un sommet est un mouvement local. Une coupe est localement optimale si aucun retournement ne l’améliore. Cela ne signifie pas optimum global. Une amélioration stricte d’un objectif exclut les cycles, mais pas une longue exécution. PLS formalise recherche initiale, voisinage et objectif calculables. PLS-complétude signifie que les autres problèmes PLS se réduisent à celui-ci. Elle n’exclut pas un algorithme polynomial.
 
 ### Références de cette séance
 
@@ -1481,7 +1481,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Mixed NE and PPAD-Completeness<br>
 **Objectif :** Comprendre l’équilibre mixte, TFNP et PPAD.
 
-<p>Dans un jeu bimatrice, chaque joueur mélange des actions et maximise son gain espéré face à la distribution adverse. Dans pile-ou-face, le mélange uniforme rend l’autre indifférent. L’existence d’un équilibre dans tout jeu fini place la recherche dans TFNP, où une solution est garantie. PPAD formalise la recherche d’un point terminal au moyen d’un graphe de degré entrant et sortant bornés et d’un argument de parité. La PPAD-complétude signale une difficulté pour les réductions, mais ne prouve pas l’impossibilité d’un algorithme polynomial.</p>
+Dans un jeu bimatrice, chaque joueur mélange des actions et maximise son gain espéré face à la distribution adverse. Dans pile-ou-face, le mélange uniforme rend l’autre indifférent. L’existence d’un équilibre dans tout jeu fini place la recherche dans TFNP, où une solution est garantie. PPAD formalise la recherche d’un point terminal au moyen d’un graphe de degré entrant et sortant bornés et d’un argument de parité. La PPAD-complétude signale une difficulté pour les réductions, mais ne prouve pas l’impossibilité d’un algorithme polynomial.
 
 ### Références de cette séance
 

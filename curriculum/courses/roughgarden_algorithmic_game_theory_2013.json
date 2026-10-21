@@ -187,7 +187,7 @@
       "kind": "lesson",
       "title": "Mécanismes algorithmiques et compromis",
       "objective": "Relier l’enchère de sac à dos aux compromis d’optimalité, incitations et calcul efficace.",
-      "learningNotes": "Dans l’enchère de sac à dos, tailles et capacité sont publiques; les valeurs sont privées. Le surplus optimal est un problème NP-difficile. Une allocation monotone permet des paiements critiques, mais n’assure pas un calcul polynomial. Une approximation gloutonne peut être plus rapide; sa monotonie doit être prouvée avant d’appliquer Myerson. La qualité de l’allocation, les incitations et le coût de calcul sont trois objectifs distincts.",
+      "learningNotes": "Dans l’enchère de sac à dos, tailles et capacité sont publiques. Les valeurs sont privées. Le surplus optimal est un problème NP-difficile. Une allocation monotone permet des paiements critiques, mais n’assure pas un calcul polynomial. Une approximation gloutonne peut être plus rapide. Sa monotonie doit être prouvée avant d’appliquer Myerson. La qualité de l’allocation, les incitations et le coût de calcul sont trois objectifs distincts.",
       "sourceUrls": [
         "https://timroughgarden.org/f13/l/l4.pdf"
       ],
@@ -252,7 +252,7 @@
       "kind": "lesson",
       "title": "Revenu et surplus",
       "objective": "Calculer le revenu espéré d’un prix affiché et le distinguer du surplus.",
-      "learningNotes": "Le surplus mesure la valeur de l’allocation; le revenu, les paiements au vendeur. Pour un prix r et une valeur aléatoire V, le revenu espéré vaut r·Pr(V≥r). Le prix nul maximise le surplus d’un bien isolé, mais pas forcément son revenu. Avec plusieurs enchérisseurs, les valeurs virtuelles traduisent la maximisation de revenu en maximisation de surplus virtuel; les réserves optimales supposent une distribution régulière.",
+      "learningNotes": "Le surplus mesure la valeur de l’allocation. Le revenu, les paiements au vendeur. Pour un prix r et une valeur aléatoire V, le revenu espéré vaut r·Pr(V≥r). Le prix nul maximise le surplus d’un bien isolé, mais pas forcément son revenu. Avec plusieurs enchérisseurs, les valeurs virtuelles traduisent la maximisation de revenu en maximisation de surplus virtuel. Les réserves optimales supposent une distribution régulière.",
       "sourceUrls": [
         "https://timroughgarden.org/f13/l/l5.pdf"
       ],
@@ -528,7 +528,7 @@
       "kind": "lesson",
       "title": "Échanges de reins et appariement stable",
       "objective": "Modéliser un cycle de donneurs et détecter une paire bloquante.",
-      "learningNotes": "Un donneur incompatible avec son patient peut convenir à un autre patient. Un graphe orienté représente les compatibilités; un cycle correspond à des échanges simultanés. Les cycles longs augmentent les possibilités mais compliquent l’organisation. Dans un appariement biparti, une affectation est stable si aucune paire non appariée ne préfère mutuellement l’autre à son partenaire. L’acceptation différée construit un appariement stable sous préférences strictes; stratégies de déclaration et logistique restent des questions différentes.",
+      "learningNotes": "Un donneur incompatible avec son patient peut convenir à un autre patient. Un graphe orienté représente les compatibilités. Un cycle correspond à des échanges simultanés. Les cycles longs augmentent les possibilités mais compliquent l’organisation. Dans un appariement biparti, une affectation est stable si aucune paire non appariée ne préfère mutuellement l’autre à son partenaire. L’acceptation différée construit un appariement stable sous préférences strictes. Stratégies de déclaration et logistique restent des questions différentes.",
       "sourceUrls": [
         "https://timroughgarden.org/f13/l/l10.pdf"
       ],
@@ -579,7 +579,7 @@
       "kind": "lesson",
       "title": "Routage égoïste et prix de l’anarchie",
       "objective": "Calculer un POA et expliquer pourquoi l’équilibre peut être inefficace.",
-      "learningNotes": "Cette séance traite le routage non atomique : chaque conducteur contrôle une quantité négligeable de trafic, et l’équilibre de Wardrop répartit le flux sur des chemins de coût minimal. Le POA est le coût total à l’équilibre divisé par le coût total optimal. Dans l’exemple de Pigou, les coûts affines sont x et 1 : tous choisissent le premier lien à l’équilibre (coût moyen 1), tandis qu’une moitié sur chaque lien donne le coût moyen optimal 3/4, soit un ratio 4/3. Le théorème de la séance établit que 4/3 est la borne serrée pour toute classe de réseaux à coûts affines non négatifs; avec des polynômes de degré d, la borne dépend de d. Le paradoxe de Braess illustre aussi un POA de 4/3 après ajout d’un raccourci. La séance suivante change de modèle et étudie les joueurs atomiques.",
+      "learningNotes": "Cette séance traite le routage non atomique : chaque conducteur contrôle une quantité négligeable de trafic, et l’équilibre de Wardrop répartit le flux sur des chemins de coût minimal. Le POA est le coût total à l’équilibre divisé par le coût total optimal. Dans l’exemple de Pigou, les coûts affines sont x et 1 : tous choisissent le premier lien à l’équilibre (coût moyen 1), tandis qu’une moitié sur chaque lien donne le coût moyen optimal 3/4, soit un ratio 4/3. Le théorème de la séance établit que 4/3 est la borne serrée pour toute classe de réseaux à coûts affines non négatifs. Avec des polynômes de degré d, la borne dépend de d. Le paradoxe de Braess illustre aussi un POA de 4/3 après ajout d’un raccourci. La séance suivante change de modèle et étudie les joueurs atomiques.",
       "sourceUrls": [
         "https://timroughgarden.org/f13/l/l11.pdf"
       ],
@@ -631,7 +631,7 @@
       "kind": "lesson",
       "title": "Surcapacités et congestion atomique",
       "objective": "Calculer le délai avec capacité accrue et distinguer les modèles de routage.",
-      "learningNotes": "La première partie étudie le surdimensionnement en routage non atomique. Pour une file M/M/1, le délai d’une arête de capacité u et de charge x est 1/(u−x), lorsque x<u; augmenter la capacité éloigne le réseau de la saturation. Le théorème de la séance garantit que le coût d’un flux d’équilibre de taux r est au plus celui d’un flux optimal de taux 2r. La deuxième partie change de modèle : dans le routage atomique, il y a k joueurs finis, chacun contrôlant une unité de trafic et choisissant seul un chemin. Une déviation ajoute une unité à la charge des arêtes nouvellement empruntées. Pour les coûts affines c_e(x)=a_e x+b_e avec a_e,b_e≥0, le théorème 2.1 prouve une borne POA de 5/2, atteinte dans l’exemple à quatre joueurs (coût optimal 4, pire équilibre 10). Cette borne atomique 5/2 est distincte de la borne non atomique 4/3 démontrée la séance précédente.",
+      "learningNotes": "La première partie étudie le surdimensionnement en routage non atomique. Pour une file M/M/1, le délai d’une arête de capacité u et de charge x est 1/(u−x), lorsque x<u. Augmenter la capacité éloigne le réseau de la saturation. Le théorème de la séance garantit que le coût d’un flux d’équilibre de taux r est au plus celui d’un flux optimal de taux 2r. La deuxième partie change de modèle : dans le routage atomique, il y a k joueurs finis, chacun contrôlant une unité de trafic et choisissant seul un chemin. Une déviation ajoute une unité à la charge des arêtes nouvellement empruntées. Pour les coûts affines c_e(x)=a_e x+b_e avec a_e,b_e≥0, le théorème 2.1 prouve une borne POA de 5/2, atteinte dans l’exemple à quatre joueurs (coût optimal 4, pire équilibre 10). Cette borne atomique 5/2 est distincte de la borne non atomique 4/3 démontrée la séance précédente.",
       "sourceUrls": [
         "https://timroughgarden.org/f13/l/l12.pdf"
       ],
@@ -703,7 +703,7 @@
       "kind": "lesson",
       "title": "Jeux de potentiel et hiérarchie des équilibres",
       "objective": "Vérifier un Nash pur et différencier les principaux concepts d’équilibre.",
-      "learningNotes": "Le potentiel de Rosenthal somme, sur chaque ressource, les coûts marginaux de ses utilisateurs successifs. Une déviation profitable réduit ce potentiel; un minimum local est donc un équilibre pur. La hiérarchie distingue Nash pur, Nash mixte, équilibre corrélé et CCE : le type de déviation autorisé change. Un Nash pur exclut les améliorations unilatérales depuis le profil observé. Un équilibre corrélé permet une recommandation commune, sans déviation profitable après la recommandation; CCE compare aux actions fixes avant celle-ci.",
+      "learningNotes": "Le potentiel de Rosenthal somme, sur chaque ressource, les coûts marginaux de ses utilisateurs successifs. Une déviation profitable réduit ce potentiel. Un minimum local est donc un équilibre pur. La hiérarchie distingue Nash pur, Nash mixte, équilibre corrélé et CCE : le type de déviation autorisé change. Un Nash pur exclut les améliorations unilatérales depuis le profil observé. Un équilibre corrélé permet une recommandation commune, sans déviation profitable après la recommandation. CCE compare aux actions fixes avant celle-ci.",
       "sourceUrls": [
         "https://timroughgarden.org/f13/l/l13.pdf"
       ],
@@ -781,7 +781,7 @@
       "kind": "lesson",
       "title": "Preuves robustes du prix de l’anarchie",
       "objective": "Réarranger une inégalité de coûts pour obtenir une borne de POA.",
-      "learningNotes": "La preuve canonique utilise l’inégalité de déviation de Nash vers le chemin optimal. On additionne par joueur, borne le terme mêlant état d’équilibre et état optimal, puis isole le rapport de coûts. Les jeux lisses encapsulent cette dernière étape par des paramètres λ et μ et donnent des bornes robustes pour tous les équilibres sous les hypothèses indiquées. La démarche algébrique se réutilise; la validité de la déviation et de l’inégalité dépend du jeu.",
+      "learningNotes": "La preuve canonique utilise l’inégalité de déviation de Nash vers le chemin optimal. On additionne par joueur, borne le terme mêlant état d’équilibre et état optimal, puis isole le rapport de coûts. Les jeux lisses encapsulent cette dernière étape par des paramètres λ et μ et donnent des bornes robustes pour tous les équilibres sous les hypothèses indiquées. La démarche algébrique se réutilise. La validité de la déviation et de l’inégalité dépend du jeu.",
       "sourceUrls": [
         "https://timroughgarden.org/f13/l/l14.pdf"
       ],
@@ -834,7 +834,7 @@
       "kind": "lesson",
       "title": "Stabilité, coalitions et meilleurs équilibres",
       "objective": "Calculer un facteur harmonique et distinguer prix de stabilité et prix d’anarchie.",
-      "learningNotes": "Les jeux de partage des coûts présentent une externalité positive : plusieurs joueurs financent une arête. Ils peuvent posséder plusieurs équilibres aux coûts différents. Le prix de stabilité utilise le meilleur équilibre, le prix d’anarchie le pire, chaque fois rapporté à l’optimum. Un équilibre fort résiste aux déviations coordonnées d’une coalition. Le facteur harmonique H_k=Σ1/j apparaît dans les bornes de partage; un bon équilibre existe sans que le jeu garantisse qu’il sera atteint.",
+      "learningNotes": "Les jeux de partage des coûts présentent une externalité positive : plusieurs joueurs financent une arête. Ils peuvent posséder plusieurs équilibres aux coûts différents. Le prix de stabilité utilise le meilleur équilibre, le prix d’anarchie le pire, chaque fois rapporté à l’optimum. Un équilibre fort résiste aux déviations coordonnées d’une coalition. Le facteur harmonique H_k=Σ1/j apparaît dans les bornes de partage. Un bon équilibre existe sans que le jeu garantisse qu’il sera atteint.",
       "sourceUrls": [
         "https://timroughgarden.org/f13/l/l15.pdf"
       ],
@@ -886,7 +886,7 @@
       "kind": "lesson",
       "title": "Apprentissage par meilleures réponses",
       "objective": "Exécuter une meilleure réponse et expliquer l’arrêt d’une dynamique de potentiel.",
-      "learningNotes": "À chaque étape, un joueur choisit une action de coût minimal face aux actions adverses. Dans un jeu de potentiel, chaque amélioration stricte fait baisser une fonction potentielle. Avec un nombre fini de profils, la trajectoire s’arrête donc à un équilibre pur, mais pas nécessairement en temps polynomial. Une dynamique est un processus; l’équilibre est une propriété du profil.",
+      "learningNotes": "À chaque étape, un joueur choisit une action de coût minimal face aux actions adverses. Dans un jeu de potentiel, chaque amélioration stricte fait baisser une fonction potentielle. Avec un nombre fini de profils, la trajectoire s’arrête donc à un équilibre pur, mais pas nécessairement en temps polynomial. Une dynamique est un processus. L’équilibre est une propriété du profil.",
       "sourceUrls": [
         "https://timroughgarden.org/f13/l/l16.pdf"
       ],
@@ -1007,7 +1007,7 @@
       "kind": "lesson",
       "title": "Regret de permutation et minimax",
       "objective": "Distinguer les regrets et calculer la stratégie minimax dans pile-ou-face.",
-      "learningNotes": "Le regret de permutation compare l’historique à toute règle qui remplace une action observée par une autre; il généralise le regret externe. Si chaque joueur le réduit, la moyenne temporelle approche un équilibre corrélé. Dans un jeu à somme nulle, le théorème minimax égalise la garantie du joueur ligne et la perte que peut imposer le joueur colonne. Le mélange uniforme équilibre pile-ou-face. L’apprentissage approche ces équilibres; un programme linéaire peut aussi les calculer.",
+      "learningNotes": "Le regret de permutation compare l’historique à toute règle qui remplace une action observée par une autre. Il généralise le regret externe. Si chaque joueur le réduit, la moyenne temporelle approche un équilibre corrélé. Dans un jeu à somme nulle, le théorème minimax égalise la garantie du joueur ligne et la perte que peut imposer le joueur colonne. Le mélange uniforme équilibre pile-ou-face. L’apprentissage approche ces équilibres. Un programme linéaire peut aussi les calculer.",
       "sourceUrls": [
         "https://timroughgarden.org/f13/l/l18.pdf"
       ],
@@ -1063,7 +1063,7 @@
       "kind": "lesson",
       "title": "Recherche locale et classe PLS",
       "objective": "Identifier un optimum local et interpréter la PLS-complétude.",
-      "learningNotes": "Dans Max-Cut, déplacer un sommet est un mouvement local. Une coupe est localement optimale si aucun retournement ne l’améliore; cela ne signifie pas optimum global. Une amélioration stricte d’un objectif exclut les cycles, mais pas une longue exécution. PLS formalise recherche initiale, voisinage et objectif calculables. PLS-complétude signifie que les autres problèmes PLS se réduisent à celui-ci; elle n’exclut pas un algorithme polynomial.",
+      "learningNotes": "Dans Max-Cut, déplacer un sommet est un mouvement local. Une coupe est localement optimale si aucun retournement ne l’améliore. Cela ne signifie pas optimum global. Une amélioration stricte d’un objectif exclut les cycles, mais pas une longue exécution. PLS formalise recherche initiale, voisinage et objectif calculables. PLS-complétude signifie que les autres problèmes PLS se réduisent à celui-ci. Elle n’exclut pas un algorithme polynomial.",
       "sourceUrls": [
         "https://timroughgarden.org/f13/l/l19.pdf"
       ],

@@ -11,6 +11,12 @@ MathRenderingProvider(DesktopMathRenderer) {
 ```
 
 `LearningText` recognizes `$...$` inline and `$$...$$` display delimiters.
+Inline equations use native Compose Text placeholders, so surrounding prose
+wraps as one paragraph instead of a FlowRow of independently aligned fragments.
+Numeric matrices use separate horizontally scrollable blocks. Desktop images
+account for display density and font scale. Both mathematics and computer-science
+notes, prompts, objectives, options, hints and corrections enable math rendering;
+fenced code and inline code remain literal. See [lesson presentation](lesson-presentation.md).
 The default is strict: text without delimiters stays one ordinary Compose `Text`
 node. On known math fields only, pass `recognizeLegacyMath = true` to also
 recognize numeric matrices, explicit ASCII powers (`x^2`), Unicode powers and

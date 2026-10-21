@@ -35,14 +35,37 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Course Overview + Introduction to the Shell<br>
 **Objectif :** Naviguer, préserver les arguments et relier des flux Unix.
 
-<p>Le terminal affiche une interface ; Bash interprète les commandes qui y sont saisies. Les exemples de cette leçon emploient Bash et des utilitaires Unix, dont la syntaxe diffère de PowerShell. Un chemin relatif dépend du répertoire courant ; pwd permet de le vérifier. Les guillemets conservent un nom contenant des espaces en un seul argument. Un tube transmet stdout à stdin du programme suivant, tandis que stderr reste distinct. Par exemple, une liste contenant « bleu, rouge, bleu » sur trois lignes devient deux groupes après sort, puis uniq peut compter les répétitions adjacentes. Une redirection &gt; remplace le contenu d’un fichier et &gt;&gt; ajoute à la fin. Enfin, les codes de sortie, les conditions et les boucles permettent de transformer une commande répétitive en petit programme.</p>
+### Comprendre ce que fait le shell
+
+Le terminal fournit l’interface. **Bash** interprète les commandes et prépare leurs arguments. Le répertoire courant détermine le sens d’un chemin relatif. Les exemples ci-dessous utilisent Bash et des utilitaires Unix : leur syntaxe n’est pas celle de PowerShell.
+
+```bash
+pwd
+printf '%s\n' 'bleu' 'rouge' 'bleu' | sort | uniq -c
+```
+
+`pwd` affiche le répertoire courant. Dans la seconde commande, le tube transmet la sortie standard (`stdout`) à la commande suivante. La commande `sort` regroupe les valeurs identiques, puis `uniq -c` compte chaque groupe. La sortie d’erreur (`stderr`) reste séparée.
+
+### Garder les arguments et choisir la redirection
+
+Les guillemets protègent un nom avec espaces comme un seul argument. `>` remplace le contenu du fichier cible. `>>` ajoute à sa fin.
+
+```bash
+printf '%s\n' 'un nom avec espaces' > liste.txt
+printf '%s\n' 'une autre ligne' >> liste.txt
+```
+
+> Ces exemples sont en Bash. En PowerShell, les opérateurs et certains outils n’ont pas exactement les mêmes règles.
+
+### À retenir
+
+Un tube relie la sortie d’une commande à l’entrée de la suivante. Les codes de sortie permettent ensuite de combiner des commandes en conditions et en boucles.
 
 ### Références de cette séance
 
 <ul>
 <li><a href="https://missing.csail.mit.edu/2026/course-shell/" rel="noopener">Course Overview + Introduction to the Shell — Section officielle</a> <em>(Section de séance; support lié à cette séance; en)</em></li>
-<li><a href="https://www.youtube.com/@MissingSemester" rel="noopener">Course Overview + Introduction to the Shell — Vidéo</a> <em>(Vidéo; support lié à cette séance; en)</em><br>Page source : <a href="https://missing.csail.mit.edu/2026/course-shell/" rel="noopener">https://missing.csail.mit.edu/2026/course-shell/</a></li>
-<li><a href="https://www.youtube.com/embed/MSgoeuMqUmU" rel="noopener">Course Overview + Introduction to the Shell — Vidéo</a> <em>(Vidéo; support lié à cette séance; en)</em><br>Page source : <a href="https://missing.csail.mit.edu/2026/course-shell/" rel="noopener">https://missing.csail.mit.edu/2026/course-shell/</a></li>
+<li><a href="https://www.youtube.com/watch?v=MSgoeuMqUmU" rel="noopener">Course Overview + Introduction to the Shell — Vidéo</a> <em>(Vidéo; support lié à cette séance; en)</em><br>Page source : <a href="https://missing.csail.mit.edu/2026/course-shell/" rel="noopener">https://missing.csail.mit.edu/2026/course-shell/</a></li>
 </ul>
 
 ### Exercices
@@ -221,13 +244,34 @@ pwd</code></pre>
 **Séance source :** Command-line Environment<br>
 **Objectif :** Suivre arguments, environnement, signaux et commandes distantes.
 
-<p>Un programme en ligne de commande reçoit des arguments, hérite de variables d’environnement et communique par ses flux et son code de sortie. Dans un script Bash, &quot;$@&quot; transmet les arguments en conservant leurs frontières ; sans guillemets, un chemin contenant des espaces peut être découpé. Une affectation placée devant une commande ne modifie que son environnement et celui de ses descendants. Les signaux permettent de demander une interruption ou une suspension : SIGTERM peut être traité, SIGKILL ne permet pas de nettoyage dans le processus visé. Avec SSH, la position des guillemets décide où un tube sera interprété. tmux conserve des sessions détachables, utiles sur une machine distante. Des fichiers de configuration versionnés rendent l’environnement plus reproductible, mais les secrets doivent en rester séparés.</p>
+### Suivre les arguments et l’environnement
+
+Un programme reçoit des arguments, hérite de variables d’environnement et renvoie un code de sortie. Dans Bash, `"$@"` transmet chaque argument séparément, même s’il contient des espaces.
+
+```bash
+#!/usr/bin/env bash
+programme "$@"
+```
+
+Sans les guillemets, le shell peut découper un argument contenant des espaces. Une affectation placée devant une commande ne vaut que pour cette commande et ses processus descendants :
+
+```bash
+MODE=rapide outil
+```
+
+### Interrompre et reprendre un travail distant
+
+`SIGTERM` demande un arrêt que le programme peut traiter pour nettoyer ses ressources. `SIGKILL` ne lui laisse pas cette possibilité. Avec SSH, les guillemets déterminent si un tube est interprété localement ou sur la machine distante. `tmux` permet de détacher une session distante puis de s’y reconnecter sans arrêter les processus qu’elle contient.
+
+### À retenir
+
+Versionner la configuration rend un environnement plus reproductible. Garder les secrets à part évite de les publier avec cette configuration.
 
 ### Références de cette séance
 
 <ul>
 <li><a href="https://missing.csail.mit.edu/2026/command-line-environment/" rel="noopener">Command-line Environment — Section officielle</a> <em>(Section de séance; support lié à cette séance; en)</em></li>
-<li><a href="https://www.youtube.com/embed/ccBGsPedE9Q" rel="noopener">Command-line Environment — Vidéo</a> <em>(Vidéo; support lié à cette séance; en)</em><br>Page source : <a href="https://missing.csail.mit.edu/2026/command-line-environment/" rel="noopener">https://missing.csail.mit.edu/2026/command-line-environment/</a></li>
+<li><a href="https://www.youtube.com/watch?v=ccBGsPedE9Q" rel="noopener">Command-line Environment — Vidéo</a> <em>(Vidéo; support lié à cette séance; en)</em><br>Page source : <a href="https://missing.csail.mit.edu/2026/command-line-environment/" rel="noopener">https://missing.csail.mit.edu/2026/command-line-environment/</a></li>
 </ul>
 
 ### Exercices
@@ -398,13 +442,30 @@ printf &quot;%s\n&quot; &quot;$APP_MODE&quot;</code></pre>
 **Séance source :** Development Environment and Tools<br>
 **Objectif :** Combiner Vim, serveur de langage et assistance de développement.
 
-<p>Un éditeur peut offrir un langage de manipulation du texte. Dans Vim, le mode normal sert aux déplacements et aux opérations ; i ouvre l’insertion et Échap revient au mode normal. Une opération comme d se combine avec un déplacement, et ci( remplace le contenu des parenthèses sans retirer leurs délimiteurs. Un serveur de langage ajoute une compréhension des symboles : définition, références, renommage et diagnostics. Son environnement doit correspondre à celui du projet pour retrouver les dépendances. L’assistance IA complète au curseur ou propose des modifications de sélection ; une suggestion dépend donc du contexte et de la précision de l’intention fournie. Après une modification, relire le résultat et utiliser les diagnostics pertinents permet de vérifier le comportement attendu.</p>
+### Composer des opérations dans Vim
+
+Vim sépare le **mode normal**, pour naviguer et agir, du mode insertion, pour saisir du texte. `i` entre en insertion. Échap revient au mode normal. Une opération peut se combiner avec un déplacement ou un objet de texte.
+
+```text
+d$    supprimer jusqu’à la fin de la ligne
+ci(   remplacer le contenu des parenthèses
+```
+
+`ci(` conserve les parenthèses et remplace ce qu’elles entourent.
+
+### Ajouter la compréhension du code
+
+Un serveur de langage fournit notamment la définition, les références, le renommage et les diagnostics d’un symbole. Il doit analyser le projet dans un environnement où ses dépendances sont accessibles. L’assistance IA, elle, complète au curseur ou propose de modifier une sélection : la précision de la demande et du contexte influence la proposition.
+
+### À retenir
+
+Après une édition, relire le changement et consulter les diagnostics pertinents aide à vérifier que le résultat correspond à l’intention.
 
 ### Références de cette séance
 
 <ul>
 <li><a href="https://missing.csail.mit.edu/2026/development-environment/" rel="noopener">Development Environment and Tools — Section officielle</a> <em>(Section de séance; support lié à cette séance; en)</em></li>
-<li><a href="https://www.youtube.com/embed/QnM1nVzrkx8" rel="noopener">Development Environment and Tools — Vidéo</a> <em>(Vidéo; support lié à cette séance; en)</em><br>Page source : <a href="https://missing.csail.mit.edu/2026/development-environment/" rel="noopener">https://missing.csail.mit.edu/2026/development-environment/</a></li>
+<li><a href="https://www.youtube.com/watch?v=QnM1nVzrkx8" rel="noopener">Development Environment and Tools — Vidéo</a> <em>(Vidéo; support lié à cette séance; en)</em><br>Page source : <a href="https://missing.csail.mit.edu/2026/development-environment/" rel="noopener">https://missing.csail.mit.edu/2026/development-environment/</a></li>
 </ul>
 
 ### Exercices
@@ -540,13 +601,27 @@ printf &quot;%s\n&quot; &quot;$APP_MODE&quot;</code></pre>
 **Séance source :** Debugging and Profiling<br>
 **Objectif :** Choisir un outil pour reproduire une erreur ou mesurer un coût.
 
-<p>Le débogage cherche pourquoi le comportement réel diffère du comportement attendu ; le profilage mesure où partent les ressources. Un exemple reproductible et une hypothèse précise rendent l’enquête efficace. Un point d’arrêt suspend l’exécution à un endroit choisi ; un point de surveillance repère une modification de valeur. Pour une panne dépendant du temps, l’enregistrement et la relecture peuvent préserver une exécution fautive. Les traces d’appels système éclairent les accès aux fichiers et les attentes, tandis qu’un profileur CPU situe les calculs dominants. Le profilage par échantillonnage estime les piles les plus fréquentes sans enregistrer chaque appel. Une mesure avant et après, avec charge comparable et plusieurs répétitions, aide à distinguer amélioration réelle et bruit.</p>
+### Reproduire avant de corriger
+
+Le **débogage** cherche pourquoi le résultat réel diffère du résultat attendu. Commencer par un cas reproductible et une hypothèse précise permet de choisir quoi observer. Un point d’arrêt suspend l’exécution à un endroit donné. Un point de surveillance signale le changement d’une valeur.
+
+Pour une panne sensible au temps, enregistrer puis relire une exécution fautive peut rendre le cas répétable. Les traces d’appels système montrent notamment les accès aux fichiers et les attentes.
+
+### Mesurer avant d’optimiser
+
+Un profileur CPU aide à repérer les calculs dominants. Le profilage par échantillonnage estime les piles d’appels les plus fréquentes sans enregistrer chaque appel. Une forte proportion d’échantillons dans une fonction indique qu’elle mérite l’enquête. Elle ne prouve pas à elle seule que le code est incorrect.
+
+Pour comparer deux versions, utiliser une charge comparable et répéter les mesures avant et après : cela aide à séparer un gain régulier du bruit de mesure.
+
+### À retenir
+
+Le débogueur explique un comportement. Le profileur mesure un coût. Choisir l’outil selon la question évite d’optimiser à l’aveugle.
 
 ### Références de cette séance
 
 <ul>
 <li><a href="https://missing.csail.mit.edu/2026/debugging-profiling/" rel="noopener">Debugging and Profiling — Section officielle</a> <em>(Section de séance; support lié à cette séance; en)</em></li>
-<li><a href="https://www.youtube.com/embed/8VYT9TcUmKs" rel="noopener">Debugging and Profiling — Vidéo</a> <em>(Vidéo; support lié à cette séance; en)</em><br>Page source : <a href="https://missing.csail.mit.edu/2026/debugging-profiling/" rel="noopener">https://missing.csail.mit.edu/2026/debugging-profiling/</a></li>
+<li><a href="https://www.youtube.com/watch?v=8VYT9TcUmKs" rel="noopener">Debugging and Profiling — Vidéo</a> <em>(Vidéo; support lié à cette séance; en)</em><br>Page source : <a href="https://missing.csail.mit.edu/2026/debugging-profiling/" rel="noopener">https://missing.csail.mit.edu/2026/debugging-profiling/</a></li>
 </ul>
 
 ### Exercices
@@ -716,13 +791,30 @@ else:
 **Séance source :** Version Control and Git<br>
 **Objectif :** Séparer fichiers de travail, index et graphe des commits.
 
-<p>Git représente les versions par des instantanés reliés en graphe acyclique. Les objets de commit sont immuables ; une branche est une référence qui peut avancer vers un nouveau commit. HEAD indique la position courante et pointe habituellement vers une branche. Le répertoire de travail contient les fichiers modifiables et l’index prépare le prochain instantané. Après git add, modifier encore un fichier ne met pas automatiquement à jour sa version indexée : git diff et git diff --cached répondent donc à des questions différentes. Un merge peut avoir plusieurs parents et conserver la jonction des historiques. Les commandes réseau échangent objets et références avec un dépôt distant ; elles ne sont pas nécessaires pour créer un commit local. Lire les différences avant d’enregistrer aide à produire des changements cohérents.</p>
+### Trois états à distinguer
+
+Git enregistre des instantanés reliés en graphe. Le **répertoire de travail** contient les fichiers modifiables. L’**index** prépare le prochain instantané. Un commit est un objet immuable. Une branche est une référence qui peut avancer vers un commit. `HEAD` indique la position courante et pointe habituellement vers une branche.
+
+```bash
+git add notes.txt
+# Une modification ultérieure de notes.txt ne change pas l’index.
+git diff          # travail par rapport à l’index
+git diff --cached # index par rapport au commit
+```
+
+### Relier les historiques
+
+Une fusion non rapide peut créer un commit à plusieurs parents, ce qui conserve la jonction des historiques. Les commandes réseau échangent objets et références avec un dépôt distant. Elles ne sont pas requises pour créer un commit local.
+
+### À retenir
+
+Avant de committer, examiner à la fois les changements de travail et ceux déjà préparés. Ils ne décrivent pas forcément le même contenu.
 
 ### Références de cette séance
 
 <ul>
 <li><a href="https://missing.csail.mit.edu/2026/version-control/" rel="noopener">Version Control and Git — Section officielle</a> <em>(Section de séance; support lié à cette séance; en)</em></li>
-<li><a href="https://www.youtube.com/embed/9K8lB61dl3Y" rel="noopener">Version Control and Git — Vidéo</a> <em>(Vidéo; support lié à cette séance; en)</em><br>Page source : <a href="https://missing.csail.mit.edu/2026/version-control/" rel="noopener">https://missing.csail.mit.edu/2026/version-control/</a></li>
+<li><a href="https://www.youtube.com/watch?v=9K8lB61dl3Y" rel="noopener">Version Control and Git — Vidéo</a> <em>(Vidéo; support lié à cette séance; en)</em><br>Page source : <a href="https://missing.csail.mit.edu/2026/version-control/" rel="noopener">https://missing.csail.mit.edu/2026/version-control/</a></li>
 </ul>
 
 ### Exercices
@@ -883,13 +975,25 @@ else:
 **Séance source :** Packaging and Shipping Code<br>
 **Objectif :** Relier dépendances, paquet, environnement et publication.
 
-<p>Livrer un programme suppose de définir l’artefact et ses exigences : interpréteur, bibliothèques, système et configuration. Un environnement virtuel isole les paquets Python d’un projet. Les contraintes décrivent les versions acceptables ; un fichier de verrouillage fixe une résolution concrète, utile pour reconstruire une application. Un wheel constitue un artefact installable avec métadonnées, alors que le dossier source seul ne garantit pas l’installation. Sous la convention SemVer après 1.0, une rupture de compatibilité demande un changement majeur ; cette convention reste à vérifier pour chaque projet. Un conteneur est une instance d’image et partage le noyau de son environnement hôte. La configuration d’exécution et les secrets doivent rester distincts de l’artefact. Enfin, une nouvelle livraison demande un contrôle et une possibilité de revenir à une version connue.</p>
+### Décrire ce qu’il faut livrer
+
+Un artefact doit préciser ses besoins : interpréteur, bibliothèques, système et configuration. Un environnement virtuel isole les paquets Python du projet. Une contrainte de version indique les choix acceptables. Un fichier de verrouillage consigne une résolution concrète pour reconstruire l’application.
+
+Un **wheel** est un paquet Python installable avec ses métadonnées. Le dossier source seul ne garantit pas que l’installation fonctionnera depuis un autre emplacement.
+
+### Séparer paquet, exécution et configuration
+
+Après la version 1.0, SemVer réserve le changement majeur aux ruptures de compatibilité. Vérifier que le projet suit bien cette convention. Une image de conteneur sert de modèle à des conteneurs, qui partagent le noyau de leur environnement hôte. La configuration d’exécution et les secrets restent séparés de l’artefact.
+
+### À retenir
+
+Une livraison fiable associe un artefact identifié, des contrôles adaptés et un moyen de revenir à une version connue.
 
 ### Références de cette séance
 
 <ul>
 <li><a href="https://missing.csail.mit.edu/2026/shipping-code/" rel="noopener">Packaging and Shipping Code — Section officielle</a> <em>(Section de séance; support lié à cette séance; en)</em></li>
-<li><a href="https://www.youtube.com/embed/KBMiB-8P4Ns" rel="noopener">Packaging and Shipping Code — Vidéo</a> <em>(Vidéo; support lié à cette séance; en)</em><br>Page source : <a href="https://missing.csail.mit.edu/2026/shipping-code/" rel="noopener">https://missing.csail.mit.edu/2026/shipping-code/</a></li>
+<li><a href="https://www.youtube.com/watch?v=KBMiB-8P4Ns" rel="noopener">Packaging and Shipping Code — Vidéo</a> <em>(Vidéo; support lié à cette séance; en)</em><br>Page source : <a href="https://missing.csail.mit.edu/2026/shipping-code/" rel="noopener">https://missing.csail.mit.edu/2026/shipping-code/</a></li>
 </ul>
 
 ### Exercices
@@ -1050,13 +1154,30 @@ else:
 **Séance source :** Agentic Coding<br>
 **Objectif :** Définir un objectif vérifiable et une boucle de retour.
 
-<p>Un agent de programmation associe un modèle de langage à des outils pour consulter des fichiers, proposer des changements et exécuter des vérifications. Le programme qui l’entoure lui transmet les résultats ; il peut alors ajuster ses actions. Une demande utile décrit le résultat observable, les contraintes et les éléments nécessaires pour juger la réussite. Pour corriger un défaut de types, lui donner accès au diagnostic et à la commande exacte permet une boucle de retour concrète. La fenêtre de contexte est limitée : conserver les décisions utiles et les références pertinentes facilite le travail. Des tâches indépendantes peuvent utiliser des worktrees distincts pour réduire les collisions. Les réglages d’accès et de confidentialité dépendent de l’outil ; un agent lancé localement peut néanmoins utiliser une inférence distante.</p>
+### Formuler un résultat vérifiable
+
+Un agent de programmation associe un modèle de langage à des outils pour lire des fichiers, proposer des changements et lancer des vérifications. Le programme qui l’entoure lui transmet les résultats afin qu’il puisse ajuster ses actions. Une demande utile précise le résultat observable, les contraintes et la façon de juger la réussite.
+
+Par exemple, pour corriger un défaut de type, fournir le diagnostic et la commande de vérification donne une boucle de retour concrète :
+
+```text
+Objectif : corriger l’erreur de type signalée dans fichier.py.
+Vérification : exécuter la commande exacte et confirmer que ce diagnostic disparaît.
+```
+
+### Garder le contexte utile
+
+La fenêtre de contexte est limitée : conserver les décisions et références utiles facilite la suite du travail. Des tâches indépendantes peuvent utiliser des espaces de travail séparés créés par `git worktree` pour limiter les collisions de fichiers.
+
+### À retenir
+
+Un lancement local ne garantit pas que l’inférence du modèle est locale. Les réglages d’accès et de confidentialité dépendent de l’outil utilisé.
 
 ### Références de cette séance
 
 <ul>
 <li><a href="https://missing.csail.mit.edu/2026/agentic-coding/" rel="noopener">Agentic Coding — Section officielle</a> <em>(Section de séance; support lié à cette séance; en)</em></li>
-<li><a href="https://www.youtube.com/embed/sTdz6PZoAnw" rel="noopener">Agentic Coding — Vidéo</a> <em>(Vidéo; support lié à cette séance; en)</em><br>Page source : <a href="https://missing.csail.mit.edu/2026/agentic-coding/" rel="noopener">https://missing.csail.mit.edu/2026/agentic-coding/</a></li>
+<li><a href="https://www.youtube.com/watch?v=sTdz6PZoAnw" rel="noopener">Agentic Coding — Vidéo</a> <em>(Vidéo; support lié à cette séance; en)</em><br>Page source : <a href="https://missing.csail.mit.edu/2026/agentic-coding/" rel="noopener">https://missing.csail.mit.edu/2026/agentic-coding/</a></li>
 </ul>
 
 ### Exercices
@@ -1192,13 +1313,23 @@ else:
 **Séance source :** Beyond the Code<br>
 **Objectif :** Rendre une modification compréhensible et une contribution reproductible.
 
-<p>Un logiciel se maintient avec des explications autant qu’avec du code. Un commentaire utile expose une contrainte, une raison ou un invariant que la syntaxe seule ne rend pas évident. Un README aide à comprendre le but, à voir un usage et à préparer l’installation. Le message de commit conserve le problème motivant le changement et les conséquences de la solution. Pour signaler une panne, fournir environnement, version, entrée minimale, étapes, résultat attendu et résultat réel permet de reproduire l’enquête. Une contribution cohérente réduit le travail du mainteneur. Pendant la revue, un commentaire précis relie une situation concrète à son effet et distingue les défauts bloquants des suggestions. L’auteur doit pouvoir expliquer le contenu proposé, même s’il a utilisé une assistance IA.</p>
+### Écrire ce que le code ne dit pas
+
+Un commentaire utile expose une raison, une contrainte ou un invariant qui n’est pas évident à la lecture du code. Un `README` explique le but, montre un usage et prépare l’installation. Un message de commit garde la motivation du changement et ses conséquences.
+
+### Rendre une panne reproductible
+
+Un signalement exploitable indique l’environnement, la version, une entrée minimale, les étapes, le résultat attendu et le résultat observé. En revue, relier un commentaire à un scénario et à son effet aide l’auteur à agir. Distinguer un défaut bloquant d’une suggestion clarifie la priorité.
+
+### À retenir
+
+Regrouper une contribution par intention facilite sa revue. L’auteur doit comprendre et pouvoir expliquer le changement proposé, y compris lorsqu’une assistance IA a été utilisée.
 
 ### Références de cette séance
 
 <ul>
 <li><a href="https://missing.csail.mit.edu/2026/beyond-code/" rel="noopener">Beyond the Code — Section officielle</a> <em>(Section de séance; support lié à cette séance; en)</em></li>
-<li><a href="https://www.youtube.com/embed/2DOEATfXT8k" rel="noopener">Beyond the Code — Vidéo</a> <em>(Vidéo; support lié à cette séance; en)</em><br>Page source : <a href="https://missing.csail.mit.edu/2026/beyond-code/" rel="noopener">https://missing.csail.mit.edu/2026/beyond-code/</a></li>
+<li><a href="https://www.youtube.com/watch?v=2DOEATfXT8k" rel="noopener">Beyond the Code — Vidéo</a> <em>(Vidéo; support lié à cette séance; en)</em><br>Page source : <a href="https://missing.csail.mit.edu/2026/beyond-code/" rel="noopener">https://missing.csail.mit.edu/2026/beyond-code/</a></li>
 </ul>
 
 ### Exercices
@@ -1334,13 +1465,25 @@ else:
 **Séance source :** Code Quality<br>
 **Objectif :** Distinguer formatage, analyse statique, tests et intégration continue.
 
-<p>Un formateur harmonise l’écriture du code ; un linter cherche des motifs suspects sans exécuter le programme. Les tests exercent des comportements et doivent vérifier des résultats pertinents : exécuter une ligne ne prouve pas qu’un résultat est juste. Un test de régression conserve un cas de panne corrigé, tandis qu’un test de propriété examine une règle sur plusieurs entrées. Des hooks locaux donnent un retour rapide ; la CI applique les contrôles dans un environnement distinct, par exemple sur plusieurs versions du runtime. Un lanceur de commandes offre des points d’entrée communs à l’équipe. Enfin, les expressions régulières décrivent des motifs : vérifier la forme d’une date ne valide pas son existence dans le calendrier. Une collection de contrôles complémentaires améliore la confiance sans constituer une preuve totale.</p>
+### Distinguer les contrôles
+
+Un formateur harmonise la présentation du code. Un linter cherche des motifs suspects sans exécuter le programme. Les tests exercent des comportements et doivent vérifier des résultats pertinents : exécuter une ligne sans erreur ne prouve pas que sa réponse est juste.
+
+Un test de régression garde un cas de panne corrigé pour éviter son retour. Un test de propriété vérifie une règle sur plusieurs entrées. Les hooks locaux donnent un retour rapide. L’intégration continue (CI) exécute les contrôles dans un environnement distinct, par exemple avec plusieurs versions du runtime. Un lanceur de commandes fournit des points d’entrée communs à l’équipe.
+
+### Connaître la portée d’un contrôle
+
+Une expression régulière décrit une forme. Un motif peut reconnaître `2026-02-31` comme trois groupes de chiffres séparés par des tirets sans vérifier que cette date existe dans le calendrier.
+
+### À retenir
+
+Des contrôles complémentaires renforcent la confiance, mais aucun indicateur isolé — même 100 % de lignes couvertes — ne prouve à lui seul l’absence de défauts.
 
 ### Références de cette séance
 
 <ul>
 <li><a href="https://missing.csail.mit.edu/2026/code-quality/" rel="noopener">Code Quality — Section officielle</a> <em>(Section de séance; support lié à cette séance; en)</em></li>
-<li><a href="https://www.youtube.com/embed/XBiLUNx84CQ" rel="noopener">Code Quality — Vidéo</a> <em>(Vidéo; support lié à cette séance; en)</em><br>Page source : <a href="https://missing.csail.mit.edu/2026/code-quality/" rel="noopener">https://missing.csail.mit.edu/2026/code-quality/</a></li>
+<li><a href="https://www.youtube.com/watch?v=XBiLUNx84CQ" rel="noopener">Code Quality — Vidéo</a> <em>(Vidéo; support lié à cette séance; en)</em><br>Page source : <a href="https://missing.csail.mit.edu/2026/code-quality/" rel="noopener">https://missing.csail.mit.edu/2026/code-quality/</a></li>
 </ul>
 
 ### Exercices

@@ -187,7 +187,9 @@ class LearningUiTest {
                     val first = course.lessons.first()
                     onNodeWithText("Continuer · ${first.title}").performScrollTo().performClick()
                     onNodeWithText("Comprendre avant de pratiquer").assertIsDisplayed()
-                    onNodeWithText(first.learningNotes).assertExists()
+                    // A structured lesson has individual semantic headings and paragraphs.
+                    val firstBlock = parseLessonDocument(first.learningNotes).first()
+                    onNodeWithText(firstBlock.text).assertExists()
                     onNodeWithText("Passer aux exercices").assertIsEnabled()
                     if (index == 0) saveSnapshot("published-notes-${subject.category.name.lowercase()}")
                     onNodeWithContentDescription("Quitter la leçon").performClick()

@@ -29,13 +29,12 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Expression orale — Tâche 1<br>
 **Objectif :** Répondre oralement à des invitations à parler de soi, puis relire son discours par l’écoute.
 
-<p>Le premier format officiel est un entretien dirigé de deux minutes, sans préparation. Dans cet atelier individuel, les invitations écrites servent de points de départ ; elles ne constituent pas les questions d’un examinateur réel. Réponds avec des informations que tu acceptes d’enregistrer sur cet appareil. Tu peux utiliser une identité fictive et éviter toute information sensible. Développe une activité, une habitude et un projet avec des exemples, puis écoute ton enregistrement. Repère les passages où le destinataire manquerait de contexte, les répétitions inutiles et les phrases restées inachevées. Recommence en améliorant un point précis plutôt qu’en récitant un texte appris. Une discussion avec un partenaire reste nécessaire pour travailler les réactions spontanées et les demandes de précision. La grille de cet atelier organise ta relecture ; elle ne prédit aucun niveau officiel.</p>
+Le premier format officiel est un entretien dirigé de deux minutes, sans préparation. Dans cet atelier individuel, les invitations écrites servent de points de départ. Elles ne constituent pas les questions d’un examinateur réel. Réponds avec des informations que tu acceptes d’enregistrer sur cet appareil. Tu peux utiliser une identité fictive et éviter toute information sensible. Développe une activité, une habitude et un projet avec des exemples, puis écoute ton enregistrement. Repère les passages où le destinataire manquerait de contexte, les répétitions inutiles et les phrases restées inachevées. Recommence en améliorant un point précis plutôt qu’en récitant un texte appris. Une discussion avec un partenaire reste nécessaire pour travailler les réactions spontanées et les demandes de précision. La grille de cet atelier organise ta relecture. Elle ne prédit aucun niveau officiel.
 
 ### Références de cette séance
 
 <ul>
 <li><a href="https://www.france-education-international.fr/test/tcf-canada" rel="noopener">Expression orale — Tâche 1 — Section officielle</a> <em>(Section de séance; support lié à cette séance; fr)</em></li>
-<li><a href="https://www.youtube.com/channel/UCNbFgnDsoWTL4jG9LGoPE8A" rel="noopener">Expression orale — Tâche 1 — Vidéo</a> <em>(Vidéo; support lié à cette séance; fr)</em><br>Page source : <a href="https://www.france-education-international.fr/test/tcf-canada" rel="noopener">https://www.france-education-international.fr/test/tcf-canada</a></li>
 <li><a href="https://www.france-education-international.fr/test/exemples-epreuves-tcf" rel="noopener">Expression orale — Tâche 1 — Section officielle</a> <em>(Section de séance; support lié à cette séance; fr)</em></li>
 </ul>
 
@@ -82,13 +81,12 @@ Cette grille sert à la pratique; elle ne calcule ni ne prédit un score officie
 **Séance source :** Expression orale — Tâche 2<br>
 **Objectif :** Obtenir des informations précises dans un jeu de rôle guidé, en formulant des questions et des relances.
 
-<p>Le deuxième format prévoit deux minutes de préparation et trois minutes trente d’interaction. Prépare des intentions de questions plutôt qu’un discours continu : disponibilité, prix, conditions, matériel et organisation. Dans notre scénario original, tu contactes un atelier de photographie. Les cartes écrites donnent des réponses prédéfinies pour t’aider à formuler une relance ; elles ne réagissent pas à ta voix. Pose ta question à haute voix avant d’afficher la carte suivante, puis utilise l’information fournie pour demander une précision. Si une réponse couvre déjà plusieurs points, adapte ta question pour éviter la répétition. Termine en reformulant une information et en confirmant la prochaine démarche. Réécoute ensuite tes questions : sont-elles compréhensibles, variées et adaptées au registre choisi ? Pour entraîner une interaction véritable, rejoue la situation avec une autre personne qui choisira ses propres réponses.</p>
+Le deuxième format prévoit deux minutes de préparation et trois minutes trente d’interaction. Prépare des intentions de questions plutôt qu’un discours continu : disponibilité, prix, conditions, matériel et organisation. Dans notre scénario original, tu contactes un atelier de photographie. Les cartes écrites donnent des réponses prédéfinies pour t’aider à formuler une relance. Elles ne réagissent pas à ta voix. Pose ta question à haute voix avant d’afficher la carte suivante, puis utilise l’information fournie pour demander une précision. Si une réponse couvre déjà plusieurs points, adapte ta question pour éviter la répétition. Termine en reformulant une information et en confirmant la prochaine démarche. Réécoute ensuite tes questions : sont-elles compréhensibles, variées et adaptées au registre choisi ? Pour entraîner une interaction véritable, rejoue la situation avec une autre personne qui choisira ses propres réponses.
 
 ### Références de cette séance
 
 <ul>
 <li><a href="https://www.france-education-international.fr/test/tcf-canada" rel="noopener">Expression orale — Tâche 2 — Section officielle</a> <em>(Section de séance; support lié à cette séance; fr)</em></li>
-<li><a href="https://www.youtube.com/channel/UCNbFgnDsoWTL4jG9LGoPE8A" rel="noopener">Expression orale — Tâche 2 — Vidéo</a> <em>(Vidéo; support lié à cette séance; fr)</em><br>Page source : <a href="https://www.france-education-international.fr/test/tcf-canada" rel="noopener">https://www.france-education-international.fr/test/tcf-canada</a></li>
 <li><a href="https://www.france-education-international.fr/test/exemples-epreuves-tcf" rel="noopener">Expression orale — Tâche 2 — Section officielle</a> <em>(Section de séance; support lié à cette séance; fr)</em></li>
 </ul>
 
@@ -135,13 +133,12 @@ Cette grille sert à la pratique; elle ne calcule ni ne prédit un score officie
 **Séance source :** Expression orale — Tâche 3<br>
 **Objectif :** Soutenir oralement une opinion à l’aide de raisons, d’exemples et d’une réserve pertinente.
 
-<p>Le troisième format demande de développer un point de vue sans temps de préparation, pendant quatre minutes trente au maximum. Pour cet entraînement original, commence directement par une position compréhensible, puis construis ton raisonnement à voix haute. Un exemple concret permet d’expliquer pourquoi une idée serait utile ou difficile à appliquer. Tu peux reconnaître une objection et préciser dans quelles conditions ta proposition reste valable. N’essaie pas de remplir toute la durée avec la même phrase répétée : cherche à faire progresser l’explication. À la réécoute, distingue la structure des idées et leur formulation. Note une transition utile, une justification trop vague et une reformulation possible. Le chronomètre donne un repère de pratique ; atteindre la durée maximale ne garantit aucune performance. Une correction humaine pourra examiner la richesse, la correction de la langue et l’adaptation au sujet.</p>
+Le troisième format demande de développer un point de vue sans temps de préparation, pendant quatre minutes trente au maximum. Pour cet entraînement original, commence directement par une position compréhensible, puis construis ton raisonnement à voix haute. Un exemple concret permet d’expliquer pourquoi une idée serait utile ou difficile à appliquer. Tu peux reconnaître une objection et préciser dans quelles conditions ta proposition reste valable. N’essaie pas de remplir toute la durée avec la même phrase répétée : cherche à faire progresser l’explication. À la réécoute, distingue la structure des idées et leur formulation. Note une transition utile, une justification trop vague et une reformulation possible. Le chronomètre donne un repère de pratique. Atteindre la durée maximale ne garantit aucune performance. Une correction humaine pourra examiner la richesse, la correction de la langue et l’adaptation au sujet.
 
 ### Références de cette séance
 
 <ul>
 <li><a href="https://www.france-education-international.fr/test/tcf-canada" rel="noopener">Expression orale — Tâche 3 — Section officielle</a> <em>(Section de séance; support lié à cette séance; fr)</em></li>
-<li><a href="https://www.youtube.com/channel/UCNbFgnDsoWTL4jG9LGoPE8A" rel="noopener">Expression orale — Tâche 3 — Vidéo</a> <em>(Vidéo; support lié à cette séance; fr)</em><br>Page source : <a href="https://www.france-education-international.fr/test/tcf-canada" rel="noopener">https://www.france-education-international.fr/test/tcf-canada</a></li>
 <li><a href="https://www.france-education-international.fr/test/exemples-epreuves-tcf" rel="noopener">Expression orale — Tâche 3 — Section officielle</a> <em>(Section de séance; support lié à cette séance; fr)</em></li>
 </ul>
 

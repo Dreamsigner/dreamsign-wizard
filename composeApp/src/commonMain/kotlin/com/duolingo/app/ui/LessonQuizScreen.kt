@@ -64,7 +64,7 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
     }
     var showNotes by remember(lesson.id) { mutableStateOf(true) }
     val mathematical = viewModel.subjects.value.any { subject ->
-        subject.category == SubjectCategory.MATHEMATICS && subject.units.any { unit -> unit.lessons.any { it.id == lesson.id } }
+        (subject.category == SubjectCategory.MATHEMATICS || subject.category == SubjectCategory.COMPUTER_SCIENCE) && subject.units.any { unit -> unit.lessons.any { it.id == lesson.id } }
     }
     var showHelp by remember(lesson.id) { mutableStateOf(false) }
     var showExplanation by remember(lesson.id, index, checked) { mutableStateOf(false) }
@@ -122,7 +122,7 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
                     exercise == null -> EmptyLearningState("Aucun exercice disponible", "Les notes du cours restent accessibles avec le bouton d’aide.")
                     unsupported -> EmptyLearningState("Association de paires indisponible", "Cet exercice n’est pas encore pris en charge. Reviens au cours pour choisir une autre leçon ; aucune réponse ni récompense ne sera enregistrée ici.")
                     else -> {
-                        if (lesson.objective.isNotBlank()) Text("Objectif : ${lesson.objective}", color = Graphite, fontSize = 14.sp)
+                        if (lesson.objective.isNotBlank()) LearningText("Objectif : ${lesson.objective}", style = TextStyle(color = Graphite, fontSize = 14.sp), recognizeLegacyMath = mathematical)
                         if (written != null || spoken != null) {
                             Text(if (spoken != null) "Ta production orale" else "Ta production écrite",
                                 fontSize = 26.sp, lineHeight = 34.sp, fontWeight = FontWeight.Bold,
@@ -137,14 +137,14 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
                                             fontSize = 18.sp, lineHeight = 28.sp, fontWeight = FontWeight.Normal)
                                     }
                                 }
-                                ExercisePrompt(exercise)
+                                ExercisePrompt(exercise, mathematical)
                                 OptionsList(exercise.options, selectedOption, checked, viewModel::selectOption, typesetMath = mathematical)
                             }
                             is Exercise.SpokenProduction -> SpokenProductionPractice(exercise, viewModel, checked)
                             is Exercise.ListeningChoice -> {
                                 ListeningPractice(exercise, checked, exercise.audioResourcePath in heardAudioPaths,
                                     exercise.audioResourcePath in transcriptModePaths, viewModel::markAudioCompleted, viewModel::enableTranscriptMode)
-                                ExercisePrompt(exercise)
+                                ExercisePrompt(exercise, mathematical)
                                 OptionsList(exercise.options, selectedOption, checked, viewModel::selectOption, typesetMath = mathematical)
                             }
                             is Exercise.WrittenProduction -> WrittenProductionPractice(exercise, writtenResponse, reviewedCriteria, checked, persistenceStatus, viewModel::updateWrittenResponse, viewModel::toggleReviewCriterion)
@@ -152,23 +152,23 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
                                 Surface(color = Ink, shape = LearningShape) {
                                     Text(exercise.codeSnippet, Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(20.dp), color = White, fontFamily = FontFamily.Monospace, fontSize = 16.sp)
                                 }
-                                ExercisePrompt(exercise)
-                                OptionsList(exercise.options, selectedOption, checked, viewModel::selectOption)
+                                ExercisePrompt(exercise, mathematical)
+                                OptionsList(exercise.options, selectedOption, checked, viewModel::selectOption, typesetMath = mathematical)
                             }
                             is Exercise.MathChallenge -> {
                                 exercise.formula?.let { Surface(color = White, shape = LearningShape) {
                                     LearningFormula(it, Modifier.fillMaxWidth().padding(20.dp), style = TextStyle(fontSize = 24.sp))
                                 } }
-                                ExercisePrompt(exercise)
+                                ExercisePrompt(exercise, mathematical)
                                 OptionsList(exercise.options, selectedOption, checked, viewModel::selectOption, typesetMath = true)
                             }
                             is Exercise.MultipleChoice -> {
-                                ExercisePrompt(exercise)
+                                ExercisePrompt(exercise, mathematical)
                                 OptionsList(exercise.options, selectedOption, checked, viewModel::selectOption, typesetMath = mathematical)
                             }
                             is Exercise.Translation -> {
                                 Surface(color = White, shape = LearningShape) { Text(exercise.sourceSentence, Modifier.fillMaxWidth().padding(20.dp), fontSize = 20.sp) }
-                                ExercisePrompt(exercise)
+                                ExercisePrompt(exercise, mathematical)
                                 Text("Ta réponse", fontWeight = FontWeight.Bold)
                                 Surface(color = White, shape = LearningShape) {
                                     Text(selectedTokens.joinToString(" ").ifBlank { "Choisis les mots dans l’ordre." }, Modifier.fillMaxWidth().heightIn(min = 72.dp).padding(16.dp), color = if (selectedTokens.isEmpty()) Graphite else Ink, fontSize = 18.sp)
@@ -186,7 +186,7 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
                                 TextButton({ showExplanation = !showExplanation }, Modifier.heightIn(min = 48.dp)) {
                                     Text(if (showExplanation) "Masquer l’explication" else "Pourquoi cette réponse ?")
                                 }
-                                if (showExplanation) LearningText(exercise.explanation, style = TextStyle(fontSize = 16.sp, lineHeight = 25.sp), recognizeLegacyMath = mathematical || exercise is Exercise.MathChallenge)
+                                if (showExplanation) LessonDocument(exercise.explanation, typesetMath = mathematical || exercise is Exercise.MathChallenge)
                                 SymbolValue(LearningSymbol.HEART, "${stats.hearts}/${stats.maxHearts} vies restantes")
                             }
                         }
@@ -202,7 +202,7 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
                 LessonNotes(lesson, typesetMath = mathematical)
                 if (!showNotes && exercise != null) {
                     Text("Indice pour cet exercice", fontWeight = FontWeight.Bold)
-                    LearningText(exercise.hint)
+                    LessonDocument(exercise.hint, typesetMath = mathematical)
                 }
             }
         },
@@ -211,9 +211,9 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
 }
 
 @Composable
-private fun ExercisePrompt(exercise: Exercise) {
+private fun ExercisePrompt(exercise: Exercise, typesetMath: Boolean) {
     LearningText(exercise.prompt, Modifier.semantics { heading() },
-        style = TextStyle(fontSize = 22.sp, lineHeight = 32.sp, fontWeight = FontWeight.Bold), recognizeLegacyMath = exercise is Exercise.MathChallenge)
+        style = TextStyle(fontSize = 22.sp, lineHeight = 32.sp, fontWeight = FontWeight.Bold), recognizeLegacyMath = typesetMath || exercise is Exercise.MathChallenge)
 }
 
 @Composable
@@ -257,8 +257,8 @@ internal fun LessonNotes(lesson: Lesson, includeHeading: Boolean = true, typeset
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         if (includeHeading) Text("Comprendre avant de pratiquer", fontSize = 24.sp, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
         lesson.sourceSessionLabel?.let { Text(it, color = Graphite, fontWeight = FontWeight.Medium) }
-        if (lesson.objective.isNotBlank()) Text("Objectif : ${lesson.objective}", fontSize = 16.sp, fontWeight = FontWeight.Medium)
-        LearningText(lesson.learningNotes.ifBlank { "Les notes de cette leçon ne sont pas encore disponibles. Consulte les ressources de référence lorsqu’elles sont proposées." }, style = TextStyle(fontSize = 16.sp, lineHeight = 25.sp), recognizeLegacyMath = typesetMath)
+        if (lesson.objective.isNotBlank()) LearningText("Objectif : ${lesson.objective}", style = TextStyle(fontSize = 16.sp, lineHeight = 25.sp, fontWeight = FontWeight.Medium), recognizeLegacyMath = typesetMath)
+        LessonDocument(lesson.learningNotes.ifBlank { "Les notes de cette leçon ne sont pas encore disponibles. Consulte les ressources de référence lorsqu’elles sont proposées." }, typesetMath = typesetMath)
         if (lesson.sourceTitle.isNotBlank()) Text("Source : ${lesson.sourceTitle}", color = Graphite)
         val pairedResources = lesson.exercises.firstOrNull()?.let { CourseResources.forExercise(it.id) }.orEmpty()
         if (pairedResources.isNotEmpty()) {

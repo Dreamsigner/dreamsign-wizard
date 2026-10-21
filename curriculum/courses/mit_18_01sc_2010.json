@@ -14,7 +14,7 @@
       "kind": "lesson",
       "title": "De la sécante à la tangente",
       "objective": "Interpréter une dérivée comme limite de pentes.",
-      "learningNotes": "La pente d’une sécante entre les abscisses a et a+h est [f(a+h)−f(a)]/h. La dérivée f′(a) est la limite de ce quotient quand h tend vers zéro, si cette limite existe. On simplifie le quotient avant de passer à la limite : pour f(x)=x², le numérateur vaut 2ah+h², donc la pente est 2a+h et sa limite 2a. La tangente en a a ainsi pour équation y=f(a)+f′(a)(x−a). Un petit déplacement h donne une approximation de la pente ; il ne constitue pas à lui seul sa valeur exacte.",
+      "learningNotes": "La pente d’une sécante entre les abscisses a et a+h est [f(a+h)−f(a)]/h. La dérivée f′(a) est la limite de ce quotient quand h tend vers zéro, si cette limite existe. On simplifie le quotient avant de passer à la limite : pour f(x)=x², le numérateur vaut 2ah+h², donc la pente est 2a+h et sa limite 2a. La tangente en a a ainsi pour équation y=f(a)+f′(a)(x−a). Un petit déplacement h donne une approximation de la pente. Il ne constitue pas à lui seul sa valeur exacte.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/part-a-definition-and-basic-rules/session-1-introduction-to-derivatives/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/4c79fff7e6ea9fb28d9c6002995757c6_MIT18_01SCF10_ex01sol.pdf"
@@ -190,7 +190,7 @@
       "kind": "lesson",
       "title": "Classer les discontinuités",
       "objective": "Distinguer trou, saut et divergence infinie.",
-      "learningNotes": "Une discontinuité amovible est un trou qu’une seule nouvelle valeur peut réparer. Par exemple, (x²−4)/(x−2) vaut x+2 hors de 2 et peut être prolongée par la valeur 4. Un saut présente deux limites latérales finies différentes ; aucune valeur isolée ne les réunit. Une asymptote verticale correspond à une divergence infinie, comme 1/x en zéro. Certaines fonctions oscillent sans limite. La dérivabilité entraîne la continuité : une rupture exclut donc la dérivée. La réciproque est fausse, car une fonction continue peut présenter un point anguleux comme |x|.",
+      "learningNotes": "Une discontinuité amovible est un trou qu’une seule nouvelle valeur peut réparer. Par exemple, (x²−4)/(x−2) vaut x+2 hors de 2 et peut être prolongée par la valeur 4. Un saut présente deux limites latérales finies différentes. Aucune valeur isolée ne les réunit. Une asymptote verticale correspond à une divergence infinie, comme 1/x en zéro. Certaines fonctions oscillent sans limite. La dérivabilité entraîne la continuité : une rupture exclut donc la dérivée. La réciproque est fausse, car une fonction continue peut présenter un point anguleux comme |x|.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/part-a-definition-and-basic-rules/session-5-discontinuity/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/5014374a5054c09b52041b1fe02774ba_MIT18_01SCF10_ex05sol.pdf"
@@ -278,7 +278,7 @@
       "kind": "lesson",
       "title": "Dériver sinus et cosinus",
       "objective": "Relier oscillations et dérivées trigonométriques.",
-      "learningNotes": "En radians, la dérivée de sin x est cos x et celle de cos x est −sin x. Ces identités décrivent le mouvement des pentes : au maximum du sinus, sa dérivée s’annule ; au passage croissant par zéro, elle vaut 1. Le signe moins du cosinus traduit sa décroissance juste après zéro. Par linéarité, (2sin x−3cos x)′=2cos x+3sin x. Les radians sont essentiels, car une mesure en degrés introduirait un facteur de conversion. Les limites trigonométriques qui justifient ces règles seront examinées dans la séance suivante.",
+      "learningNotes": "En radians, la dérivée de sin x est cos x et celle de cos x est −sin x. Ces identités décrivent le mouvement des pentes : au maximum du sinus, sa dérivée s’annule. Au passage croissant par zéro, elle vaut 1. Le signe moins du cosinus traduit sa décroissance juste après zéro. Par linéarité, (2sin x−3cos x)′=2cos x+3sin x. Les radians sont essentiels, car une mesure en degrés introduirait un facteur de conversion. Les limites trigonométriques qui justifient ces règles seront examinées dans la séance suivante.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/part-a-definition-and-basic-rules/session-7-derivatives-of-sine-and-cosine/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/62ed1c8d2b1d28026a66480a7ce55a42_MIT18_01SCF10_ex07sol.pdf"
@@ -366,7 +366,7 @@
       "kind": "lesson",
       "title": "La règle du produit",
       "objective": "Dériver un produit en conservant les deux contributions.",
-      "learningNotes": "Lorsque deux facteurs varient, la variation du produit reçoit une contribution de chacun. La règle est (fg)′=f′g+fg′ ; ce n’est généralement pas f′g′. Pour y=x²sin x, elle donne y′=2xsin x+x²cos x. On peut comprendre les deux termes en faisant varier séparément les côtés d’un rectangle : chacun modifie l’aire. Pour un raccord de fonctions polynomiales, la continuité des valeurs puis l’égalité des dérivées permettent de rechercher une courbe sans coin. Après le calcul, substituer une abscisse simple aide à repérer un oubli de facteur.",
+      "learningNotes": "Lorsque deux facteurs varient, la variation du produit reçoit une contribution de chacun. La règle est (fg)′=f′g+fg′. Ce n’est généralement pas f′g′. Pour y=x²sin x, elle donne y′=2xsin x+x²cos x. On peut comprendre les deux termes en faisant varier séparément les côtés d’un rectangle : chacun modifie l’aire. Pour un raccord de fonctions polynomiales, la continuité des valeurs puis l’égalité des dérivées permettent de rechercher une courbe sans coin. Après le calcul, substituer une abscisse simple aide à repérer un oubli de facteur.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/part-a-definition-and-basic-rules/session-9-product-rule/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/b274df23e6ada7c665e6cfe72928b197_MIT18_01SCF10_ex09sol.pdf"
@@ -498,7 +498,7 @@
       "kind": "lesson",
       "title": "Dérivées successives",
       "objective": "Calculer et interpréter des dérivées d’ordre supérieur.",
-      "learningNotes": "Une dérivée est elle-même une fonction que l’on peut dériver. On note f″ la dérivée seconde, puis f‴ ou f⁽ⁿ⁾ les suivantes. Si s(t) est une position, s′ est une vitesse et s″ une accélération. La dérivée seconde renseigne aussi sur la concavité d’un graphe. Pour x⁴, les dérivées successives sont 4x³, 12x², 24x et 24 ; la suivante est nulle. Les dérivées du sinus forment un cycle de longueur quatre : sin, cos, −sin, −cos, puis sin à nouveau. Chaque dérivation doit porter sur l’expression obtenue précédemment.",
+      "learningNotes": "Une dérivée est elle-même une fonction que l’on peut dériver. On note f″ la dérivée seconde, puis f‴ ou f⁽ⁿ⁾ les suivantes. Si s(t) est une position, s′ est une vitesse et s″ une accélération. La dérivée seconde renseigne aussi sur la concavité d’un graphe. Pour x⁴, les dérivées successives sont 4x³, 12x², 24x et 24. La suivante est nulle. Les dérivées du sinus forment un cycle de longueur quatre : sin, cos, −sin, −cos, puis sin à nouveau. Chaque dérivation doit porter sur l’expression obtenue précédemment.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/part-a-definition-and-basic-rules/session-12-higher-derivatives/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/c8a0089e4888f8d7bdef0fdd920c3760_MIT18_01SCF10_ex12sol.pdf"
@@ -644,7 +644,7 @@
       "kind": "lesson",
       "title": "Dérivées des fonctions réciproques",
       "objective": "Calculer une dérivée de réciproque et d’arc trigonométrique.",
-      "learningNotes": "Si y=f⁻¹(x), alors f(y)=x. La dérivation implicite donne f′(y)y′=1 ; ainsi (f⁻¹)′(x)=1/f′(f⁻¹(x)), si le dénominateur est non nul. Les pentes des deux graphes, symétriques par rapport à y=x, sont réciproques. Avec y=arctan x, on part de tan y=x et l’on obtient y′=1/(1+x²). Avec y=arcsin x sur sa branche usuelle, on obtient 1/√(1−x²) pour |x|<1. Le choix de branche est nécessaire : x² n’a une réciproque que sur un domaine adapté.",
+      "learningNotes": "Si y=f⁻¹(x), alors f(y)=x. La dérivation implicite donne f′(y)y′=1. Ainsi (f⁻¹)′(x)=1/f′(f⁻¹(x)), si le dénominateur est non nul. Les pentes des deux graphes, symétriques par rapport à y=x, sont réciproques. Avec y=arctan x, on part de tan y=x et l’on obtient y′=1/(1+x²). Avec y=arcsin x sur sa branche usuelle, on obtient 1/√(1−x²) pour |x|<1. Le choix de branche est nécessaire : x² n’a une réciproque que sur un domaine adapté.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/part-b-implicit-differentiation-and-inverse-functions/session-15-implicit-differentiation-and-inverse-functions/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/11c6317417bdf6c7f976183481025646_MIT18_01SCF10_ex15sol.pdf"
@@ -688,7 +688,7 @@
       "kind": "lesson",
       "title": "Pourquoi la dérivée de aˣ garde sa forme",
       "objective": "Factoriser le quotient de différences d’une exponentielle.",
-      "learningNotes": "Pour une base a>0, les règles d’exposants donnent aˣ⁺ʰ=aˣaʰ. Le quotient de différences de aˣ devient donc aˣ(aʰ−1)/h. Toute la dépendance en x se trouve dans aˣ ; le facteur limite dépend seulement de la base. La dérivée est donc proportionnelle à la fonction. On identifiera ce facteur à ln a en définissant l’exponentielle naturelle. La croissance composée fournit une application : après k périodes à taux r/k, un capital théorique P devient P(1+r/k)ᵏ. Une exponentielle décrit une variation relative constante, contrairement à une fonction affine.",
+      "learningNotes": "Pour une base a>0, les règles d’exposants donnent aˣ⁺ʰ=aˣaʰ. Le quotient de différences de aˣ devient donc aˣ(aʰ−1)/h. Toute la dépendance en x se trouve dans aˣ. Le facteur limite dépend seulement de la base. La dérivée est donc proportionnelle à la fonction. On identifiera ce facteur à ln a en définissant l’exponentielle naturelle. La croissance composée fournit une application : après k périodes à taux r/k, un capital théorique P devient P(1+r/k)ᵏ. Une exponentielle décrit une variation relative constante, contrairement à une fonction affine.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/part-b-implicit-differentiation-and-inverse-functions/session-16-the-derivative-of-a-x/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/41a61f858e066ddcb402f34c0e4697af_MIT18_01SCF10_ex16sol.pdf"
@@ -864,7 +864,7 @@
       "kind": "lesson",
       "title": "Fonctions hyperboliques",
       "objective": "Dériver et relier sinh et cosh à l’exponentielle.",
-      "learningNotes": "On définit sinh x=(eˣ−e⁻ˣ)/2 et cosh x=(eˣ+e⁻ˣ)/2. La dérivation donne (sinh x)′=cosh x et (cosh x)′=sinh x : aucun signe moins n’apparaît dans cette seconde identité. En développant les carrés, on trouve cosh²x−sinh²x=1, relation avec une hyperbole. Les formules d’addition se démontrent en remplaçant chaque terme par ses exponentielles. Ainsi sinh(x+y)=sinh x cosh y+cosh x sinh y. Ces fonctions interviennent notamment dans les chaînettes et dans des modèles différentiels ; leurs noms n’autorisent pas à recopier tous les signes de la trigonométrie circulaire.",
+      "learningNotes": "On définit sinh x=(eˣ−e⁻ˣ)/2 et cosh x=(eˣ+e⁻ˣ)/2. La dérivation donne (sinh x)′=cosh x et (cosh x)′=sinh x : aucun signe moins n’apparaît dans cette seconde identité. En développant les carrés, on trouve cosh²x−sinh²x=1, relation avec une hyperbole. Les formules d’addition se démontrent en remplaçant chaque terme par ses exponentielles. Ainsi sinh(x+y)=sinh x cosh y+cosh x sinh y. Ces fonctions interviennent notamment dans les chaînettes et dans des modèles différentiels. Leurs noms n’autorisent pas à recopier tous les signes de la trigonométrie circulaire.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/part-b-implicit-differentiation-and-inverse-functions/session-20-hyperbolic-trig-functions/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/ba64527096fa7e015c043cba55982c8b_MIT18_01SCF10_ex20sol.pdf"
@@ -908,7 +908,7 @@
       "kind": "review",
       "title": "Révision : combiner les règles de dérivation",
       "objective": "Choisir et combiner les règles adaptées à une expression.",
-      "learningNotes": "Cette révision rassemble les règles de dérivation de la première unité. Commencer par lire la structure : une somme se traite terme à terme, un produit demande deux contributions, une composition demande un facteur intérieur. Pour ln(cos x), sur un intervalle où cos x>0, la chaîne donne −sin x/cos x=−tan x. Une expression implicite exige de garder les facteurs y′. Les exercices qui suivent sont un entraînement original, avec corrections détaillées ; ils ne reproduisent pas l’examen MIT et leur réussite ne constitue pas une note officielle. Vérifier ensuite les domaines et les signes.",
+      "learningNotes": "Cette révision rassemble les règles de dérivation de la première unité. Commencer par lire la structure : une somme se traite terme à terme, un produit demande deux contributions, une composition demande un facteur intérieur. Pour ln(cos x), sur un intervalle où cos x>0, la chaîne donne −sin x/cos x=−tan x. Une expression implicite exige de garder les facteurs y′. Les exercices qui suivent sont un entraînement original, avec corrections détaillées. Ils ne reproduisent pas l’examen MIT et leur réussite ne constitue pas une note officielle. Vérifier ensuite les domaines et les signes.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/exam-1/session-21-review-for-exam-1-computing-derivatives-using-differentiation-rules/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/8428b6e9a1357ba3cef1556de71cc154_eHJuAByQf5A.pdf"
@@ -980,7 +980,7 @@
       "kind": "exam",
       "title": "Entraînement adapté : bilan de dérivation",
       "objective": "Résoudre une sélection de problèmes de la première unité.",
-      "learningNotes": "Ce bilan adapté fait travailler les mêmes familles de compétences que les matériaux du premier examen : dérivées composées, tangentes implicites et interprétation du mouvement. Il contient des questions originales plus courtes et ne prétend pas reproduire le barème MIT. Pour une position, on dérive pour obtenir la vitesse ; pour une tangente, on calcule d’abord la valeur et la pente au point donné. Dans un quotient, simplifier le numérateur après la règle aide à vérifier le résultat. Une correction utile doit expliquer chaque facteur, et non seulement annoncer une expression finale.",
+      "learningNotes": "Ce bilan adapté fait travailler les mêmes familles de compétences que les matériaux du premier examen : dérivées composées, tangentes implicites et interprétation du mouvement. Il contient des questions originales plus courtes et ne prétend pas reproduire le barème MIT. Pour une position, on dérive pour obtenir la vitesse. Pour une tangente, on calcule d’abord la valeur et la pente au point donné. Dans un quotient, simplifier le numérateur après la règle aide à vérifier le résultat. Une correction utile doit expliquer chaque facteur, et non seulement annoncer une expression finale.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/1.-differentiation/exam-1/session-22-materials-for-exam-1/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/0817fc547c8edd2c29172f670a4d1d66_MIT18_01SCF10_exam1sol.pdf"
@@ -1052,7 +1052,7 @@
       "kind": "lesson",
       "title": "Approximation linéaire",
       "objective": "Estimer une fonction près d’un point connu.",
-      "learningNotes": "Une fonction dérivable ressemble localement à sa tangente : f(a+h)≈f(a)+f′(a)h. On choisit un centre a proche de la valeur visée, où le calcul exact est simple. Pour √(4+h), f(4)=2 et f′(4)=1/4, donc √(4+h)≈2+h/4. Avec h=0,04, on estime √4,04 par 2,01. Le signe ≈ rappelle qu’une droite remplace une courbe. La précision dépend de la distance au centre et de la variation de la pente ; une bonne approximation locale ne s’étend pas automatiquement à des valeurs éloignées.",
+      "learningNotes": "Une fonction dérivable ressemble localement à sa tangente : f(a+h)≈f(a)+f′(a)h. On choisit un centre a proche de la valeur visée, où le calcul exact est simple. Pour √(4+h), f(4)=2 et f′(4)=1/4, donc √(4+h)≈2+h/4. Avec h=0,04, on estime √4,04 par 2,01. Le signe ≈ rappelle qu’une droite remplace une courbe. La précision dépend de la distance au centre et de la variation de la pente. Une bonne approximation locale ne s’étend pas automatiquement à des valeurs éloignées.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/part-a-approximation-and-curve-sketching/session-23-linear-approximation/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/3ec09c2e10fb07da17fccb0097419b3c_MIT18_01SCF10_ex23sol.pdf"
@@ -1140,7 +1140,7 @@
       "kind": "lesson",
       "title": "Construire une approximation quadratique",
       "objective": "Inclure la courbure dans une approximation locale.",
-      "learningNotes": "La tangente utilise la valeur et la dérivée première. Pour également reproduire la dérivée seconde au centre a, on choisit Q(a+h)=f(a)+f′(a)h+f″(a)h²/2. Le facteur 1/2 vient du fait que la dérivée seconde de h² vaut 2. Pour eˣ près de zéro, toutes les dérivées valent 1 au centre : eʰ≈1+h+h²/2. L’approximation en h=0,1 donne 1,105. Ajouter la courbure améliore souvent le calcul près du centre ; cela ne garantit pas une bonne estimation partout et ne remplace pas une étude du reste.",
+      "learningNotes": "La tangente utilise la valeur et la dérivée première. Pour également reproduire la dérivée seconde au centre a, on choisit Q(a+h)=f(a)+f′(a)h+f″(a)h²/2. Le facteur 1/2 vient du fait que la dérivée seconde de h² vaut 2. Pour eˣ près de zéro, toutes les dérivées valent 1 au centre : eʰ≈1+h+h²/2. L’approximation en h=0,1 donne 1,105. Ajouter la courbure améliore souvent le calcul près du centre. Cela ne garantit pas une bonne estimation partout et ne remplace pas une étude du reste.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/part-a-approximation-and-curve-sketching/session-25-introduction-to-quadratic-appoximation/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/f806d7f06df82639483a24d467a4fa28_MIT18_01SCF10_ex25sol.pdf"
@@ -1228,7 +1228,7 @@
       "kind": "lesson",
       "title": "Tracer à l’aide des deux premières dérivées",
       "objective": "Relier variations, extrema et concavité.",
-      "learningNotes": "Pour esquisser un graphe, on commence par le domaine, les zéros et les asymptotes, puis on étudie le signe de f′ et de f″. Une dérivée première positive indique une croissance ; une dérivée seconde positive indique une courbure vers le haut. Pour f(x)=x³−3x, f′=3(x−1)(x+1) : la fonction croît hors de [−1,1] et décroît entre ces valeurs. La dérivée seconde 6x change de signe en zéro, qui est un point d’inflexion. Un zéro de f″ ne suffit cependant pas à prouver une inflexion : il faut un changement de concavité.",
+      "learningNotes": "Pour esquisser un graphe, on commence par le domaine, les zéros et les asymptotes, puis on étudie le signe de f′ et de f″. Une dérivée première positive indique une croissance. Une dérivée seconde positive indique une courbure vers le haut. Pour f(x)=x³−3x, f′=3(x−1)(x+1) : la fonction croît hors de [−1,1] et décroît entre ces valeurs. La dérivée seconde 6x change de signe en zéro, qui est un point d’inflexion. Un zéro de f″ ne suffit cependant pas à prouver une inflexion : il faut un changement de concavité.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/part-a-approximation-and-curve-sketching/session-27-sketching-graphs-i-polynomials-and-rational-functions/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/c55a4b7b809179598b5e0c6f0d05cc58_aWV4khIBvCM.pdf"
@@ -1272,7 +1272,7 @@
       "kind": "lesson",
       "title": "Une stratégie complète de tracé",
       "objective": "Combiner domaine, asymptotes et tableau de signes.",
-      "learningNotes": "L’analyse d’un graphe gagne à suivre un ordre stable : domaine et symétries, limites, dérivée première, puis concavité et points repères. Pour f(x)=x/(1+x²), le dénominateur reste positif, donc le domaine est toute la droite. La fonction est impaire et tend vers zéro aux deux infinis. La dérivée (1−x²)/(1+x²)² est positive entre −1 et 1 et négative à l’extérieur. On obtient un minimum en −1 et un maximum en 1. À l’inverse, un tableau de signes des dérivées peut guider la construction d’une fonction ; ajouter une constante ne modifie pas ses variations.",
+      "learningNotes": "L’analyse d’un graphe gagne à suivre un ordre stable : domaine et symétries, limites, dérivée première, puis concavité et points repères. Pour f(x)=x/(1+x²), le dénominateur reste positif, donc le domaine est toute la droite. La fonction est impaire et tend vers zéro aux deux infinis. La dérivée (1−x²)/(1+x²)² est positive entre −1 et 1 et négative à l’extérieur. On obtient un minimum en −1 et un maximum en 1. À l’inverse, un tableau de signes des dérivées peut guider la construction d’une fonction. Ajouter une constante ne modifie pas ses variations.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/part-a-approximation-and-curve-sketching/session-28-sketching-graphs-ii-general-strategies/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/e222d667734a7909e218f4fdcafe553e_MIT18_01SCF10_ex28sol.pdf"
@@ -1360,7 +1360,7 @@
       "kind": "lesson",
       "title": "Vérifier un optimum global",
       "objective": "Examiner points critiques, bornes et contraintes géométriques.",
-      "learningNotes": "Une équation f′=0 donne des candidats, pas une preuve de minimum global. Sur un intervalle fermé, une fonction continue atteint ses extrema ; il faut comparer les valeurs aux bornes et aux points critiques, y compris ceux où la dérivée n’existe pas. Pour une boîte cylindrique fermée de volume V, h=V/(πr²) et S(r)=2πr²+2V/r. L’équation S′=0 donne V=2πr³ puis h=2r. L’aire tend vers l’infini lorsque r approche zéro ou l’infini, ce qui confirme le minimum. Les unités choisies doivent être cohérentes dans V, r et h.",
+      "learningNotes": "Une équation f′=0 donne des candidats, pas une preuve de minimum global. Sur un intervalle fermé, une fonction continue atteint ses extrema. Il faut comparer les valeurs aux bornes et aux points critiques, y compris ceux où la dérivée n’existe pas. Pour une boîte cylindrique fermée de volume V, h=V/(πr²) et S(r)=2πr²+2V/r. L’équation S′=0 donne V=2πr³ puis h=2r. L’aire tend vers l’infini lorsque r approche zéro ou l’infini, ce qui confirme le minimum. Les unités choisies doivent être cohérentes dans V, r et h.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/part-b-optimization-related-rates-and-newtons-method/session-30-optimization-problems-ii/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/9b8a2a35294350b387e24b0d8adfd632_MIT18_01SCF10_ex30sol.pdf"
@@ -1404,7 +1404,7 @@
       "kind": "lesson",
       "title": "Taux liés",
       "objective": "Relier les vitesses de plusieurs grandeurs variables.",
-      "learningNotes": "Les taux liés utilisent une contrainte géométrique différenciée par rapport au temps. Pour un cercle A=πr², on obtient dA/dt=2πr·dr/dt. Le rayon varie avec t ; oublier dr/dt transformerait le problème en une simple dérivation par rapport à r. On garde les variables jusqu’après la dérivation, puis on substitue les données de l’instant étudié. Pour une sphère, dV/dt=4πr²dr/dt. Les unités fournissent un contrôle : une aire multipliée par une vitesse donne un débit volumique. Une vitesse négative peut signaler une baisse de niveau ou une diminution du rayon.",
+      "learningNotes": "Les taux liés utilisent une contrainte géométrique différenciée par rapport au temps. Pour un cercle A=πr², on obtient dA/dt=2πr·dr/dt. Le rayon varie avec t. Oublier dr/dt transformerait le problème en une simple dérivation par rapport à r. On garde les variables jusqu’après la dérivation, puis on substitue les données de l’instant étudié. Pour une sphère, dV/dt=4πr²dr/dt. Les unités fournissent un contrôle : une aire multipliée par une vitesse donne un débit volumique. Une vitesse négative peut signaler une baisse de niveau ou une diminution du rayon.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/part-b-optimization-related-rates-and-newtons-method/session-31-related-rates/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/96600de0e27040425d88b89d45a722a7_MIT18_01SCF10_ex31sol.pdf"
@@ -1448,7 +1448,7 @@
       "kind": "lesson",
       "title": "Un anneau sur une corde",
       "objective": "Formuler une optimisation avec une longueur constante.",
-      "learningNotes": "Un anneau coulisse sur une corde dont les extrémités sont fixées. Sa position la plus basse minimise sa hauteur sous la contrainte de longueur totale. Pour deux appuis de même hauteur, placés en (−a,0) et (a,0), l’anneau en (x,y) vérifie √((x+a)²+y²)+√((x−a)²+y²)=L. La dérivation implicite permet d’exprimer y′ et de chercher y′=0 au point le plus bas. La symétrie conduit à x=0 ; les deux segments ont alors longueur L/2 et y=−√((L/2)²−a²). Il faut L>2a pour une position strictement sous les appuis.",
+      "learningNotes": "Un anneau coulisse sur une corde dont les extrémités sont fixées. Sa position la plus basse minimise sa hauteur sous la contrainte de longueur totale. Pour deux appuis de même hauteur, placés en (−a,0) et (a,0), l’anneau en (x,y) vérifie √((x+a)²+y²)+√((x−a)²+y²)=L. La dérivation implicite permet d’exprimer y′ et de chercher y′=0 au point le plus bas. La symétrie conduit à x=0. Les deux segments ont alors longueur L/2 et y=−√((L/2)²−a²). Il faut L>2a pour une position strictement sous les appuis.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/part-b-optimization-related-rates-and-newtons-method/session-32-ring-on-a-string/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/7c7b32fd44ba241b80c98522c070b2de_sRIDVAcoG5A.pdf"
@@ -1492,7 +1492,7 @@
       "kind": "lesson",
       "title": "La méthode de Newton",
       "objective": "Améliorer une approximation de racine par une tangente.",
-      "learningNotes": "Pour résoudre f(x)=0, on remplace localement le graphe par sa tangente au point xₙ. L’intersection de cette tangente avec l’axe fournit xₙ₊₁=xₙ−f(xₙ)/f′(xₙ). Pour x²−2 avec x₀=1, on obtient x₁=1−(−1)/2=1,5 puis x₂≈1,4167. La convergence demande de bonnes conditions et un point de départ approprié ; si la dérivée est nulle, l’étape ne se calcule pas. Converger vers une racine ne signifie pas l’atteindre exactement après un nombre fini d’étapes : pour x³, l’itération donne xₙ₊₁=2xₙ/3 tant que xₙ≠0.",
+      "learningNotes": "Pour résoudre f(x)=0, on remplace localement le graphe par sa tangente au point xₙ. L’intersection de cette tangente avec l’axe fournit xₙ₊₁=xₙ−f(xₙ)/f′(xₙ). Pour x²−2 avec x₀=1, on obtient x₁=1−(−1)/2=1,5 puis x₂≈1,4167. La convergence demande de bonnes conditions et un point de départ approprié. Si la dérivée est nulle, l’étape ne se calcule pas. Converger vers une racine ne signifie pas l’atteindre exactement après un nombre fini d’étapes : pour x³, l’itération donne xₙ₊₁=2xₙ/3 tant que xₙ≠0.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/part-b-optimization-related-rates-and-newtons-method/session-33-newtons-method/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/04e5867c11f73c934cc810c772617eb1_MIT18_01SCF10_ex33sol.pdf"
@@ -1624,7 +1624,7 @@
       "kind": "lesson",
       "title": "Différentielles et propagation des erreurs",
       "objective": "Utiliser dy=f′(x)dx pour estimer une petite variation.",
-      "learningNotes": "La différentielle dy=f′(x)dx est la variation prédite par la tangente pour une petite variation dx. La variation réelle Δy=f(x+dx)−f(x) n’est généralement pas exactement dy. Pour un disque A=πr², dA=2πr dr ; l’erreur relative au premier ordre est dA/A=2dr/r. Ainsi une erreur de rayon de 1 % produit environ 2 % d’erreur d’aire. Dans une itération de population P, une petite perturbation autour d’un point fixe est multipliée au premier ordre par P′. Une valeur absolue inférieure à 1 suggère une contraction locale des perturbations.",
+      "learningNotes": "La différentielle dy=f′(x)dx est la variation prédite par la tangente pour une petite variation dx. La variation réelle Δy=f(x+dx)−f(x) n’est généralement pas exactement dy. Pour un disque A=πr², dA=2πr dr. L’erreur relative au premier ordre est dA/A=2dr/r. Ainsi une erreur de rayon de 1 % produit environ 2 % d’erreur d’aire. Dans une itération de population P, une petite perturbation autour d’un point fixe est multipliée au premier ordre par P′. Une valeur absolue inférieure à 1 suggère une contraction locale des perturbations.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/part-c-mean-value-theorem-antiderivatives-and-differential-equations/session-36-differentials/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/1013dffcf4b057f9d6366960bc648f87_MIT18_01SCF10_ex36sol.pdf"
@@ -1668,7 +1668,7 @@
       "kind": "lesson",
       "title": "Retrouver une primitive",
       "objective": "Inverser les règles de dérivation.",
-      "learningNotes": "Une primitive F de f sur un intervalle vérifie F′=f. Si F en est une, F+C en est aussi une ; inversement, deux primitives diffèrent d’une constante sur un intervalle. Pour n≠−1, une primitive de xⁿ est xⁿ⁺¹/(n+1). Par exemple, ∫(3x²−4)dx=x³−4x+C. Une condition initiale permet de déterminer C : si F(0)=2, alors C=2. La vérification consiste à dériver le résultat. Les règles de somme et de produit donnent des pistes d’intégration, mais on ne peut généralement pas obtenir une primitive de produit en multipliant deux primitives.",
+      "learningNotes": "Une primitive F de f sur un intervalle vérifie F′=f. Si F en est une, F+C en est aussi une. Inversement, deux primitives diffèrent d’une constante sur un intervalle. Pour n≠−1, une primitive de xⁿ est xⁿ⁺¹/(n+1). Par exemple, ∫(3x²−4)dx=x³−4x+C. Une condition initiale permet de déterminer C : si F(0)=2, alors C=2. La vérification consiste à dériver le résultat. Les règles de somme et de produit donnent des pistes d’intégration, mais on ne peut généralement pas obtenir une primitive de produit en multipliant deux primitives.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/part-c-mean-value-theorem-antiderivatives-and-differential-equations/session-37-antiderivatives/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/f51f271e3252a71b8d698c3457f39c8e_MIT18_01SCF10_ex37sol.pdf"
@@ -1712,7 +1712,7 @@
       "kind": "lesson",
       "title": "Intégration par substitution",
       "objective": "Reconnaître une dérivée composée à l’envers.",
-      "learningNotes": "La substitution inverse la règle de la chaîne. Pour ∫2xcos(x²)dx, poser u=x² donne du=2x dx, puis ∫cos u du=sin u+C=sin(x²)+C. Tous les facteurs doivent être transformés de manière cohérente ; on ne peut pas simplement remplacer l’argument. Deux méthodes correctes peuvent fournir des primitives visuellement différentes : leurs dérivées étant égales, leur différence est constante sur un intervalle. Par exemple, tan²x/2 et sec²x/2 diffèrent de 1/2. La dérivation finale permet de confirmer le facteur et le signe du résultat.",
+      "learningNotes": "La substitution inverse la règle de la chaîne. Pour ∫2xcos(x²)dx, poser u=x² donne du=2x dx, puis ∫cos u du=sin u+C=sin(x²)+C. Tous les facteurs doivent être transformés de manière cohérente. On ne peut pas simplement remplacer l’argument. Deux méthodes correctes peuvent fournir des primitives visuellement différentes : leurs dérivées étant égales, leur différence est constante sur un intervalle. Par exemple, tan²x/2 et sec²x/2 diffèrent de 1/2. La dérivation finale permet de confirmer le facteur et le signe du résultat.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/part-c-mean-value-theorem-antiderivatives-and-differential-equations/session-38-integration-by-substitution/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/6b123e1ffe830e9ae2a4e61dfecbbb3b_MIT18_01SCF10_ex38sol.pdf"
@@ -1756,7 +1756,7 @@
       "kind": "lesson",
       "title": "Premières équations différentielles",
       "objective": "Vérifier une solution et utiliser une condition initiale.",
-      "learningNotes": "Une équation différentielle relie une fonction inconnue à ses dérivées. Pour y′=2x, la famille y=x²+C satisfait l’équation ; une valeur initiale choisit une solution particulière. Pour vérifier une proposition, calculer ses dérivées puis les remplacer dans l’équation initiale. Par exemple, y=3e²ˣ vérifie y′=2y puisque y′=6e²ˣ. L’équation y′=xy peut se résoudre par séparation pour les solutions non nulles : dy/y=x dx, donc ln|y|=x²/2+C. La solution nulle doit aussi être vérifiée, car une division par y pourrait l’exclure silencieusement.",
+      "learningNotes": "Une équation différentielle relie une fonction inconnue à ses dérivées. Pour y′=2x, la famille y=x²+C satisfait l’équation. Une valeur initiale choisit une solution particulière. Pour vérifier une proposition, calculer ses dérivées puis les remplacer dans l’équation initiale. Par exemple, y=3e²ˣ vérifie y′=2y puisque y′=6e²ˣ. L’équation y′=xy peut se résoudre par séparation pour les solutions non nulles : dy/y=x dx, donc ln|y|=x²/2+C. La solution nulle doit aussi être vérifiée, car une division par y pourrait l’exclure silencieusement.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/part-c-mean-value-theorem-antiderivatives-and-differential-equations/session-39-introduction-to-differential-equations/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/75a33e099a2348a6b07267b0794a57d3_MIT18_01SCF10_ex39sol.pdf"
@@ -1800,7 +1800,7 @@
       "kind": "lesson",
       "title": "Séparer les variables",
       "objective": "Résoudre une équation séparable en conservant les équilibres.",
-      "learningNotes": "Une équation y′=g(x)h(y) se sépare en dy/h(y)=g(x)dx lorsque h(y)≠0. On intègre les deux côtés, puis on utilise une condition initiale. Pour y′=−2y, on obtient ln|y|=−2x+C et y=Ae⁻²ˣ. La constante A inclut zéro, qui est une solution d’équilibre. Pour une croissance limitée y′=ry(K−y), les constantes 0 et K sont des équilibres ; entre elles la croissance est positive si r>0. Diviser par y(K−y) exclut ces deux solutions pendant le calcul, il faut donc les conserver séparément.",
+      "learningNotes": "Une équation y′=g(x)h(y) se sépare en dy/h(y)=g(x)dx lorsque h(y)≠0. On intègre les deux côtés, puis on utilise une condition initiale. Pour y′=−2y, on obtient ln|y|=−2x+C et y=Ae⁻²ˣ. La constante A inclut zéro, qui est une solution d’équilibre. Pour une croissance limitée y′=ry(K−y), les constantes 0 et K sont des équilibres. Entre elles la croissance est positive si r>0. Diviser par y(K−y) exclut ces deux solutions pendant le calcul, il faut donc les conserver séparément.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/part-c-mean-value-theorem-antiderivatives-and-differential-equations/session-40-separation-of-variables/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/b6a7ab20c45d42729cf511a6c85943de_MIT18_01SCF10_ex40sol.pdf"
@@ -1858,7 +1858,7 @@
       "kind": "review",
       "title": "Révision : applications des dérivées",
       "objective": "Choisir entre approximation, optimisation, taux liés et primitive.",
-      "learningNotes": "La deuxième unité utilise les dérivées pour comprendre des fonctions et des modèles. Une approximation locale repose sur les dérivées au centre ; une optimisation compare des candidats sur un domaine ; un taux lié différencie une contrainte par rapport au temps. Les primitives et équations séparables permettent de reconstruire une grandeur à partir de sa variation. Ce parcours de révision propose des exercices originaux inspirés de ces compétences, sans reproduire l’examen ni annoncer une note MIT. Avant de calculer, identifier la grandeur recherchée et les unités évite de mélanger une valeur, une dérivée et une variation.",
+      "learningNotes": "La deuxième unité utilise les dérivées pour comprendre des fonctions et des modèles. Une approximation locale repose sur les dérivées au centre. Une optimisation compare des candidats sur un domaine. Un taux lié différencie une contrainte par rapport au temps. Les primitives et équations séparables permettent de reconstruire une grandeur à partir de sa variation. Ce parcours de révision propose des exercices originaux inspirés de ces compétences, sans reproduire l’examen ni annoncer une note MIT. Avant de calculer, identifier la grandeur recherchée et les unités évite de mélanger une valeur, une dérivée et une variation.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/exam-2/session-41-review-for-exam-2/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/5254e55cd4b64e7573b26c3c4e20f9be_60VGKnYBpbg.pdf"
@@ -1930,7 +1930,7 @@
       "kind": "exam",
       "title": "Entraînement adapté : applications des dérivées",
       "objective": "Mobiliser les méthodes de la deuxième unité dans un bilan.",
-      "learningNotes": "Ce bilan original adapte les thèmes du deuxième examen : approximation quadratique, taux liés, analyse de courbe et optimisation. Pour une approximation, commencer par les dérivées au centre ; pour un débit, dériver la relation avant d’insérer les données ; pour un extremum, vérifier le signe de la dérivée ou comparer les valeurs. Les questions sont volontairement courtes et corrigées : elles constituent une pratique guidée, sans équivalence avec une copie d’examen MIT ni avec son barème. L’objectif est de justifier la méthode choisie et de conserver la distinction entre formule exacte et estimation.",
+      "learningNotes": "Ce bilan original adapte les thèmes du deuxième examen : approximation quadratique, taux liés, analyse de courbe et optimisation. Pour une approximation, commencer par les dérivées au centre. Pour un débit, dériver la relation avant d’insérer les données. Pour un extremum, vérifier le signe de la dérivée ou comparer les valeurs. Les questions sont volontairement courtes et corrigées : elles constituent une pratique guidée, sans équivalence avec une copie d’examen MIT ni avec son barème. L’objectif est de justifier la méthode choisie et de conserver la distinction entre formule exacte et estimation.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-2-applications-of-differentiation/exam-2/materials-for-exam-2/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/8bc1745cc348551cb9b30fb6cc7f9ecf_MIT18_01SCF10_exam2sol.pdf"
@@ -2002,7 +2002,7 @@
       "kind": "lesson",
       "title": "Intégrale définie et aire signée",
       "objective": "Interpréter une accumulation sur un intervalle.",
-      "learningNotes": "L’intégrale définie ∫ₐᵇf(x)dx accumule des contributions f(x)dx entre deux bornes. Si f est positive et a<b, elle représente l’aire sous le graphe ; si f est négative, la contribution est négative. Les unités sont celles de f multipliées par celles de x. Une première estimation géométrique sert de contrôle : un rectangle de largeur 3 et hauteur 2 a une aire 6, tandis qu’un triangle de même base et hauteur a une aire 3. Les bornes et l’échelle horizontale comptent autant que la hauteur du graphe. Une intégrale n’est donc pas simplement une valeur maximale.",
+      "learningNotes": "L’intégrale définie ∫ₐᵇf(x)dx accumule des contributions f(x)dx entre deux bornes. Si f est positive et a<b, elle représente l’aire sous le graphe. Si f est négative, la contribution est négative. Les unités sont celles de f multipliées par celles de x. Une première estimation géométrique sert de contrôle : un rectangle de largeur 3 et hauteur 2 a une aire 6, tandis qu’un triangle de même base et hauteur a une aire 3. Les bornes et l’échelle horizontale comptent autant que la hauteur du graphe. Une intégrale n’est donc pas simplement une valeur maximale.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-a-definition-of-the-definite-integral-and-first-fundamental-theorem/session-43-definite-integrals/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/e0806c4ce8d4908951eaf15d0f7832cf_MIT18_01SCF10_ex43sol.pdf"
@@ -2090,7 +2090,7 @@
       "kind": "lesson",
       "title": "Intégrales accessibles par la géométrie",
       "objective": "Calculer une intégrale sans technique avancée.",
-      "learningNotes": "Une constante, une droite et une valeur absolue peuvent se traiter avec des aires élémentaires. Pour ∫₋₁²|x|dx, séparer au point zéro fait apparaître deux triangles : 1/2 et 2, donc un total 5/2. Pour ∫₀ᵇx dx avec b>0, le triangle a base et hauteur b, d’où b²/2. Ces exemples concordent avec les formules obtenues par primitives. Il faut séparer aux changements de formule ou de signe ; une aire géométrique reste positive alors qu’une intégrale d’une fonction négative est signée. Un dessin simple permet souvent de détecter une borne oubliée.",
+      "learningNotes": "Une constante, une droite et une valeur absolue peuvent se traiter avec des aires élémentaires. Pour ∫₋₁²|x|dx, séparer au point zéro fait apparaître deux triangles : 1/2 et 2, donc un total 5/2. Pour ∫₀ᵇx dx avec b>0, le triangle a base et hauteur b, d’où b²/2. Ces exemples concordent avec les formules obtenues par primitives. Il faut séparer aux changements de formule ou de signe. Une aire géométrique reste positive alors qu’une intégrale d’une fonction négative est signée. Un dessin simple permet souvent de détecter une borne oubliée.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-a-definition-of-the-definite-integral-and-first-fundamental-theorem/session-45-some-easy-integrals/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/244ff558563ac817868a5d1b4494c234_MIT18_01SCF10_ex45sol.pdf"
@@ -2178,7 +2178,7 @@
       "kind": "lesson",
       "title": "Calculer avec une primitive",
       "objective": "Appliquer la première forme du théorème fondamental.",
-      "learningNotes": "Le cours appelle première forme du théorème fondamental la règle de calcul ∫ₐᵇf(x)dx=F(b)−F(a), lorsque F′=f et f est continue. Une aire définie par une limite de sommes devient ainsi un calcul aux bornes. Pour ∫₁²3x²dx, une primitive est x³ et le résultat est 8−1=7. La constante d’intégration s’annule dans la différence ; on n’ajoute donc pas « +C » au nombre final. Les parenthèses sont utiles lorsque F(a) est négatif. Un contrôle géométrique ou une borne sur la fonction donne une vérification indépendante du calcul.",
+      "learningNotes": "Le cours appelle première forme du théorème fondamental la règle de calcul ∫ₐᵇf(x)dx=F(b)−F(a), lorsque F′=f et f est continue. Une aire définie par une limite de sommes devient ainsi un calcul aux bornes. Pour ∫₁²3x²dx, une primitive est x³ et le résultat est 8−1=7. La constante d’intégration s’annule dans la différence. On n’ajoute donc pas « +C » au nombre final. Les parenthèses sont utiles lorsque F(a) est négatif. Un contrôle géométrique ou une borne sur la fonction donne une vérification indépendante du calcul.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-a-definition-of-the-definite-integral-and-first-fundamental-theorem/session-47-introduction-of-the-fundamental-theorem-of-calculus/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/be1d786d41039998137bfb36f7c7f8ef_MIT18_01SCF10_ex47sol.pdf"
@@ -2412,7 +2412,7 @@
       "kind": "lesson",
       "title": "Pourquoi les deux formes du théorème se rejoignent",
       "objective": "Comprendre la preuve par une petite tranche d’aire.",
-      "learningNotes": "Posons A(x)=∫ₐˣf(t)dt avec f continue. Le quotient [A(x+h)−A(x)]/h est la moyenne de f sur la petite tranche entre x et x+h. La continuité fait tendre cette moyenne vers f(x), donc A′=f. Si F est une autre primitive de f, alors (F−A)′=0 ; la différence est constante sur l’intervalle. Comme A(a)=0, on retrouve A(b)=F(b)−F(a). Cette preuve relie une interprétation géométrique à la règle de calcul par primitives. La continuité au point étudié est ce qui permet de remplacer les valeurs de la petite tranche par leur limite.",
+      "learningNotes": "Posons A(x)=∫ₐˣf(t)dt avec f continue. Le quotient [A(x+h)−A(x)]/h est la moyenne de f sur la petite tranche entre x et x+h. La continuité fait tendre cette moyenne vers f(x), donc A′=f. Si F est une autre primitive de f, alors (F−A)′=0. La différence est constante sur l’intervalle. Comme A(a)=0, on retrouve A(b)=F(b)−F(a). Cette preuve relie une interprétation géométrique à la règle de calcul par primitives. La continuité au point étudié est ce qui permet de remplacer les valeurs de la petite tranche par leur limite.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-b-second-fundamental-theorem-areas-volumes/session-52-proving-the-fundamental-theorem-of-calculus/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/31c99653cf0a2f271ed6e24614b78da1_Pd2xP5zDsRw.pdf"
@@ -2544,7 +2544,7 @@
       "kind": "lesson",
       "title": "Étudier une fonction intégrale",
       "objective": "Déduire symétrie, dérivée et concavité de l’intégrande.",
-      "learningNotes": "Pour E(x)=∫₀ˣe⁻ᵗ²dt, on dispose d’une fonction nouvelle dont l’analyse reste accessible. L’intégrande est paire, donc E est impaire ; E′=e⁻ˣ² est positive ; E″=−2xe⁻ˣ² change de signe en zéro. E est donc croissante partout, courbée vers le haut pour x<0 et vers le bas pour x>0. Une version normalisée, erf(x)=2E(x)/√π, est appelée fonction d’erreur. Le facteur de normalisation modifie les valeurs mais préserve ces propriétés qualitatives. Pour une autre intégrande, on répète ce raisonnement sans supposer qu’une primitive connue existe.",
+      "learningNotes": "Pour E(x)=∫₀ˣe⁻ᵗ²dt, on dispose d’une fonction nouvelle dont l’analyse reste accessible. L’intégrande est paire, donc E est impaire. E′=e⁻ˣ² est positive. E″=−2xe⁻ˣ² change de signe en zéro. E est donc croissante partout, courbée vers le haut pour x<0 et vers le bas pour x>0. Une version normalisée, erf(x)=2E(x)/√π, est appelée fonction d’erreur. Le facteur de normalisation modifie les valeurs mais préserve ces propriétés qualitatives. Pour une autre intégrande, on répète ce raisonnement sans supposer qu’une primitive connue existe.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-b-second-fundamental-theorem-areas-volumes/session-55-creating-new-functions-using-the-second-fundamental-theorem/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/a1e1c55e6e45fe9e006fccdf88cfe6dc_MIT18_01SCF10_ex55sol.pdf"
@@ -2588,7 +2588,7 @@
       "kind": "lesson",
       "title": "Aire entre deux courbes",
       "objective": "Intégrer la différence entre courbe supérieure et inférieure.",
-      "learningNotes": "Pour deux graphes y=f(x) et y=g(x), l’aire entre eux sur un intervalle où f≥g est ∫(f−g)dx. On cherche d’abord leurs intersections pour déterminer les bornes et vérifier quelle courbe est au-dessus. Entre y=x et y=x², les intersections sont 0 et 1 ; sur cet intervalle x≥x², donc l’aire vaut ∫₀¹(x−x²)dx=1/2−1/3=1/6. Si les courbes se croisent à l’intérieur de l’intervalle choisi, il faut découper ou intégrer |f−g|. Avec des expressions x=f(y), on utilise de même droite moins gauche et le différentiel dy.",
+      "learningNotes": "Pour deux graphes y=f(x) et y=g(x), l’aire entre eux sur un intervalle où f≥g est ∫(f−g)dx. On cherche d’abord leurs intersections pour déterminer les bornes et vérifier quelle courbe est au-dessus. Entre y=x et y=x², les intersections sont 0 et 1. Sur cet intervalle x≥x², donc l’aire vaut ∫₀¹(x−x²)dx=1/2−1/3=1/6. Si les courbes se croisent à l’intérieur de l’intervalle choisi, il faut découper ou intégrer |f−g|. Avec des expressions x=f(y), on utilise de même droite moins gauche et le différentiel dy.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-b-second-fundamental-theorem-areas-volumes/session-56-geometric-interpretation-of-definite-integrals/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/77095502ce97b96cf417432e8f750e08_MIT18_01SCF10_ex56sol.pdf"
@@ -2720,7 +2720,7 @@
       "kind": "lesson",
       "title": "Coquilles cylindriques et unités",
       "objective": "Choisir entre coquilles et rondelles.",
-      "learningNotes": "Une bande verticale tournée autour de l’axe y engendre une coquille de rayon x, de hauteur h(x) et d’épaisseur dx. Son volume élémentaire est 2πx h(x)dx. Pour la région sous y=x² sur [0,1], la rotation autour de y donne 2π∫₀¹x³dx=π/2. Une tranche horizontale conduirait plutôt à des rondelles et à une intégration en y. Les deux méthodes doivent décrire le même solide. Le rayon est une distance à l’axe de rotation ; pour un axe déplacé, ce n’est plus forcément x. Convertir toutes les longueurs dans la même unité avant de calculer évite les volumes incohérents.",
+      "learningNotes": "Une bande verticale tournée autour de l’axe y engendre une coquille de rayon x, de hauteur h(x) et d’épaisseur dx. Son volume élémentaire est 2πx h(x)dx. Pour la région sous y=x² sur [0,1], la rotation autour de y donne 2π∫₀¹x³dx=π/2. Une tranche horizontale conduirait plutôt à des rondelles et à une intégration en y. Les deux méthodes doivent décrire le même solide. Le rayon est une distance à l’axe de rotation. Pour un axe déplacé, ce n’est plus forcément x. Convertir toutes les longueurs dans la même unité avant de calculer évite les volumes incohérents.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-b-second-fundamental-theorem-areas-volumes/session-59-volume-of-a-parabaloid-revolving-about-y-axis/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/6d5d4159c4543a9eb0da70a3ed82ba42_MIT18_01SCF10_ex59sol.pdf"
@@ -2808,7 +2808,7 @@
       "kind": "lesson",
       "title": "Moyennes pondérées et centres de masse",
       "objective": "Tenir compte d’une densité variable.",
-      "learningNotes": "Une moyenne pondérée attribue à chaque position une importance w(x)≥0 : la moyenne de f est ∫fw/∫w, si le dénominateur est positif. Pour une tige de densité ρ(x), la masse totale est ∫ρ et son centre de masse est x̄=∫xρ/∫ρ. Sur [0,1], avec ρ(x)=2x, la masse vaut 1 et le moment vaut ∫₀¹2x²dx=2/3 ; le centre est donc en 2/3, plus près de l’extrémité dense. Pour une région plane homogène, la largeur des tranches joue le rôle de poids. La symétrie donne souvent un premier contrôle.",
+      "learningNotes": "Une moyenne pondérée attribue à chaque position une importance w(x)≥0 : la moyenne de f est ∫fw/∫w, si le dénominateur est positif. Pour une tige de densité ρ(x), la masse totale est ∫ρ et son centre de masse est x̄=∫xρ/∫ρ. Sur [0,1], avec ρ(x)=2x, la masse vaut 1 et le moment vaut ∫₀¹2x²dx=2/3. Le centre est donc en 2/3, plus près de l’extrémité dense. Pour une région plane homogène, la largeur des tranches joue le rôle de poids. La symétrie donne souvent un premier contrôle.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-c-average-value-probability-and-numerical-integration/session-61-integrals-and-weighted-averages/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/e491560602afb9eb66201df662246a52_MIT18_01SCF10_ex61sol.pdf"
@@ -2852,7 +2852,7 @@
       "kind": "lesson",
       "title": "Probabilités et intégrales",
       "objective": "Normaliser une densité et intégrer un événement.",
-      "learningNotes": "Une densité de probabilité p est positive ou nulle et son intégrale totale vaut 1. La probabilité d’un intervalle [a,b] est ∫ₐᵇp(x)dx. Pour p(x)=2x sur [0,1], l’intégrale totale vaut 1 et P(X≤1/2)=1/4. La probabilité d’un point isolé est nulle pour une variable continue. Si l’on choisit uniformément un point dans une région plane, une probabilité devient le rapport aire favorable/aire totale ; les tranches plus larges ont davantage de poids. Il ne faut donc pas supposer que l’abscisse du point est uniforme quand la région ne l’est pas en largeur.",
+      "learningNotes": "Une densité de probabilité p est positive ou nulle et son intégrale totale vaut 1. La probabilité d’un intervalle [a,b] est ∫ₐᵇp(x)dx. Pour p(x)=2x sur [0,1], l’intégrale totale vaut 1 et P(X≤1/2)=1/4. La probabilité d’un point isolé est nulle pour une variable continue. Si l’on choisit uniformément un point dans une région plane, une probabilité devient le rapport aire favorable/aire totale. Les tranches plus larges ont davantage de poids. Il ne faut donc pas supposer que l’abscisse du point est uniforme quand la région ne l’est pas en largeur.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-c-average-value-probability-and-numerical-integration/session-62-integrals-and-probability/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/32a144504b070fefab9deadad03d6472_UBh66KVAJI.pdf"
@@ -2896,7 +2896,7 @@
       "kind": "lesson",
       "title": "Intégration numérique : rectangles et trapèzes",
       "objective": "Calculer une approximation à partir de valeurs discrètes.",
-      "learningNotes": "Lorsque la primitive est inconnue ou les données tabulées, on approxime l’intégrale. La méthode du point milieu utilise une hauteur centrale par sous-intervalle. La règle des trapèzes utilise la moyenne des deux hauteurs extrêmes : pour un pas h, T=h[f₀/2+f₁+…+fₙ₋₁+fₙ/2]. Elle est exacte sur une fonction affine. Pour une fonction courbée vers le haut, les cordes restent au-dessus du graphe et la méthode surestime l’intégrale. Le nombre d’évaluations ne suffit pas à prédire toute la précision ; il faut tenir compte du pas, de la courbure et de la méthode choisie.",
+      "learningNotes": "Lorsque la primitive est inconnue ou les données tabulées, on approxime l’intégrale. La méthode du point milieu utilise une hauteur centrale par sous-intervalle. La règle des trapèzes utilise la moyenne des deux hauteurs extrêmes : pour un pas h, T=h[f₀/2+f₁+…+fₙ₋₁+fₙ/2]. Elle est exacte sur une fonction affine. Pour une fonction courbée vers le haut, les cordes restent au-dessus du graphe et la méthode surestime l’intégrale. Le nombre d’évaluations ne suffit pas à prédire toute la précision. Il faut tenir compte du pas, de la courbure et de la méthode choisie.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/part-c-average-value-probability-and-numerical-integration/session-63-numerical-integration/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/defccdd353fb3162a123a5306dd2d92b_MIT18_01SCF10_ex63sol.pdf"
@@ -3042,7 +3042,7 @@
       "kind": "review",
       "title": "Révision : intégrales et applications",
       "objective": "Choisir une méthode d’intégration ou une interprétation géométrique.",
-      "learningNotes": "La troisième unité relie sommes, primitives et applications. Une aire entre courbes demande une différence positive ; un volume demande l’aire correcte des sections ; une moyenne demande de diviser par la longueur ou la masse totale. Les intégrales à borne variable se dérivent par le théorème fondamental et la chaîne. Les règles numériques ont des poids distincts qu’il faut identifier avant de calculer. Cette révision originale prépare à ces choix, sans reprendre le barème ni prétendre reproduire l’examen MIT. Une estimation préalable des signes, des unités et de l’ordre de grandeur permet de contrôler les résultats.",
+      "learningNotes": "La troisième unité relie sommes, primitives et applications. Une aire entre courbes demande une différence positive. Un volume demande l’aire correcte des sections. Une moyenne demande de diviser par la longueur ou la masse totale. Les intégrales à borne variable se dérivent par le théorème fondamental et la chaîne. Les règles numériques ont des poids distincts qu’il faut identifier avant de calculer. Cette révision originale prépare à ces choix, sans reprendre le barème ni prétendre reproduire l’examen MIT. Une estimation préalable des signes, des unités et de l’ordre de grandeur permet de contrôler les résultats.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-3-the-definite-integral-and-its-applications/exam-3/review-for-exam-3/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/2047871e478b43004346496d48848b00_zUEuKrxgHws.pdf"
@@ -3302,7 +3302,7 @@
       "kind": "lesson",
       "title": "Du cercle aux substitutions trigonométriques",
       "objective": "Choisir une variable angulaire pour une racine circulaire.",
-      "learningNotes": "Une expression √(a²−x²) évoque le cercle x²+y²=a². La substitution x=a sin θ transforme la racine en a|cos θ| et dx en a cos θ dθ. Sur une branche où cos θ≥0, l’intégrande se simplifie sans ambiguïté de signe. Pour l’aire d’un quart de disque, x varie de 0 à a et θ de 0 à π/2 ; la géométrie donne πa²/4. On pourrait aussi choisir x=a cos θ, mais les bornes seraient décroissantes et dx porterait un signe moins. Les coordonnées polaires exploitent la même description angulaire du cercle.",
+      "learningNotes": "Une expression √(a²−x²) évoque le cercle x²+y²=a². La substitution x=a sin θ transforme la racine en a|cos θ| et dx en a cos θ dθ. Sur une branche où cos θ≥0, l’intégrande se simplifie sans ambiguïté de signe. Pour l’aire d’un quart de disque, x varie de 0 à a et θ de 0 à π/2. La géométrie donne πa²/4. On pourrait aussi choisir x=a cos θ, mais les bornes seraient décroissantes et dx porterait un signe moins. Les coordonnées polaires exploitent la même description angulaire du cercle.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-4-techniques-of-integration/part-a-trigonometric-powers-trigonometric-substitution-and-completing-the-square/session-70-preview-of-trig-substitution-and-polar-coordinates/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/b9d6f62d80c9783b30aa6c9379a5e771_MIT18_01SCF10_ex70sol.pdf"
@@ -3346,7 +3346,7 @@
       "kind": "lesson",
       "title": "Tangente, sécante et cosécante",
       "objective": "Utiliser des identités pour intégrer d’autres fonctions trigonométriques.",
-      "learningNotes": "Les identités (tan x)′=sec²x et (sec x)′=sec x tan x fournissent des primitives immédiates. Pour tan x=sin x/cos x, la substitution u=cos x donne ∫tan x dx=−ln|cos x|+C. De même, ∫cot x dx=ln|sin x|+C. Pour des puissances, sec²x=1+tan²x aide à faire baisser le degré : tan³x=tan x sec²x−tan x. La primitive vaut tan²x/2+ln|cos x|+C. Les formules sont valables sur les intervalles où les fonctions considérées sont définies ; une constante peut différer entre deux intervalles séparés par une singularité.",
+      "learningNotes": "Les identités (tan x)′=sec²x et (sec x)′=sec x tan x fournissent des primitives immédiates. Pour tan x=sin x/cos x, la substitution u=cos x donne ∫tan x dx=−ln|cos x|+C. De même, ∫cot x dx=ln|sin x|+C. Pour des puissances, sec²x=1+tan²x aide à faire baisser le degré : tan³x=tan x sec²x−tan x. La primitive vaut tan²x/2+ln|cos x|+C. Les formules sont valables sur les intervalles où les fonctions considérées sont définies. Une constante peut différer entre deux intervalles séparés par une singularité.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-4-techniques-of-integration/part-a-trigonometric-powers-trigonometric-substitution-and-completing-the-square/session-71-integrals-involving-secant-cosecant-and-cotangent/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/c05c05172bf0f7543b3c2daeaf308521_MIT18_01SCF10_ex71sol.pdf"
@@ -3434,7 +3434,7 @@
       "kind": "lesson",
       "title": "Compléter le carré avant d’intégrer",
       "objective": "Transformer un trinôme en forme standard.",
-      "learningNotes": "Compléter le carré transforme un polynôme quadratique en une expression adaptée à une substitution connue. Par exemple x²+4x+5=(x+2)²+1. Poser u=x+2 réduit alors ∫dx/(x²+4x+5) à ∫du/(1+u²), donc arctan(x+2)+C. Avec 2x−x²=1−(x−1)², une racine mène au sinus et à arcsin. Il faut développer la forme obtenue pour contrôler le terme constant et le signe. Le domaine de la racine impose aussi ses propres restrictions ; une manipulation algébrique ne supprime pas les singularités ou les valeurs non réelles.",
+      "learningNotes": "Compléter le carré transforme un polynôme quadratique en une expression adaptée à une substitution connue. Par exemple x²+4x+5=(x+2)²+1. Poser u=x+2 réduit alors ∫dx/(x²+4x+5) à ∫du/(1+u²), donc arctan(x+2)+C. Avec 2x−x²=1−(x−1)², une racine mène au sinus et à arcsin. Il faut développer la forme obtenue pour contrôler le terme constant et le signe. Le domaine de la racine impose aussi ses propres restrictions. Une manipulation algébrique ne supprime pas les singularités ou les valeurs non réelles.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-4-techniques-of-integration/part-a-trigonometric-powers-trigonometric-substitution-and-completing-the-square/session-73-completing-the-square/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/526b157031c0316556de629bf69c099d_MIT18_01SCF10_ex73sol.pdf"
@@ -3712,7 +3712,7 @@
       "kind": "lesson",
       "title": "Aire d’une surface de révolution",
       "objective": "Intégrer la circonférence multipliée par la longueur d’arc.",
-      "learningNotes": "Une petite portion d’arc ds tournée autour d’un axe engendre une bande d’aire approximative 2πr ds, où r est sa distance à l’axe. La surface vaut ∫2πr ds. Pour y=f(x)≥0 autour de x, r=f(x) et ds=√(1+f′²)dx. Autour de y, on prend r=|x|. Cette formule calcule la surface latérale produite par la courbe ; les éventuels disques de fermeture demandent un ajout distinct. Pour une droite horizontale y=R sur une longueur H, elle donne 2πRH, l’aire latérale d’un cylindre. Les unités sont des unités carrées.",
+      "learningNotes": "Une petite portion d’arc ds tournée autour d’un axe engendre une bande d’aire approximative 2πr ds, où r est sa distance à l’axe. La surface vaut ∫2πr ds. Pour y=f(x)≥0 autour de x, r=f(x) et ds=√(1+f′²)dx. Autour de y, on prend r=|x|. Cette formule calcule la surface latérale produite par la courbe. Les éventuels disques de fermeture demandent un ajout distinct. Pour une droite horizontale y=R sur une longueur H, elle donne 2πRH, l’aire latérale d’un cylindre. Les unités sont des unités carrées.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-4-techniques-of-integration/part-b-partial-fractions-integration-by-parts-arc-length-and-surface-area/session-79-surface-area/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/95219df9dd0ecab04b1170fd84348fc1_MIT18_01SCF10_ex79sol.pdf"
@@ -3756,7 +3756,7 @@
       "kind": "lesson",
       "title": "Courbes paramétrées",
       "objective": "Décrire une trajectoire et sa vitesse.",
-      "learningNotes": "Une paramétrisation donne x=x(t) et y=y(t), ce qui décrit aussi des courbes qui ne sont pas le graphe d’une seule fonction y=f(x). Le vecteur vitesse a composantes x′ et y′ ; sa norme est ds/dt=√(x′²+y′²). Lorsque x′≠0, la pente est dy/dx=y′/x′. Pour x=cos t et y=sin t, on parcourt le cercle unité dans le sens trigonométrique, avec une vitesse 1. Pour x=t cos t et y=t sin t, le rayon croît avec t : c’est une spirale. Il faut préciser l’intervalle du paramètre pour connaître la portion et le nombre de parcours.",
+      "learningNotes": "Une paramétrisation donne x=x(t) et y=y(t), ce qui décrit aussi des courbes qui ne sont pas le graphe d’une seule fonction y=f(x). Le vecteur vitesse a composantes x′ et y′. Sa norme est ds/dt=√(x′²+y′²). Lorsque x′≠0, la pente est dy/dx=y′/x′. Pour x=cos t et y=sin t, on parcourt le cercle unité dans le sens trigonométrique, avec une vitesse 1. Pour x=t cos t et y=t sin t, le rayon croît avec t : c’est une spirale. Il faut préciser l’intervalle du paramètre pour connaître la portion et le nombre de parcours.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-4-techniques-of-integration/part-c-parametric-equations-and-polar-coordinates/session-80-parametric-curves/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/15f8e38786ae3b738375debb112ee660_MIT18_01SCF10_ex80sol.pdf"
@@ -3844,7 +3844,7 @@
       "kind": "lesson",
       "title": "Coordonnées polaires",
       "objective": "Convertir entre rayon-angle et coordonnées cartésiennes.",
-      "learningNotes": "En coordonnées polaires, x=r cos θ et y=r sin θ ; inversement r²=x²+y². Un angle doit être interprété avec son quadrant, car tan θ=y/x ne le détermine pas seul. Le même point possède plusieurs descriptions : ajouter 2π à θ conserve le point, et changer le signe de r revient à ajouter π à l’angle. Une courbe r=2a cos θ se transforme, en multipliant par r, en x²+y²=2ax, soit un cercle de centre (a,0) et de rayon a. Convertir l’équation peut ainsi révéler une géométrie difficile à voir directement en polaires.",
+      "learningNotes": "En coordonnées polaires, x=r cos θ et y=r sin θ. Inversement r²=x²+y². Un angle doit être interprété avec son quadrant, car tan θ=y/x ne le détermine pas seul. Le même point possède plusieurs descriptions : ajouter 2π à θ conserve le point, et changer le signe de r revient à ajouter π à l’angle. Une courbe r=2a cos θ se transforme, en multipliant par r, en x²+y²=2ax, soit un cercle de centre (a,0) et de rayon a. Convertir l’équation peut ainsi révéler une géométrie difficile à voir directement en polaires.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-4-techniques-of-integration/part-c-parametric-equations-and-polar-coordinates/session-82-polar-coordinates/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/0d16d7da8e72e96aade35bce946d758a_Bk5y6Elcy_Q.pdf"
@@ -3976,7 +3976,7 @@
       "kind": "review",
       "title": "Révision : techniques d’intégration et courbes",
       "objective": "Choisir une technique en lisant la structure de l’intégrande.",
-      "learningNotes": "La quatrième unité propose plusieurs outils : substitution pour une composition et sa dérivée, identités pour les puissances trigonométriques, éléments simples pour une fraction rationnelle, et intégration par parties pour un produit dont un facteur se simplifie en dérivant. Les courbes paramétrées et polaires ajoutent des formules géométriques qu’il faut relier à leurs éléments d’arc ou de secteur. Cette révision propose des applications originales adaptées aux thèmes de l’examen, sans reprendre son barème. Avant un calcul long, vérifier si une simplification algébrique rend la méthode plus courte ; après le calcul, dériver une primitive reste le contrôle le plus direct.",
+      "learningNotes": "La quatrième unité propose plusieurs outils : substitution pour une composition et sa dérivée, identités pour les puissances trigonométriques, éléments simples pour une fraction rationnelle, et intégration par parties pour un produit dont un facteur se simplifie en dérivant. Les courbes paramétrées et polaires ajoutent des formules géométriques qu’il faut relier à leurs éléments d’arc ou de secteur. Cette révision propose des applications originales adaptées aux thèmes de l’examen, sans reprendre son barème. Avant un calcul long, vérifier si une simplification algébrique rend la méthode plus courte. Après le calcul, dériver une primitive reste le contrôle le plus direct.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-4-techniques-of-integration/exam-4/session-85-review-for-exam-4/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/fbafa31b338486321079d73375390964_13UPhn32Mjs.pdf"
@@ -4048,7 +4048,7 @@
       "kind": "exam",
       "title": "Entraînement adapté : techniques d’intégration",
       "objective": "Résoudre un bilan d’intégration avec justification de méthode.",
-      "learningNotes": "Ce bilan original adapte les familles de problèmes du quatrième examen : parties, puissances trigonométriques, éléments simples et substitutions. Les expressions et la longueur de l’entraînement diffèrent de l’épreuve MIT et aucun score officiel n’est annoncé. Un bon choix de variable doit transformer entièrement le différentiel ; une décomposition doit se vérifier au même dénominateur ; une primitive doit retrouver l’intégrande après dérivation. Pour une intégrale définie, la dernière étape reste F(b)−F(a), avec les bonnes bornes. Ces habitudes comptent davantage que l’apprentissage d’une liste de réponses isolées.",
+      "learningNotes": "Ce bilan original adapte les familles de problèmes du quatrième examen : parties, puissances trigonométriques, éléments simples et substitutions. Les expressions et la longueur de l’entraînement diffèrent de l’épreuve MIT et aucun score officiel n’est annoncé. Un bon choix de variable doit transformer entièrement le différentiel. Une décomposition doit se vérifier au même dénominateur. Une primitive doit retrouver l’intégrande après dérivation. Pour une intégrale définie, la dernière étape reste F(b)−F(a), avec les bonnes bornes. Ces habitudes comptent davantage que l’apprentissage d’une liste de réponses isolées.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-4-techniques-of-integration/exam-4/session-86-materials-for-exam-4/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/f1c8096b6d2d8021709b313e87991bd0_MIT18_01SCF10_exam4sol.pdf"
@@ -4164,7 +4164,7 @@
       "kind": "lesson",
       "title": "Appliquer l’Hôpital à zéro et à l’infini",
       "objective": "Répéter la règle lorsque la forme indéterminée subsiste.",
-      "learningNotes": "Une application peut laisser une nouvelle forme indéterminée. Pour (1−cos x)/x² en zéro, la première étape donne sin x/(2x), puis une seconde donne cos x/2 ; la limite est 1/2. À l’infini, x/eˣ devient 1/eˣ et tend vers zéro. À chaque étape, vérifier que la forme et les hypothèses sont toujours satisfaites ; une expression déjà déterminée se calcule directement. La méthode peut montrer qu’une exponentielle domine une puissance. Elle ne signifie pas que les fonctions initiales et les quotients de dérivées sont égaux, seulement que leurs limites correspondent dans les cas admis.",
+      "learningNotes": "Une application peut laisser une nouvelle forme indéterminée. Pour (1−cos x)/x² en zéro, la première étape donne sin x/(2x), puis une seconde donne cos x/2. La limite est 1/2. À l’infini, x/eˣ devient 1/eˣ et tend vers zéro. À chaque étape, vérifier que la forme et les hypothèses sont toujours satisfaites. Une expression déjà déterminée se calcule directement. La méthode peut montrer qu’une exponentielle domine une puissance. Elle ne signifie pas que les fonctions initiales et les quotients de dérivées sont égaux, seulement que leurs limites correspondent dans les cas admis.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-5-exploring-the-infinite/part-a-lhospitals-rule-and-improper-integrals/session-88-examples-of-lhospitals-rule/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/30e0d666646354593044bb9e2349bd02_MIT18_01SCF10_ex88sol.pdf"
@@ -4252,7 +4252,7 @@
       "kind": "lesson",
       "title": "Puissances indéterminées et pièges",
       "objective": "Prendre un logarithme pour traiter une puissance variable.",
-      "learningNotes": "Une forme comme xˣ lorsque x→0⁺ se traite en posant y=xˣ puis ln y=xln x. Comme xln x→0, on obtient y→e⁰=1. De même, x¹ᐟˣ à l’infini a pour logarithme ln x/x→0 et tend vers 1. Les symboles 0⁰ ou ∞⁰ désignent ici des formes indéterminées de limites, pas des règles arithmétiques générales. La règle de l’Hôpital n’est utile que si la transformation produit un quotient admissible. Un quotient à limites non nulles et finies se calcule directement ; le dériver pourrait conduire à une conclusion sans rapport avec sa limite initiale.",
+      "learningNotes": "Une forme comme xˣ lorsque x→0⁺ se traite en posant y=xˣ puis ln y=xln x. Comme xln x→0, on obtient y→e⁰=1. De même, x¹ᐟˣ à l’infini a pour logarithme ln x/x→0 et tend vers 1. Les symboles 0⁰ ou ∞⁰ désignent ici des formes indéterminées de limites, pas des règles arithmétiques générales. La règle de l’Hôpital n’est utile que si la transformation produit un quotient admissible. Un quotient à limites non nulles et finies se calcule directement. Le dériver pourrait conduire à une conclusion sans rapport avec sa limite initiale.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-5-exploring-the-infinite/part-a-lhospitals-rule-and-improper-integrals/session-90-advanced-examples-of-lhospitals-rule/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/299f052a016230a785ca6bf44b79d6db_MIT18_01SCF10_ex90sol.pdf"
@@ -4486,7 +4486,7 @@
       "kind": "lesson",
       "title": "Critères de convergence des séries",
       "objective": "Choisir comparaison, intégrale ou rapport.",
-      "learningNotes": "Pour les séries positives, une comparaison avec une série connue peut décider la convergence. Le critère intégral relie Σf(n) à ∫f lorsque f est positive, continue et décroissante. Il donne la convergence de Σ1/nᵖ exactement pour p>1. Le critère du rapport étudie L=lim|aₙ₊₁/aₙ| : L<1 donne une convergence absolue, L>1 une divergence ; L=1 ne conclut pas. Ce dernier cas apparaît pour la série harmonique comme pour Σ1/n², dont les comportements diffèrent. Les factorielles favorisent souvent le critère du rapport, car elles se simplifient entre termes successifs.",
+      "learningNotes": "Pour les séries positives, une comparaison avec une série connue peut décider la convergence. Le critère intégral relie Σf(n) à ∫f lorsque f est positive, continue et décroissante. Il donne la convergence de Σ1/nᵖ exactement pour p>1. Le critère du rapport étudie L=lim|aₙ₊₁/aₙ| : L<1 donne une convergence absolue, L>1 une divergence. L=1 ne conclut pas. Ce dernier cas apparaît pour la série harmonique comme pour Σ1/n², dont les comportements diffèrent. Les factorielles favorisent souvent le critère du rapport, car elles se simplifient entre termes successifs.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-5-exploring-the-infinite/part-b-taylor-series/session-95-series-comparison/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/deb763be346eb1b842a188b4d453149e_MIT18_01SCF10_ex95sol.pdf"
@@ -4544,7 +4544,7 @@
       "kind": "lesson",
       "title": "Empiler des blocs et série harmonique",
       "objective": "Relier équilibre mécanique et divergence lente.",
-      "learningNotes": "Des blocs identiques de longueur L peuvent se décaler progressivement tout en gardant le centre de masse du groupe supérieur au-dessus de son support. L’empilement idéal conduit à des décalages L/2, L/4, L/6,… ; avec n blocs, le surplomb théorique est (L/2)Σₖ₌₁ⁿ1/k. La série harmonique diverge, donc aucun plafond mathématique fini ne limite ce surplomb dans le modèle idéal. La croissance est cependant lente, de l’ordre du logarithme. Cela n’affirme pas la faisabilité d’une construction réelle arbitraire : le modèle ignore notamment défauts, vibrations et résistance des matériaux. L’exemple rend concrète la différence entre termes décroissants et somme convergente.",
+      "learningNotes": "Des blocs identiques de longueur L peuvent se décaler progressivement tout en gardant le centre de masse du groupe supérieur au-dessus de son support. L’empilement idéal conduit à des décalages L/2, L/4, L/6,…. Avec n blocs, le surplomb théorique est (L/2)Σₖ₌₁ⁿ1/k. La série harmonique diverge, donc aucun plafond mathématique fini ne limite ce surplomb dans le modèle idéal. La croissance est cependant lente, de l’ordre du logarithme. Cela n’affirme pas la faisabilité d’une construction réelle arbitraire : le modèle ignore notamment défauts, vibrations et résistance des matériaux. L’exemple rend concrète la différence entre termes décroissants et somme convergente.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-5-exploring-the-infinite/part-b-taylor-series/session-96-stacking-blocks/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/eb5bbb88548acbf62e08e8a5b5e8ea2f_wOHrNt9ScYs.pdf"
@@ -4588,7 +4588,7 @@
       "kind": "lesson",
       "title": "Séries entières et rayon de convergence",
       "objective": "Déterminer un intervalle et examiner ses extrémités.",
-      "learningNotes": "Une série entière Σcₙ(x−a)ⁿ ressemble à un polynôme infini centré en a. Elle converge absolument à l’intérieur d’un rayon R et diverge au-delà ; les extrémités doivent être examinées séparément. Pour Σxⁿ/n, n≥1, le critère du rapport donne |x| : le rayon vaut 1. À x=1 on retrouve la série harmonique divergente ; à x=−1 la série alternée converge. Le rayon ne suffit donc pas à donner l’intervalle complet. Au centre, tous les termes de degré positif s’annulent. Les coefficients peuvent faire varier le rayon de zéro à l’infini.",
+      "learningNotes": "Une série entière Σcₙ(x−a)ⁿ ressemble à un polynôme infini centré en a. Elle converge absolument à l’intérieur d’un rayon R et diverge au-delà. Les extrémités doivent être examinées séparément. Pour Σxⁿ/n, n≥1, le critère du rapport donne |x| : le rayon vaut 1. À x=1 on retrouve la série harmonique divergente. À x=−1 la série alternée converge. Le rayon ne suffit donc pas à donner l’intervalle complet. Au centre, tous les termes de degré positif s’annulent. Les coefficients peuvent faire varier le rayon de zéro à l’infini.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-5-exploring-the-infinite/part-b-taylor-series/session-97-power-series/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/ce95c6111e8e778a8105153518663d99_MIT18_01SCF10_ex97sol.pdf"
@@ -4632,7 +4632,7 @@
       "kind": "lesson",
       "title": "Série de Taylor et contrôle du reste",
       "objective": "Construire une série à partir des dérivées au centre.",
-      "learningNotes": "La série de Taylor de f en a est Σf⁽ⁿ⁾(a)(x−a)ⁿ/n!. Ses sommes partielles sont les polynômes qui reproduisent les dérivées successives au centre. Pour eˣ en zéro, tous les coefficients dérivés valent 1 : eˣ=1+x+x²/2!+x³/3!+… . L’égalité avec la fonction demande que le reste tende vers zéro ; l’existence de dérivées de tous ordres ne suffit pas à elle seule. Si |f⁽ᴺ⁺¹⁾|≤M entre a et x, le reste est au plus M|x−a|ᴺ⁺¹/(N+1)!. Cette estimation transforme une approximation en résultat contrôlé lorsque ses hypothèses sont vérifiées.",
+      "learningNotes": "La série de Taylor de f en a est Σf⁽ⁿ⁾(a)(x−a)ⁿ/n!. Ses sommes partielles sont les polynômes qui reproduisent les dérivées successives au centre. Pour eˣ en zéro, tous les coefficients dérivés valent 1 : eˣ=1+x+x²/2!+x³/3!+…. L’égalité avec la fonction demande que le reste tende vers zéro. L’existence de dérivées de tous ordres ne suffit pas à elle seule. Si |f⁽ᴺ⁺¹⁾|≤M entre a et x, le reste est au plus M|x−a|ᴺ⁺¹/(N+1)!. Cette estimation transforme une approximation en résultat contrôlé lorsque ses hypothèses sont vérifiées.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-5-exploring-the-infinite/part-b-taylor-series/session-98-taylors-series/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/51bf782966d0896f0c183541e1c3cf22_MIT18_01SCF10_ex98sol.pdf"
@@ -4676,7 +4676,7 @@
       "kind": "lesson",
       "title": "Séries de Taylor alternées",
       "objective": "Exploiter les développements usuels et les erreurs alternées.",
-      "learningNotes": "La série géométrique donne 1/(1+x)=1−x+x²−x³+… pour |x|<1. Le sinus possède la série x−x³/3!+x⁵/5!−… et le cosinus seulement des puissances paires. Pour une série alternée dont les amplitudes décroissent vers zéro, l’erreur après une somme partielle ne dépasse pas l’amplitude du premier terme omis. Cette borne donne par exemple une précision sur sin x près de zéro. Les signes et les factorielles déterminent autant la valeur que les puissances. Aux extrémités d’un intervalle de convergence, il faut vérifier les conditions ; on ne prolonge pas automatiquement une égalité obtenue à l’intérieur.",
+      "learningNotes": "La série géométrique donne 1/(1+x)=1−x+x²−x³+… pour |x|<1. Le sinus possède la série x−x³/3!+x⁵/5!−… et le cosinus seulement des puissances paires. Pour une série alternée dont les amplitudes décroissent vers zéro, l’erreur après une somme partielle ne dépasse pas l’amplitude du premier terme omis. Cette borne donne par exemple une précision sur sin x près de zéro. Les signes et les factorielles déterminent autant la valeur que les puissances. Aux extrémités d’un intervalle de convergence, il faut vérifier les conditions. On ne prolonge pas automatiquement une égalité obtenue à l’intérieur.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-5-exploring-the-infinite/part-b-taylor-series/session-99-taylors-series-continued/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/3eb1ed4926038376071292571b97d4e7_FK1n3TVQIhc.pdf"
@@ -4734,7 +4734,7 @@
       "kind": "lesson",
       "title": "Opérer sur les séries entières",
       "objective": "Dériver, intégrer et substituer dans le rayon de convergence.",
-      "learningNotes": "À l’intérieur du rayon de convergence, on peut dériver ou intégrer une série entière terme à terme. Les rayons restent les mêmes, tandis que le comportement aux extrémités peut changer. En intégrant 1/(1+x²)=1−x²+x⁴−…, on trouve arctan x=x−x³/3+x⁵/5−… près de zéro. Une substitution dans eˣ donne e⁻ˣ²=1−x²+x⁴/2−… ; son intégrale de 0 à x commence par x−x³/3+x⁵/10. Cela fournit des approximations de fonctions sans primitives élémentaires. Pour multiplier deux séries, chaque coefficient rassemble tous les produits dont les degrés s’additionnent au degré recherché.",
+      "learningNotes": "À l’intérieur du rayon de convergence, on peut dériver ou intégrer une série entière terme à terme. Les rayons restent les mêmes, tandis que le comportement aux extrémités peut changer. En intégrant 1/(1+x²)=1−x²+x⁴−…, on trouve arctan x=x−x³/3+x⁵/5−… près de zéro. Une substitution dans eˣ donne e⁻ˣ²=1−x²+x⁴/2−…. Son intégrale de 0 à x commence par x−x³/3+x⁵/10. Cela fournit des approximations de fonctions sans primitives élémentaires. Pour multiplier deux séries, chaque coefficient rassemble tous les produits dont les degrés s’additionnent au degré recherché.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-5-exploring-the-infinite/part-b-taylor-series/session-100-operations-on-power-series/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/e5f4299378ee87484d49640281ca1828_MIT18_01SCF10_ex100sol.pdf"
@@ -4792,7 +4792,7 @@
       "kind": "lesson",
       "title": "Relier les outils du calcul",
       "objective": "Réinvestir dérivées, réciproques, intégrales et séries.",
-      "learningNotes": "La conclusion du cours relie plusieurs outils autour de fonctions déjà rencontrées. Pour sinh x, la dérivée cosh x est strictement positive, donc la fonction est inversible sur toute la droite. Si y=arsinh x, l’identité cosh²y−sinh²y=1 donne y′=1/√(1+x²). On retrouve ainsi une primitive de 1/√(1+x²), que l’on peut aussi écrire ln(x+√(1+x²)). Les séries relient à leur tour les fonctions hyperboliques à l’exponentielle : sinh x=x+x³/3!+… . L’objectif est de reconnaître les connexions entre méthodes et de choisir celle qui rend un problème lisible, en contrôlant toujours domaine et conditions.",
+      "learningNotes": "La conclusion du cours relie plusieurs outils autour de fonctions déjà rencontrées. Pour sinh x, la dérivée cosh x est strictement positive, donc la fonction est inversible sur toute la droite. Si y=arsinh x, l’identité cosh²y−sinh²y=1 donne y′=1/√(1+x²). On retrouve ainsi une primitive de 1/√(1+x²), que l’on peut aussi écrire ln(x+√(1+x²)). Les séries relient à leur tour les fonctions hyperboliques à l’exponentielle : sinh x=x+x³/3!+…. L’objectif est de reconnaître les connexions entre méthodes et de choisir celle qui rend un problème lisible, en contrôlant toujours domaine et conditions.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/unit-5-exploring-the-infinite/part-b-taylor-series/session-101-conclusion/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/f5a44e75403692c5cfbf7882a79d77d3_MIT18_01SCF10_ex101sol.pdf"
@@ -4850,7 +4850,7 @@
       "kind": "exam",
       "title": "Entraînement adapté : bilan final du cours",
       "objective": "Mobiliser l’ensemble du calcul à une variable.",
-      "learningNotes": "Ce bilan final original parcourt dérivation, tangentes, intégration, limites impropres et séries. Il s’appuie sur les thèmes des matériaux finaux officiels sans copier l’épreuve entière, reproduire ses durées ni attribuer une note MIT. Pour chaque problème, annoncer mentalement la structure utile : produit ou chaîne, accumulation ou aire géométrique, forme indéterminée ou convergence. Les corrections montrent des étapes de raisonnement afin de servir de reprise pédagogique. Une réussite à ces questions courtes ne remplace pas les problèmes ouverts et longs disponibles dans les ressources du cours ; elle aide à repérer quelles méthodes doivent être consolidées.",
+      "learningNotes": "Ce bilan final original parcourt dérivation, tangentes, intégration, limites impropres et séries. Il s’appuie sur les thèmes des matériaux finaux officiels sans copier l’épreuve entière, reproduire ses durées ni attribuer une note MIT. Pour chaque problème, annoncer mentalement la structure utile : produit ou chaîne, accumulation ou aire géométrique, forme indéterminée ou convergence. Les corrections montrent des étapes de raisonnement afin de servir de reprise pédagogique. Une réussite à ces questions courtes ne remplace pas les problèmes ouverts et longs disponibles dans les ressources du cours. Elle aide à repérer quelles méthodes doivent être consolidées.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/final-exam/",
         "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/bbbf05286af4bd705af325080bea0e23_MIT18_01SCF10_finalsol.pdf"

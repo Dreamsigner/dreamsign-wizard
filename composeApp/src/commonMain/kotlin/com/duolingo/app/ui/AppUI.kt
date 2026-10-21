@@ -87,7 +87,7 @@ fun DuolingoApp(viewModel: AppViewModel = remember { AppViewModel() }) {
         if (screen == AppScreen.COURSE_READER && subject != null && selectedUnitId != null) {
             val unit = subject.units.first { it.id == selectedUnitId }
             CourseReaderScreen(unit, { subject.isLessonUnlocked(it, stats.completedLessonIds) }, viewModel::startLesson,
-                onClose = { viewModel.navigateTo(AppScreen.LEARNING_PATH) }, typesetMath = subject.category == SubjectCategory.MATHEMATICS)
+                onClose = { viewModel.navigateTo(AppScreen.LEARNING_PATH) }, typesetMath = subject.category == SubjectCategory.MATHEMATICS || subject.category == SubjectCategory.COMPUTER_SCIENCE)
         } else if (screen == AppScreen.LESSON_QUIZ) {
             LessonQuizScreen(viewModel)
         } else {

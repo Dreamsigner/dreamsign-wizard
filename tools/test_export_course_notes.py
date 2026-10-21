@@ -9,6 +9,22 @@ import export_course_notes as exporter
 
 
 class CourseNotesExportTests(unittest.TestCase):
+    def test_teaching_notes_keep_headings_code_and_latex_as_markdown(self):
+        source = "## Comprendre\n\n**Bash**\n\n```bash\npwd\n```\n\n$$x_1=b_1$$"
+        rendered = exporter.learning_notes(source)
+        self.assertIn("### Comprendre", rendered)
+        self.assertIn("```bash\npwd\n```", rendered)
+        self.assertIn("$$x_1=b_1$$", rendered)
+        self.assertNotIn("<p>", rendered)
+
+    def test_inline_code_and_bold_are_not_hidden_in_html_paragraphs(self):
+        rendered = exporter.learning_notes("Appeler `vector<int>` et $x<1$.\n\nDu **code**, sans <script>.")
+        self.assertIn("`vector<int>`", rendered)
+        self.assertIn("$x<1$", rendered)
+        self.assertIn("**code**", rendered)
+        self.assertIn("&lt;script&gt;", rendered)
+        self.assertNotIn("<p>", rendered)
+
     @classmethod
     def setUpClass(cls):
         cls.outputs = exporter.render_all()

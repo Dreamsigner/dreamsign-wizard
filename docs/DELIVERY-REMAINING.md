@@ -26,6 +26,8 @@ Ce bilan complète le registre; il ne transforme pas l'inventaire OSSU en cours 
 - L'application affiche ses notes originales françaises et donne accès aux supports officiels; elle ne contient pas une traduction intégrale des manuels MIT.
 - Contrôler progressivement le contenu et le rendu de chaque PDF: les réponses HTTP et le rendu réussi d'un document ne vérifient pas l'ensemble des 1326 ressources indexées.
 - Les PDF externes nécessitent Internet, sont chargés en mémoire et ne sont pas mis en cache pour une bibliothèque hors ligne. Aucun manuel original n'est réhébergé sur GitHub.
+- Ajouter ultérieurement une lecture PDF verticale continue entre les pages, avec rendu progressif et mémoire bornée; le lecteur actuel conserve ses commandes page précédente/suivante.
+- Poursuivre la restructuration éditoriale des notes après les neuf leçons Missing Semester et les trois premières séances d'algèbre linéaire. Le nouveau lecteur typographique commun ne constitue pas une réécriture de toutes les séances.
 - Tout ajout futur de manuel complet traduit ou réhébergé devra respecter sa licence et conserver attribution, édition et provenance.
 
 ## 3. Vérifications Windows restant manuelles ou matérielles

@@ -465,3 +465,41 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   contenu. Elle ne constitue pas une validation de l'intégralité OSSU/TCF,
   du microphone physique ou d'un lecteur d'écran; les limites précédentes
   demeurent. Android/iOS et Computer Use restent hors du périmètre de reprise.
+
+### Typographie pédagogique et liens vidéo — 21 octobre 2026
+
+- Le placement indépendant des fragments mathématiques dans FlowRow provoquait
+  un décalage visuel des indices par rapport à la prose. Reproduction par capture
+  et test RED de l'absence de mise en page native de paragraphe; remplacement
+  par InlineTextContent dans un seul Text. Matrices en blocs séparés défilables,
+  prise en compte de la densité, descriptions parlées enrichies pour les indices,
+  vecteurs et opérations de lignes. Dates, chemins et divisions chaînées exclus
+  de l'inférence de fractions, avec régressions dont la date 2026/01/09.
+- Le rendu couvre aussi les contenus mathématiques des cours informatiques,
+  objectifs, énoncés, choix, indices et explications. Code balisé conservé littéral.
+- Lecteur pédagogique commun : titres sémantiques, paragraphes, listes, repères,
+  gras ciblé, code en chasse fixe sur fond distinct, exemples séparés et mesure
+  de lecture bornée. Les neuf notes Missing Semester et trois premières notes
+  18.06SC ont des sections explicites et exemples. Une passe de ponctuation et
+  de balisage a modifié 284 notes sur 391; les deux points-virgules conservés
+  appartiennent à un exemple logique cité. Les exercices, IDs, URLs de cours
+  et autres métadonnées sont strictement inchangés par cette passe éditoriale.
+- Index vidéo : 383 entrées, 333 URL distinctes, provenance conservée. Liens
+  YouTube de vidéo ou MP4, jamais chaîne générique. Suivi borné d'un lien vidéo
+  officiel; 18.06SC couvre 35/40 séances, 6.004 27/28. Plusieurs clips ou formats
+  peuvent appartenir à une séance. Aucun média inventé lorsqu'absent; aucune
+  prétention de lecture intégrale de tous les flux externes. Un test de clic
+  vérifie que la vidéo de la première séance 18.06SC ouvre son URL YouTube,
+  plutôt que sa page MIT de provenance.
+- Vérification locale finale : 105 tests desktop, zéro échec/erreur/ignoré,
+  createDistributable réussi (../work/lesson-formatting-final.log). Diagnostic
+  du véritable EXE réussi : PDF/LaTeX et WAV, sans fenêtre ni données utilisateur.
+  30 tests Python et validations des 15 cours/391 séances/1190 exercices,
+  1235 ressources et exports Markdown; contrôleurs d'algèbre linéaire et Bash
+  réussis. Les captures shell 1100/500 et aperçu matriciel ont été inspectées
+  sur surfaces du thème réel. La vérification d'un lecteur d'écran physique
+  reste distincte. La CI du nouveau commit est encore à confirmer au push.
+- Le défilement PDF vertical continu est ajouté au reste à faire, sans changement
+  du lecteur page par page dans ce lot. La couverture pédagogique globale reste
+  partielle. Voir docs/lesson-presentation.md pour la charte éditoriale et les
+  références W3C/IES, sans extrapolation de résultats d'apprentissage.

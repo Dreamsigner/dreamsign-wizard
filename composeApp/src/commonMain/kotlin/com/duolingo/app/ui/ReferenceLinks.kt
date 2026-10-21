@@ -7,7 +7,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.duolingo.app.data.CourseResource
 import com.duolingo.app.ui.pdf.PdfDocumentDialog
 
@@ -16,7 +18,8 @@ internal fun ReferenceLinks(resources: List<CourseResource>) {
     val uri = LocalUriHandler.current
     var failure by remember(resources) { mutableStateOf<String?>(null) }
     var openedPdf by remember(resources) { mutableStateOf<CourseResource?>(null) }
-    resources.distinctBy { it.url }.sortedBy { if (it.kind.contains("pdf")) 0 else 1 }.forEach { resource ->
+    resources.distinctBy { it.url }
+        .sortedBy { if (it.kind.contains("pdf")) 0 else if (it.kind == "video") 1 else 2 }.forEach { resource ->
         TextButton({
             failure = null
             if (resource.kind.contains("pdf")) openedPdf = resource
@@ -27,13 +30,15 @@ internal fun ReferenceLinks(resources: List<CourseResource>) {
                     resource.kind == "textbook_pdf" -> "Manuel PDF complet"
                     resource.coverage == "partial_textbook" -> "Notes PDF du cours · couverture partielle"
                     resource.kind.contains("pdf") -> "Support PDF de séance"
-                    resource.kind == "video" -> "Vidéo"
+                    resource.kind == "video" && resource.url.startsWith("https://www.youtube.com/watch?v=") -> "Vidéo · YouTube"
+                    resource.kind == "video" -> "Vidéo · fichier MP4"
                     resource.kind == "textbook_html" -> "Manuel en ligne"
                     resource.kind == "resource_collection" -> "Collection de supports"
                     else -> "Référence du cours"
                 }
-                Text("$format · ${resource.title}", fontWeight = FontWeight.Medium)
-                Text("${if (resource.language == "fr") "Français" else "Anglais"} · connexion Internet", color = Graphite)
+                Text(format, style = TextStyle(color = ActionRed, fontWeight = FontWeight.SemiBold, fontSize = 14.sp, lineHeight = 20.sp, letterSpacing = 0.sp))
+                Text(resource.title.substringBeforeLast(" — ", resource.title), style = TextStyle(color = Ink, fontWeight = FontWeight.Medium, fontSize = 16.sp, lineHeight = 23.sp, letterSpacing = 0.sp))
+                Text("${if (resource.language == "fr") "Français" else "Anglais"} · connexion Internet", style = TextStyle(color = Graphite, fontSize = 13.sp, lineHeight = 20.sp, letterSpacing = 0.sp))
                 if (resource.notes.isNotBlank()) Text(resource.notes, color = Graphite)
             }
         }

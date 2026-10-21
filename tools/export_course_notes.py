@@ -56,6 +56,38 @@ def paragraph(value: str) -> str:
     return "<p>" + esc(value).replace("\r\n", "\n").replace("\n", "<br>\n") + "</p>"
 
 
+def learning_notes(value: str) -> str:
+    """Keep the explicit teaching Markdown usable on GitHub as well as in the app."""
+    lines = []
+    fenced = False
+    display_math = False
+    for line in value.splitlines():
+        if line.startswith("```"):
+            fenced = not fenced
+            lines.append(line)
+            continue
+        if fenced:
+            lines.append(line)
+            continue
+        if line.strip() == "$$":
+            display_math = not display_math
+            lines.append(line)
+            continue
+        if display_math:
+            lines.append(line)
+            continue
+        if line.startswith("## "):
+            line = "#" + line  # Course h1, lesson h2, teaching section h3.
+        elif line.startswith("### "):
+            line = "#" + line
+        prefix = "> " if line.startswith("> ") else ""
+        prose = line[len(prefix):]
+        # Preserve authored code and TeX; escape literal HTML in ordinary copy.
+        parts = re.split(r"(`[^`]+`|\$\$.*?\$\$|\$[^$]+\$)", prose)
+        lines.append((prefix + "".join(part if part.startswith(("`", "$")) else html.escape(part, quote=False) for part in parts)).rstrip())
+    return "\n".join(lines)
+
+
 def link(url: str, label: str) -> str:
     safe_url = quote(url, safe=":/?#[]@!$&'()*+,;=%")
     return f'<a href="{esc(safe_url)}" rel="noopener">{esc(label)}</a>'
@@ -202,7 +234,7 @@ def render_course(course: dict, resource_course: dict, sessions_by_key: dict) ->
                     f"## Séance {lesson['sourceSessionNumber']} — {esc(lesson['title'])}", "",
                     f"**Séance source :** {esc(lesson['sourceTitle'])}<br>",
                     f"**Objectif :** {esc(lesson['objective'])}", "",
-                    paragraph(lesson["learningNotes"]), "", "### Références de cette séance", "", "<ul>"))
+                    learning_notes(lesson["learningNotes"]), "", "### Références de cette séance", "", "<ul>"))
         for resource in resource_session.get("resources", []):
             out.append(render_resource(resource))
         if not resource_session.get("resources"):

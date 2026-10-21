@@ -24,7 +24,7 @@ internal object Course_mit_18_335j_2019 {
             Exercise.MultipleChoice(id = "mit_18_335j_2019_s001_e03", prompt = "Que signifie convergence quadratique locale ?", options = listOf("|eₖ₊₁| est de l’ordre de |eₖ|².", "Le coût est toujours quadratique.", "Chaque itéré divise exactement l’erreur par deux.", "Toute valeur initiale converge."), correctOptionIndex = 0, explanation = "Il s’agit de l’erreur asymptotique près de la solution, pas d’une garantie globale.", hint = "Distinguer taux local et bassin de convergence.")
         ),
         objective = "Comparer convergence, coût et précision.",
-        learningNotes = "Comparer convergence, coût et précision. Pour f(x)=x²−a, Newton donne xₖ₊₁=(xₖ+a/xₖ)/2. Si a>0 et x₀>0, les itérés restent positifs ; près de √a, l’erreur se comporte quadratiquement. Une bonne méthode peut néanmoins stagner lorsque les arrondis dominent. Un petit résidu ne remplace pas une analyse du conditionnement.",
+        learningNotes = "Comparer convergence, coût et précision. Pour f(x)=x²−a, Newton donne xₖ₊₁=(xₖ+a/xₖ)/2. Si a>0 et x₀>0, les itérés restent positifs. Près de √a, l’erreur se comporte quadratiquement. Une bonne méthode peut néanmoins stagner lorsque les arrondis dominent. Un petit résidu ne remplace pas une analyse du conditionnement.",
         sourceUrls = listOf("https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-1/#lecture-1-course-overview-newtons-method-for-root-finding", "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/0a734ecc94b60a26213488e68588bc8d_MIT18_335JS19_lec1.pdf"),
         requiresPreviousLesson = false,
         sourceSessionNumber = 1,
@@ -62,7 +62,7 @@ internal object Course_mit_18_335j_2019 {
             Exercise.MultipleChoice(id = "mit_18_335j_2019_s003_e03", prompt = "Un algorithme stable arrière sur une somme très mal conditionnée garantit-il une petite erreur relative avant ?", options = listOf("Oui, si les termes sont négatifs.", "Oui, car la somme est exacte.", "Non.", "Oui, sans aucune condition."), correctOptionIndex = 2, explanation = "La sensibilité du problème amplifie les petites perturbations arrière.", hint = "Relier erreur avant, conditionnement et erreur arrière.")
         ),
         objective = "Analyser l’accumulation des erreurs.",
-        learningNotes = "Analyser l’accumulation des erreurs. Une somme calculée peut être la somme exacte d’entrées légèrement perturbées : c’est la stabilité arrière. L’erreur relative avant peut pourtant exploser si des termes se compensent. La sommation par paires réduit la profondeur des additions ; elle ne supprime pas le mauvais conditionnement intrinsèque d’une somme presque nulle.",
+        learningNotes = "Analyser l’accumulation des erreurs. Une somme calculée peut être la somme exacte d’entrées légèrement perturbées : c’est la stabilité arrière. L’erreur relative avant peut pourtant exploser si des termes se compensent. La sommation par paires réduit la profondeur des additions. Elle ne supprime pas le mauvais conditionnement intrinsèque d’une somme presque nulle.",
         sourceUrls = listOf("https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-2/#lecture-3-floating-point-summation-and-backwards-stability"),
         requiresPreviousLesson = true,
         sourceSessionNumber = 3,
@@ -119,7 +119,7 @@ internal object Course_mit_18_335j_2019 {
             Exercise.MultipleChoice(id = "mit_18_335j_2019_s006_e03", prompt = "Pourquoi un problème raide peut-il rendre Euler explicite coûteux ?", options = listOf("Il n’existe jamais de solution.", "Tous les solveurs implicites sont exacts.", "La précision flottante devient infinie.", "La stabilité peut imposer un pas bien plus petit que celui requis par la précision des modes lents."), correctOptionIndex = 3, explanation = "Des modes rapides décroissants contraignent le pas même si la solution intéressante évolue lentement.", hint = "Comparer échelles rapides et lentes.")
         ),
         objective = "Relier stabilité temporelle et choix logiciel.",
-        learningNotes = "Relier stabilité temporelle et choix logiciel. La séance invitée présente solveurs, rigidité et adaptativité ; notre exemple d’Euler est une pratique originale élémentaire. Pour y′=λy, Euler explicite multiplie par 1+hλ. Avec λ réel négatif, il faut |1+hλ|≤1 pour ne pas amplifier ce mode. La précision et la stabilité imposent des contraintes différentes.",
+        learningNotes = "Relier stabilité temporelle et choix logiciel. La séance invitée présente solveurs, rigidité et adaptativité. Notre exemple d’Euler est une pratique originale élémentaire. Pour y′=λy, Euler explicite multiplie par 1+hλ. Avec λ réel négatif, il faut |1+hλ|≤1 pour ne pas amplifier ce mode. La précision et la stabilité imposent des contraintes différentes.",
         sourceUrls = listOf("https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-3/#lecture-6-numerical-methods-for-ordinary-differential-equations", "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/469d460f74800c8a1135946a64dee01f_MIT18_335JS19_lec6.pdf"),
         requiresPreviousLesson = true,
         sourceSessionNumber = 6,
@@ -138,7 +138,7 @@ internal object Course_mit_18_335j_2019 {
             Exercise.MultipleChoice(id = "mit_18_335j_2019_s007_e03", prompt = "Pour A non carrée, quel objet reste défini ?", options = listOf("A⁻¹ au sens carré ordinaire.", "Une base complète de vecteurs propres de A.", "La SVD.", "Le déterminant usuel de A."), correctOptionIndex = 2, explanation = "La SVD existe aussi pour une matrice rectangulaire.", hint = "U et V peuvent avoir des tailles différentes.")
         ),
         objective = "Exploiter A=UΣV*.",
-        learningNotes = "Exploiter A=UΣV*. Les valeurs singulières donnent la norme spectrale, le rang et le conditionnement en norme 2. Tronquer la SVD fournit une approximation de faible rang ; l’erreur spectrale optimale de rang k est σₖ₊₁. Les vecteurs singuliers ne sont pas, en général, les vecteurs propres de A.",
+        learningNotes = "Exploiter A=UΣV*. Les valeurs singulières donnent la norme spectrale, le rang et le conditionnement en norme 2. Tronquer la SVD fournit une approximation de faible rang. L’erreur spectrale optimale de rang k est σₖ₊₁. Les vecteurs singuliers ne sont pas, en général, les vecteurs propres de A.",
         sourceUrls = listOf("https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-3/#lecture-7-the-svd-its-applications-and-condition-numbers"),
         requiresPreviousLesson = true,
         sourceSessionNumber = 7,
@@ -157,7 +157,7 @@ internal object Course_mit_18_335j_2019 {
             Exercise.MultipleChoice(id = "mit_18_335j_2019_s008_e03", prompt = "Pourquoi utiliser la GSVD dans ‖Ax−b‖²+λ‖Lx‖² ?", options = listOf("Pour transformer toute matrice en identité.", "Pour étudier simultanément les effets de A et L.", "Pour garantir une erreur statistique nulle.", "Pour rendre λ inutile dans tous les cas."), correctOptionIndex = 1, explanation = "La GSVD porte sur une paire de matrices, ce qui convient à une pénalité structurée.", hint = "La régularisation introduit un second opérateur.")
         ),
         objective = "Comparer les points de vue algébrique et statistique.",
-        learningNotes = "Comparer les points de vue algébrique et statistique. Les moindres carrés minimisent ‖Ax−b‖₂² ; QR et SVD évitent de former systématiquement A*A. Une pénalité ‖Lx‖₂² modifie le problème : la GSVD analyse conjointement A et L. La régularisation réduit certaines sensibilités au prix d’un biais ; elle n’ajoute pas de données observées.",
+        learningNotes = "Comparer les points de vue algébrique et statistique. Les moindres carrés minimisent ‖Ax−b‖₂². QR et SVD évitent de former systématiquement A*A. Une pénalité ‖Lx‖₂² modifie le problème : la GSVD analyse conjointement A et L. La régularisation réduit certaines sensibilités au prix d’un biais. Elle n’ajoute pas de données observées.",
         sourceUrls = listOf("https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-3/#lecture-8-linear-regression-and-the-generalized-svd"),
         requiresPreviousLesson = true,
         sourceSessionNumber = 8,
@@ -214,7 +214,7 @@ internal object Course_mit_18_335j_2019 {
             Exercise.MultipleChoice(id = "mit_18_335j_2019_s011_e03", prompt = "Que cherche principalement à améliorer le blocking matriciel ?", options = listOf("Le nombre de chiffres du format IEEE.", "Le rang de toute matrice.", "La réutilisation des données avant leur éviction du cache.", "La valeur mathématique exacte du produit."), correctOptionIndex = 2, explanation = "Les produits partiels réemploient de petits blocs résidents en cache.", hint = "Penser à la localité temporelle.")
         ),
         objective = "Évaluer aussi les mouvements de données.",
-        learningNotes = "Évaluer aussi les mouvements de données. Deux codes réalisant le même nombre d’opérations peuvent avoir des temps très différents. Le découpage par blocs augmente la réutilisation des éléments déjà dans le cache. Le modèle de cache idéal simplifie la hiérarchie réelle ; mesurer demeure nécessaire pour choisir tailles et implantation.",
+        learningNotes = "Évaluer aussi les mouvements de données. Deux codes réalisant le même nombre d’opérations peuvent avoir des temps très différents. Le découpage par blocs augmente la réutilisation des éléments déjà dans le cache. Le modèle de cache idéal simplifie la hiérarchie réelle. Mesurer demeure nécessaire pour choisir tailles et implantation.",
         sourceUrls = listOf("https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-4/#lecture-11-matrix-operations-caches-and-blocking"),
         requiresPreviousLesson = true,
         sourceSessionNumber = 11,
@@ -233,7 +233,7 @@ internal object Course_mit_18_335j_2019 {
             Exercise.MultipleChoice(id = "mit_18_335j_2019_s012_e03", prompt = "Que signifie cache-oblivious ?", options = listOf("Les performances sont indépendantes de l’implantation.", "L’algorithme n’encode pas explicitement les paramètres de taille du cache.", "Le cache n’existe pas.", "Le programme n’accède jamais à la mémoire."), correctOptionIndex = 1, explanation = "La récursion cherche la localité à plusieurs échelles sans réglage explicite de capacité.", hint = "Distinguer absence de paramètre et absence d’effet.")
         ),
         objective = "Comprendre la récursion cache-oblivious.",
-        learningNotes = "Comprendre la récursion cache-oblivious. Le programme découpe les problèmes sans coder une taille de cache particulière ; le modèle explique pourquoi certains sous-problèmes finissent par tenir dans chaque niveau de mémoire. La localité spatiale exploite les éléments voisins d’une même ligne. Une bonne borne asymptotique ne garantit pas le meilleur temps pour toutes les petites tailles.",
+        learningNotes = "Comprendre la récursion cache-oblivious. Le programme découpe les problèmes sans coder une taille de cache particulière. Le modèle explique pourquoi certains sous-problèmes finissent par tenir dans chaque niveau de mémoire. La localité spatiale exploite les éléments voisins d’une même ligne. Une bonne borne asymptotique ne garantit pas le meilleur temps pour toutes les petites tailles.",
         sourceUrls = listOf("https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-5/#lecture-12-cache-oblivious-algorithms-and-spatial-locality"),
         requiresPreviousLesson = true,
         sourceSessionNumber = 12,
@@ -252,7 +252,7 @@ internal object Course_mit_18_335j_2019 {
             Exercise.MultipleChoice(id = "mit_18_335j_2019_s013_e03", prompt = "Pour résoudre plusieurs Ax=b avec le même A, que réutiliser ?", options = listOf("La factorisation LU.", "Une nouvelle factorisation pour chaque b obligatoirement.", "Seulement det(A).", "Une permutation aléatoire différente à chaque addition."), correctOptionIndex = 0, explanation = "Les facteurs ne dépendent pas du second membre.", hint = "Séparer le coût de factorisation et de substitution.")
         ),
         objective = "Factoriser sans inverser explicitement.",
-        learningNotes = "Factoriser sans inverser explicitement. L’élimination donne PA=LU lorsque des permutations de lignes sont utilisées. Pour plusieurs seconds membres, réutiliser les facteurs et effectuer des résolutions triangulaires. Le pivotage partiel choisit le plus grand module disponible dans la colonne ; il limite les multiplicateurs mais n’exclut pas toute croissance des éléments.",
+        learningNotes = "Factoriser sans inverser explicitement. L’élimination donne PA=LU lorsque des permutations de lignes sont utilisées. Pour plusieurs seconds membres, réutiliser les facteurs et effectuer des résolutions triangulaires. Le pivotage partiel choisit le plus grand module disponible dans la colonne. Il limite les multiplicateurs mais n’exclut pas toute croissance des éléments.",
         sourceUrls = listOf("https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-5/#lecture-13-lu-factorization-and-partial-pivoting"),
         requiresPreviousLesson = true,
         sourceSessionNumber = 13,
@@ -271,7 +271,7 @@ internal object Course_mit_18_335j_2019 {
             Exercise.MultipleChoice(id = "mit_18_335j_2019_s014_e03", prompt = "Quel cas autorise directement Cholesky standard sans pivotage ?", options = listOf("Toute matrice rectangulaire.", "Toute matrice symétrique indéfinie.", "Toute matrice singulière.", "Une matrice hermitienne définie positive."), correctOptionIndex = 3, explanation = "La positivité garantit des pivots positifs dans cette factorisation.", hint = "Symétrie seule ne suffit pas.")
         ),
         objective = "Exploiter les structures matricielles.",
-        learningNotes = "Exploiter les structures matricielles. Une matrice hermitienne définie positive admet A=LL*. Une factorisation de Schur complexe écrit A=QTQ* avec Q unitaire et T triangulaire ; la diagonale de T contient les valeurs propres. Schur existe sans exiger que A soit diagonalisable. Les matrices triangulaires, bandées et creuses permettent des solveurs spécialisés.",
+        learningNotes = "Exploiter les structures matricielles. Une matrice hermitienne définie positive admet A=LL*. Une factorisation de Schur complexe écrit A=QTQ* avec Q unitaire et T triangulaire. La diagonale de T contient les valeurs propres. Schur existe sans exiger que A soit diagonalisable. Les matrices triangulaires, bandées et creuses permettent des solveurs spécialisés.",
         sourceUrls = listOf("https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-5/#lecture-14-cholesky-factorization-and-other-specialized-solvers-eigenproblems-and-schur-factorizations"),
         requiresPreviousLesson = true,
         sourceSessionNumber = 14,
@@ -290,7 +290,7 @@ internal object Course_mit_18_335j_2019 {
             Exercise.MultipleChoice(id = "mit_18_335j_2019_s015_e03", prompt = "Pourquoi les solveurs propres généraux sont-ils itératifs ?", options = listOf("La multiplication est toujours inexacte même en arithmétique exacte.", "QR détruit le spectre.", "Les racines des polynômes généraux de degré supérieur à quatre ne se calculent pas toutes par radicaux.", "Une matrice ne possède jamais de valeurs propres."), correctOptionIndex = 2, explanation = "La matrice compagnon transmet cette impossibilité algébrique au problème propre général.", hint = "Distinguer approximation arbitraire et formule finie par radicaux.")
         ),
         objective = "Préparer un calcul itératif des valeurs propres.",
-        learningNotes = "Préparer un calcul itératif des valeurs propres. Des transformations unitaires de similarité réduisent A à une forme de Hessenberg supérieure ; dans le cas hermitien, elle est tridiagonale. Cette étape réduit le coût des itérations QR. Une matrice compagnon relie racines polynomiales et valeurs propres ; cette reformulation n’efface pas le mauvais conditionnement des racines.",
+        learningNotes = "Préparer un calcul itératif des valeurs propres. Des transformations unitaires de similarité réduisent A à une forme de Hessenberg supérieure. Dans le cas hermitien, elle est tridiagonale. Cette étape réduit le coût des itérations QR. Une matrice compagnon relie racines polynomiales et valeurs propres. Cette reformulation n’efface pas le mauvais conditionnement des racines.",
         sourceUrls = listOf("https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-6/#lecture-15-eigensolver-algorithms-companion-matrices-ill-conditioning-and-hessenberg-factorization", "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/fc0209dbe68002972f36f172077fb976_MIT18_335JS19_lec15.pdf"),
         requiresPreviousLesson = true,
         sourceSessionNumber = 15,
@@ -366,7 +366,7 @@ internal object Course_mit_18_335j_2019 {
             Exercise.MultipleChoice(id = "mit_18_335j_2019_s019_e03", prompt = "Que désignent des valeurs propres fantômes de Lanczos ?", options = listOf("Des valeurs nécessairement complexes.", "Les zéros d’une matrice triangulaire.", "Des réapparitions numériques liées à une perte d’orthogonalité.", "De nouvelles valeurs propres exactes de la matrice."), correctOptionIndex = 2, explanation = "Les arrondis peuvent réintroduire des directions déjà convergées.", hint = "Comparer modèle exact et arithmétique finie.")
         ),
         objective = "Équilibrer mémoire et convergence.",
-        learningNotes = "Équilibrer mémoire et convergence. Arnoldi stocke une base croissante ; Lanczos exploite une récurrence courte pour un opérateur hermitien, mais les arrondis peuvent détruire l’orthogonalité et créer des valeurs propres fantômes. Redémarrer réduit la mémoire au risque de perdre des directions utiles. Un redémarrage efficace ne se résume donc pas à garder arbitrairement le dernier vecteur.",
+        learningNotes = "Équilibrer mémoire et convergence. Arnoldi stocke une base croissante. Lanczos exploite une récurrence courte pour un opérateur hermitien, mais les arrondis peuvent détruire l’orthogonalité et créer des valeurs propres fantômes. Redémarrer réduit la mémoire au risque de perdre des directions utiles. Un redémarrage efficace ne se résume donc pas à garder arbitrairement le dernier vecteur.",
         sourceUrls = listOf("https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-7/#lecture-19-arnoldi-and-lanczos-with-restarting", "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/fa98fed43acb3e2311f6d9328ca31d04_MIT18_335JS19_lec19.pdf"),
         requiresPreviousLesson = true,
         sourceSessionNumber = 19,
@@ -385,7 +385,7 @@ internal object Course_mit_18_335j_2019 {
             Exercise.MultipleChoice(id = "mit_18_335j_2019_s020_e03", prompt = "En arithmétique exacte, sans redémarrage, pourquoi le minimum du résidu ne peut-il augmenter ?", options = listOf("Le résidu devient nul dès la première étape.", "Les espaces de recherche successifs sont emboîtés.", "La matrice change à chaque itération.", "Toute norme est toujours décroissante."), correctOptionIndex = 1, explanation = "L’ancien candidat reste disponible dans l’espace agrandi.", hint = "Comparer les ensembles admissibles de deux itérations.")
         ),
         objective = "Choisir dans un espace de Krylov le vecteur minimisant le résidu euclidien.",
-        learningNotes = "Choisir dans un espace de Krylov le vecteur minimisant le résidu euclidien. Avec x₀=0, GMRES cherche xₖ dans Kₖ(A,b) ; Arnoldi transforme cette recherche en petits moindres carrés. Un résidu décroissant n’implique pas une erreur aussi petite si A est mal conditionnée. Redémarrer peut provoquer une stagnation.",
+        learningNotes = "Choisir dans un espace de Krylov le vecteur minimisant le résidu euclidien. Avec x₀=0, GMRES cherche xₖ dans Kₖ(A,b). Arnoldi transforme cette recherche en petits moindres carrés. Un résidu décroissant n’implique pas une erreur aussi petite si A est mal conditionnée. Redémarrer peut provoquer une stagnation.",
         sourceUrls = listOf("https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-7/#lecture-20-the-gmres-algorithm-and-convergence-of-gmres-and-arnoldi"),
         requiresPreviousLesson = true,
         sourceSessionNumber = 20,
@@ -461,7 +461,7 @@ internal object Course_mit_18_335j_2019 {
             Exercise.MultipleChoice(id = "mit_18_335j_2019_s024_e03", prompt = "Pourquoi réordonner les inconnues avant une factorisation creuse ?", options = listOf("Pour supprimer le second membre.", "Pour réduire le remplissage et le coût.", "Pour changer les solutions du système exact.", "Pour rendre toutes les matrices diagonales."), correctOptionIndex = 1, explanation = "Une permutation adéquate garde le problème équivalent mais modifie les motifs intermédiaires.", hint = "Distinguer structure de calcul et solution mathématique.")
         ),
         objective = "Préserver la parcimonie lors de la factorisation.",
-        learningNotes = "Préserver la parcimonie lors de la factorisation. Stocker seulement les coefficients non nuls peut réduire mémoire et calcul ; l’élimination crée néanmoins de nouveaux coefficients, appelés remplissage. L’ordre d’élimination compte. Les graphes d’adjacence et les séparateurs aident à prévoir ce coût, qui dépend de la structure et pas seulement du nombre initial de non-zéros.",
+        learningNotes = "Préserver la parcimonie lors de la factorisation. Stocker seulement les coefficients non nuls peut réduire mémoire et calcul. L’élimination crée néanmoins de nouveaux coefficients, appelés remplissage. L’ordre d’élimination compte. Les graphes d’adjacence et les séparateurs aident à prévoir ce coût, qui dépend de la structure et pas seulement du nombre initial de non-zéros.",
         sourceUrls = listOf("https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-9/#lecture-24-sparse-direct-solvers", "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/bcd746dca8cbf0d5a890f01a72d8ef64_MIT18_335JS19_lec24.pdf"),
         requiresPreviousLesson = true,
         sourceSessionNumber = 24,
@@ -499,7 +499,7 @@ internal object Course_mit_18_335j_2019 {
             Exercise.MultipleChoice(id = "mit_18_335j_2019_s026_e03", prompt = "Quand l’adjoint apporte-t-il typiquement un fort gain ?", options = listOf("Un objectif différent pour chaque paramètre, sans calcul d’état.", "Aucune dépendance des données.", "Quand il permet d’ignorer toutes les contraintes.", "Beaucoup de paramètres et peu d’objectifs scalaires."), correctOptionIndex = 3, explanation = "Le coût d’un adjoint dépend surtout du nombre d’objectifs plutôt que du nombre de paramètres.", hint = "Comparer les nombres d’entrées et de sorties.")
         ),
         objective = "Éviter une résolution indépendante par paramètre.",
-        learningNotes = "Éviter une résolution indépendante par paramètre. Pour A(p)u=b(p) et un objectif réel g(u,p), choisir λ par Aᵀλ=∂g/∂u. Alors dg/dp=∂g/∂p+λᵀ(db/dp−(dA/dp)u). Les signes dépendent de la convention du Lagrangien ; garder une convention cohérente. Un objectif scalaire avec beaucoup de paramètres rend l’adjoint particulièrement intéressant.",
+        learningNotes = "Éviter une résolution indépendante par paramètre. Pour A(p)u=b(p) et un objectif réel g(u,p), choisir λ par Aᵀλ=∂g/∂u. Alors dg/dp=∂g/∂p+λᵀ(db/dp−(dA/dp)u). Les signes dépendent de la convention du Lagrangien. Garder une convention cohérente. Un objectif scalaire avec beaucoup de paramètres rend l’adjoint particulièrement intéressant.",
         sourceUrls = listOf("https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-9/#lecture-26-adjoint-methods", "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/35b30d8c4896f95264ee1b135fe031f2_MIT18_335JS19_lec26.pdf"),
         requiresPreviousLesson = true,
         sourceSessionNumber = 26,
@@ -518,7 +518,7 @@ internal object Course_mit_18_335j_2019 {
             Exercise.MultipleChoice(id = "mit_18_335j_2019_s027_e03", prompt = "Pourquoi un adjoint de récurrence peut-il consommer beaucoup de mémoire ?", options = listOf("Il supprime toutes les dépendances temporelles.", "Il interdit de recalculer un état.", "Il peut avoir besoin des états de nombreuses étapes antérieures.", "Chaque gradient doit être infini."), correctOptionIndex = 2, explanation = "Stockage et recalcul peuvent être échangés, par exemple via des points de contrôle.", hint = "Remonter une étape demande ses données locales.")
         ),
         objective = "Propager une sensibilité à travers une suite.",
-        learningNotes = "Propager une sensibilité à travers une suite. Pour xₖ₊₁=Fₖ(xₖ,p), la différentiation directe suit les dérivées vers l’avant ; l’adjoint remonte les étapes et nécessite les états intermédiaires ou leur recalcul. Pour une valeur propre simple d’une matrice symétrique et un vecteur propre normalisé v, λ′=vᵀA′v. Les valeurs propres multiples nécessitent une analyse supplémentaire.",
+        learningNotes = "Propager une sensibilité à travers une suite. Pour xₖ₊₁=Fₖ(xₖ,p), la différentiation directe suit les dérivées vers l’avant. L’adjoint remonte les étapes et nécessite les états intermédiaires ou leur recalcul. Pour une valeur propre simple d’une matrice symétrique et un vecteur propre normalisé v, λ′=vᵀA′v. Les valeurs propres multiples nécessitent une analyse supplémentaire.",
         sourceUrls = listOf("https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-10/#lecture-27-adjoint-methods-for-eigenproblems-and-recurrence-relations", "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/c34c9784410f2cef610f73af72883427_MIT18_335JS19_lec27.pdf"),
         requiresPreviousLesson = true,
         sourceSessionNumber = 27,
@@ -556,7 +556,7 @@ internal object Course_mit_18_335j_2019 {
             Exercise.MultipleChoice(id = "mit_18_335j_2019_s029_e03", prompt = "Pour une minimisation, que garantit la dualité faible ?", options = listOf("Toute valeur duale admissible est inférieure ou égale à toute valeur primale admissible.", "Les deux optima sont toujours égaux.", "Les multiplicateurs sont tous négatifs.", "Toute contrainte est nécessairement active."), correctOptionIndex = 0, explanation = "Prendre l’infimum du Lagrangien produit une borne inférieure.", hint = "La dualité forte est une propriété supplémentaire.")
         ),
         objective = "Construire des bornes pour une minimisation.",
-        learningNotes = "Construire des bornes pour une minimisation. Avec contraintes gᵢ(x)≤0, L=f+Σλᵢgᵢ et λᵢ≥0. La fonction duale est infₓL ; elle fournit une borne inférieure sur toute valeur primale admissible. La dualité forte demande des hypothèses supplémentaires. La complémentarité lie un multiplicateur positif à une contrainte active.",
+        learningNotes = "Construire des bornes pour une minimisation. Avec contraintes gᵢ(x)≤0, L=f+Σλᵢgᵢ et λᵢ≥0. La fonction duale est infₓL. Elle fournit une borne inférieure sur toute valeur primale admissible. La dualité forte demande des hypothèses supplémentaires. La complémentarité lie un multiplicateur positif à une contrainte active.",
         sourceUrls = listOf("https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-11/#lecture-29-lagrange-dual-problems"),
         requiresPreviousLesson = true,
         sourceSessionNumber = 29,
@@ -594,7 +594,7 @@ internal object Course_mit_18_335j_2019 {
             Exercise.MultipleChoice(id = "mit_18_335j_2019_s031_e03", prompt = "Quelle égalité caractérise la condition sécante sur B₊ ?", options = listOf("B₊=I obligatoirement.", "B₊s=0 toujours.", "B₊s=y.", "B₊y=s pour toute convention."), correctOptionIndex = 2, explanation = "Pour une approximation de Hessienne B, la variation de gradient est approximativement B fois le déplacement.", hint = "La convention inverse H satisferait H₊y=s.")
         ),
         objective = "Vérifier la correction de courbure.",
-        learningNotes = "Vérifier la correction de courbure. Pour B symétrique définie positive, B₊=B−(Bs)(Bs)ᵀ/(sᵀBs)+yyᵀ/(yᵀs). Cette mise à jour satisfait B₊s=y. La condition yᵀs>0 permet de préserver la définition positive ; sans elle, appliquer aveuglément la formule est risqué. Distinguer B, approximation de Hessienne, et son inverse H.",
+        learningNotes = "Vérifier la correction de courbure. Pour B symétrique définie positive, B₊=B−(Bs)(Bs)ᵀ/(sᵀBs)+yyᵀ/(yᵀs). Cette mise à jour satisfait B₊s=y. La condition yᵀs>0 permet de préserver la définition positive. Sans elle, appliquer aveuglément la formule est risqué. Distinguer B, approximation de Hessienne, et son inverse H.",
         sourceUrls = listOf("https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-11/#lecture-30quasi-newton-methods-and-the-bfgs-algorithm-lecture-31derivation-of-the-bfgs-update", "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/1b52b607c223977b35ba1d826e4d8df1_MIT18_335JS19_lec30.pdf"),
         requiresPreviousLesson = true,
         sourceSessionNumber = 31,
@@ -670,7 +670,7 @@ internal object Course_mit_18_335j_2019 {
             Exercise.MultipleChoice(id = "mit_18_335j_2019_s035_e03", prompt = "Pourquoi éviter d’affirmer une convergence exponentielle pour toute fonction continue ?", options = listOf("Les nœuds de Chebyshev empêchent toute convergence.", "Les polynômes ont toujours une erreur constante.", "La vitesse dépend de sa régularité et de ses singularités.", "Toute fonction continue est analytique."), correctOptionIndex = 2, explanation = "Continuité et analyticité imposent des conditions très différentes.", hint = "Un angle ou une singularité limite la décroissance des coefficients.")
         ),
         objective = "Réduire les oscillations indésirables d’interpolation.",
-        learningNotes = "Réduire les oscillations indésirables d’interpolation. Les polynômes vérifient Tₙ(cos θ)=cos(nθ) et Tₙ₊₁=2xTₙ−Tₙ₋₁. Les nœuds proches des extrémités améliorent l’approximation sur un intervalle. Une fonction analytique peut donner une convergence exponentielle ; une fonction seulement peu régulière n’a pas cette garantie. Adapter d’abord l’intervalle vers [−1,1].",
+        learningNotes = "Réduire les oscillations indésirables d’interpolation. Les polynômes vérifient Tₙ(cos θ)=cos(nθ) et Tₙ₊₁=2xTₙ−Tₙ₋₁. Les nœuds proches des extrémités améliorent l’approximation sur un intervalle. Une fonction analytique peut donner une convergence exponentielle. Une fonction seulement peu régulière n’a pas cette garantie. Adapter d’abord l’intervalle vers [−1,1].",
         sourceUrls = listOf("https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-13/#lecture-35-chebyshev-approximation"),
         requiresPreviousLesson = true,
         sourceSessionNumber = 35,
@@ -689,7 +689,7 @@ internal object Course_mit_18_335j_2019 {
             Exercise.MultipleChoice(id = "mit_18_335j_2019_s036_e03", prompt = "Pour intégrer un poids singulier connu w(x) fois une fonction douce, quelle idée est pertinente ?", options = listOf("Évaluer seulement au point singulier.", "Construire une quadrature adaptée à w.", "Ignorer le poids.", "Supposer l’intégrale toujours divergente."), correctOptionIndex = 1, explanation = "Un poids intégrable peut être traité dans les poids et nœuds de la règle.", hint = "La singularité connue n’a pas à être réapprise pour chaque fonction.")
         ),
         objective = "Choisir une règle adaptée au poids.",
-        learningNotes = "Choisir une règle adaptée au poids. Une formule à n nœuds de Gauss possède une exactitude polynomiale jusqu’au degré 2n−1 dans son cadre usuel de poids positif. Les nœuds sont liés à des polynômes orthogonaux. Les poids d’intégration et les valeurs de la fonction sont des objets distincts ; un poids singulier connu peut être incorporé dans la construction.",
+        learningNotes = "Choisir une règle adaptée au poids. Une formule à n nœuds de Gauss possède une exactitude polynomiale jusqu’au degré 2n−1 dans son cadre usuel de poids positif. Les nœuds sont liés à des polynômes orthogonaux. Les poids d’intégration et les valeurs de la fonction sont des objets distincts. Un poids singulier connu peut être incorporé dans la construction.",
         sourceUrls = listOf("https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-13/#lecture-36-integration-with-weight-functions-and-gaussian-quadrature"),
         requiresPreviousLesson = true,
         sourceSessionNumber = 36,
@@ -708,7 +708,7 @@ internal object Course_mit_18_335j_2019 {
             Exercise.MultipleChoice(id = "mit_18_335j_2019_s037_e03", prompt = "Que signifie une adaptation h ?", options = listOf("Subdiviser le domaine d’intégration.", "Augmenter seulement le degré sans changer les intervalles.", "Changer automatiquement la dimension physique.", "Éliminer toute estimation d’erreur."), correctOptionIndex = 0, explanation = "L’adaptation h modifie la taille des cellules ; p modifie l’ordre local.", hint = "Distinguer taille des sous-domaines et degré.")
         ),
         objective = "Répartir l’effort où l’intégrande le demande.",
-        learningNotes = "Répartir l’effort où l’intégrande le demande. Comparer des règles emboîtées fournit un indicateur a posteriori, qui reste une estimation. L’adaptation h subdivise les intervalles ; l’adaptation p augmente l’ordre. Un produit tensoriel de m points par axe en dimension d exige mᵈ évaluations : c’est une manifestation de la malédiction de la dimension.",
+        learningNotes = "Répartir l’effort où l’intégrande le demande. Comparer des règles emboîtées fournit un indicateur a posteriori, qui reste une estimation. L’adaptation h subdivise les intervalles. L’adaptation p augmente l’ordre. Un produit tensoriel de m points par axe en dimension d exige mᵈ évaluations : c’est une manifestation de la malédiction de la dimension.",
         sourceUrls = listOf("https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-13/#lecture-37-adaptive-and-multidimensional-quadrature"),
         requiresPreviousLesson = true,
         sourceSessionNumber = 37,
@@ -727,7 +727,7 @@ internal object Course_mit_18_335j_2019 {
             Exercise.MultipleChoice(id = "mit_18_335j_2019_s038_e03", prompt = "Une FFT modifie-t-elle la transformation mathématique recherchée ?", options = listOf("Oui, elle supprime toute fréquence négative.", "Oui, elle ne garde que le terme constant.", "Oui, elle rend les données exactes malgré les arrondis.", "Non, elle calcule la même DFT avec une organisation plus efficace."), correctOptionIndex = 3, explanation = "L’amélioration porte sur l’algorithme et non sur la définition de la DFT.", hint = "Distinguer problème et méthode de calcul.")
         ),
         objective = "Fixer la convention avant de calculer.",
-        learningNotes = "Fixer la convention avant de calculer. Ici Xₖ=Σⱼxⱼ exp(−2πi jk/N), sans normalisation à l’aller ; l’inverse contient 1/N. La FFT calcule la même DFT en réorganisant les opérations, souvent par séparation indices pairs et impairs. Sa complexité usuelle est O(N log N), contre O(N²) pour une évaluation directe.",
+        learningNotes = "Fixer la convention avant de calculer. Ici Xₖ=Σⱼxⱼ exp(−2πi jk/N), sans normalisation à l’aller. L’inverse contient 1/N. La FFT calcule la même DFT en réorganisant les opérations, souvent par séparation indices pairs et impairs. Sa complexité usuelle est O(N log N), contre O(N²) pour une évaluation directe.",
         sourceUrls = listOf("https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-14/#lecture-38-the-discrete-fourier-transform-dft-and-fft-algorithms", "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/edf5b798bef2f1cfe687a6bfcd32a03a_MIT18_335JS19_lec38.pdf"),
         requiresPreviousLesson = true,
         sourceSessionNumber = 38,
@@ -746,7 +746,7 @@ internal object Course_mit_18_335j_2019 {
             Exercise.MultipleChoice(id = "mit_18_335j_2019_s039_e03", prompt = "Pourquoi une unique variante FFT n’est-elle pas la plus rapide partout ?", options = listOf("La multiplication complexe est impossible sur certaines tailles.", "Les nombres premiers n’ont aucune DFT.", "Les coûts de mémoire, instructions et tailles de problème diffèrent.", "La DFT est définie différemment sur chaque ordinateur."), correctOptionIndex = 2, explanation = "La planification explore des compromis d’implantation pour un même calcul mathématique.", hint = "La complexité asymptotique ne fixe pas tous les coûts.")
         ),
         objective = "Adapter une transformée à la machine.",
-        learningNotes = "Adapter une transformée à la machine. Plusieurs factorisations et organisations calculent la même DFT ; leur vitesse dépend de la taille, de la mémoire et du matériel. FFTW utilise une planification pour choisir une stratégie. Le coût de préparation peut être amorti par des exécutions répétées. Une mesure de performance doit annoncer matériel, tailles et convention de normalisation.",
+        learningNotes = "Adapter une transformée à la machine. Plusieurs factorisations et organisations calculent la même DFT. Leur vitesse dépend de la taille, de la mémoire et du matériel. FFTW utilise une planification pour choisir une stratégie. Le coût de préparation peut être amorti par des exécutions répétées. Une mesure de performance doit annoncer matériel, tailles et convention de normalisation.",
         sourceUrls = listOf("https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-14/#lecture-39-fft-algorithms-and-fftw", "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/f4e0fe09545fcf1a9fa8928385fcf412_MIT18_335JS19_lec39.pdf"),
         requiresPreviousLesson = true,
         sourceSessionNumber = 39,

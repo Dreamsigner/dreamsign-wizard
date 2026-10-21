@@ -4,10 +4,27 @@ package com.duolingo.app.ui.math
 sealed interface LearningTextSegment {
     data class Text(val value: String) : LearningTextSegment
     data class Math(val latex: String, val display: Boolean) : LearningTextSegment
+    data class Strong(val value: String) : LearningTextSegment
+    data class Code(val value: String) : LearningTextSegment
 }
 
 /** Splits learning copy into text and math while leaving unmatched delimiters untouched. */
 fun parseLearningText(source: String, recognizeLegacyMath: Boolean = false): List<LearningTextSegment> {
+    val markup = Regex("`([^`\\n]+)`|(?<![A-Za-z0-9_])\\*\\*([^*\\n]+)\\*\\*(?![A-Za-z0-9_])")
+    val matches = markup.findAll(source).toList()
+    if (matches.isEmpty()) return parseMathSegments(source, recognizeLegacyMath)
+    val segments = mutableListOf<LearningTextSegment>()
+    var cursor = 0
+    matches.forEach { match ->
+        if (match.range.first > cursor) segments += parseMathSegments(source.substring(cursor, match.range.first), recognizeLegacyMath)
+        segments += if (match.groups[1] != null) LearningTextSegment.Code(match.groupValues[1]) else LearningTextSegment.Strong(match.groupValues[2])
+        cursor = match.range.last + 1
+    }
+    if (cursor < source.length) segments += parseMathSegments(source.substring(cursor), recognizeLegacyMath)
+    return segments
+}
+
+private fun parseMathSegments(source: String, recognizeLegacyMath: Boolean): List<LearningTextSegment> {
     val result = mutableListOf<LearningTextSegment>()
     var cursor = 0
     var textStart = 0
@@ -56,7 +73,8 @@ private fun parseLegacyMath(source: String): List<LearningTextSegment> {
         powerPatterns.forEach { pattern -> pattern.findAll(source).forEach { match ->
                 normalizeMathFormula(match.value)?.let { add(MathCandidate(match.range.first, match.range.last + 1, it)) }
             } }
-        Regex("(?<![A-Za-z0-9])\\d+/\\d+(?![A-Za-z0-9])").findAll(source).forEach { match ->
+        // A date (2026/01/09), path or chained division is not a standalone fraction.
+        Regex("(?<![A-Za-z0-9_./])\\d+/\\d+(?![A-Za-z0-9_/])(?!\\.[A-Za-z0-9])").findAll(source).forEach { match ->
             normalizeMathFormula(match.value)?.let { add(MathCandidate(match.range.first, match.range.last + 1, it)) }
         }
     }.sortedWith(compareBy<MathCandidate> { it.start }.thenByDescending { it.end })
@@ -76,6 +94,7 @@ private fun parseLegacyMath(source: String): List<LearningTextSegment> {
 
 /** Plain-text alternative for accessibility and platforms without the desktop TeX renderer. */
 fun mathAccessibilityDescription(latex: String): String = latex
+    .replace(Regex("\\\\(?:mathbf|mathrm|text|operatorname)\\{([^{}]*)\\}"), "$1")
     .replace("\\begin{bmatrix}", "matrice ")
     .replace("\\end{bmatrix}", "")
     .replace("\\\\", "; ")
@@ -88,10 +107,15 @@ fun mathAccessibilityDescription(latex: String): String = latex
     .replace("\\times", " fois ")
     .replace("\\cdot", " fois ")
     .replace("\\to", " tend vers ")
+    .replace("\\longrightarrow", " donne ")
+    .replace("\\rightarrow", " donne ")
+    .replace("\\leftarrow", " reçoit ")
     .replace("\\prime", " prime ")
     .replace(Regex("\\\\(?:left|right)\\b"), "")
     .replace(Regex("\\\\(?:,|;|!|quad|qquad)"), " ")
     .replace(Regex("\\\\([A-Za-z]+)"), "$1")
+    .replace(Regex("_\\{?([A-Za-z0-9]+)\\}?")) { " indice ${it.groupValues[1]} " }
+    .replace(Regex("\\^\\{?([A-Za-z0-9]+)\\}?")) { " puissance ${it.groupValues[1]} " }
     .replace(Regex("[{}]"), "")
     .replace(Regex("\\s+"), " ")
     .replace(Regex("\\s+([,;])"), "$1")

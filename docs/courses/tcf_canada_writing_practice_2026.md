@@ -29,13 +29,12 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Expression écrite — Tâche 1<br>
 **Objectif :** Produire un message de 60 à 120 mots qui répond à une situation précise.
 
-<p>Dans le premier format d’expression écrite, identifie le destinataire et l’objectif du message avant de rédiger. Note les informations indispensables : qui, quoi, où, quand et ce que tu attends du lecteur. Un message amical peut commencer et se terminer simplement ; un destinataire professionnel demande un registre cohérent. Organise ensuite les informations pour que le lecteur puisse agir sans deviner un détail. Relis les accords, les temps et la ponctuation, puis vérifie la longueur. L’atelier ci-dessous est une création originale, avec une réponse possible et une grille de relecture. Le comptage par espaces est indicatif. Cocher cette grille termine un entraînement ; cela ne certifie pas la qualité linguistique du texte. Une correction humaine reste utile.</p>
+Dans le premier format d’expression écrite, identifie le destinataire et l’objectif du message avant de rédiger. Note les informations indispensables : qui, quoi, où, quand et ce que tu attends du lecteur. Un message amical peut commencer et se terminer simplement. Un destinataire professionnel demande un registre cohérent. Organise ensuite les informations pour que le lecteur puisse agir sans deviner un détail. Relis les accords, les temps et la ponctuation, puis vérifie la longueur. L’atelier ci-dessous est une création originale, avec une réponse possible et une grille de relecture. Le comptage par espaces est indicatif. Cocher cette grille termine un entraînement. Cela ne certifie pas la qualité linguistique du texte. Une correction humaine reste utile.
 
 ### Références de cette séance
 
 <ul>
 <li><a href="https://www.france-education-international.fr/test/tcf-canada" rel="noopener">Expression écrite — Tâche 1 — Section officielle</a> <em>(Section de séance; support lié à cette séance; fr)</em></li>
-<li><a href="https://www.youtube.com/channel/UCNbFgnDsoWTL4jG9LGoPE8A" rel="noopener">Expression écrite — Tâche 1 — Vidéo</a> <em>(Vidéo; support lié à cette séance; fr)</em><br>Page source : <a href="https://www.france-education-international.fr/test/tcf-canada" rel="noopener">https://www.france-education-international.fr/test/tcf-canada</a></li>
 <li><a href="https://www.france-education-international.fr/document/tcf-tp-qc-ca-exemple-epreuve-ee" rel="noopener">Expression écrite — Tâche 1 — Section officielle</a> <em>(Section de séance; support lié à cette séance; fr)</em></li>
 </ul>
 
@@ -78,13 +77,12 @@ Cette grille sert à la pratique; elle ne calcule ni ne prédit un score officie
 **Séance source :** Expression écrite — Tâche 2<br>
 **Objectif :** Rédiger un récit de 120 à 150 mots pour plusieurs lecteurs, avec un point de vue expliqué.
 
-<p>Le deuxième format associe un compte rendu ou un récit à un commentaire destiné à plusieurs personnes. Présente d’abord le contexte pour que tes lecteurs comprennent la situation. Sélectionne quelques événements significatifs et relie-les dans un ordre lisible : avant, pendant, puis après. Le passé composé fait avancer le récit ; l’imparfait peut présenter une habitude ou le décor. Ajoute une appréciation personnelle justifiée par un détail concret, plutôt qu’une série d’adjectifs vagues. Termine par un bilan ou un conseil cohérent avec ton expérience. L’atelier propose une situation originale et un exemple parmi d’autres. La relecture porte sur la réalisation de la tâche et la clarté ; elle ne remplace pas l’évaluation de la langue par un enseignant.</p>
+Le deuxième format associe un compte rendu ou un récit à un commentaire destiné à plusieurs personnes. Présente d’abord le contexte pour que tes lecteurs comprennent la situation. Sélectionne quelques événements significatifs et relie-les dans un ordre lisible : avant, pendant, puis après. Le passé composé fait avancer le récit. L’imparfait peut présenter une habitude ou le décor. Ajoute une appréciation personnelle justifiée par un détail concret, plutôt qu’une série d’adjectifs vagues. Termine par un bilan ou un conseil cohérent avec ton expérience. L’atelier propose une situation originale et un exemple parmi d’autres. La relecture porte sur la réalisation de la tâche et la clarté. Elle ne remplace pas l’évaluation de la langue par un enseignant.
 
 ### Références de cette séance
 
 <ul>
 <li><a href="https://www.france-education-international.fr/test/tcf-canada" rel="noopener">Expression écrite — Tâche 2 — Section officielle</a> <em>(Section de séance; support lié à cette séance; fr)</em></li>
-<li><a href="https://www.youtube.com/channel/UCNbFgnDsoWTL4jG9LGoPE8A" rel="noopener">Expression écrite — Tâche 2 — Vidéo</a> <em>(Vidéo; support lié à cette séance; fr)</em><br>Page source : <a href="https://www.france-education-international.fr/test/tcf-canada" rel="noopener">https://www.france-education-international.fr/test/tcf-canada</a></li>
 <li><a href="https://www.france-education-international.fr/document/tcf-tp-qc-ca-exemple-epreuve-ee" rel="noopener">Expression écrite — Tâche 2 — Section officielle</a> <em>(Section de séance; support lié à cette séance; fr)</em></li>
 </ul>
 
@@ -127,13 +125,12 @@ Cette grille sert à la pratique; elle ne calcule ni ne prédit un score officie
 **Séance source :** Expression écrite — Tâche 3<br>
 **Objectif :** Reformuler deux points de vue et présenter une opinion argumentée en 120 à 180 mots.
 
-<p>Pour comparer deux points de vue, commence par distinguer ce que chaque document affirme et les raisons qu’il donne. Cherche ensuite un accord ou une opposition précise. Reformule ces idées avec tes propres mots avant d’exprimer ton avis : attribuer une idée au mauvais auteur déforme la comparaison. Ton opinion doit apporter un raisonnement, un exemple ou une condition, plutôt qu’une simple préférence. Tu peux reconnaître une limite à ta position sans perdre ta cohérence. Garde une place pour une conclusion qui répond au sujet. Les deux courts documents ci-dessous et l’exemple de réponse sont des créations originales. La grille sert à relire cette production ; elle n’applique aucun barème officiel et ne permet pas de prédire un résultat au TCF.</p>
+Pour comparer deux points de vue, commence par distinguer ce que chaque document affirme et les raisons qu’il donne. Cherche ensuite un accord ou une opposition précise. Reformule ces idées avec tes propres mots avant d’exprimer ton avis : attribuer une idée au mauvais auteur déforme la comparaison. Ton opinion doit apporter un raisonnement, un exemple ou une condition, plutôt qu’une simple préférence. Tu peux reconnaître une limite à ta position sans perdre ta cohérence. Garde une place pour une conclusion qui répond au sujet. Les deux courts documents ci-dessous et l’exemple de réponse sont des créations originales. La grille sert à relire cette production. Elle n’applique aucun barème officiel et ne permet pas de prédire un résultat au TCF.
 
 ### Références de cette séance
 
 <ul>
 <li><a href="https://www.france-education-international.fr/test/tcf-canada" rel="noopener">Expression écrite — Tâche 3 — Section officielle</a> <em>(Section de séance; support lié à cette séance; fr)</em></li>
-<li><a href="https://www.youtube.com/channel/UCNbFgnDsoWTL4jG9LGoPE8A" rel="noopener">Expression écrite — Tâche 3 — Vidéo</a> <em>(Vidéo; support lié à cette séance; fr)</em><br>Page source : <a href="https://www.france-education-international.fr/test/tcf-canada" rel="noopener">https://www.france-education-international.fr/test/tcf-canada</a></li>
 <li><a href="https://www.france-education-international.fr/document/tcf-tp-qc-ca-exemple-epreuve-ee" rel="noopener">Expression écrite — Tâche 3 — Section officielle</a> <em>(Section de séance; support lié à cette séance; fr)</em></li>
 </ul>
 

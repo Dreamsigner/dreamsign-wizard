@@ -29,13 +29,12 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Atelier original — annonce pratique<br>
 **Objectif :** Identifier le nouvel horaire et les démarches utiles dans un document sonore.
 
-<p>Une annonce pratique rassemble souvent une situation initiale et une modification. Écoute les marqueurs qui opposent ces informations : finalement, reporté, au lieu de, ou désormais. Une date entendue au début n’est pas forcément la date à retenir ; il faut comprendre ce qui change. Repère aussi à qui s’adressent les consignes : tous les participants ou seulement les nouveaux inscrits. Pendant cet atelier, tu peux réécouter le document pour apprendre à distinguer l’essentiel des détails. Cette possibilité relève de l’entraînement, pas d’une simulation intégrale de l’examen. Le texte sonore est original, lu par une voix de synthèse française. La transcription apparaît en correction pour comparer précisément ce que tu as compris avec les paroles prononcées.</p>
+Une annonce pratique rassemble souvent une situation initiale et une modification. Écoute les marqueurs qui opposent ces informations : finalement, reporté, au lieu de, ou désormais. Une date entendue au début n’est pas forcément la date à retenir. Il faut comprendre ce qui change. Repère aussi à qui s’adressent les consignes : tous les participants ou seulement les nouveaux inscrits. Pendant cet atelier, tu peux réécouter le document pour apprendre à distinguer l’essentiel des détails. Cette possibilité relève de l’entraînement, pas d’une simulation intégrale de l’examen. Le texte sonore est original, lu par une voix de synthèse française. La transcription apparaît en correction pour comparer précisément ce que tu as compris avec les paroles prononcées.
 
 ### Références de cette séance
 
 <ul>
 <li><a href="https://www.france-education-international.fr/test/tcf-canada" rel="noopener">Atelier original — annonce pratique — Section officielle</a> <em>(Section de séance; support lié à cette séance; fr)</em></li>
-<li><a href="https://www.youtube.com/channel/UCNbFgnDsoWTL4jG9LGoPE8A" rel="noopener">Atelier original — annonce pratique — Vidéo</a> <em>(Vidéo; support lié à cette séance; fr)</em><br>Page source : <a href="https://www.france-education-international.fr/test/tcf-canada" rel="noopener">https://www.france-education-international.fr/test/tcf-canada</a></li>
 </ul>
 
 ### Exercices
@@ -108,13 +107,12 @@ Audio original du dépôt : <a href="../../composeApp/src/commonMain/composeReso
 **Séance source :** Atelier original — message professionnel<br>
 **Objectif :** Distinguer une explication, une décision et la demande adressée au destinataire.
 
-<p>Dans un message vocal, la personne qui parle peut expliquer un problème avant de formuler sa demande. Sépare ces fonctions : ce qui s’est passé, ce qu’elle va faire et ce qu’elle demande au destinataire. Les pronoms et les formes verbales aident à suivre les responsabilités : je t’envoie ne signifie pas envoie-moi. Une justification peut occuper plusieurs phrases, sans être l’objectif principal de l’appel. Après une première écoute, reformule mentalement le message en une phrase simple. Vérifie ensuite les détails qui permettent de répondre aux questions. Le document de cet atelier est une fiction originale destinée à l’écoute guidée. Sa synthèse vocale et les réécoutes autorisées ne reproduisent pas toutes les conditions d’une épreuve officielle.</p>
+Dans un message vocal, la personne qui parle peut expliquer un problème avant de formuler sa demande. Sépare ces fonctions : ce qui s’est passé, ce qu’elle va faire et ce qu’elle demande au destinataire. Les pronoms et les formes verbales aident à suivre les responsabilités : je t’envoie ne signifie pas envoie-moi. Une justification peut occuper plusieurs phrases, sans être l’objectif principal de l’appel. Après une première écoute, reformule mentalement le message en une phrase simple. Vérifie ensuite les détails qui permettent de répondre aux questions. Le document de cet atelier est une fiction originale destinée à l’écoute guidée. Sa synthèse vocale et les réécoutes autorisées ne reproduisent pas toutes les conditions d’une épreuve officielle.
 
 ### Références de cette séance
 
 <ul>
 <li><a href="https://www.france-education-international.fr/test/tcf-canada" rel="noopener">Atelier original — message professionnel — Section officielle</a> <em>(Section de séance; support lié à cette séance; fr)</em></li>
-<li><a href="https://www.youtube.com/channel/UCNbFgnDsoWTL4jG9LGoPE8A" rel="noopener">Atelier original — message professionnel — Vidéo</a> <em>(Vidéo; support lié à cette séance; fr)</em><br>Page source : <a href="https://www.france-education-international.fr/test/tcf-canada" rel="noopener">https://www.france-education-international.fr/test/tcf-canada</a></li>
 </ul>
 
 ### Exercices
@@ -187,13 +185,12 @@ Audio original du dépôt : <a href="../../composeApp/src/commonMain/composeReso
 **Séance source :** Atelier original — opinion argumentée<br>
 **Objectif :** Reconnaître une position nuancée et les mesures proposées pour la mettre à l’épreuve.
 
-<p>Une opinion peut être favorable à une idée tout en refusant certaines façons de l’appliquer. Les expressions à condition que, cependant ou à mon avis indiquent comment les arguments s’articulent. Ne classe donc pas automatiquement une personne parmi les opposants parce qu’elle décrit un risque. Cherche sa conclusion et les conditions qui l’accompagnent. Distingue aussi un constat présenté comme certain d’une proposition à tester. Reformule ensuite le point de vue sans en supprimer la nuance. L’atelier utilise une prise de parole fictive et originale ; aucune étude ni statistique réelle n’est affirmée par ce document. La transcription et la correction permettent de vérifier l’interprétation à partir des paroles, sans calculer de niveau officiel de langue.</p>
+Une opinion peut être favorable à une idée tout en refusant certaines façons de l’appliquer. Les expressions à condition que, cependant ou à mon avis indiquent comment les arguments s’articulent. Ne classe donc pas automatiquement une personne parmi les opposants parce qu’elle décrit un risque. Cherche sa conclusion et les conditions qui l’accompagnent. Distingue aussi un constat présenté comme certain d’une proposition à tester. Reformule ensuite le point de vue sans en supprimer la nuance. L’atelier utilise une prise de parole fictive et originale. Aucune étude ni statistique réelle n’est affirmée par ce document. La transcription et la correction permettent de vérifier l’interprétation à partir des paroles, sans calculer de niveau officiel de langue.
 
 ### Références de cette séance
 
 <ul>
 <li><a href="https://www.france-education-international.fr/test/tcf-canada" rel="noopener">Atelier original — opinion argumentée — Section officielle</a> <em>(Section de séance; support lié à cette séance; fr)</em></li>
-<li><a href="https://www.youtube.com/channel/UCNbFgnDsoWTL4jG9LGoPE8A" rel="noopener">Atelier original — opinion argumentée — Vidéo</a> <em>(Vidéo; support lié à cette séance; fr)</em><br>Page source : <a href="https://www.france-education-international.fr/test/tcf-canada" rel="noopener">https://www.france-education-international.fr/test/tcf-canada</a></li>
 </ul>
 
 ### Exercices

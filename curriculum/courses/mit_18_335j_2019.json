@@ -15,7 +15,7 @@
       "kind": "lesson",
       "title": "Newton : calculer et analyser une racine",
       "objective": "Comparer convergence, coût et précision.",
-      "learningNotes": "Comparer convergence, coût et précision. Pour f(x)=x²−a, Newton donne xₖ₊₁=(xₖ+a/xₖ)/2. Si a>0 et x₀>0, les itérés restent positifs ; près de √a, l’erreur se comporte quadratiquement. Une bonne méthode peut néanmoins stagner lorsque les arrondis dominent. Un petit résidu ne remplace pas une analyse du conditionnement.",
+      "learningNotes": "Comparer convergence, coût et précision. Pour f(x)=x²−a, Newton donne xₖ₊₁=(xₖ+a/xₖ)/2. Si a>0 et x₀>0, les itérés restent positifs. Près de √a, l’erreur se comporte quadratiquement. Une bonne méthode peut néanmoins stagner lorsque les arrondis dominent. Un petit résidu ne remplace pas une analyse du conditionnement.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-1/#lecture-1-course-overview-newtons-method-for-root-finding",
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/0a734ecc94b60a26213488e68588bc8d_MIT18_335JS19_lec1.pdf"
@@ -130,7 +130,7 @@
       "kind": "lesson",
       "title": "Sommer sans confondre stabilité et précision",
       "objective": "Analyser l’accumulation des erreurs.",
-      "learningNotes": "Analyser l’accumulation des erreurs. Une somme calculée peut être la somme exacte d’entrées légèrement perturbées : c’est la stabilité arrière. L’erreur relative avant peut pourtant exploser si des termes se compensent. La sommation par paires réduit la profondeur des additions ; elle ne supprime pas le mauvais conditionnement intrinsèque d’une somme presque nulle.",
+      "learningNotes": "Analyser l’accumulation des erreurs. Une somme calculée peut être la somme exacte d’entrées légèrement perturbées : c’est la stabilité arrière. L’erreur relative avant peut pourtant exploser si des termes se compensent. La sommation par paires réduit la profondeur des additions. Elle ne supprime pas le mauvais conditionnement intrinsèque d’une somme presque nulle.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-2/#lecture-3-floating-point-summation-and-backwards-stability"
       ],
@@ -302,7 +302,7 @@
       "kind": "lesson",
       "title": "Équations différentielles et choix du solveur",
       "objective": "Relier stabilité temporelle et choix logiciel.",
-      "learningNotes": "Relier stabilité temporelle et choix logiciel. La séance invitée présente solveurs, rigidité et adaptativité ; notre exemple d’Euler est une pratique originale élémentaire. Pour y′=λy, Euler explicite multiplie par 1+hλ. Avec λ réel négatif, il faut |1+hλ|≤1 pour ne pas amplifier ce mode. La précision et la stabilité imposent des contraintes différentes.",
+      "learningNotes": "Relier stabilité temporelle et choix logiciel. La séance invitée présente solveurs, rigidité et adaptativité. Notre exemple d’Euler est une pratique originale élémentaire. Pour y′=λy, Euler explicite multiplie par 1+hλ. Avec λ réel négatif, il faut |1+hλ|≤1 pour ne pas amplifier ce mode. La précision et la stabilité imposent des contraintes différentes.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-3/#lecture-6-numerical-methods-for-ordinary-differential-equations",
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/469d460f74800c8a1135946a64dee01f_MIT18_335JS19_lec6.pdf"
@@ -360,7 +360,7 @@
       "kind": "lesson",
       "title": "SVD, approximation et sensibilité",
       "objective": "Exploiter A=UΣV*.",
-      "learningNotes": "Exploiter A=UΣV*. Les valeurs singulières donnent la norme spectrale, le rang et le conditionnement en norme 2. Tronquer la SVD fournit une approximation de faible rang ; l’erreur spectrale optimale de rang k est σₖ₊₁. Les vecteurs singuliers ne sont pas, en général, les vecteurs propres de A.",
+      "learningNotes": "Exploiter A=UΣV*. Les valeurs singulières donnent la norme spectrale, le rang et le conditionnement en norme 2. Tronquer la SVD fournit une approximation de faible rang. L’erreur spectrale optimale de rang k est σₖ₊₁. Les vecteurs singuliers ne sont pas, en général, les vecteurs propres de A.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-3/#lecture-7-the-svd-its-applications-and-condition-numbers"
       ],
@@ -417,7 +417,7 @@
       "kind": "lesson",
       "title": "Régression, régularisation et GSVD",
       "objective": "Comparer les points de vue algébrique et statistique.",
-      "learningNotes": "Comparer les points de vue algébrique et statistique. Les moindres carrés minimisent ‖Ax−b‖₂² ; QR et SVD évitent de former systématiquement A*A. Une pénalité ‖Lx‖₂² modifie le problème : la GSVD analyse conjointement A et L. La régularisation réduit certaines sensibilités au prix d’un biais ; elle n’ajoute pas de données observées.",
+      "learningNotes": "Comparer les points de vue algébrique et statistique. Les moindres carrés minimisent ‖Ax−b‖₂². QR et SVD évitent de former systématiquement A*A. Une pénalité ‖Lx‖₂² modifie le problème : la GSVD analyse conjointement A et L. La régularisation réduit certaines sensibilités au prix d’un biais. Elle n’ajoute pas de données observées.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-3/#lecture-8-linear-regression-and-the-generalized-svd"
       ],
@@ -590,7 +590,7 @@
       "kind": "lesson",
       "title": "Caches et calcul par blocs",
       "objective": "Évaluer aussi les mouvements de données.",
-      "learningNotes": "Évaluer aussi les mouvements de données. Deux codes réalisant le même nombre d’opérations peuvent avoir des temps très différents. Le découpage par blocs augmente la réutilisation des éléments déjà dans le cache. Le modèle de cache idéal simplifie la hiérarchie réelle ; mesurer demeure nécessaire pour choisir tailles et implantation.",
+      "learningNotes": "Évaluer aussi les mouvements de données. Deux codes réalisant le même nombre d’opérations peuvent avoir des temps très différents. Le découpage par blocs augmente la réutilisation des éléments déjà dans le cache. Le modèle de cache idéal simplifie la hiérarchie réelle. Mesurer demeure nécessaire pour choisir tailles et implantation.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-4/#lecture-11-matrix-operations-caches-and-blocking"
       ],
@@ -647,7 +647,7 @@
       "kind": "lesson",
       "title": "Algorithmes sans taille de cache explicite",
       "objective": "Comprendre la récursion cache-oblivious.",
-      "learningNotes": "Comprendre la récursion cache-oblivious. Le programme découpe les problèmes sans coder une taille de cache particulière ; le modèle explique pourquoi certains sous-problèmes finissent par tenir dans chaque niveau de mémoire. La localité spatiale exploite les éléments voisins d’une même ligne. Une bonne borne asymptotique ne garantit pas le meilleur temps pour toutes les petites tailles.",
+      "learningNotes": "Comprendre la récursion cache-oblivious. Le programme découpe les problèmes sans coder une taille de cache particulière. Le modèle explique pourquoi certains sous-problèmes finissent par tenir dans chaque niveau de mémoire. La localité spatiale exploite les éléments voisins d’une même ligne. Une bonne borne asymptotique ne garantit pas le meilleur temps pour toutes les petites tailles.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-5/#lecture-12-cache-oblivious-algorithms-and-spatial-locality"
       ],
@@ -704,7 +704,7 @@
       "kind": "lesson",
       "title": "LU et pivotage partiel",
       "objective": "Factoriser sans inverser explicitement.",
-      "learningNotes": "Factoriser sans inverser explicitement. L’élimination donne PA=LU lorsque des permutations de lignes sont utilisées. Pour plusieurs seconds membres, réutiliser les facteurs et effectuer des résolutions triangulaires. Le pivotage partiel choisit le plus grand module disponible dans la colonne ; il limite les multiplicateurs mais n’exclut pas toute croissance des éléments.",
+      "learningNotes": "Factoriser sans inverser explicitement. L’élimination donne PA=LU lorsque des permutations de lignes sont utilisées. Pour plusieurs seconds membres, réutiliser les facteurs et effectuer des résolutions triangulaires. Le pivotage partiel choisit le plus grand module disponible dans la colonne. Il limite les multiplicateurs mais n’exclut pas toute croissance des éléments.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-5/#lecture-13-lu-factorization-and-partial-pivoting"
       ],
@@ -761,7 +761,7 @@
       "kind": "lesson",
       "title": "Cholesky et décomposition de Schur",
       "objective": "Exploiter les structures matricielles.",
-      "learningNotes": "Exploiter les structures matricielles. Une matrice hermitienne définie positive admet A=LL*. Une factorisation de Schur complexe écrit A=QTQ* avec Q unitaire et T triangulaire ; la diagonale de T contient les valeurs propres. Schur existe sans exiger que A soit diagonalisable. Les matrices triangulaires, bandées et creuses permettent des solveurs spécialisés.",
+      "learningNotes": "Exploiter les structures matricielles. Une matrice hermitienne définie positive admet A=LL*. Une factorisation de Schur complexe écrit A=QTQ* avec Q unitaire et T triangulaire. La diagonale de T contient les valeurs propres. Schur existe sans exiger que A soit diagonalisable. Les matrices triangulaires, bandées et creuses permettent des solveurs spécialisés.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-5/#lecture-14-cholesky-factorization-and-other-specialized-solvers-eigenproblems-and-schur-factorizations"
       ],
@@ -818,7 +818,7 @@
       "kind": "lesson",
       "title": "Réduction de Hessenberg et problèmes propres",
       "objective": "Préparer un calcul itératif des valeurs propres.",
-      "learningNotes": "Préparer un calcul itératif des valeurs propres. Des transformations unitaires de similarité réduisent A à une forme de Hessenberg supérieure ; dans le cas hermitien, elle est tridiagonale. Cette étape réduit le coût des itérations QR. Une matrice compagnon relie racines polynomiales et valeurs propres ; cette reformulation n’efface pas le mauvais conditionnement des racines.",
+      "learningNotes": "Préparer un calcul itératif des valeurs propres. Des transformations unitaires de similarité réduisent A à une forme de Hessenberg supérieure. Dans le cas hermitien, elle est tridiagonale. Cette étape réduit le coût des itérations QR. Une matrice compagnon relie racines polynomiales et valeurs propres. Cette reformulation n’efface pas le mauvais conditionnement des racines.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-6/#lecture-15-eigensolver-algorithms-companion-matrices-ill-conditioning-and-hessenberg-factorization",
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/fc0209dbe68002972f36f172077fb976_MIT18_335JS19_lec15.pdf"
@@ -1047,7 +1047,7 @@
       "kind": "lesson",
       "title": "Redémarrer Arnoldi et Lanczos",
       "objective": "Équilibrer mémoire et convergence.",
-      "learningNotes": "Équilibrer mémoire et convergence. Arnoldi stocke une base croissante ; Lanczos exploite une récurrence courte pour un opérateur hermitien, mais les arrondis peuvent détruire l’orthogonalité et créer des valeurs propres fantômes. Redémarrer réduit la mémoire au risque de perdre des directions utiles. Un redémarrage efficace ne se résume donc pas à garder arbitrairement le dernier vecteur.",
+      "learningNotes": "Équilibrer mémoire et convergence. Arnoldi stocke une base croissante. Lanczos exploite une récurrence courte pour un opérateur hermitien, mais les arrondis peuvent détruire l’orthogonalité et créer des valeurs propres fantômes. Redémarrer réduit la mémoire au risque de perdre des directions utiles. Un redémarrage efficace ne se résume donc pas à garder arbitrairement le dernier vecteur.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-7/#lecture-19-arnoldi-and-lanczos-with-restarting",
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/fa98fed43acb3e2311f6d9328ca31d04_MIT18_335JS19_lec19.pdf"
@@ -1105,7 +1105,7 @@
       "kind": "lesson",
       "title": "GMRES et minimisation du résidu",
       "objective": "Choisir dans un espace de Krylov le vecteur minimisant le résidu euclidien.",
-      "learningNotes": "Choisir dans un espace de Krylov le vecteur minimisant le résidu euclidien. Avec x₀=0, GMRES cherche xₖ dans Kₖ(A,b) ; Arnoldi transforme cette recherche en petits moindres carrés. Un résidu décroissant n’implique pas une erreur aussi petite si A est mal conditionnée. Redémarrer peut provoquer une stagnation.",
+      "learningNotes": "Choisir dans un espace de Krylov le vecteur minimisant le résidu euclidien. Avec x₀=0, GMRES cherche xₖ dans Kₖ(A,b). Arnoldi transforme cette recherche en petits moindres carrés. Un résidu décroissant n’implique pas une erreur aussi petite si A est mal conditionnée. Redémarrer peut provoquer une stagnation.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-7/#lecture-20-the-gmres-algorithm-and-convergence-of-gmres-and-arnoldi"
       ],
@@ -1333,7 +1333,7 @@
       "kind": "lesson",
       "title": "Matrices creuses et remplissage",
       "objective": "Préserver la parcimonie lors de la factorisation.",
-      "learningNotes": "Préserver la parcimonie lors de la factorisation. Stocker seulement les coefficients non nuls peut réduire mémoire et calcul ; l’élimination crée néanmoins de nouveaux coefficients, appelés remplissage. L’ordre d’élimination compte. Les graphes d’adjacence et les séparateurs aident à prévoir ce coût, qui dépend de la structure et pas seulement du nombre initial de non-zéros.",
+      "learningNotes": "Préserver la parcimonie lors de la factorisation. Stocker seulement les coefficients non nuls peut réduire mémoire et calcul. L’élimination crée néanmoins de nouveaux coefficients, appelés remplissage. L’ordre d’élimination compte. Les graphes d’adjacence et les séparateurs aident à prévoir ce coût, qui dépend de la structure et pas seulement du nombre initial de non-zéros.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-9/#lecture-24-sparse-direct-solvers",
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/bcd746dca8cbf0d5a890f01a72d8ef64_MIT18_335JS19_lec24.pdf"
@@ -1449,7 +1449,7 @@
       "kind": "lesson",
       "title": "Calculer un gradient par méthode adjointe",
       "objective": "Éviter une résolution indépendante par paramètre.",
-      "learningNotes": "Éviter une résolution indépendante par paramètre. Pour A(p)u=b(p) et un objectif réel g(u,p), choisir λ par Aᵀλ=∂g/∂u. Alors dg/dp=∂g/∂p+λᵀ(db/dp−(dA/dp)u). Les signes dépendent de la convention du Lagrangien ; garder une convention cohérente. Un objectif scalaire avec beaucoup de paramètres rend l’adjoint particulièrement intéressant.",
+      "learningNotes": "Éviter une résolution indépendante par paramètre. Pour A(p)u=b(p) et un objectif réel g(u,p), choisir λ par Aᵀλ=∂g/∂u. Alors dg/dp=∂g/∂p+λᵀ(db/dp−(dA/dp)u). Les signes dépendent de la convention du Lagrangien. Garder une convention cohérente. Un objectif scalaire avec beaucoup de paramètres rend l’adjoint particulièrement intéressant.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-9/#lecture-26-adjoint-methods",
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/35b30d8c4896f95264ee1b135fe031f2_MIT18_335JS19_lec26.pdf"
@@ -1507,7 +1507,7 @@
       "kind": "lesson",
       "title": "Adjoints des récurrences et des valeurs propres",
       "objective": "Propager une sensibilité à travers une suite.",
-      "learningNotes": "Propager une sensibilité à travers une suite. Pour xₖ₊₁=Fₖ(xₖ,p), la différentiation directe suit les dérivées vers l’avant ; l’adjoint remonte les étapes et nécessite les états intermédiaires ou leur recalcul. Pour une valeur propre simple d’une matrice symétrique et un vecteur propre normalisé v, λ′=vᵀA′v. Les valeurs propres multiples nécessitent une analyse supplémentaire.",
+      "learningNotes": "Propager une sensibilité à travers une suite. Pour xₖ₊₁=Fₖ(xₖ,p), la différentiation directe suit les dérivées vers l’avant. L’adjoint remonte les étapes et nécessite les états intermédiaires ou leur recalcul. Pour une valeur propre simple d’une matrice symétrique et un vecteur propre normalisé v, λ′=vᵀA′v. Les valeurs propres multiples nécessitent une analyse supplémentaire.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-10/#lecture-27-adjoint-methods-for-eigenproblems-and-recurrence-relations",
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/c34c9784410f2cef610f73af72883427_MIT18_335JS19_lec27.pdf"
@@ -1622,7 +1622,7 @@
       "kind": "lesson",
       "title": "Multiplicateurs et dualité de Lagrange",
       "objective": "Construire des bornes pour une minimisation.",
-      "learningNotes": "Construire des bornes pour une minimisation. Avec contraintes gᵢ(x)≤0, L=f+Σλᵢgᵢ et λᵢ≥0. La fonction duale est infₓL ; elle fournit une borne inférieure sur toute valeur primale admissible. La dualité forte demande des hypothèses supplémentaires. La complémentarité lie un multiplicateur positif à une contrainte active.",
+      "learningNotes": "Construire des bornes pour une minimisation. Avec contraintes gᵢ(x)≤0, L=f+Σλᵢgᵢ et λᵢ≥0. La fonction duale est infₓL. Elle fournit une borne inférieure sur toute valeur primale admissible. La dualité forte demande des hypothèses supplémentaires. La complémentarité lie un multiplicateur positif à une contrainte active.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-11/#lecture-29-lagrange-dual-problems"
       ],
@@ -1737,7 +1737,7 @@
       "kind": "lesson",
       "title": "Dériver et contrôler la mise à jour BFGS",
       "objective": "Vérifier la correction de courbure.",
-      "learningNotes": "Vérifier la correction de courbure. Pour B symétrique définie positive, B₊=B−(Bs)(Bs)ᵀ/(sᵀBs)+yyᵀ/(yᵀs). Cette mise à jour satisfait B₊s=y. La condition yᵀs>0 permet de préserver la définition positive ; sans elle, appliquer aveuglément la formule est risqué. Distinguer B, approximation de Hessienne, et son inverse H.",
+      "learningNotes": "Vérifier la correction de courbure. Pour B symétrique définie positive, B₊=B−(Bs)(Bs)ᵀ/(sᵀBs)+yyᵀ/(yᵀs). Cette mise à jour satisfait B₊s=y. La condition yᵀs>0 permet de préserver la définition positive. Sans elle, appliquer aveuglément la formule est risqué. Distinguer B, approximation de Hessienne, et son inverse H.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-11/#lecture-30quasi-newton-methods-and-the-bfgs-algorithm-lecture-31derivation-of-the-bfgs-update",
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/1b52b607c223977b35ba1d826e4d8df1_MIT18_335JS19_lec30.pdf"
@@ -1967,7 +1967,7 @@
       "kind": "lesson",
       "title": "Approximer avec les polynômes de Chebyshev",
       "objective": "Réduire les oscillations indésirables d’interpolation.",
-      "learningNotes": "Réduire les oscillations indésirables d’interpolation. Les polynômes vérifient Tₙ(cos θ)=cos(nθ) et Tₙ₊₁=2xTₙ−Tₙ₋₁. Les nœuds proches des extrémités améliorent l’approximation sur un intervalle. Une fonction analytique peut donner une convergence exponentielle ; une fonction seulement peu régulière n’a pas cette garantie. Adapter d’abord l’intervalle vers [−1,1].",
+      "learningNotes": "Réduire les oscillations indésirables d’interpolation. Les polynômes vérifient Tₙ(cos θ)=cos(nθ) et Tₙ₊₁=2xTₙ−Tₙ₋₁. Les nœuds proches des extrémités améliorent l’approximation sur un intervalle. Une fonction analytique peut donner une convergence exponentielle. Une fonction seulement peu régulière n’a pas cette garantie. Adapter d’abord l’intervalle vers [−1,1].",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-13/#lecture-35-chebyshev-approximation"
       ],
@@ -2024,7 +2024,7 @@
       "kind": "lesson",
       "title": "Poids d’intégration et quadrature de Gauss",
       "objective": "Choisir une règle adaptée au poids.",
-      "learningNotes": "Choisir une règle adaptée au poids. Une formule à n nœuds de Gauss possède une exactitude polynomiale jusqu’au degré 2n−1 dans son cadre usuel de poids positif. Les nœuds sont liés à des polynômes orthogonaux. Les poids d’intégration et les valeurs de la fonction sont des objets distincts ; un poids singulier connu peut être incorporé dans la construction.",
+      "learningNotes": "Choisir une règle adaptée au poids. Une formule à n nœuds de Gauss possède une exactitude polynomiale jusqu’au degré 2n−1 dans son cadre usuel de poids positif. Les nœuds sont liés à des polynômes orthogonaux. Les poids d’intégration et les valeurs de la fonction sont des objets distincts. Un poids singulier connu peut être incorporé dans la construction.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-13/#lecture-36-integration-with-weight-functions-and-gaussian-quadrature"
       ],
@@ -2081,7 +2081,7 @@
       "kind": "lesson",
       "title": "Quadrature adaptative et dimension",
       "objective": "Répartir l’effort où l’intégrande le demande.",
-      "learningNotes": "Répartir l’effort où l’intégrande le demande. Comparer des règles emboîtées fournit un indicateur a posteriori, qui reste une estimation. L’adaptation h subdivise les intervalles ; l’adaptation p augmente l’ordre. Un produit tensoriel de m points par axe en dimension d exige mᵈ évaluations : c’est une manifestation de la malédiction de la dimension.",
+      "learningNotes": "Répartir l’effort où l’intégrande le demande. Comparer des règles emboîtées fournit un indicateur a posteriori, qui reste une estimation. L’adaptation h subdivise les intervalles. L’adaptation p augmente l’ordre. Un produit tensoriel de m points par axe en dimension d exige mᵈ évaluations : c’est une manifestation de la malédiction de la dimension.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-13/#lecture-37-adaptive-and-multidimensional-quadrature"
       ],
@@ -2138,7 +2138,7 @@
       "kind": "lesson",
       "title": "DFT et décomposition FFT",
       "objective": "Fixer la convention avant de calculer.",
-      "learningNotes": "Fixer la convention avant de calculer. Ici Xₖ=Σⱼxⱼ exp(−2πi jk/N), sans normalisation à l’aller ; l’inverse contient 1/N. La FFT calcule la même DFT en réorganisant les opérations, souvent par séparation indices pairs et impairs. Sa complexité usuelle est O(N log N), contre O(N²) pour une évaluation directe.",
+      "learningNotes": "Fixer la convention avant de calculer. Ici Xₖ=Σⱼxⱼ exp(−2πi jk/N), sans normalisation à l’aller. L’inverse contient 1/N. La FFT calcule la même DFT en réorganisant les opérations, souvent par séparation indices pairs et impairs. Sa complexité usuelle est O(N log N), contre O(N²) pour une évaluation directe.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-14/#lecture-38-the-discrete-fourier-transform-dft-and-fft-algorithms",
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/edf5b798bef2f1cfe687a6bfcd32a03a_MIT18_335JS19_lec38.pdf"
@@ -2196,7 +2196,7 @@
       "kind": "lesson",
       "title": "Algorithmes FFT et planification FFTW",
       "objective": "Adapter une transformée à la machine.",
-      "learningNotes": "Adapter une transformée à la machine. Plusieurs factorisations et organisations calculent la même DFT ; leur vitesse dépend de la taille, de la mémoire et du matériel. FFTW utilise une planification pour choisir une stratégie. Le coût de préparation peut être amorti par des exécutions répétées. Une mesure de performance doit annoncer matériel, tailles et convention de normalisation.",
+      "learningNotes": "Adapter une transformée à la machine. Plusieurs factorisations et organisations calculent la même DFT. Leur vitesse dépend de la taille, de la mémoire et du matériel. FFTW utilise une planification pour choisir une stratégie. Le coût de préparation peut être amorti par des exécutions répétées. Une mesure de performance doit annoncer matériel, tailles et convention de normalisation.",
       "sourceUrls": [
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/pages/week-14/#lecture-39-fft-algorithms-and-fftw",
         "https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/f4e0fe09545fcf1a9fa8928385fcf412_MIT18_335JS19_lec39.pdf"

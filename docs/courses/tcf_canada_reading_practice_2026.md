@@ -29,13 +29,12 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Atelier original — message pratique<br>
 **Objectif :** Retrouver l’horaire utile, appliquer une exception et déduire l’action attendue dans un message écrit.
 
-<p>Avant de répondre à un message pratique, identifie qui écrit, à qui et pour obtenir quelle action. Repère ensuite les informations qui remplacent une situation initiale : finalement, désormais ou au lieu de peuvent modifier un horaire ou un lieu. Distingue les consignes générales des règles destinées à un groupe précis. Une exception concernant les personnes déjà inscrites ne supprime pas les autres conditions. Pour une question d’inférence, relie les phrases sans ajouter une règle extérieure au texte. Compare enfin chaque option avec le document entier, car un horaire cité peut être réel mais ne plus être celui à retenir. Le message de cet atelier est une fiction originale ; relis-le à chaque question plutôt que de chercher à mémoriser la correction.</p>
+Avant de répondre à un message pratique, identifie qui écrit, à qui et pour obtenir quelle action. Repère ensuite les informations qui remplacent une situation initiale : finalement, désormais ou au lieu de peuvent modifier un horaire ou un lieu. Distingue les consignes générales des règles destinées à un groupe précis. Une exception concernant les personnes déjà inscrites ne supprime pas les autres conditions. Pour une question d’inférence, relie les phrases sans ajouter une règle extérieure au texte. Compare enfin chaque option avec le document entier, car un horaire cité peut être réel mais ne plus être celui à retenir. Le message de cet atelier est une fiction originale. Relis-le à chaque question plutôt que de chercher à mémoriser la correction.
 
 ### Références de cette séance
 
 <ul>
 <li><a href="https://www.france-education-international.fr/test/tcf-canada" rel="noopener">Atelier original — message pratique — Section officielle</a> <em>(Section de séance; support lié à cette séance; fr)</em></li>
-<li><a href="https://www.youtube.com/channel/UCNbFgnDsoWTL4jG9LGoPE8A" rel="noopener">Atelier original — message pratique — Vidéo</a> <em>(Vidéo; support lié à cette séance; fr)</em><br>Page source : <a href="https://www.france-education-international.fr/test/tcf-canada" rel="noopener">https://www.france-education-international.fr/test/tcf-canada</a></li>
 <li><a href="https://www.france-education-international.fr/test/exemples-epreuves-tcf" rel="noopener">Atelier original — message pratique — Section officielle</a> <em>(Section de séance; support lié à cette séance; fr)</em></li>
 <li><a href="https://apprendre.tv5monde.com/fr/tcf" rel="noopener">Atelier original — message pratique — Section officielle</a> <em>(Section de séance; support lié à cette séance; fr)</em></li>
 </ul>
@@ -184,13 +183,12 @@ Nora</p>
 **Séance source :** Atelier original — annonce détaillée<br>
 **Objectif :** Distinguer une possibilité d’une garantie, comprendre le prix annoncé et repérer une autorisation distincte.
 
-<p>Une annonce détaillée ne se lit pas comme une liste de mots isolés. Commence par comprendre l’activité proposée, son organisation et son public. Sépare ensuite ce qui est inclus, ce qui est facultatif et ce qui dépend d’une condition. Les expressions sous réserve de disponibilité et en cas de signalent des possibilités, pas des garanties. Les pronoms et les reprises évitent parfois de répéter le nom de l’activité ; vérifie toujours ce qu’ils désignent. Une bonne réponse peut reformuler l’annonce avec d’autres mots, tandis qu’un distracteur peut reprendre exactement un terme du texte en lui donnant une portée excessive. Dans cette fiction originale, toutes les réponses se déduisent des conditions annoncées. Aucun renseignement extérieur sur un organisme réel n’est nécessaire.</p>
+Une annonce détaillée ne se lit pas comme une liste de mots isolés. Commence par comprendre l’activité proposée, son organisation et son public. Sépare ensuite ce qui est inclus, ce qui est facultatif et ce qui dépend d’une condition. Les expressions sous réserve de disponibilité et en cas de signalent des possibilités, pas des garanties. Les pronoms et les reprises évitent parfois de répéter le nom de l’activité. Vérifie toujours ce qu’ils désignent. Une bonne réponse peut reformuler l’annonce avec d’autres mots, tandis qu’un distracteur peut reprendre exactement un terme du texte en lui donnant une portée excessive. Dans cette fiction originale, toutes les réponses se déduisent des conditions annoncées. Aucun renseignement extérieur sur un organisme réel n’est nécessaire.
 
 ### Références de cette séance
 
 <ul>
 <li><a href="https://www.france-education-international.fr/test/tcf-canada" rel="noopener">Atelier original — annonce détaillée — Section officielle</a> <em>(Section de séance; support lié à cette séance; fr)</em></li>
-<li><a href="https://www.youtube.com/channel/UCNbFgnDsoWTL4jG9LGoPE8A" rel="noopener">Atelier original — annonce détaillée — Vidéo</a> <em>(Vidéo; support lié à cette séance; fr)</em><br>Page source : <a href="https://www.france-education-international.fr/test/tcf-canada" rel="noopener">https://www.france-education-international.fr/test/tcf-canada</a></li>
 <li><a href="https://apprendre.tv5monde.com/fr/tcf" rel="noopener">Atelier original — annonce détaillée — Section officielle</a> <em>(Section de séance; support lié à cette séance; fr)</em></li>
 <li><a href="https://francaisfacile.rfi.fr/fr/" rel="noopener">Atelier original — annonce détaillée — Section officielle</a> <em>(Section de séance; support lié à cette séance; fr)</em></li>
 </ul>
@@ -335,13 +333,12 @@ Les participants de moins de seize ans doivent venir avec un adulte. La présent
 **Séance source :** Atelier original — comparaison d’arguments<br>
 **Objectif :** Identifier un objectif commun, distinguer les arguments et tirer une inférence étayée par deux contributions.
 
-<p>Pour comparer deux opinions, commence par attribuer chaque argument à son auteur. Repère ensuite leur objectif commun et le point précis sur lequel leurs propositions diffèrent. Une réserve introduite par cependant ne signifie pas nécessairement un refus du projet. Observe les verbes proposer, observer et recueillir : ils distinguent les mesures envisagées d’un résultat déjà démontré. Une inférence recevable relie des indices présents dans les contributions ; elle ne transforme pas une hypothèse en certitude. Avant de choisir une réponse, vérifie les mots absolus comme toujours, uniquement ou immédiatement, qui peuvent supprimer une nuance essentielle. Les deux contributions de cet atelier sont originales et fictives. Elles servent à travailler la lecture argumentée ; elles ne rapportent ni décision municipale réelle ni étude de sécurité routière.</p>
+Pour comparer deux opinions, commence par attribuer chaque argument à son auteur. Repère ensuite leur objectif commun et le point précis sur lequel leurs propositions diffèrent. Une réserve introduite par cependant ne signifie pas nécessairement un refus du projet. Observe les verbes proposer, observer et recueillir : ils distinguent les mesures envisagées d’un résultat déjà démontré. Une inférence recevable relie des indices présents dans les contributions. Elle ne transforme pas une hypothèse en certitude. Avant de choisir une réponse, vérifie les mots absolus comme toujours, uniquement ou immédiatement, qui peuvent supprimer une nuance essentielle. Les deux contributions de cet atelier sont originales et fictives. Elles servent à travailler la lecture argumentée. Elles ne rapportent ni décision municipale réelle ni étude de sécurité routière.
 
 ### Références de cette séance
 
 <ul>
 <li><a href="https://www.france-education-international.fr/test/tcf-canada" rel="noopener">Atelier original — comparaison d’arguments — Section officielle</a> <em>(Section de séance; support lié à cette séance; fr)</em></li>
-<li><a href="https://www.youtube.com/channel/UCNbFgnDsoWTL4jG9LGoPE8A" rel="noopener">Atelier original — comparaison d’arguments — Vidéo</a> <em>(Vidéo; support lié à cette séance; fr)</em><br>Page source : <a href="https://www.france-education-international.fr/test/tcf-canada" rel="noopener">https://www.france-education-international.fr/test/tcf-canada</a></li>
 <li><a href="https://www.france-education-international.fr/test/exemples-epreuves-tcf" rel="noopener">Atelier original — comparaison d’arguments — Section officielle</a> <em>(Section de séance; support lié à cette séance; fr)</em></li>
 <li><a href="https://apprendre.tv5monde.com/fr/tcf" rel="noopener">Atelier original — comparaison d’arguments — Section officielle</a> <em>(Section de séance; support lié à cette séance; fr)</em></li>
 <li><a href="https://francaisfacile.rfi.fr/fr/" rel="noopener">Atelier original — comparaison d’arguments — Section officielle</a> <em>(Section de séance; support lié à cette séance; fr)</em></li>

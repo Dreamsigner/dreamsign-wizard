@@ -75,7 +75,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Arguments<br>
 **Objectif :** Séparer la conclusion des prémisses, même lorsque l’ordre des phrases change.
 
-<p>Un argument logique est constitué d’une ou de plusieurs prémisses et d’une conclusion. Il ne désigne pas une dispute. Des mots comme « donc », « ainsi » ou « par conséquent » signalent souvent la conclusion; « puisque » et « étant donné que » signalent souvent une prémisse. Ces indices ne sont pas infaillibles : il faut examiner le rôle de chaque proposition. La conclusion peut apparaître au début, au milieu ou à la fin, et un argument complet peut être formulé dans une seule phrase. Avant d’évaluer un argument, reformule-le en listant clairement ce qui est supposé et ce qui est inféré.</p>
+Un argument logique est constitué d’une ou de plusieurs prémisses et d’une conclusion. Il ne désigne pas une dispute. Des mots comme « donc », « ainsi » ou « par conséquent » signalent souvent la conclusion. « puisque » et « étant donné que » signalent souvent une prémisse. Ces indices ne sont pas infaillibles : il faut examiner le rôle de chaque proposition. La conclusion peut apparaître au début, au milieu ou à la fin, et un argument complet peut être formulé dans une seule phrase. Avant d’évaluer un argument, reformule-le en listant clairement ce qui est supposé et ce qui est inféré.
 
 ### Références de cette séance
 
@@ -141,7 +141,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** The scope of logic<br>
 **Objectif :** Distinguer validité, invalidité et vérité factuelle des prémisses.
 
-<p>Un argument est valide lorsqu’aucun cas ne rend toutes ses prémisses vraies et sa conclusion fausse. La validité ne dit pas que les prémisses sont réellement vraies : elle décrit le lien entre elles et la conclusion. Pour établir l’invalidité, il suffit de construire un contre-exemple où toutes les prémisses sont vraies tandis que la conclusion est fausse. La validité formelle est plus exigeante qu’une inférence qui fonctionne grâce à des faits particuliers ou au sens des mots. Enfin, la force inductive concerne un soutien probable, non une garantie déductive; un argument peut être convaincant sans être valide au sens déductif.</p>
+Un argument est valide lorsqu’aucun cas ne rend toutes ses prémisses vraies et sa conclusion fausse. La validité ne dit pas que les prémisses sont réellement vraies : elle décrit le lien entre elles et la conclusion. Pour établir l’invalidité, il suffit de construire un contre-exemple où toutes les prémisses sont vraies tandis que la conclusion est fausse. La validité formelle est plus exigeante qu’une inférence qui fonctionne grâce à des faits particuliers ou au sens des mots. Enfin, la force inductive concerne un soutien probable, non une garantie déductive. Un argument peut être convaincant sans être valide au sens déductif.
 
 ### Références de cette séance
 
@@ -207,7 +207,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Other logical notions<br>
 **Objectif :** Analyser si des phrases peuvent être vraies ensemble et distinguer contingence et nécessité.
 
-<p>Des phrases sont conjointement possibles s’il existe un cas où elles sont toutes vraies ensemble. Pour montrer qu’elles ne le sont pas, il faut établir qu’aucun cas ne les rend toutes vraies. Une phrase est nécessairement vraie si elle est vraie dans tous les cas considérés; elle est nécessairement fausse si elle est fausse dans chacun; sinon elle est contingente. Deux phrases sont nécessairement équivalentes lorsqu’elles ont la même valeur de vérité dans chaque cas. Ces notions se définissent par comparaison de cas, et les résultats dépendent du type de cas admis : un fait logique, conceptuel ou empirique peut imposer des restrictions différentes.</p>
+Des phrases sont conjointement possibles s’il existe un cas où elles sont toutes vraies ensemble. Pour montrer qu’elles ne le sont pas, il faut établir qu’aucun cas ne les rend toutes vraies. Une phrase est nécessairement vraie si elle est vraie dans tous les cas considérés. Elle est nécessairement fausse si elle est fausse dans chacun. Sinon elle est contingente. Deux phrases sont nécessairement équivalentes lorsqu’elles ont la même valeur de vérité dans chaque cas. Ces notions se définissent par comparaison de cas, et les résultats dépendent du type de cas admis : un fait logique, conceptuel ou empirique peut imposer des restrictions différentes.
 
 ### Références de cette séance
 
@@ -273,7 +273,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** First steps to symbolization<br>
 **Objectif :** Repérer les patrons d’inférence indépendants du sujet des phrases.
 
-<p>La logique propositionnelle (TFL) isole la structure construite avec des phrases complètes et des mots comme « et », « ou », « non » et « si… alors ». Par exemple, « Il pleut; s’il pleut, la route est mouillée; donc la route est mouillée » instancie A, si A alors C, donc C. Cette validité tient à la forme : remplacer les phrases par d’autres propositions ne détruit pas le patron. D’autres inférences semblent valides pour des raisons particulières, comme une inclusion de catégories connue par le sens des mots; la TFL ne capture pas nécessairement cette structure. Une symbolisation réussie conserve le lien pertinent au lieu de simplement remplacer chaque phrase par une lettre.</p>
+La logique propositionnelle (TFL) isole la structure construite avec des phrases complètes et des mots comme « et », « ou », « non » et « si… alors ». Par exemple, « Il pleut; s’il pleut, la route est mouillée; donc la route est mouillée » instancie A, si A alors C, donc C. Cette validité tient à la forme : remplacer les phrases par d’autres propositions ne détruit pas le patron. D’autres inférences semblent valides pour des raisons particulières, comme une inclusion de catégories connue par le sens des mots. La TFL ne capture pas nécessairement cette structure. Une symbolisation réussie conserve le lien pertinent au lieu de simplement remplacer chaque phrase par une lettre.
 
 ### Références de cette séance
 
@@ -339,7 +339,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Connectives<br>
 **Objectif :** Utiliser négation, conjonction, disjonction, conditionnelle et biconditionnelle sans confondre leurs portées.
 
-<p>La TFL construit des phrases complexes à partir de propositions atomiques avec cinq connecteurs : ¬A (non A), A∧B (A et B), A∨B (A ou B, inclusif), A→B (si A alors B) et A↔B (A si et seulement si B). Le « ou » logique n’exclut pas le cas où les deux côtés sont vrais. Une conditionnelle affirme une relation entre antécédent et conséquent; elle ne se réduit pas à une promesse causale en français. « A sauf si B » est généralement rendu par ¬B→A, équivalent à A∨B en logique classique. « Parce que » exprime un lien explicatif qui n’est pas déterminé par les seules valeurs de vérité et n’est donc pas un connecteur vérifonctionnel de la TFL.</p>
+La TFL construit des phrases complexes à partir de propositions atomiques avec cinq connecteurs : ¬A (non A), A∧B (A et B), A∨B (A ou B, inclusif), A→B (si A alors B) et A↔B (A si et seulement si B). Le « ou » logique n’exclut pas le cas où les deux côtés sont vrais. Une conditionnelle affirme une relation entre antécédent et conséquent. Elle ne se réduit pas à une promesse causale en français. « A sauf si B » est généralement rendu par ¬B→A, équivalent à A∨B en logique classique. « Parce que » exprime un lien explicatif qui n’est pas déterminé par les seules valeurs de vérité et n’est donc pas un connecteur vérifonctionnel de la TFL.
 
 ### Références de cette séance
 
@@ -405,7 +405,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Sentences of TFL<br>
 **Objectif :** Appliquer les règles de formation récursives de la TFL et lire les parenthèses.
 
-<p>Une expression de TFL est n’importe quelle suite des symboles autorisés; une phrase de TFL n’est qu’une partie de ces suites. Les lettres propositionnelles sont des phrases atomiques. Si A est une phrase, ¬A en est une; si A et B sont des phrases, (A∧B), (A∨B), (A→B) et (A↔B) en sont également. Cette définition récursive est plus utile qu’une liste, car elle génère des phrases de toute longueur tout en excluant les suites mal formées. Les parenthèses indiquent quels sous-ensembles sont reliés et évitent de laisser le connecteur principal ou la portée incertains; une convention de simplification ne dispense pas de comprendre la structure.</p>
+Une expression de TFL est n’importe quelle suite des symboles autorisés. Une phrase de TFL n’est qu’une partie de ces suites. Les lettres propositionnelles sont des phrases atomiques. Si A est une phrase, ¬A en est une. Si A et B sont des phrases, (A∧B), (A∨B), (A→B) et (A↔B) en sont également. Cette définition récursive est plus utile qu’une liste, car elle génère des phrases de toute longueur tout en excluant les suites mal formées. Les parenthèses indiquent quels sous-ensembles sont reliés et évitent de laisser le connecteur principal ou la portée incertains. Une convention de simplification ne dispense pas de comprendre la structure.
 
 ### Références de cette séance
 
@@ -471,7 +471,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Ambiguity<br>
 **Objectif :** Expliquer pourquoi une même phrase naturelle peut recevoir plusieurs analyses.
 
-<p>Une phrase naturelle peut être ambiguë lorsqu’elle possède plusieurs lectures. L’ambiguïté lexicale vient d’un mot à plusieurs sens; l’ambiguïté structurelle vient de plusieurs façons de regrouper ou d’analyser les mots. « Les avions qui volent peuvent être dangereux » peut attribuer le danger aux avions en vol; « piloter un avion peut être dangereux » porte sur l’activité de pilotage. Le contexte aide à choisir une lecture, mais une traduction logique doit d’abord préciser laquelle est visée. La vagueur est différente : une expression vague manque de frontière nette entre les cas où elle s’applique et ceux où elle ne s’applique pas. Une formalisation ne résout pas silencieusement l’ambiguïté : elle rend explicite le choix d’interprétation.</p>
+Une phrase naturelle peut être ambiguë lorsqu’elle possède plusieurs lectures. L’ambiguïté lexicale vient d’un mot à plusieurs sens. L’ambiguïté structurelle vient de plusieurs façons de regrouper ou d’analyser les mots. « Les avions qui volent peuvent être dangereux » peut attribuer le danger aux avions en vol. « piloter un avion peut être dangereux » porte sur l’activité de pilotage. Le contexte aide à choisir une lecture, mais une traduction logique doit d’abord préciser laquelle est visée. La vagueur est différente : une expression vague manque de frontière nette entre les cas où elle s’applique et ceux où elle ne s’applique pas. Une formalisation ne résout pas silencieusement l’ambiguïté : elle rend explicite le choix d’interprétation.
 
 ### Références de cette séance
 
@@ -537,7 +537,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Use and mention<br>
 **Objectif :** Distinguer l’emploi d’une expression et sa mention entre guillemets.
 
-<p>On emploie une expression pour parler de ce qu’elle désigne; on la mentionne pour parler de l’expression elle-même. Dans « Aristote enseignait », le nom sert à parler de la personne. Dans « “Aristote” contient neuf lettres », les guillemets indiquent que l’on parle du mot. La différence compte lorsqu’on décrit une langue formelle : la TFL est le langage objet, tandis que le français utilisé pour expliquer ses formules est le métalangage. Les lettres grecques ou latines comme A peuvent servir de métavariables pour parler d’une formule quelconque. Confondre formule et description de formule produit des erreurs de niveau, notamment dans les arguments sur la vérité ou la syntaxe.</p>
+On emploie une expression pour parler de ce qu’elle désigne. On la mentionne pour parler de l’expression elle-même. Dans « Aristote enseignait », le nom sert à parler de la personne. Dans « “Aristote” contient neuf lettres », les guillemets indiquent que l’on parle du mot. La différence compte lorsqu’on décrit une langue formelle : la TFL est le langage objet, tandis que le français utilisé pour expliquer ses formules est le métalangage. Les lettres grecques ou latines comme A peuvent servir de métavariables pour parler d’une formule quelconque. Confondre formule et description de formule produit des erreurs de niveau, notamment dans les arguments sur la vérité ou la syntaxe.
 
 ### Références de cette séance
 
@@ -603,7 +603,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Characteristic truth tables<br>
 **Objectif :** Calculer la valeur d’une formule à partir des valeurs de ses composantes.
 
-<p>Les connecteurs de la TFL sont vérifonctionnels : la valeur d’une formule composée dépend des valeurs de ses phrases constituantes. ¬A inverse la valeur de A; A∧B n’est vraie que si les deux sont vraies; A∨B est vraie si au moins une l’est; A→B est fausse uniquement lorsque A est vraie et B fausse; A↔B est vraie lorsque A et B partagent une valeur. Les tables caractéristiques définissent précisément ces règles. Pour évaluer une formule complexe, calcule d’abord les sous-formules, puis le connecteur qui les rassemble. Cette procédure évite d’importer dans → une intuition causale ou temporelle du français.</p>
+Les connecteurs de la TFL sont vérifonctionnels : la valeur d’une formule composée dépend des valeurs de ses phrases constituantes. ¬A inverse la valeur de A. A∧B n’est vraie que si les deux sont vraies. A∨B est vraie si au moins une l’est. A→B est fausse uniquement lorsque A est vraie et B fausse. A↔B est vraie lorsque A et B partagent une valeur. Les tables caractéristiques définissent précisément ces règles. Pour évaluer une formule complexe, calcule d’abord les sous-formules, puis le connecteur qui les rassemble. Cette procédure évite d’importer dans → une intuition causale ou temporelle du français.
 
 ### Références de cette séance
 
@@ -669,7 +669,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Truth-functional connectives<br>
 **Objectif :** Distinguer calcul de valeurs de vérité et traduction intégrale du sens d’une phrase.
 
-<p>Un connecteur est vérifonctionnel si les valeurs de vérité de ses composantes déterminent de manière unique la valeur de la phrase composée. Tous les connecteurs de TFL ont cette propriété; « nécessairement » ne l’a pas, car deux phrases vraies peuvent différer quant à leur nécessité. Une symbolisation en TFL conserve donc la contribution aux valeurs de vérité, pas toutes les nuances de l’anglais ou du français : sarcasme, emphase, contraste ou relation causale peuvent disparaître. C’est pourquoi il est plus juste de parler de symbolisation que de traduction complète. La distinction entre conditionnelle indicative et contrefactuelle illustre aussi la perte de contenu modal dans la conditionnelle matérielle.</p>
+Un connecteur est vérifonctionnel si les valeurs de vérité de ses composantes déterminent de manière unique la valeur de la phrase composée. Tous les connecteurs de TFL ont cette propriété. « nécessairement » ne l’a pas, car deux phrases vraies peuvent différer quant à leur nécessité. Une symbolisation en TFL conserve donc la contribution aux valeurs de vérité, pas toutes les nuances de l’anglais ou du français : sarcasme, emphase, contraste ou relation causale peuvent disparaître. C’est pourquoi il est plus juste de parler de symbolisation que de traduction complète. La distinction entre conditionnelle indicative et contrefactuelle illustre aussi la perte de contenu modal dans la conditionnelle matérielle.
 
 ### Références de cette séance
 
@@ -735,7 +735,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Complete truth tables<br>
 **Objectif :** Énumérer chaque valuation et évaluer les sous-formules jusqu’au connecteur principal.
 
-<p>Une valuation attribue vrai ou faux à chaque lettre propositionnelle pertinente. Une ligne d’une table représente une valuation; une table complète en représente toutes. Avec n lettres distinctes, il existe 2ⁿ lignes. Pour évaluer une formule, on reporte les valeurs des lettres, on calcule les sous-formules selon leur connecteur, puis on obtient la valeur du connecteur principal. Cette dernière colonne détermine notamment si une formule est tautologie, contradiction ou contingente. L’ordre des colonnes et les parenthèses aident à ne pas confondre la portée. Une table n’est complète que si chaque combinaison de valeurs est représentée, même si plusieurs lignes paraissent redondantes.</p>
+Une valuation attribue vrai ou faux à chaque lettre propositionnelle pertinente. Une ligne d’une table représente une valuation. Une table complète en représente toutes. Avec n lettres distinctes, il existe 2ⁿ lignes. Pour évaluer une formule, on reporte les valeurs des lettres, on calcule les sous-formules selon leur connecteur, puis on obtient la valeur du connecteur principal. Cette dernière colonne détermine notamment si une formule est tautologie, contradiction ou contingente. L’ordre des colonnes et les parenthèses aident à ne pas confondre la portée. Une table n’est complète que si chaque combinaison de valeurs est représentée, même si plusieurs lignes paraissent redondantes.
 
 ### Références de cette séance
 
@@ -801,7 +801,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Semantic concepts<br>
 **Objectif :** Tester tautologie, contradiction, équivalence, satisfaisabilité et conséquence sémantique.
 
-<p>Une formule de TFL est une tautologie si elle est vraie sous toute valuation; une contradiction si elle est fausse sous toute valuation. Deux formules sont équivalentes si leurs colonnes principales coïncident sur toutes les lignes. Un ensemble est conjointement satisfiable s’il existe une valuation qui rend chaque membre vrai. Γ ⊨ C signifie qu’aucune valuation ne rend toutes les prémisses de Γ vraies et C fausse; c’est la validité de l’argument au niveau sémantique. Le symbole ⊨ relie des prémisses à une conclusion, tandis que → est un connecteur à l’intérieur d’une formule. Ces notions sont décidables par tables complètes en TFL.</p>
+Une formule de TFL est une tautologie si elle est vraie sous toute valuation. Une contradiction si elle est fausse sous toute valuation. Deux formules sont équivalentes si leurs colonnes principales coïncident sur toutes les lignes. Un ensemble est conjointement satisfiable s’il existe une valuation qui rend chaque membre vrai. Γ ⊨ C signifie qu’aucune valuation ne rend toutes les prémisses de Γ vraies et C fausse. C’est la validité de l’argument au niveau sémantique. Le symbole ⊨ relie des prémisses à une conclusion, tandis que → est un connecteur à l’intérieur d’une formule. Ces notions sont décidables par tables complètes en TFL.
 
 ### Références de cette séance
 
@@ -867,7 +867,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Limitations of TFL<br>
 **Objectif :** Identifier quand une formalisation atomique efface une relation ou une nuance naturelle.
 
-<p>La TFL traite chaque lettre propositionnelle comme une unité indivisible; elle ne décrit ni la structure interne d’un prédicat ni les relations entre individus. Ainsi « Daisy a quatre pattes » implique « Daisy a plus de deux pattes » en raison du sens des expressions, mais représenter ces phrases par F et T ne rend pas l’inférence valide par la seule forme TFL. Les cas vagues, comme « chauve », peuvent également résister à l’hypothèse bivalente vraie/fausse. Enfin, la conditionnelle matérielle ne capture pas toute intuition causale ou contrefactuelle de « si… alors ». Il faut choisir une représentation plus expressive, reformuler, ou reconnaître la limite plutôt que prétendre que la table résout tout.</p>
+La TFL traite chaque lettre propositionnelle comme une unité indivisible. Elle ne décrit ni la structure interne d’un prédicat ni les relations entre individus. Ainsi « Daisy a quatre pattes » implique « Daisy a plus de deux pattes » en raison du sens des expressions, mais représenter ces phrases par F et T ne rend pas l’inférence valide par la seule forme TFL. Les cas vagues, comme « chauve », peuvent également résister à l’hypothèse bivalente vraie/fausse. Enfin, la conditionnelle matérielle ne capture pas toute intuition causale ou contrefactuelle de « si… alors ». Il faut choisir une représentation plus expressive, reformuler, ou reconnaître la limite plutôt que prétendre que la table résout tout.
 
 ### Références de cette séance
 
@@ -933,7 +933,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Truth table shortcuts<br>
 **Objectif :** Utiliser les règles d’arrêt des connecteurs et le test ciblé de validité.
 
-<p>Les tables peuvent être calculées plus vite en exploitant les règles des connecteurs. Une disjonction est déjà vraie dès qu’un disjoint est vrai; une conjonction est déjà fausse dès qu’un conjoint est faux. Une conditionnelle est vraie si son conséquent est vrai ou son antécédent faux. Pour tester la validité, on cherche seulement les lignes où toutes les prémisses sont vraies et la conclusion fausse. Toute ligne avec une conclusion vraie ou au moins une prémisse fausse est automatiquement sans danger et n’a pas besoin d’être entièrement calculée. Cette méthode conserve la garantie du test complet tout en évitant des colonnes inutiles.</p>
+Les tables peuvent être calculées plus vite en exploitant les règles des connecteurs. Une disjonction est déjà vraie dès qu’un disjoint est vrai. Une conjonction est déjà fausse dès qu’un conjoint est faux. Une conditionnelle est vraie si son conséquent est vrai ou son antécédent faux. Pour tester la validité, on cherche seulement les lignes où toutes les prémisses sont vraies et la conclusion fausse. Toute ligne avec une conclusion vraie ou au moins une prémisse fausse est automatiquement sans danger et n’a pas besoin d’être entièrement calculée. Cette méthode conserve la garantie du test complet tout en évitant des colonnes inutiles.
 
 ### Références de cette séance
 
@@ -999,7 +999,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Partial truth tables<br>
 **Objectif :** Choisir une valuation ciblée pour réfuter une tautologie ou trouver un modèle.
 
-<p>Une table partielle ne vise qu’une ou quelques lignes pertinentes. Pour montrer qu’une formule n’est pas tautologique, on cherche une valuation qui la rend fausse; une seule suffit. Pour montrer qu’une formule n’est pas une contradiction, il suffit au contraire d’en trouver une qui la rend vraie. Mais prouver qu’une formule est une tautologie demande d’examiner toutes les valuations, et prouver qu’elle est contradictoire demande aussi d’exclure toutes les valuations vraies : ces deux tâches exigent la couverture complète ou un raisonnement équivalent. Pour un argument invalide, la ligne cherchée rend vraies toutes les prémisses et fausse la conclusion. Le but détermine quelles valeurs assigner d’abord au connecteur principal.</p>
+Une table partielle ne vise qu’une ou quelques lignes pertinentes. Pour montrer qu’une formule n’est pas tautologique, on cherche une valuation qui la rend fausse. Une seule suffit. Pour montrer qu’une formule n’est pas une contradiction, il suffit au contraire d’en trouver une qui la rend vraie. Mais prouver qu’une formule est une tautologie demande d’examiner toutes les valuations, et prouver qu’elle est contradictoire demande aussi d’exclure toutes les valuations vraies : ces deux tâches exigent la couverture complète ou un raisonnement équivalent. Pour un argument invalide, la ligne cherchée rend vraies toutes les prémisses et fausse la conclusion. Le but détermine quelles valeurs assigner d’abord au connecteur principal.
 
 ### Références de cette séance
 
@@ -1065,7 +1065,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** The very idea of natural deduction<br>
 **Objectif :** Expliquer comment une preuve naturelle expose les étapes d’une inférence.
 
-<p>Les tables de vérité testent directement toutes les valuations, mais une grande formule peut demander un nombre exponentiel de lignes et la table n’explique pas toujours pourquoi l’argument fonctionne. La déduction naturelle suit une autre voie : elle transforme les phrases en appliquant des règles d’inférence explicites, ce qui met en évidence la forme du raisonnement. Par exemple, P∨Q et ¬P permettent d’obtenir Q par élimination de la disjonction ou par une règle dérivée; P→Q avec P permet d’obtenir Q. Les deux arguments sont valides mais empruntent des schémas différents. Une dérivation est une suite justifiée, pas une simple intuition ni une énumération de cas.</p>
+Les tables de vérité testent directement toutes les valuations, mais une grande formule peut demander un nombre exponentiel de lignes et la table n’explique pas toujours pourquoi l’argument fonctionne. La déduction naturelle suit une autre voie : elle transforme les phrases en appliquant des règles d’inférence explicites, ce qui met en évidence la forme du raisonnement. Par exemple, P∨Q et ¬P permettent d’obtenir Q par élimination de la disjonction ou par une règle dérivée. P→Q avec P permet d’obtenir Q. Les deux arguments sont valides mais empruntent des schémas différents. Une dérivation est une suite justifiée, pas une simple intuition ni une énumération de cas.
 
 ### Références de cette séance
 
@@ -1131,7 +1131,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Basic rules for TFL<br>
 **Objectif :** Utiliser introduction et élimination des connecteurs dans une dérivation structurée.
 
-<p>Une dérivation formelle est une suite de lignes : les prémisses et hypothèses sont marquées, chaque nouvelle phrase reçoit une justification, et la dernière ligne est la conclusion recherchée. Pour la conjonction, l’introduction rassemble A et B en A∧B; l’élimination extrait l’un ou l’autre conjoint. Pour prouver A→B, on ouvre une sous-preuve avec A comme hypothèse, dérive B, puis ferme la sous-preuve en déchargeant A. Pour A∨B, l’élimination examine les deux cas en sous-preuves. Pour la négation, on peut supposer A et dériver une contradiction. La portée des sous-preuves règle quelles hypothèses restent actives et évite de réutiliser une hypothèse déchargée.</p>
+Une dérivation formelle est une suite de lignes : les prémisses et hypothèses sont marquées, chaque nouvelle phrase reçoit une justification, et la dernière ligne est la conclusion recherchée. Pour la conjonction, l’introduction rassemble A et B en A∧B. L’élimination extrait l’un ou l’autre conjoint. Pour prouver A→B, on ouvre une sous-preuve avec A comme hypothèse, dérive B, puis ferme la sous-preuve en déchargeant A. Pour A∨B, l’élimination examine les deux cas en sous-preuves. Pour la négation, on peut supposer A et dériver une contradiction. La portée des sous-preuves règle quelles hypothèses restent actives et évite de réutiliser une hypothèse déchargée.
 
 ### Références de cette séance
 
@@ -1197,7 +1197,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Constructing proofs<br>
 **Objectif :** Choisir une règle d’introduction à partir du but puis exploiter les prémisses disponibles.
 
-<p>Il n’existe pas de recette unique pour découvrir une preuve, mais on peut travailler à rebours depuis la conclusion : repérer son connecteur principal indique souvent la règle d’introduction à viser. Pour un but A→B, prévoir une sous-preuve supposant A et chercher B; pour A∧B, établir chaque conjoint. Ensuite travailler vers l’avant depuis les prémisses, en éliminant les connecteurs disponibles et en repérant comment les résultats alimentent le but. Une preuve utile alterne ces deux directions plutôt que d’appliquer toutes les règles au hasard. Pour un but négatif, une preuve indirecte peut supposer la phrase opposée et viser une contradiction. Chaque sous-but doit rester justifié par une règle admissible.</p>
+Il n’existe pas de recette unique pour découvrir une preuve, mais on peut travailler à rebours depuis la conclusion : repérer son connecteur principal indique souvent la règle d’introduction à viser. Pour un but A→B, prévoir une sous-preuve supposant A et chercher B. Pour A∧B, établir chaque conjoint. Ensuite travailler vers l’avant depuis les prémisses, en éliminant les connecteurs disponibles et en repérant comment les résultats alimentent le but. Une preuve utile alterne ces deux directions plutôt que d’appliquer toutes les règles au hasard. Pour un but négatif, une preuve indirecte peut supposer la phrase opposée et viser une contradiction. Chaque sous-but doit rester justifié par une règle admissible.
 
 ### Références de cette séance
 
@@ -1263,7 +1263,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Additional rules for TFL<br>
 **Objectif :** Reconnaître syllogisme disjonctif, modus tollens, double négation et lois de De Morgan.
 
-<p>Le système ajoute des règles pratiques qui abrègent les dérivations. Le syllogisme disjonctif tire B de A∨B et ¬A. Le modus tollens tire ¬A de A→B et ¬B. L’élimination de la double négation permet de passer de ¬¬A à A dans la logique classique. Le tiers exclu affirme A∨¬A; les règles de De Morgan relient la négation d’une conjonction ou disjonction à la combinaison des négations correspondantes. Chaque règle reste sensible à la forme exacte : de A→B et B on ne peut pas conclure A (affirmation du conséquent). Ces raccourcis seront ensuite justifiés comme dérivables des règles fondamentales.</p>
+Le système ajoute des règles pratiques qui abrègent les dérivations. Le syllogisme disjonctif tire B de A∨B et ¬A. Le modus tollens tire ¬A de A→B et ¬B. L’élimination de la double négation permet de passer de ¬¬A à A dans la logique classique. Le tiers exclu affirme A∨¬A. Les règles de De Morgan relient la négation d’une conjonction ou disjonction à la combinaison des négations correspondantes. Chaque règle reste sensible à la forme exacte : de A→B et B on ne peut pas conclure A (affirmation du conséquent). Ces raccourcis seront ensuite justifiés comme dérivables des règles fondamentales.
 
 ### Références de cette séance
 
@@ -1329,7 +1329,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Proof-theoretic concepts<br>
 **Objectif :** Distinguer dérivabilité, théorème, inter-dérivabilité et cohérence syntaxique.
 
-<p>Γ⊢C affirme qu’il existe une dérivation de C dont les hypothèses non déchargées appartiennent à Γ. Le tourniquet simple parle donc de preuves, contrairement à Γ⊨C, qui parle de valuations ou d’interprétations. ⊢A signifie qu’A est un théorème, démontrable sans hypothèse non déchargée. A et B sont inter-dérivables si chacune se déduit de l’autre. Un ensemble est inconsistant au sens de la preuve si l’on peut en dériver ⊥; il est consistant s’il ne permet pas cette dérivation. Produire une preuve donne un témoin positif de dérivabilité; échouer à trouver une preuve ne démontre pas à soi seul qu’aucune preuve n’existe.</p>
+Γ⊢C affirme qu’il existe une dérivation de C dont les hypothèses non déchargées appartiennent à Γ. Le tourniquet simple parle donc de preuves, contrairement à Γ⊨C, qui parle de valuations ou d’interprétations. ⊢A signifie qu’A est un théorème, démontrable sans hypothèse non déchargée. A et B sont inter-dérivables si chacune se déduit de l’autre. Un ensemble est inconsistant au sens de la preuve si l’on peut en dériver ⊥. Il est consistant s’il ne permet pas cette dérivation. Produire une preuve donne un témoin positif de dérivabilité. Échouer à trouver une preuve ne démontre pas à soi seul qu’aucune preuve n’existe.
 
 ### Références de cette séance
 
@@ -1395,7 +1395,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Derived rules<br>
 **Objectif :** Expliquer comment une règle abrégée peut être simulée avec les règles fondamentales.
 
-<p>Une règle dérivée est une abréviation sûre lorsqu’on peut remplacer chaque utilisation par une séquence des règles fondamentales. Le chapitre construit des preuves-schémas, où une métavariable A représente n’importe quelle phrase : ce n’est pas encore une preuve concrète, mais une recette qui se spécialise en substituant des formules et en ajustant les numéros de lignes. Par exemple, réitérer A peut être simulé en introduisant A∧A puis en éliminant un conjoint; le syllogisme disjonctif peut être développé via une preuve par cas et contradiction. Les règles supplémentaires rendent le travail plus court sans ajouter de nouveaux arguments prouvables au système de base.</p>
+Une règle dérivée est une abréviation sûre lorsqu’on peut remplacer chaque utilisation par une séquence des règles fondamentales. Le chapitre construit des preuves-schémas, où une métavariable A représente n’importe quelle phrase : ce n’est pas encore une preuve concrète, mais une recette qui se spécialise en substituant des formules et en ajustant les numéros de lignes. Par exemple, réitérer A peut être simulé en introduisant A∧A puis en éliminant un conjoint. Le syllogisme disjonctif peut être développé via une preuve par cas et contradiction. Les règles supplémentaires rendent le travail plus court sans ajouter de nouveaux arguments prouvables au système de base.
 
 ### Références de cette séance
 
@@ -1461,7 +1461,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Soundness and completeness<br>
 **Objectif :** Interpréter correction et complétude comme correspondances entre ⊨ et ⊢.
 
-<p>La sémantique évalue les formules dans des valuations; la théorie de la preuve étudie ce qui se dérive par les règles. Pour le système TFL présenté, correction et complétude garantissent une correspondance : si Γ⊢A, alors Γ⊨A (la preuve ne permet pas de conclusion fausse lorsque les prémisses sont vraies); réciproquement, si Γ⊨A, alors Γ⊢A (tout argument sémantiquement valide possède une dérivation). Tautologie et théorème, contradiction et dérivabilité de ⊥, équivalence et inter-dérivabilité ont ainsi des partenaires. Cela ne signifie pas que les symboles ⊢ et ⊨ ont le même sens; les théorèmes métalogiques établissent le lien entre deux définitions distinctes.</p>
+La sémantique évalue les formules dans des valuations. La théorie de la preuve étudie ce qui se dérive par les règles. Pour le système TFL présenté, correction et complétude garantissent une correspondance : si Γ⊢A, alors Γ⊨A (la preuve ne permet pas de conclusion fausse lorsque les prémisses sont vraies). Réciproquement, si Γ⊨A, alors Γ⊢A (tout argument sémantiquement valide possède une dérivation). Tautologie et théorème, contradiction et dérivabilité de ⊥, équivalence et inter-dérivabilité ont ainsi des partenaires. Cela ne signifie pas que les symboles ⊢ et ⊨ ont le même sens. Les théorèmes métalogiques établissent le lien entre deux définitions distinctes.
 
 ### Références de cette séance
 
@@ -1527,7 +1527,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Building blocks of FOL<br>
 **Objectif :** Utiliser noms, prédicats, quantificateurs et domaine pour représenter une structure interne.
 
-<p>La logique du premier ordre (FOL) dépasse le bloc indivisible de la TFL en représentant individus et propriétés. Les noms comme b désignent des objets du domaine; un prédicat unaire D exprime une propriété d’un objet, écrite D(x) quand l’argument est la variable x; un prédicat à plusieurs places représente une relation. ∃xD(x) dit qu’au moins un objet du domaine est un chien; ∀xD(x) exige que chaque objet le soit. Le domaine doit être annoncé, car il détermine ce sur quoi portent les quantificateurs. Une expression singulière non référente, comme un nom qui ne désigne aucun objet du domaine, demande un traitement prudent : elle ne fonctionne pas automatiquement comme un nom ordinaire.</p>
+La logique du premier ordre (FOL) dépasse le bloc indivisible de la TFL en représentant individus et propriétés. Les noms comme b désignent des objets du domaine. Un prédicat unaire D exprime une propriété d’un objet, écrite D(x) quand l’argument est la variable x. Un prédicat à plusieurs places représente une relation. ∃xD(x) dit qu’au moins un objet du domaine est un chien. ∀xD(x) exige que chaque objet le soit. Le domaine doit être annoncé, car il détermine ce sur quoi portent les quantificateurs. Une expression singulière non référente, comme un nom qui ne désigne aucun objet du domaine, demande un traitement prudent : elle ne fonctionne pas automatiquement comme un nom ordinaire.
 
 ### Références de cette séance
 
@@ -1593,7 +1593,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Sentences with one quantifier<br>
 **Objectif :** Choisir quantificateur, portée, domaine et connecteur pour les phrases à un quantificateur.
 
-<p>Pour un domaine de pièces, « chaque pièce dans ma poche est une pièce de monnaie » se paraphrase : pour tout x, si x est dans ma poche, alors x est une pièce de monnaie; la restriction du domaine se met donc naturellement dans l’antécédent de →. « Certaines pièces sur la table sont des pièces de dix cents » affirme l’existence d’un objet à la fois sur la table et de cette valeur; on emploie ∃ avec une conjonction. Une formule existentielle avec une conditionnelle peut être beaucoup plus faible : ∃x(T(x)→D(x)) peut être satisfaite par n’importe quel objet hors de la table. Si aucun objet ne satisfait F, ∀x(F(x)→G(x)) est vraie par vacuité, tandis que ∃x(F(x)∧G(x)) est fausse. Les paraphrases avant symbolisation révèlent la portée et les ambiguïtés de langage.</p>
+Pour un domaine de pièces, « chaque pièce dans ma poche est une pièce de monnaie » se paraphrase : pour tout x, si x est dans ma poche, alors x est une pièce de monnaie. La restriction du domaine se met donc naturellement dans l’antécédent de →. « Certaines pièces sur la table sont des pièces de dix cents » affirme l’existence d’un objet à la fois sur la table et de cette valeur. On emploie ∃ avec une conjonction. Une formule existentielle avec une conditionnelle peut être beaucoup plus faible : ∃x(T(x)→D(x)) peut être satisfaite par n’importe quel objet hors de la table. Si aucun objet ne satisfait F, ∀x(F(x)→G(x)) est vraie par vacuité, tandis que ∃x(F(x)∧G(x)) est fausse. Les paraphrases avant symbolisation révèlent la portée et les ambiguïtés de langage.
 
 ### Références de cette séance
 
@@ -1684,7 +1684,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Multiple generality<br>
 **Objectif :** Formaliser relations à plusieurs places et distinguer la portée de quantificateurs imbriqués.
 
-<p>Un prédicat relationnel peut avoir plusieurs places : R(x,y) ne dit pas seulement une propriété de x, mais relie x à y. L’ordre des places importe, car A aime B n’équivaut pas à B aime A; L(k,i), L(i,k) et L(k,k) expriment des relations différentes. Les quantificateurs imbriqués fixent qui dépend de qui : ∀x∃yR(x,y) permet à chaque x d’avoir son propre y, tandis que ∃y∀xR(x,y) exige un même y lié à tous les x. Les deux ne sont pas équivalents en général. Il faut paraphraser les phrases, suivre les variables et préciser le domaine avant d’écrire la formule; les quantificateurs implicites du langage courant peuvent aussi être explicités.</p>
+Un prédicat relationnel peut avoir plusieurs places : R(x,y) ne dit pas seulement une propriété de x, mais relie x à y. L’ordre des places importe, car A aime B n’équivaut pas à B aime A. L(k,i), L(i,k) et L(k,k) expriment des relations différentes. Les quantificateurs imbriqués fixent qui dépend de qui : ∀x∃yR(x,y) permet à chaque x d’avoir son propre y, tandis que ∃y∀xR(x,y) exige un même y lié à tous les x. Les deux ne sont pas équivalents en général. Il faut paraphraser les phrases, suivre les variables et préciser le domaine avant d’écrire la formule. Les quantificateurs implicites du langage courant peuvent aussi être explicités.
 
 ### Références de cette séance
 
@@ -1750,7 +1750,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Identity<br>
 **Objectif :** Utiliser l’identité pour dire « autre que », « au moins », « au plus » et « exactement ».
 
-<p>Le signe = exprime que deux termes désignent un seul et même objet, et non seulement des objets semblables. La formule x≠p permet de restreindre « tout le monde » à ceux qui ne sont pas Pavel; la phrase « seul Pavel satisfait F » demande que Pavel satisfasse F et que tout objet F soit Pavel. Dire qu’il y a au moins deux F revient à trouver deux objets F distincts; au plus deux F impose que tout trio de F contienne une paire identique; exactement deux combine les deux conditions. L’identité rend ainsi exprimable la taille exacte d’une extension finie. Il faut annoncer si l’existence est incluse : « au plus n » autorise zéro.</p>
+Le signe = exprime que deux termes désignent un seul et même objet, et non seulement des objets semblables. La formule x≠p permet de restreindre « tout le monde » à ceux qui ne sont pas Pavel. La phrase « seul Pavel satisfait F » demande que Pavel satisfasse F et que tout objet F soit Pavel. Dire qu’il y a au moins deux F revient à trouver deux objets F distincts. Au plus deux F impose que tout trio de F contienne une paire identique. Exactement deux combine les deux conditions. L’identité rend ainsi exprimable la taille exacte d’une extension finie. Il faut annoncer si l’existence est incluse : « au plus n » autorise zéro.
 
 ### Références de cette séance
 
@@ -1816,7 +1816,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Sentences of FOL<br>
 **Objectif :** Distinguer termes, formules, phrases closes et portée des quantificateurs.
 
-<p>Le langage FOL possède noms, variables, prédicats, connecteurs, parenthèses et quantificateurs. Un terme est un nom ou une variable; appliquer un prédicat de n places à n termes forme une formule atomique, comme R(a,x). Les connecteurs assemblent ensuite les formules, et un quantificateur lie les occurrences libres de sa variable dans sa portée. Une formule est une phrase FOL lorsqu’elle n’a aucune variable libre; P(x) seule reste ouverte, alors que ∀xP(x) est close. Les parenthèses déterminent où s’étend chaque portée et évitent les captures accidentelles. Les indices sur un prédicat peuvent distinguer sa place logique de son symbole, particulièrement lorsque plusieurs relations ont des arités différentes.</p>
+Le langage FOL possède noms, variables, prédicats, connecteurs, parenthèses et quantificateurs. Un terme est un nom ou une variable. Appliquer un prédicat de n places à n termes forme une formule atomique, comme R(a,x). Les connecteurs assemblent ensuite les formules, et un quantificateur lie les occurrences libres de sa variable dans sa portée. Une formule est une phrase FOL lorsqu’elle n’a aucune variable libre. P(x) seule reste ouverte, alors que ∀xP(x) est close. Les parenthèses déterminent où s’étend chaque portée et évitent les captures accidentelles. Les indices sur un prédicat peuvent distinguer sa place logique de son symbole, particulièrement lorsque plusieurs relations ont des arités différentes.
 
 ### Références de cette séance
 
@@ -1882,7 +1882,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Definite descriptions<br>
 **Objectif :** Décomposer « le F est G » en existence, unicité et prédication selon l’analyse de Russell.
 
-<p>Une description définie comme « le traître » prétend désigner un unique objet. L’analyse de Russell n’en fait pas simplement un nom : « le F est G » affirme qu’il existe au moins un F, qu’il n’y en a pas deux distincts, et que chaque F est G. L’existence et l’unicité sont donc des éléments vérifiables de la phrase, et une description vide échoue à la condition existentielle. Les domaines du discours étant souvent restreints par le contexte, le choix du domaine influe sur ce qui compte comme l’unique F. Cette analyse peut être discutée quant à son adéquation aux usages naturels; elle est une proposition théorique explicite, non une équivalence neutre imposée par la syntaxe.</p>
+Une description définie comme « le traître » prétend désigner un unique objet. L’analyse de Russell n’en fait pas simplement un nom : « le F est G » affirme qu’il existe au moins un F, qu’il n’y en a pas deux distincts, et que chaque F est G. L’existence et l’unicité sont donc des éléments vérifiables de la phrase, et une description vide échoue à la condition existentielle. Les domaines du discours étant souvent restreints par le contexte, le choix du domaine influe sur ce qui compte comme l’unique F. Cette analyse peut être discutée quant à son adéquation aux usages naturels. Elle est une proposition théorique explicite, non une équivalence neutre imposée par la syntaxe.
 
 ### Références de cette séance
 
@@ -1948,7 +1948,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Ambiguity<br>
 **Objectif :** Représenter deux lectures possibles d’une phrase au moyen de formules différentes.
 
-<p>La portée des quantificateurs et des négations est fixée dans chaque formule FOL, même si une phrase française reste ambiguë. « Tout ce qui brille n’est pas or » peut signifier que rien de ce qui brille n’est or, ∀x(F(x)→¬G(x)), ou qu’il existe une chose brillante qui n’est pas or, ∃x(F(x)∧¬G(x)). Cette dernière formule équivaut à nier que tout objet brillant soit or. Des phrases avec « seul » ou des adjectifs peuvent aussi recevoir plusieurs analyses selon le domaine et la portée. Il faut expliciter la lecture voulue par une paraphrase avant de symboliser; la notation formelle clarifie le choix mais ne décide pas quelle lecture l’énoncé naturel visait.</p>
+La portée des quantificateurs et des négations est fixée dans chaque formule FOL, même si une phrase française reste ambiguë. « Tout ce qui brille n’est pas or » peut signifier que rien de ce qui brille n’est or, ∀x(F(x)→¬G(x)), ou qu’il existe une chose brillante qui n’est pas or, ∃x(F(x)∧¬G(x)). Cette dernière formule équivaut à nier que tout objet brillant soit or. Des phrases avec « seul » ou des adjectifs peuvent aussi recevoir plusieurs analyses selon le domaine et la portée. Il faut expliciter la lecture voulue par une paraphrase avant de symboliser. La notation formelle clarifie le choix mais ne décide pas quelle lecture l’énoncé naturel visait.
 
 ### Références de cette séance
 
@@ -2014,7 +2014,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Extensionality<br>
 **Objectif :** Évaluer un prédicat par son extension et expliquer la limite extensionnelle de FOL.
 
-<p>Une interprétation FOL associe à un prédicat l’ensemble des objets, couples ou n-tuples dont il est vrai; cet ensemble est son extension. Deux prédicats de sens courant différent mais de même extension sont indiscernables pour la FOL : celle-ci ne code pas les nuances de signification, seulement l’application des prédicats aux objets. Une interprétation comprend aussi un domaine et une référence pour chaque nom; un prédicat relationnel à deux places est évalué sur des paires ordonnées, dont l’ordre des composantes compte. Le symbole d’identité conserve sa signification spéciale : deux termes sont égaux lorsque leurs référents sont le même objet. Une formalisation sémantique doit ainsi préciser l’extension et non seulement paraphraser le mot.</p>
+Une interprétation FOL associe à un prédicat l’ensemble des objets, couples ou n-tuples dont il est vrai. Cet ensemble est son extension. Deux prédicats de sens courant différent mais de même extension sont indiscernables pour la FOL : celle-ci ne code pas les nuances de signification, seulement l’application des prédicats aux objets. Une interprétation comprend aussi un domaine et une référence pour chaque nom. Un prédicat relationnel à deux places est évalué sur des paires ordonnées, dont l’ordre des composantes compte. Le symbole d’identité conserve sa signification spéciale : deux termes sont égaux lorsque leurs référents sont le même objet. Une formalisation sémantique doit ainsi préciser l’extension et non seulement paraphraser le mot.
 
 ### Références de cette séance
 
@@ -2080,7 +2080,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Truth in FOL<br>
 **Objectif :** Calculer vérité atomique, connecteurs et quantificateurs relativement à un domaine donné.
 
-<p>La vérité FOL est toujours évaluée relativement à une interprétation : domaine, référents des noms et extensions des prédicats. Une phrase atomique P(a) est vraie si le référent de a appartient à l’extension de P; R(a,b) dépend de la paire ordonnée, et a=b est vraie si les deux noms désignent le même objet. Les connecteurs gardent leurs tables TFL. ∀xA(x) est vraie si chaque objet du domaine satisfait A(x), tandis que ∃xA(x) l’est si au moins un objet le satisfait. Les conditions quantifiées se testent alors en substituant chaque objet du domaine à la variable liée. Pour les formules ouvertes, on suit quels objets satisfont la formule plutôt que d’attribuer directement une vérité de phrase.</p>
+La vérité FOL est toujours évaluée relativement à une interprétation : domaine, référents des noms et extensions des prédicats. Une phrase atomique P(a) est vraie si le référent de a appartient à l’extension de P. R(a,b) dépend de la paire ordonnée, et a=b est vraie si les deux noms désignent le même objet. Les connecteurs gardent leurs tables TFL. ∀xA(x) est vraie si chaque objet du domaine satisfait A(x), tandis que ∃xA(x) l’est si au moins un objet le satisfait. Les conditions quantifiées se testent alors en substituant chaque objet du domaine à la variable liée. Pour les formules ouvertes, on suit quels objets satisfont la formule plutôt que d’attribuer directement une vérité de phrase.
 
 ### Références de cette séance
 
@@ -2146,7 +2146,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Semantic concepts<br>
 **Objectif :** Étendre les notions sémantiques de TFL des valuations aux interprétations.
 
-<p>En FOL, une validité est vraie dans toute interprétation, et une contradiction est fausse dans chacune. Γ⊨C signifie qu’il n’existe aucune interprétation où toutes les prémisses sont vraies et C fausse. Des phrases sont équivalentes si elles ont la même valeur dans chaque interprétation; un ensemble est conjointement satisfiable si au moins une interprétation les rend toutes vraies. Ces définitions ressemblent à celles de TFL, mais le domaine et les extensions des prédicats rendent les cas beaucoup plus riches. L’expressibilité décrit quelles propriétés, relations ou ensembles d’objets une formule peut caractériser. Une formule à variables libres est satisfaite par des objets; une phrase close est vraie ou fausse dans l’interprétation.</p>
+En FOL, une validité est vraie dans toute interprétation, et une contradiction est fausse dans chacune. Γ⊨C signifie qu’il n’existe aucune interprétation où toutes les prémisses sont vraies et C fausse. Des phrases sont équivalentes si elles ont la même valeur dans chaque interprétation. Un ensemble est conjointement satisfiable si au moins une interprétation les rend toutes vraies. Ces définitions ressemblent à celles de TFL, mais le domaine et les extensions des prédicats rendent les cas beaucoup plus riches. L’expressibilité décrit quelles propriétés, relations ou ensembles d’objets une formule peut caractériser. Une formule à variables libres est satisfaite par des objets. Une phrase close est vraie ou fausse dans l’interprétation.
 
 ### Références de cette séance
 
@@ -2212,7 +2212,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Using interpretations<br>
 **Objectif :** Utiliser des domaines et extensions finis pour réfuter validité, équivalence ou propriétés absolues.
 
-<p>Pour montrer qu’une phrase FOL n’est pas une validité, il suffit de construire une interprétation où elle est fausse; pour montrer qu’elle n’est pas une contradiction, un modèle où elle est vraie suffit. Les domaines finis réduisent le travail : choisir un ou deux objets et lister explicitement les extensions des prédicats permet de vérifier chaque sous-formule. Pour réfuter l’équivalence de deux phrases, on cherche une interprétation où leurs valeurs diffèrent; ∀xS(x) et ∃xS(x) peuvent être séparées avec deux objets dont un seul satisfait S. Un modèle doit interpréter tous les noms employés dans son domaine. Un contre-modèle fini réfute une prétention universelle, mais quelques modèles vrais ne prouvent pas une validité.</p>
+Pour montrer qu’une phrase FOL n’est pas une validité, il suffit de construire une interprétation où elle est fausse. Pour montrer qu’elle n’est pas une contradiction, un modèle où elle est vraie suffit. Les domaines finis réduisent le travail : choisir un ou deux objets et lister explicitement les extensions des prédicats permet de vérifier chaque sous-formule. Pour réfuter l’équivalence de deux phrases, on cherche une interprétation où leurs valeurs diffèrent. ∀xS(x) et ∃xS(x) peuvent être séparées avec deux objets dont un seul satisfait S. Un modèle doit interpréter tous les noms employés dans son domaine. Un contre-modèle fini réfute une prétention universelle, mais quelques modèles vrais ne prouvent pas une validité.
 
 ### Références de cette séance
 
@@ -2278,7 +2278,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Reasoning about interpretations<br>
 **Objectif :** Distinguer un contre-modèle fini d’une preuve générale de validité.
 
-<p>Une interprétation où une formule est fausse suffit à prouver qu’elle n’est pas valide, et un modèle où elle est vraie suffit à montrer qu’elle n’est pas contradictoire. En revanche, tester dix ou mille interprétations favorables ne prouve pas une validité : il faut établir la vérité dans toute interprétation, et il y en a généralement une infinité. Pour une formule universelle, un raisonnement général peut examiner un objet arbitraire; si l’objet satisfait ou non le prédicat, on montre que le résultat suit dans les deux cas. Cette preuve s’effectue dans le métalangage : elle parle des formules et de leurs interprétations, plutôt qu’elle ne constitue elle-même une formule de FOL.</p>
+Une interprétation où une formule est fausse suffit à prouver qu’elle n’est pas valide, et un modèle où elle est vraie suffit à montrer qu’elle n’est pas contradictoire. En revanche, tester dix ou mille interprétations favorables ne prouve pas une validité : il faut établir la vérité dans toute interprétation, et il y en a généralement une infinité. Pour une formule universelle, un raisonnement général peut examiner un objet arbitraire. Si l’objet satisfait ou non le prédicat, on montre que le résultat suit dans les deux cas. Cette preuve s’effectue dans le métalangage : elle parle des formules et de leurs interprétations, plutôt qu’elle ne constitue elle-même une formule de FOL.
 
 ### Références de cette séance
 
@@ -2344,7 +2344,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Properties of relations<br>
 **Objectif :** Reconnaître réflexivité, symétrie, transitivité et antisymétrie dans une relation binaire.
 
-<p>Une relation binaire R peut avoir des propriétés générales exprimables par des quantificateurs. Elle est réflexive si chaque x est relié à lui-même : ∀xR(x,x). Elle est symétrique si R(x,y) entraîne R(y,x), et transitive si R(x,y) et R(y,z) entraînent R(x,z). Elle est antisymétrique si deux objets reliés dans les deux sens doivent être identiques. Une relation d’équivalence est réflexive, symétrique et transitive; un ordre partiel est réflexif, transitif et antisymétrique. Un exemple concret, comme « plus âgé que », peut appuyer une inférence, mais la relation logique R n’est pas présumée transitive sans ajouter cette condition à l’interprétation ou aux prémisses.</p>
+Une relation binaire R peut avoir des propriétés générales exprimables par des quantificateurs. Elle est réflexive si chaque x est relié à lui-même : ∀xR(x,x). Elle est symétrique si R(x,y) entraîne R(y,x), et transitive si R(x,y) et R(y,z) entraînent R(x,z). Elle est antisymétrique si deux objets reliés dans les deux sens doivent être identiques. Une relation d’équivalence est réflexive, symétrique et transitive. Un ordre partiel est réflexif, transitif et antisymétrique. Un exemple concret, comme « plus âgé que », peut appuyer une inférence, mais la relation logique R n’est pas présumée transitive sans ajouter cette condition à l’interprétation ou aux prémisses.
 
 ### Références de cette séance
 
@@ -2410,7 +2410,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Basic rules for FOL<br>
 **Objectif :** Utiliser élimination universelle, introduction existentielle et règles de sous-preuve sans capture de variable.
 
-<p>L’élimination de ∀ permet d’instancier une formule universelle par n’importe quel nom lorsque le quantificateur est l’opérateur principal. L’introduction de ∃ généralise une formule établie en remplaçant des occurrences libres appropriées d’un nom par une variable liée, sans capturer une variable déjà liée. Pour introduire ∀, on doit prouver A(c) pour un nom arbitraire c qui n’apparaît dans aucune prémisse ni hypothèse non déchargée; sinon le cas choisi pourrait être spécial. Pour éliminer ∃, on ouvre une sous-preuve avec un nom témoin neuf, puis on décharge cette hypothèse après avoir obtenu une conclusion indépendante de ce témoin. Le manuel impose des domaines non vides; il signale que cela rend ∀xF(x)⊢∃xF(x) dérivable. Une quantification vacante ne lie aucune occurrence libre, donc ∃xG(a) équivaut à G(a). Les substitutions ne remplacent que les occurrences libres et doivent respecter ces portées.</p>
+L’élimination de ∀ permet d’instancier une formule universelle par n’importe quel nom lorsque le quantificateur est l’opérateur principal. L’introduction de ∃ généralise une formule établie en remplaçant des occurrences libres appropriées d’un nom par une variable liée, sans capturer une variable déjà liée. Pour introduire ∀, on doit prouver A(c) pour un nom arbitraire c qui n’apparaît dans aucune prémisse ni hypothèse non déchargée. Sinon le cas choisi pourrait être spécial. Pour éliminer ∃, on ouvre une sous-preuve avec un nom témoin neuf, puis on décharge cette hypothèse après avoir obtenu une conclusion indépendante de ce témoin. Le manuel impose des domaines non vides. Il signale que cela rend ∀xF(x)⊢∃xF(x) dérivable. Une quantification vacante ne lie aucune occurrence libre, donc ∃xG(a) équivaut à G(a). Les substitutions ne remplacent que les occurrences libres et doivent respecter ces portées.
 
 ### Références de cette séance
 
@@ -2501,7 +2501,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Proofs with quantifiers<br>
 **Objectif :** Choisir entre introduction universelle, introduction existentielle et élimination existentielle.
 
-<p>Pour viser ∀xA(x), la stratégie à rebours consiste à établir A(c) pour un nom arbitraire c; la condition de fraîcheur garantit qu’aucune hypothèse ne rend ce cas spécial. Pour viser ∃xA(x), il faut d’abord trouver un témoin concret c tel qu’A(c) soit démontrable, puis généraliser par ∃I. Depuis ∃xA(x), on travaille souvent vers l’avant en ouvrant une sous-preuve avec un témoin nouveau c et l’hypothèse A(c); la conclusion obtenue doit être indépendante de l’identité de c pour être exportée par ∃E. Ces contraintes reflètent le sens des quantificateurs : tous les objets contre au moins un objet, et un témoin arbitraire contre un témoin choisi.</p>
+Pour viser ∀xA(x), la stratégie à rebours consiste à établir A(c) pour un nom arbitraire c. La condition de fraîcheur garantit qu’aucune hypothèse ne rend ce cas spécial. Pour viser ∃xA(x), il faut d’abord trouver un témoin concret c tel qu’A(c) soit démontrable, puis généraliser par ∃I. Depuis ∃xA(x), on travaille souvent vers l’avant en ouvrant une sous-preuve avec un témoin nouveau c et l’hypothèse A(c). La conclusion obtenue doit être indépendante de l’identité de c pour être exportée par ∃E. Ces contraintes reflètent le sens des quantificateurs : tous les objets contre au moins un objet, et un témoin arbitraire contre un témoin choisi.
 
 ### Références de cette séance
 
@@ -2567,7 +2567,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Conversion of quantifiers<br>
 **Objectif :** Appliquer les équivalences de quantificateurs en respectant la portée et les variables libres.
 
-<p>La négation d’une existentielle se convertit en universelle niée : ¬∃xA(x) équivaut à ∀x¬A(x). De même, ¬∀xA(x) équivaut à ∃x¬A(x). Ces équivalences expriment que « rien n’est A » signifie que tout objet n’est pas A, et que « pas tout est A » signifie qu’il existe un contre-exemple. D’autres règles permettent de faire passer un quantificateur au-delà d’un connecteur lorsque la variable n’est pas libre dans l’autre formule; cette condition est cruciale. Les conversions peuvent aussi soutenir la mise en forme prénexe. Une manipulation syntaxique est valide seulement si les portées restent correctement attachées et les conditions de variable respectées.</p>
+La négation d’une existentielle se convertit en universelle niée : ¬∃xA(x) équivaut à ∀x¬A(x). De même, ¬∀xA(x) équivaut à ∃x¬A(x). Ces équivalences expriment que « rien n’est A » signifie que tout objet n’est pas A, et que « pas tout est A » signifie qu’il existe un contre-exemple. D’autres règles permettent de faire passer un quantificateur au-delà d’un connecteur lorsque la variable n’est pas libre dans l’autre formule. Cette condition est cruciale. Les conversions peuvent aussi soutenir la mise en forme prénexe. Une manipulation syntaxique est valide seulement si les portées restent correctement attachées et les conditions de variable respectées.
 
 ### Références de cette séance
 
@@ -2633,7 +2633,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Rules for identity<br>
 **Objectif :** Utiliser réflexivité de l’identité et remplacement de noms identiques dans une formule.
 
-<p>L’introduction de l’identité permet d’écrire c=c sans prémisse : chaque objet est identique à lui-même. L’élimination de l’identité exprime la substitution des identiques : si a=b, toute propriété attribuée à a peut être réattribuée à b, en remplaçant une ou plusieurs occurrences appropriées. Elle ne permet pas de conclure a=b à partir de ressemblances ou de propriétés partagées; l’identité des indiscernables n’est pas adoptée comme règle. Cette substitution est appelée loi de Leibniz. Elle aide à dériver la symétrie de l’identité : sous l’hypothèse a=b, on a a=a par réflexivité, puis on remplace une occurrence de a par b pour obtenir b=a. L’égalité doit toujours être interprétée comme identité du référent.</p>
+L’introduction de l’identité permet d’écrire c=c sans prémisse : chaque objet est identique à lui-même. L’élimination de l’identité exprime la substitution des identiques : si a=b, toute propriété attribuée à a peut être réattribuée à b, en remplaçant une ou plusieurs occurrences appropriées. Elle ne permet pas de conclure a=b à partir de ressemblances ou de propriétés partagées. L’identité des indiscernables n’est pas adoptée comme règle. Cette substitution est appelée loi de Leibniz. Elle aide à dériver la symétrie de l’identité : sous l’hypothèse a=b, on a a=a par réflexivité, puis on remplace une occurrence de a par b pour obtenir b=a. L’égalité doit toujours être interprétée comme identité du référent.
 
 ### Références de cette séance
 
@@ -2699,7 +2699,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Derived rules<br>
 **Objectif :** Expliquer pourquoi les règles de négation des quantificateurs peuvent être des règles dérivées.
 
-<p>Les conversions de quantificateurs ajoutées au système sont des règles dérivées, car on peut les reconstruire avec les règles fondamentales de FOL et les sous-preuves. Pour obtenir ¬∃xA(x) depuis ∀x¬A(x), on suppose provisoirement qu’il existe un A, ouvre un sous-cas avec un témoin arbitraire neuf, instancie l’universelle en ¬A(c), puis produit une contradiction avec A(c). On ferme ensuite les sous-preuves en respectant les règles de décharge. La démonstration parallèle explique ¬∀xA(x) depuis ∃x¬A(x). Un schéma de dérivation justifie une famille d’instances, mais les conditions de fraîcheur du témoin restent indispensables à chaque preuve concrète.</p>
+Les conversions de quantificateurs ajoutées au système sont des règles dérivées, car on peut les reconstruire avec les règles fondamentales de FOL et les sous-preuves. Pour obtenir ¬∃xA(x) depuis ∀x¬A(x), on suppose provisoirement qu’il existe un A, ouvre un sous-cas avec un témoin arbitraire neuf, instancie l’universelle en ¬A(c), puis produit une contradiction avec A(c). On ferme ensuite les sous-preuves en respectant les règles de décharge. La démonstration parallèle explique ¬∀xA(x) depuis ∃x¬A(x). Un schéma de dérivation justifie une famille d’instances, mais les conditions de fraîcheur du témoin restent indispensables à chaque preuve concrète.
 
 ### Références de cette séance
 
@@ -2765,7 +2765,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Proofs and semantics<br>
 **Objectif :** Relier ⊢ et ⊨ tout en maintenant leur différence conceptuelle.
 
-<p>Le symbole Γ⊢C affirme une existence de preuve dont les hypothèses non déchargées sont dans Γ; Γ⊨C affirme qu’aucune interprétation ne rend Γ vraie et C fausse. Le premier est syntaxique, le second sémantique. Le théorème de correction et de complétude établit, pour le système FOL présenté, que les deux relations coïncident extensionnellement : Γ⊢C si et seulement si Γ⊨C. La même correspondance relie validités et théorèmes, équivalence et inter-dérivabilité, satisfaisabilité et cohérence. Même lorsque les extensions coïncident, les notions ont des définitions distinctes et des méthodes de vérification différentes : une preuve finie contre une affirmation sur toutes les interprétations.</p>
+Le symbole Γ⊢C affirme une existence de preuve dont les hypothèses non déchargées sont dans Γ. Γ⊨C affirme qu’aucune interprétation ne rend Γ vraie et C fausse. Le premier est syntaxique, le second sémantique. Le théorème de correction et de complétude établit, pour le système FOL présenté, que les deux relations coïncident extensionnellement : Γ⊢C si et seulement si Γ⊨C. La même correspondance relie validités et théorèmes, équivalence et inter-dérivabilité, satisfaisabilité et cohérence. Même lorsque les extensions coïncident, les notions ont des définitions distinctes et des méthodes de vérification différentes : une preuve finie contre une affirmation sur toutes les interprétations.
 
 ### Références de cette séance
 
@@ -2831,7 +2831,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Introducing modal logic<br>
 **Objectif :** Lire les opérateurs modaux et comprendre que les règles dépendent du type de modalité choisi.
 
-<p>La logique modale enrichit les connecteurs propositionnels par □A (« nécessairement A ») et ◇A (« possiblement A »). Une phrase peut être vraie dans le monde actuel sans l’être nécessairement; la nécessité et la possibilité dépendent des mondes alternatifs pris en compte. Le cadre peut représenter nécessité logique, physique, connaissance, croyance ou obligation, mais ces lectures imposent des propriétés différentes aux règles. Par exemple, □A→A convient à une lecture factive de nécessité ou de connaissance, mais pas nécessairement à la croyance, qui peut être fausse, ni à l’obligation, qui peut ne pas être satisfaite. Les systèmes K, T, S4 et S5 ajoutent des principes distincts; choisir un système revient à choisir les inférences appropriées à l’interprétation visée.</p>
+La logique modale enrichit les connecteurs propositionnels par □A (« nécessairement A ») et ◇A (« possiblement A »). Une phrase peut être vraie dans le monde actuel sans l’être nécessairement. La nécessité et la possibilité dépendent des mondes alternatifs pris en compte. Le cadre peut représenter nécessité logique, physique, connaissance, croyance ou obligation, mais ces lectures imposent des propriétés différentes aux règles. Par exemple, □A→A convient à une lecture factive de nécessité ou de connaissance, mais pas nécessairement à la croyance, qui peut être fausse, ni à l’obligation, qui peut ne pas être satisfaite. Les systèmes K, T, S4 et S5 ajoutent des principes distincts. Choisir un système revient à choisir les inférences appropriées à l’interprétation visée.
 
 ### Références de cette séance
 
@@ -2897,7 +2897,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Natural deduction for ML<br>
 **Objectif :** Comprendre les sous-preuves strictes et définir la possibilité par dualité avec nécessité.
 
-<p>Le système K reprend les règles de la TFL puis ajoute des sous-preuves strictes pour raisonner sur les possibilités alternatives. Dans une telle sous-preuve, les hypothèses ordinaires extérieures ne peuvent généralement pas être invoquées; □I permet de conclure □A si A a été établi dans ce contexte strict. □E permet d’utiliser A à l’intérieur d’une sous-preuve stricte à partir d’une prémisse extérieure □A, selon les restrictions de portée. Cette discipline empêche de transférer à tous les mondes une hypothèse vraie seulement ici. La possibilité peut être définie comme ◇A ≡ ¬□¬A : A est possible s’il n’est pas nécessairement faux. Les systèmes T, S4 et S5 renforcent ensuite K par d’autres règles.</p>
+Le système K reprend les règles de la TFL puis ajoute des sous-preuves strictes pour raisonner sur les possibilités alternatives. Dans une telle sous-preuve, les hypothèses ordinaires extérieures ne peuvent généralement pas être invoquées. □I permet de conclure □A si A a été établi dans ce contexte strict. □E permet d’utiliser A à l’intérieur d’une sous-preuve stricte à partir d’une prémisse extérieure □A, selon les restrictions de portée. Cette discipline empêche de transférer à tous les mondes une hypothèse vraie seulement ici. La possibilité peut être définie comme ◇A ≡ ¬□¬A : A est possible s’il n’est pas nécessairement faux. Les systèmes T, S4 et S5 renforcent ensuite K par d’autres règles.
 
 ### Références de cette séance
 
@@ -2963,7 +2963,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Semantics for ML<br>
 **Objectif :** Calculer □A et ◇A à partir d’une relation d’accessibilité et des valeurs locales.
 
-<p>Une interprétation modale comporte un ensemble non vide de mondes W, une relation d’accessibilité R entre ces mondes et une valuation des lettres à chacun d’eux. Dans un monde w, □A est vraie si A est vraie dans chaque monde accessible depuis w; ◇A est vraie si A est vraie dans au moins un monde accessible depuis w. Si aucun monde n’est accessible, la clause universelle rend □A vraie par vacuité et la clause existentielle rend ◇A fausse. Les systèmes modaux correspondent à des contraintes différentes sur R : K autorise une relation arbitraire; les systèmes plus forts ajoutent des propriétés adaptées. Pour tester une formule, il faut donc suivre les flèches du monde évalué, sans quantifier sur les mondes inaccessibles.</p>
+Une interprétation modale comporte un ensemble non vide de mondes W, une relation d’accessibilité R entre ces mondes et une valuation des lettres à chacun d’eux. Dans un monde w, □A est vraie si A est vraie dans chaque monde accessible depuis w. ◇A est vraie si A est vraie dans au moins un monde accessible depuis w. Si aucun monde n’est accessible, la clause universelle rend □A vraie par vacuité et la clause existentielle rend ◇A fausse. Les systèmes modaux correspondent à des contraintes différentes sur R : K autorise une relation arbitraire. Les systèmes plus forts ajoutent des propriétés adaptées. Pour tester une formule, il faut donc suivre les flèches du monde évalué, sans quantifier sur les mondes inaccessibles.
 
 ### Références de cette séance
 
@@ -3029,7 +3029,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Normal forms<br>
 **Objectif :** Construire une formule équivalente à partir des lignes vraies ou fausses d’une table.
 
-<p>La forme normale disjonctive (DNF) est une disjonction de conjonctions de lettres atomiques ou niées; chaque négation porte directement sur une lettre. Pour la construire, on prend chaque ligne vraie d’une table complète, on forme une conjonction décrivant exactement cette valuation, puis on disjoint ces termes. La forme normale conjonctive (CNF) est duale : conjonction de clauses disjonctives, construite à partir des lignes fausses. Chaque formule TFL possède des formes DNF et CNF équivalentes. Le processus dépend de la table : si aucune ligne n’est vraie ou fausse, les constantes logiques ou une forme équivalente doivent être traitées avec soin. Ces formes clarifient la structure et servent de base au théorème de complétude fonctionnelle.</p>
+La forme normale disjonctive (DNF) est une disjonction de conjonctions de lettres atomiques ou niées. Chaque négation porte directement sur une lettre. Pour la construire, on prend chaque ligne vraie d’une table complète, on forme une conjonction décrivant exactement cette valuation, puis on disjoint ces termes. La forme normale conjonctive (CNF) est duale : conjonction de clauses disjonctives, construite à partir des lignes fausses. Chaque formule TFL possède des formes DNF et CNF équivalentes. Le processus dépend de la table : si aucune ligne n’est vraie ou fausse, les constantes logiques ou une forme équivalente doivent être traitées avec soin. Ces formes clarifient la structure et servent de base au théorème de complétude fonctionnelle.
 
 ### Références de cette séance
 
@@ -3095,7 +3095,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Functional completeness<br>
 **Objectif :** Comprendre la complétude fonctionnelle et exprimer des opérateurs avec un ensemble réduit.
 
-<p>Un ensemble de connecteurs est fonctionnellement complet s’il permet de construire une formule ayant n’importe quelle table de vérité possible. Les formes DNF ou CNF montrent que les connecteurs standards suffisent; même certaines paires, comme {¬,∨}, {¬,∧} ou {¬,→}, sont complètes, car un connecteur manquant peut être redéfini par équivalence. Le NAND, noté A↑B et vrai sauf lorsque A et B sont tous deux vrais, est à lui seul fonctionnellement complet : ¬A s’écrit A↑A, puis d’autres connecteurs se construisent à partir de cette négation et de ↑. La possibilité de réduire les primitives est théorique; cela n’implique pas que les expressions résultantes soient pratiques à lire.</p>
+Un ensemble de connecteurs est fonctionnellement complet s’il permet de construire une formule ayant n’importe quelle table de vérité possible. Les formes DNF ou CNF montrent que les connecteurs standards suffisent. Même certaines paires, comme {¬,∨}, {¬,∧} ou {¬,→}, sont complètes, car un connecteur manquant peut être redéfini par équivalence. Le NAND, noté A↑B et vrai sauf lorsque A et B sont tous deux vrais, est à lui seul fonctionnellement complet : ¬A s’écrit A↑A, puis d’autres connecteurs se construisent à partir de cette négation et de ↑. La possibilité de réduire les primitives est théorique. Cela n’implique pas que les expressions résultantes soient pratiques à lire.
 
 ### Références de cette séance
 
@@ -3161,7 +3161,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Proving equivalences<br>
 **Objectif :** Enchaîner des lois logiques en remplaçant des sous-formules équivalentes dans leur contexte.
 
-<p>Deux formules sont équivalentes si elles partagent leur valeur sous toute valuation. La substituabilité garantit qu’on peut remplacer une occurrence par une équivalente dans un contexte sans changer la valeur de la formule globale. On peut donc prouver une équivalence par une chaîne d’étapes : à chaque ligne, nommer la loi appliquée à la sous-formule, par exemple double négation ou De Morgan, puis poursuivre jusqu’à la forme désirée. Le remplacement simultané d’une lettre par une même formule préserve également l’équivalence. Il faut vérifier que la règle s’applique au bon périmètre; une simple ressemblance visuelle ne suffit pas. Ces chaînes construisent notamment des formes normales et complètent les méthodes par table ou dérivation formelle.</p>
+Deux formules sont équivalentes si elles partagent leur valeur sous toute valuation. La substituabilité garantit qu’on peut remplacer une occurrence par une équivalente dans un contexte sans changer la valeur de la formule globale. On peut donc prouver une équivalence par une chaîne d’étapes : à chaque ligne, nommer la loi appliquée à la sous-formule, par exemple double négation ou De Morgan, puis poursuivre jusqu’à la forme désirée. Le remplacement simultané d’une lettre par une même formule préserve également l’équivalence. Il faut vérifier que la règle s’applique au bon périmètre. Une simple ressemblance visuelle ne suffit pas. Ces chaînes construisent notamment des formes normales et complètent les méthodes par table ou dérivation formelle.
 
 ### Références de cette séance
 
@@ -3227,7 +3227,7 @@ Statuts de licence, précautions de réutilisation et provenance détaillée : [
 **Séance source :** Soundness<br>
 **Objectif :** Comprendre comment la correction d’une règle entraîne la préservation de conséquence dans chaque preuve TFL.
 
-<p>Un système de déduction est correct (sound) si tout ce qu’il permet de prouver découle réellement des prémisses dans la sémantique visée : Γ⊢C implique Γ⊨C. Le chapitre établit ce résultat pour la déduction naturelle de TFL en montrant d’abord que chaque ligne d’une preuve est impliquée par les hypothèses dont elle dépend. Les prémisses et hypothèses satisfont cette propriété directement; pour chaque règle, on prouve que si ses lignes antérieures sont sémantiquement soutenues, sa conclusion l’est aussi. Une induction sur les lignes de la dérivation complète l’argument. Cette preuve certifie l’absence de règles qui tirent une conclusion invalide; elle concerne le système et la sémantique précisés, pas toute logique imaginable.</p>
+Un système de déduction est correct (sound) si tout ce qu’il permet de prouver découle réellement des prémisses dans la sémantique visée : Γ⊢C implique Γ⊨C. Le chapitre établit ce résultat pour la déduction naturelle de TFL en montrant d’abord que chaque ligne d’une preuve est impliquée par les hypothèses dont elle dépend. Les prémisses et hypothèses satisfont cette propriété directement. Pour chaque règle, on prouve que si ses lignes antérieures sont sémantiquement soutenues, sa conclusion l’est aussi. Une induction sur les lignes de la dérivation complète l’argument. Cette preuve certifie l’absence de règles qui tirent une conclusion invalide. Elle concerne le système et la sémantique précisés, pas toute logique imaginable.
 
 ### Références de cette séance
 
