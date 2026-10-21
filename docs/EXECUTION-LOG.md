@@ -540,3 +540,9 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   1 100 px : fractions complètes et équations en bloc rendues correctement.
   Le contrôle symbolique des dix cours techniques et les 30 tests Python ont
   été relancés dans ce lot. La CI distante reste à confirmer après publication.
+
+- Publication vérifiée : code `2dfe292`, CI GitHub Actions `39681467646` réussie.
+  ZIP Windows `12384767059` (61 672 336 octets). Les preuves `Windows-checks`
+  `12383319440` ont été téléchargées et relues : 113 tests sans échec, 9 535
+  champs / 1 425 fractions / zéro non classé ou invalide; diagnostic du véritable
+  EXE du paquet positif pour LaTeX/PDF, sans interface ni données utilisateur.
