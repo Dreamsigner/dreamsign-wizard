@@ -742,3 +742,21 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   le moteur natif pour le test hors écran. Les candidates taguées 1.5.0 et
   1.5.2 ont échoué à ce contrôle natif et ne sont pas publiées en Release.
   Candidate de publication suivante : 1.5.4, fixture 1.5.5 non publiée.
+- Rapports du run de branche téléchargés (`Windows-checks`, `12437891844`) :
+  142 tests desktop, zéro échec/erreur/ignoré; fixture WebM/MP4 décodée,
+  pause/déplacement/vitesse/volume vérifiés et image décodée inspectée.
+  MP4 MIT lu en CI; YouTube détecté mais non lu sur ce runner, contre lecture
+  effective en local. Les options et restrictions de chaque fournisseur ne
+  sont donc pas certifiées pour toutes les vidéos. Le rapport d’installation
+  confirme tous les contrôles, dont `updateHelperVerified` et
+  `progressPreserved`.
+- Release 1.5.4 publiée : tag `6b76513`, run `39805155773` réussi. Rapports
+  `12436848743` téléchargés : 142 tests desktop et un test natif réussis;
+  mise à niveau 1.5.4 → fixture 1.5.5, tous les contrôles d’installation validés.
+  Le MP4 MIT est lu en CI, YouTube reste détecté sans lecture sur le runner.
+  Installateur publié : 63 856 640 octets. Le client de mise à jour de production
+  détecte 1.5.4 et lit une empreinte SHA-256 valide de 64 caractères.
+- Contrôle complémentaire du runtime Java de la distribution locale : MP4
+  synthétique décodé, temps de lecture progressant et contrôles source présents.
+  Un lanceur Java du JDK de construction a été ajouté temporairement au runtime
+  local pour ce diagnostic puis retiré; aucun module ou moteur n’a été ajouté.

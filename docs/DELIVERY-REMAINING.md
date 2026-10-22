@@ -8,10 +8,10 @@ Ce bilan complète le registre; il ne transforme pas l'inventaire OSSU en cours 
 - Catalogue : 15 unités, 391 leçons/ateliers, 1190 exercices; progression locale persistante.
 - Ordre pédagogique OSSU documenté, glossaire français Prolog, reprise différée des questions ratées jusqu'à correction.
 - Lecture des notes par cours, liens appariés aux exercices, lecteur PDF natif, formules composées localement, explications et icônes originales.
-- Dernière validation locale : 136 tests desktop, 30 tests Python et contrôleurs pédagogiques réussis. Le contrôle global des fractions parcourt 9 535 champs et rend 1 425 fractions sans erreur ni barre non classée hors code. Captures Compose de calcul différentiel inspectées à 500 et 1 100 px. Diagnostic de l’EXE produit réussi pour LaTeX, PDF et audio sans accès aux données utilisateur.
-- Code livré : `a229fcb`, version Windows 1.4.2 publiée sur [GitHub Releases](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/tag/v1.4.2). Contrôles Windows : [run 39790110029](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/runs/39790110029), rapports `12431393056` téléchargés. Ils confirment 136 tests desktop sans échec/erreur/ignoré, détection de la version installée, mise à niveau réelle via le lanceur de l’app et son assistant, désinstallation et progression préservée.
+- Dernière validation Windows : 142 tests desktop et un test natif vidéo réussis. Les moteurs LaTeX/PDF/audio restent vérifiés; le contrôle global des fractions et les captures Compose sont consignés dans le registre. Les rendus automatisés ne certifient pas tous les supports.
+- Code livré : `6b76513`, version Windows 1.5.4 publiée sur [GitHub Releases](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/tag/v1.5.4). [Run de livraison 39805155773](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/runs/39805155773), rapports `12436848743` téléchargés : installation, mise à niveau réelle via le lanceur de l’app, désinstallation et progression préservée. Le client de mise à jour détecte la Release 1.5.4 et lit son empreinte SHA-256.
 - Recherche par titre/objectif dans le sommaire des mathématiques, sans modifier ordre, prérequis ou progression. Captures inspectées à 500/1100 px.
-- Aperçus vidéo dans les supports de mathématiques : cartes adaptatives, vignettes YouTube si disponibles, lien direct vers la vidéo et repli hors ligne/MP4. Captures Compose inspectées à 500 et 1100 px. Les vignettes du test sont injectées; une vignette réelle a également été contrôlée par HTTP. La lecture intégrée et la disponibilité de toutes les vidéos ne sont pas certifiées.
+- Aperçus vidéo dans les supports de mathématiques : cartes adaptatives, vignettes YouTube si disponibles, lien direct vers la vidéo et repli hors ligne/MP4. Captures Compose inspectées à 500 et 1100 px. Les vignettes du test sont injectées; une vignette réelle a également été contrôlée par HTTP. Lecteur intégré Windows livré; la disponibilité de toutes les vidéos et de tous les menus tiers reste à vérifier.
 - Génération IA retirée. Android/iOS conservés sans développement actif. Aucun Computer Use utilisé.
 
 ## 1. Couverture pédagogique complète — chantier majeur restant
@@ -25,11 +25,12 @@ Ce bilan complète le registre; il ne transforme pas l'inventaire OSSU en cours 
 
 ## 2. Supports et lecture
 
-- Lecteur vidéo Windows implémenté sur la candidate 1.5.0 : fenêtre native
-  WebView2, commandes source et navigateur de secours. Validation locale :
-  142 tests desktop réussis, lecture native WebM/MP4, pause/déplacement/vitesse/
-  volume, puis lecture réelle YouTube et MP4 MIT séance 1. La publication de
-  cette candidate et la vérification de toutes les sources restent à confirmer.
+- Lecteur vidéo Windows livré en 1.5.4 : fenêtre WebView2, commandes source,
+  plein écran et navigateur de secours. Lecture WebM/MP4, pause, déplacement,
+  vitesse et volume vérifiés automatiquement. Une source MIT MP4 est lue
+  localement et en CI. YouTube est lu localement mais sa lecture ne démarre pas
+  sur le runner CI; les restrictions réseau/consentement et les menus de chaque
+  vidéo ne sont pas certifiés globalement. Le runtime Edge WebView2 est requis.
 
 - L'application affiche ses notes originales françaises et donne accès aux supports officiels; elle ne contient pas une traduction intégrale des manuels MIT.
 - Contrôler progressivement le contenu et le rendu de chaque PDF: les réponses HTTP et le rendu réussi d'un document ne vérifient pas l'ensemble des 1235 ressources indexées.
