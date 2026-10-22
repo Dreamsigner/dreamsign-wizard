@@ -772,3 +772,11 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   puis 13 tests ciblés réussis. Captures du filtre inspectées à 500 et 1100 px.
 - Suite desktop complète et installateur 1.6.0 construits localement. Validation
   CI de livraison à confirmer; fixture de mise à niveau 1.6.1 non publiée.
+- Livraison 1.6.0 publiée depuis `421209e`, run `39809713895` réussi. Rapports
+  `12439902191` téléchargés : 151 tests desktop sans échec/erreur/ignoré, test
+  vidéo natif réussi, diagnostic du paquet, installation, mise à niveau via
+  l’assistant intégré vers la fixture 1.6.1 et désinstallation validés;
+  `progressPreserved` et `updateHelperVerified` vrais.
+- Installateur publié : 63 868 928 octets, accompagné de SHA256SUMS.txt.
+  Le lancement du diagnostic EXE local a été refusé par le contrôle automatique
+  (`blocked by policy`); le diagnostic packagé a réussi sur le runner Windows.
