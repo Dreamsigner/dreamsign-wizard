@@ -13,8 +13,8 @@ import com.duolingo.app.ui.Paper
 import com.duolingo.app.ui.White
 
 @Composable
-fun App() {
-    LearningAppTheme { DuolingoApp() }
+fun App(settingsActionCount: Int = 0, settingsContent: @Composable () -> Unit = {}) {
+    LearningAppTheme { DuolingoApp(settingsActionCount = settingsActionCount, settingsContent = settingsContent) }
 }
 
 /** Shared by native entry points and offscreen UI tests, preserving the production theme. */

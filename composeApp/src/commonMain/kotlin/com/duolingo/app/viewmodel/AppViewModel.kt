@@ -14,7 +14,7 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-enum class AppScreen { LEARNING_PATH, LESSON_QUIZ, COURSE_READER, PROFILE }
+enum class AppScreen { LEARNING_PATH, LESSON_QUIZ, COURSE_READER, PROFILE, SETTINGS }
 
 class AppViewModel(
     private val progressStore: ProgressStore = createProgressStore(),

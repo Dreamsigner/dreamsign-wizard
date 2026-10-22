@@ -780,3 +780,33 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
 - Installateur publié : 63 868 928 octets, accompagné de SHA256SUMS.txt.
   Le lancement du diagnostic EXE local a été refusé par le contrôle automatique
   (`blocked by policy`); le diagnostic packagé a réussi sur le runner Windows.
+
+## 22 octobre 2026 — Section Paramètres et pastille d’action (validation locale)
+
+- Entrée Paramètres sous Cours et Profil, avec icône de réglages et pastille
+  chiffrée : mise à jour prête ou erreur à traiter. Un téléchargement seul
+  ne crée pas d’alerte. Ouvrir l’écran ne masque pas une action encore requise.
+- Version, réglage automatique, état du téléchargement et actions de mise à
+  jour déplacés du bandeau global vers Paramètres. Le contrôleur reste actif
+  hors de cet écran. Informations de sauvegarde locale regroupées sur cet écran.
+- Navigation au clavier, retour aux cours, disparition de la pastille après
+  résolution, reprise après erreur et mode portable couverts par les tests.
+  Captures Compose inspectées à 500 et 1100 px; navigation également testée
+  à 800 px et défilement de l’écran à 360 x 480.
+- Validation locale hors ligne : 155 tests desktop, zéro échec/erreur/ignoré;
+  createDistributable réussi. Journal : work/settings-full-build.log dans le
+  dossier parent du dépôt. Le JDK exigeait un dossier court pour ses sockets
+  locaux; jdk.net.unixdomain.tmpdir a été défini pour les processus de build
+  uniquement. Aucun réglage système ni nouvelle dépendance installé.
+- Pas de publication GitHub, de nouvelle release, ni d’installation utilisateur.
+  Le test natif vidéo séparé n’a pas été relancé pour cette modification de navigation.
+
+## 22 octobre 2026 — Candidate de publication Paramètres 1.7.0
+
+- Revue indépendante : causes d’alerte séparées pour préférences, vérification
+  et installation. Un contrôle réussi ne masque plus un autre problème; les
+  mutations de l’état sont atomiques. Le badge compte les actions distinctes.
+- Validation locale finale : 157 tests desktop, zéro échec/erreur/ignoré;
+  distribution 1.7.0 construite hors ligne. Captures Paramètres inspectées.
+- Workflow préparé pour v1.7.0, fixture de mise à niveau 1.7.1 non publiée.
+  Publication et vérifications du runner Windows encore à confirmer.

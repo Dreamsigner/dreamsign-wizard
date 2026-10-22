@@ -15,10 +15,7 @@ import com.duolingo.app.ui.math.DesktopMathRenderer
 import com.duolingo.app.ui.pdf.PdfReaderProvider
 import com.duolingo.app.ui.pdf.DesktopPdfDocumentReader
 import androidx.compose.runtime.*
-import androidx.compose.foundation.layout.*
-import androidx.compose.ui.Modifier
 import com.duolingo.app.update.*
-import com.duolingo.app.LearningAppTheme
 import kotlinx.coroutines.launch
 
 fun main(args: Array<String>) {
@@ -72,9 +69,7 @@ private fun desktopApplication() = application {
         state = rememberWindowState(width = 1280.dp, height = 840.dp)
     ) {
         window.minimumSize = Dimension(360, 480)
-        Column {
-        LearningAppTheme { UpdatePanel(updateState, updater::checkNow, updater::setAutomatic, { closeSafely(true) }) }
-        Box(Modifier.weight(1f)) { PdfReaderProvider(
+        PdfReaderProvider(
             androidx.compose.runtime.remember { DesktopPdfDocumentReader() },
             scrollbar = { state, modifier -> androidx.compose.foundation.VerticalScrollbar(
                 adapter = androidx.compose.foundation.rememberScrollbarAdapter(state), modifier = modifier,
@@ -82,11 +77,13 @@ private fun desktopApplication() = application {
         ) {
             com.duolingo.app.ui.VideoThumbnailProvider(androidx.compose.runtime.remember { com.duolingo.app.ui.DesktopVideoThumbnailLoader() }) {
                 com.duolingo.app.ui.VideoPlaybackProvider(com.duolingo.app.ui.video.DesktopVideoPlayer) {
-                    MathRenderingProvider(DesktopMathRenderer) { App() }
+                    MathRenderingProvider(DesktopMathRenderer) {
+                        App(settingsActionCount = updateState.actionCount) {
+                            UpdatePanel(updateState, updater::checkNow, updater::setAutomatic, { closeSafely(true) })
+                        }
+                    }
                 }
             }
-        }
-        }
         }
     }
 }

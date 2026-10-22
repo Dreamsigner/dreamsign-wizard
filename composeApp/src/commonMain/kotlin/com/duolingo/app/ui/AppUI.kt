@@ -67,7 +67,11 @@ fun LearningButton(text: String, onClick: () -> Unit, modifier: Modifier = Modif
 }
 
 @Composable
-fun DuolingoApp(viewModel: AppViewModel = remember { AppViewModel() }) {
+fun DuolingoApp(
+    viewModel: AppViewModel = remember { AppViewModel() },
+    settingsActionCount: Int = 0,
+    settingsContent: @Composable () -> Unit = {},
+) {
     DisposableEffect(viewModel) { onDispose { viewModel.close() } }
     val screen by viewModel.currentScreen.collectAsState()
     val stats by viewModel.userStats.collectAsState()
@@ -95,16 +99,17 @@ fun DuolingoApp(viewModel: AppViewModel = remember { AppViewModel() }) {
             LessonQuizScreen(viewModel)
         } else {
             Row(Modifier.fillMaxSize()) {
-                if (rail) AppNavigation(screen, stats, sidebar, viewModel::navigateTo)
+                if (rail) AppNavigation(screen, stats, sidebar, settingsActionCount, viewModel::navigateTo)
                 Scaffold(backgroundColor = Paper, modifier = Modifier.weight(1f),
-                    topBar = { if (subject != null) TopStatsHeader(stats, subjects, subject, viewModel::selectSubject) },
-                    bottomBar = { if (!rail) BottomNavigationBar(screen, viewModel::navigateTo) }) { padding ->
+                    topBar = { if (subject != null && screen != AppScreen.SETTINGS) TopStatsHeader(stats, subjects, subject, viewModel::selectSubject) },
+                    bottomBar = { if (!rail) BottomNavigationBar(screen, viewModel::navigateTo, settingsActionCount) }) { padding ->
                     Box(Modifier.padding(padding).fillMaxSize()) {
                         when (screen) {
                             AppScreen.LEARNING_PATH -> if (subject != null) LearningPathScreen(subject, stats.completedLessonIds, viewModel::startLesson, selectedUnitId,
                                 onOpenCourse = { viewModel.navigateTo(AppScreen.COURSE_READER) }) { viewModel.selectCourse(subject.id, it) }
                                 else EmptyLearningState("Aucun cours disponible", "Les cours apparaîtront ici dès qu’ils seront disponibles.")
                             AppScreen.PROFILE -> ProfileScreen(stats, persistence)
+                            AppScreen.SETTINGS -> SettingsScreen(persistence, settingsContent)
                             AppScreen.LESSON_QUIZ, AppScreen.COURSE_READER -> Unit
                         }
                     }
@@ -115,7 +120,7 @@ fun DuolingoApp(viewModel: AppViewModel = remember { AppViewModel() }) {
 }
 
 @Composable
-private fun AppNavigation(screen: AppScreen, stats: UserStats, expanded: Boolean, navigate: (AppScreen) -> Unit) {
+private fun AppNavigation(screen: AppScreen, stats: UserStats, expanded: Boolean, settingsActionCount: Int, navigate: (AppScreen) -> Unit) {
     Column(Modifier.width(if (expanded) 224.dp else 104.dp).fillMaxHeight().verticalScroll(rememberScrollState()).padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)) {
         PixelIcon(LearningSymbol.BOOK, Modifier.size(40.dp))
@@ -123,6 +128,7 @@ private fun AppNavigation(screen: AppScreen, stats: UserStats, expanded: Boolean
         Spacer(Modifier.height(20.dp))
         NavigationChoice("Cours", Icons.Default.Home, screen == AppScreen.LEARNING_PATH, expanded) { navigate(AppScreen.LEARNING_PATH) }
         NavigationChoice("Profil", Icons.Default.Person, screen == AppScreen.PROFILE, expanded) { navigate(AppScreen.PROFILE) }
+        NavigationChoice("Paramètres", Icons.Default.Settings, screen == AppScreen.SETTINGS, expanded, settingsActionCount) { navigate(AppScreen.SETTINGS) }
         Spacer(Modifier.height(32.dp))
         if (expanded) {
             Text("À petits pas,\nchaque jour.", fontSize = 20.sp, fontWeight = FontWeight.Bold)
@@ -134,14 +140,35 @@ private fun AppNavigation(screen: AppScreen, stats: UserStats, expanded: Boolean
 }
 
 @Composable
-private fun NavigationChoice(label: String, icon: ImageVector, selected: Boolean, expanded: Boolean, onClick: () -> Unit) {
+private fun NavigationChoice(label: String, icon: ImageVector, selected: Boolean, expanded: Boolean, actionCount: Int = 0, onClick: () -> Unit) {
     val interaction = remember { MutableInteractionSource() }
-    TextButton(onClick, Modifier.fillMaxWidth().heightIn(min = 56.dp).learningFocus(interaction).semantics { this.selected = selected },
+    TextButton(onClick, Modifier.fillMaxWidth().heightIn(min = 56.dp).learningFocus(interaction).semantics {
+        this.selected = selected
+        if (actionCount > 0) stateDescription = settingsActionDescription(actionCount)
+    },
         interactionSource = interaction, shape = LearningShape,
         colors = ButtonDefaults.textButtonColors(backgroundColor = if (selected) Concrete else Color.Transparent, contentColor = Ink)) {
         if (expanded) Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Icon(icon, null); Spacer(Modifier.width(12.dp)); Text(label, fontWeight = FontWeight.Bold)
-        } else Column(horizontalAlignment = Alignment.CenterHorizontally) { Icon(icon, null); Text(label, fontSize = 12.sp) }
+            NavigationIcon(icon, actionCount); Spacer(Modifier.width(12.dp)); Text(label, fontWeight = FontWeight.Bold)
+        } else Column(horizontalAlignment = Alignment.CenterHorizontally) { NavigationIcon(icon, actionCount); Text(label, fontSize = 12.sp) }
+    }
+}
+
+internal fun settingsActionDescription(count: Int) = if (count == 1) "1 action requise" else "$count actions requises"
+
+@Composable
+private fun NavigationIcon(icon: ImageVector, actionCount: Int = 0) {
+    Box(Modifier.size(32.dp), contentAlignment = Alignment.Center) {
+        Icon(icon, null, Modifier.size(24.dp))
+        if (actionCount > 0) Surface(
+            modifier = Modifier.align(Alignment.TopEnd).offset(x = 6.dp, y = (-4).dp),
+            shape = RoundedCornerShape(50), color = ActionRed, contentColor = White,
+        ) {
+            Box(Modifier.defaultMinSize(minWidth = 18.dp, minHeight = 18.dp).padding(horizontal = 4.dp), contentAlignment = Alignment.Center) {
+                Text(if (actionCount > 99) "99+" else actionCount.toString(), fontSize = 11.sp, fontWeight = FontWeight.Bold,
+                    modifier = Modifier.clearAndSetSemantics { })
+            }
+        }
     }
 }
 
@@ -169,12 +196,15 @@ fun TopStatsHeader(stats: UserStats, subjects: List<Subject>, selectedSubject: S
 }
 
 @Composable
-fun BottomNavigationBar(currentScreen: AppScreen, onNavigate: (AppScreen) -> Unit) {
+fun BottomNavigationBar(currentScreen: AppScreen, onNavigate: (AppScreen) -> Unit, settingsActionCount: Int = 0) {
     BottomNavigation(backgroundColor = White, elevation = 0.dp) {
         BottomNavigationItem(currentScreen == AppScreen.LEARNING_PATH, { onNavigate(AppScreen.LEARNING_PATH) },
             icon = { Icon(Icons.Default.Home, null) }, label = { Text("Cours") }, selectedContentColor = ActionRed, unselectedContentColor = Graphite)
         BottomNavigationItem(currentScreen == AppScreen.PROFILE, { onNavigate(AppScreen.PROFILE) },
             icon = { Icon(Icons.Default.Person, null) }, label = { Text("Profil") }, selectedContentColor = ActionRed, unselectedContentColor = Graphite)
+        BottomNavigationItem(currentScreen == AppScreen.SETTINGS, { onNavigate(AppScreen.SETTINGS) },
+            modifier = Modifier.semantics { if (settingsActionCount > 0) stateDescription = settingsActionDescription(settingsActionCount) },
+            icon = { NavigationIcon(Icons.Default.Settings, settingsActionCount) }, label = { Text("Paramètres") }, selectedContentColor = ActionRed, unselectedContentColor = Graphite)
     }
 }
 

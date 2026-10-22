@@ -48,8 +48,8 @@ Consulter le [catalogue détaillé](docs/courses/README.md) et la [couverture p�
 ## Installation
 
 1. Ouvrir la [dernière release Windows](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/latest).
-2. Télécharger l’installateur **AtelierApprentissage-1.6.0-Setup.exe**.
-3. Lancer **AtelierApprentissage-1.6.0-Setup.exe** et suivre l’assistant. L’installation est propre à l’utilisateur Windows, avec raccourcis sur le Bureau et dans le menu Démarrer.
+2. Télécharger l’installateur **AtelierApprentissage-1.7.0-Setup.exe**.
+3. Lancer **AtelierApprentissage-1.7.0-Setup.exe** et suivre l’assistant. L’installation est propre à l’utilisateur Windows, avec raccourcis sur le Bureau et dans le menu Démarrer.
 
 Java est inclus : aucun JDK ni Gradle n’est nécessaire. La désinstallation se fait depuis les applications installées des paramètres Windows. L’installateur n’est pas signé numériquement; Windows peut afficher un avertissement d’éditeur inconnu. `SHA256SUMS.txt` accompagne l’exécutable pour vérifier l’intégrité du téléchargement.
 
@@ -63,7 +63,9 @@ Dans les supports de mathématiques, les vidéos disposent de cartes avec titre,
 
 Les notes et documents audio sont intégrés; les supports PDF externes et les vidéos nécessitent une connexion Internet.
 
-La version installée à l’emplacement Windows standard vérifie automatiquement les releases GitHub stables. Les mises à jour sont téléchargées et vérifiées, puis appliquées à la fermeture de l’application. Le réglage **Mises à jour auto** permet de désactiver ce comportement; **Installer et redémarrer** applique immédiatement une version déjà prête. Les versions portables et installations dans un autre dossier conservent une mise à jour manuelle.
+La section **Paramètres**, sous **Cours** et **Profil** dans la navigation, regroupe la version, les mises à jour et les informations de sauvegarde locale. Une pastille chiffrée sur son icône signale les actions en attente : mise à jour prête à installer ou erreur à traiter. Elle disparaît lorsque l’action n’est plus nécessaire; un téléchargement en cours ne crée pas d’alerte supplémentaire.
+
+La version installée à l’emplacement Windows standard vérifie automatiquement les releases GitHub stables. Les mises à jour sont téléchargées et vérifiées, puis appliquées à la fermeture de l’application. Dans **Paramètres**, le réglage **Mises à jour auto** permet de désactiver ce comportement; **Installer et redémarrer** applique immédiatement une version déjà prête. Les versions portables et installations dans un autre dossier conservent une mise à jour manuelle.
 
 La progression est enregistrée dans `%LOCALAPPDATA%/AtelierApprentissage/progress.json`. Elle n’est pas synchronisée entre appareils.
 

@@ -16,6 +16,110 @@ import java.nio.file.Path
 import kotlin.test.*
 
 class WindowsUpdateTest {
+    @Test fun badgeCountsOnlyUpdatesNeedingAction() {
+        val idle = UpdateUiState("1.6.0", true, true)
+        assertEquals(0, idle.actionCount)
+        assertEquals(0, idle.copy(busy = true, statusMessage = "Téléchargement : 13 %").actionCount)
+        assertEquals(1, idle.copy(ready = true).actionCount)
+        assertEquals(1, idle.copy(checkError = "Échec du contrôle").actionCount)
+        assertEquals(2, idle.copy(ready = true, checkError = "Échec du contrôle").actionCount)
+        assertEquals(4, idle.copy(ready = true, preferenceError = "Préférences", checkError = "Contrôle", installationError = "Installation").actionCount)
+    }
+
+    @Test fun failedCheckNeedsAttentionUntilSuccessfulRetry() = runBlocking {
+        val dir = Files.createTempDirectory("updater-attention-")
+        var fail = true
+        val transport = object : UpdateTransport {
+            override fun metadata(): String? = if (fail) error("Offline") else null
+            override fun checksum(url: String): String = error("No release")
+            override fun download(release: UpdateRelease, target: Path, progress: (Long) -> Unit) = error("No release")
+        }
+        val controller = WindowsUpdateController(dir, dir.resolve("fixture.exe"), AppVersion(1, 6, 0), UpdateRepository(dir, transport))
+        try {
+            controller.checkNow()
+            withTimeout(5000) { while (!controller.ui.value.requiresAttention) delay(10) }
+            assertEquals(1, controller.ui.value.actionCount)
+            fail = false
+            controller.checkNow()
+            withTimeout(5000) { while (controller.ui.value.requiresAttention || controller.ui.value.busy) delay(10) }
+            assertEquals(0, controller.ui.value.actionCount)
+        } finally { controller.close(); dir.toFile().deleteRecursively() }
+    }
+
+    @Test fun successfulCheckDoesNotClearPreferenceSaveErrorAndSuccessfulSaveDoes() = runBlocking {
+        val root = Files.createTempDirectory("updater-preference-recovery-")
+        val dir = root.resolve("blocked-folder")
+        Files.writeString(dir, "not a directory")
+        val transport = object : UpdateTransport {
+            override fun metadata(): String? { Thread.sleep(30); return null }
+            override fun checksum(url: String): String = error("No release")
+            override fun download(release: UpdateRelease, target: Path, progress: (Long) -> Unit) = error("No release")
+        }
+        val controller = WindowsUpdateController(dir, dir.resolve("fixture.exe"), old, UpdateRepository(dir, transport))
+        try {
+            controller.setAutomatic(false)
+            withTimeout(5000) { while (controller.ui.value.preferenceError == null) delay(10) }
+            assertEquals(1, controller.ui.value.actionCount)
+
+            controller.checkNow()
+            withTimeout(5000) { while (!controller.ui.value.busy) delay(10) }
+            withTimeout(5000) { while (controller.ui.value.busy) delay(10) }
+            assertNull(controller.ui.value.checkError)
+            assertNotNull(controller.ui.value.preferenceError)
+            assertEquals(1, controller.ui.value.actionCount)
+            assertFalse("Application à jour" in controller.ui.value.message)
+            assertTrue("Impossible d’enregistrer" in controller.ui.value.message)
+
+            Files.delete(dir)
+            Files.createDirectories(dir)
+            controller.setAutomatic(false)
+            withTimeout(5000) { while (controller.ui.value.preferenceError != null) delay(10) }
+            assertEquals(0, controller.ui.value.actionCount)
+        } finally { controller.close(); root.toFile().deleteRecursively() }
+    }
+
+    @Test fun startupInstallationFailureSurvivesSuccessfulCheckWithNoUpdate() = runBlocking {
+        val dir = Files.createTempDirectory("updater-install-failure-")
+        Files.writeString(dir.resolve("last-result.json"), "{\"success\":false,\"error\":\"Installer failed\"}")
+        val fixture = dir.resolve("fixture.exe")
+        Files.write(fixture, bytes)
+        var releaseAvailable = false
+        val transport = object : UpdateTransport {
+            override fun metadata(): String? {
+                Thread.sleep(30)
+                return if (releaseAvailable) this@WindowsUpdateTest.metadata() else null
+            }
+            override fun checksum(url: String): String = "${fileSha256(fixture)}  $name"
+            override fun download(release: UpdateRelease, target: Path, progress: (Long) -> Unit) {
+                Files.write(target, bytes)
+                progress(bytes.size.toLong())
+            }
+        }
+        var installs = 0
+        val controller = WindowsUpdateController(dir, fixture, old, UpdateRepository(dir, transport)) { _, _, _ -> installs++ }
+        try {
+            assertNotNull(controller.ui.value.installationError)
+            controller.checkNow()
+            withTimeout(5000) { while (!controller.ui.value.busy) delay(10) }
+            withTimeout(5000) { while (controller.ui.value.busy) delay(10) }
+            assertNull(controller.ui.value.checkError)
+            assertNotNull(controller.ui.value.installationError)
+            assertEquals(1, controller.ui.value.actionCount)
+            assertTrue("La dernière installation a échoué" in controller.ui.value.message)
+            assertFalse("Application à jour" in controller.ui.value.message)
+
+            releaseAvailable = true
+            controller.checkNow()
+            withTimeout(5000) { while (!controller.ui.value.ready) delay(10) }
+            assertNotNull(controller.ui.value.installationError)
+            assertEquals(2, controller.ui.value.actionCount)
+            assertTrue("La dernière installation a échoué" in controller.ui.value.message)
+            assertTrue("Version 1.4.0 prête" in controller.ui.value.message)
+            assertTrue(controller.beforeClose(restart = true))
+            assertEquals(1, installs)
+        } finally { controller.close(); dir.toFile().deleteRecursively() }
+    }
+
     private val old = AppVersion(1, 3, 0)
     private val bytes = "MZfixture installer".toByteArray()
     private val name = "AtelierApprentissage-1.4.0-Setup.exe"
