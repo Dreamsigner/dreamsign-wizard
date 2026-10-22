@@ -696,3 +696,12 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   vers SHA256 .NET, indépendant du chargement de modules PowerShell. Aucun
   réglage système changé; aucune release publiée pour le tag 1.4.0.
 - Nouvelle candidate 1.4.2 (fixture de test 1.4.3), sans déplacer le tag existant.
+- Preuves finales téléchargées : code `a229fcb`, run Windows `39790110029`,
+  contrôles `12431393056`. 136 tests desktop sans échec/erreur/ignoré; détection
+  installée et version runtime correctes, assistant lancé par l’EXE installé,
+  résultat réel `success=true`, sortie 0, mise à niveau 1.4.2 → fixture 1.4.3,
+  désinstallation et progression conservée. Aucun installateur exécuté sur le poste.
+- Release stable 1.4.2 publiée, EXE et SHA256SUMS présents. Contrôle réseau avec
+  le transport de production exécuté depuis les JAR distribués : version 1.4.2
+  et checksum de 64 caractères validés. Installateur non signé; mises à jour
+  des installations personnalisées et portables non automatisées.
