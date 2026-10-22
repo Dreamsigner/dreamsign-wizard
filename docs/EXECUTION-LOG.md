@@ -645,3 +645,11 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   non publiée : 1.2.1. Suite complète, paquet et preuves CI à confirmer ci-dessous.
 - Validation locale complète : 122 tests desktop sans échec/erreur/ignoré,
   app-image et installateur 1.2.0 construits. Captures à 500/1100 px inspectées.
+- Livraison confirmée : code `3335bd1`, CI `39716799517` réussie.
+  Setup `12399109481`, portable `12399836844`, preuves `12399124187`.
+  Rapports téléchargés : 122 tests desktop sans échec/erreur/ignoré; installation
+  1.2.0, mise à niveau fixture 1.2.1, diagnostic natif, raccourcis, notices,
+  désinstallation et progression inchangée. La fixture n’est pas publiée.
+  Les contrôles pédagogiques/Python du workflow ont également réussi.
+  Aucun installateur exécuté sur le poste utilisateur. Installateur non signé;
+  lecture vidéo intégrée et mise à jour automatique toujours absentes.

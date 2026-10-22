@@ -1,6 +1,6 @@
 # Bilan de livraison et travaux restants
 
-État vérifié le 21 octobre 2026. Périmètre actif : Windows natif uniquement.
+État vérifié le 22 octobre 2026. Périmètre actif : Windows natif uniquement.
 Ce bilan complète le registre; il ne transforme pas l'inventaire OSSU en cours rédigés.
 
 ## Livré et vérifié
@@ -8,8 +8,9 @@ Ce bilan complète le registre; il ne transforme pas l'inventaire OSSU en cours 
 - Catalogue : 15 unités, 391 leçons/ateliers, 1190 exercices; progression locale persistante.
 - Ordre pédagogique OSSU documenté, glossaire français Prolog, reprise différée des questions ratées jusqu'à correction.
 - Lecture des notes par cours, liens appariés aux exercices, lecteur PDF natif, formules composées localement, explications et icônes originales.
-- Dernière validation locale : 116 tests desktop, 30 tests Python et contrôleurs pédagogiques réussis. Le contrôle global des fractions parcourt 9 535 champs et rend 1 425 fractions sans erreur ni barre non classée hors code. Captures Compose de calcul différentiel inspectées à 500 et 1 100 px. Diagnostic de l’EXE produit réussi pour LaTeX, PDF et audio sans accès aux données utilisateur.
-- Code livré : `a6658d6`, installateur Windows 1.1.0. CI réussie : [run 39713029803](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/runs/39713029803). Installateur `12397039260`, ZIP portable `12398165623`. Rapports archivés : 116 tests desktop sans échec, diagnostic de l’EXE installé, raccourcis et notices, mise à niveau de test, désinstallation et préservation exacte de la progression.
+- Dernière validation locale : 122 tests desktop, 30 tests Python et contrôleurs pédagogiques réussis. Le contrôle global des fractions parcourt 9 535 champs et rend 1 425 fractions sans erreur ni barre non classée hors code. Captures Compose de calcul différentiel inspectées à 500 et 1 100 px. Diagnostic de l’EXE produit réussi pour LaTeX, PDF et audio sans accès aux données utilisateur.
+- Code livré : `3335bd1`, installateur Windows 1.2.0. CI réussie : [run 39716799517](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/runs/39716799517). Installateur `12399109481`, ZIP portable `12399836844`, preuves `12399124187`. Rapports téléchargés : 122 tests desktop sans échec/erreur/ignoré, diagnostic de l’EXE installé, raccourcis et notices, mise à niveau de test, désinstallation et préservation exacte de la progression.
+- Aperçus vidéo dans les supports de mathématiques : cartes adaptatives, vignettes YouTube si disponibles, lien direct vers la vidéo et repli hors ligne/MP4. Captures Compose inspectées à 500 et 1100 px. Les vignettes du test sont injectées; une vignette réelle a également été contrôlée par HTTP. La lecture intégrée et la disponibilité de toutes les vidéos ne sont pas certifiées.
 - Génération IA retirée. Android/iOS conservés sans développement actif. Aucun Computer Use utilisé.
 
 ## 1. Couverture pédagogique complète — chantier majeur restant
@@ -22,6 +23,8 @@ Ce bilan complète le registre; il ne transforme pas l'inventaire OSSU en cours 
 - Enrichir le TCF dans les quatre compétences. Les douze ateliers actuels sont originaux et partiels, sans programme officiel inventé, notation FEI ni correction automatique de production écrite/orale. Diversifier les écoutes au-delà des trois audios de synthèse intégrés.
 
 ## 2. Supports et lecture
+
+- La lecture vidéo intégrée reste à développer; les aperçus livrés ouvrent le navigateur.
 
 - L'application affiche ses notes originales françaises et donne accès aux supports officiels; elle ne contient pas une traduction intégrale des manuels MIT.
 - Contrôler progressivement le contenu et le rendu de chaque PDF: les réponses HTTP et le rendu réussi d'un document ne vérifient pas l'ensemble des 1235 ressources indexées.
