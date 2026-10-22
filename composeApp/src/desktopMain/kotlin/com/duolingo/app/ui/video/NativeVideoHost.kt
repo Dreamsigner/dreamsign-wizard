@@ -3,9 +3,14 @@ package com.duolingo.app.ui.video
 import ca.weblite.webview.swing.WebViewComponent
 import com.duolingo.app.data.CourseResource
 import com.duolingo.app.ui.youtubeVideoId
+import com.sun.net.httpserver.HttpServer
 import kotlinx.serialization.json.*
 import java.awt.BorderLayout
+import java.net.InetSocketAddress
 import java.net.URI
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
+import java.util.UUID
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.atomic.AtomicBoolean
@@ -13,7 +18,7 @@ import javax.swing.*
 
 internal fun playerAddress(resource: CourseResource): String {
     require(resource.kind == "video")
-    youtubeVideoId(resource.url)?.let { return resource.url }
+    youtubeVideoId(resource.url)?.let { return "https://www.youtube.com/embed/$it?controls=1&fs=1" }
     val uri = URI(resource.url)
     val host = uri.host.orEmpty().lowercase()
     require(uri.scheme == "https" && uri.userInfo == null && uri.port == -1 && uri.path.endsWith(".mp4", true))
@@ -21,16 +26,33 @@ internal fun playerAddress(resource: CourseResource): String {
     return resource.url
 }
 
-internal data class VideoPageState(val url: String, val ready: Boolean, val hasVideo: Boolean, val mediaReady: Int, val fullscreen: Boolean, val mediaTime: Double = 0.0, val duration: Double = 0.0, val controls: Boolean = false)
+internal data class VideoPageState(val url: String, val ready: Boolean, val hasVideo: Boolean, val mediaReady: Int, val fullscreen: Boolean, val mediaTime: Double = 0.0, val duration: Double = 0.0, val controls: Boolean = false,
+    val youtubeReady: Boolean = false, val youtubeState: Int = -1, val youtubeError: Int = 0, val elementWidth: Int = 0, val elementHeight: Int = 0, val videoWidth: Int = 0, val videoHeight: Int = 0, val keyAction: String = "")
 internal fun parseVideoPageState(raw: String): VideoPageState {
     require(raw.length <= 16384)
     val outer = Json.parseToJsonElement(raw)
     val obj = (if (outer is JsonPrimitive && outer.isString) Json.parseToJsonElement(outer.content) else outer).jsonObject
     return VideoPageState(obj["url"]!!.jsonPrimitive.content, obj["ready"]!!.jsonPrimitive.boolean,
         obj["video"]!!.jsonPrimitive.boolean, obj["mediaReady"]!!.jsonPrimitive.int, obj["fullscreen"]!!.jsonPrimitive.boolean,
-        obj["mediaTime"]?.jsonPrimitive?.doubleOrNull ?: 0.0, obj["duration"]?.jsonPrimitive?.doubleOrNull ?: 0.0, obj["controls"]?.jsonPrimitive?.booleanOrNull ?: false)
+        obj["mediaTime"]?.jsonPrimitive?.doubleOrNull ?: 0.0, obj["duration"]?.jsonPrimitive?.doubleOrNull ?: 0.0, obj["controls"]?.jsonPrimitive?.booleanOrNull ?: false,
+        obj["youtubeReady"]?.jsonPrimitive?.booleanOrNull ?: false, obj["youtubeState"]?.jsonPrimitive?.intOrNull ?: -1,
+        obj["youtubeError"]?.jsonPrimitive?.intOrNull ?: 0, obj["elementWidth"]?.jsonPrimitive?.intOrNull ?: 0,
+        obj["elementHeight"]?.jsonPrimitive?.intOrNull ?: 0, obj["videoWidth"]?.jsonPrimitive?.intOrNull ?: 0,
+        obj["videoHeight"]?.jsonPrimitive?.intOrNull ?: 0, obj["keyAction"]?.jsonPrimitive?.contentOrNull ?: "")
 }
-internal const val VIDEO_PAGE_PROBE = """JSON.stringify((function(){var v=document.querySelector('video');return {url:location.href,ready:document.readyState==='complete',video:!!v,mediaReady:v?v.readyState:0,fullscreen:!!document.fullscreenElement,mediaTime:v?v.currentTime:0,duration:v&&isFinite(v.duration)?v.duration:0,controls:v?!!v.controls:false};})())"""
+internal const val VIDEO_PAGE_PROBE = """JSON.stringify((function(){var v=document.querySelector('video'),p=document.querySelector('iframe')||v,r=(p||document.documentElement).getBoundingClientRect(),k=window.__nativeKeyAction||'';window.__nativeKeyAction='';return {url:location.href,ready:document.readyState==='complete',video:!!v,mediaReady:v?v.readyState:0,fullscreen:!!document.fullscreenElement,mediaTime:v?v.currentTime:(window.__ytTime||0),duration:v&&isFinite(v.duration)?v.duration:(window.__ytDuration||0),controls:v?!!v.controls:!!p,youtubeReady:!!window.__ytReady,youtubeState:window.__ytState===undefined?-1:window.__ytState,youtubeError:window.__ytError||0,elementWidth:Math.round(r.width),elementHeight:Math.round(r.height),videoWidth:v?v.videoWidth:0,videoHeight:v?v.videoHeight:0,keyAction:k};})())"""
+
+internal fun videoWrapperHtml(source: String, origin: String? = null): String {
+    val isYouTube = source.startsWith("https://www.youtube.com/embed/")
+    val playerSource = if (isYouTube && origin != null) "$source&enablejsapi=1&origin=${URLEncoder.encode(origin, StandardCharsets.UTF_8)}" else source
+    val encoded = htmlAttribute(playerSource)
+    val media = if (isYouTube) """<iframe id="player" src="$encoded" title="Lecteur YouTube" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>"""
+        else """<video id="player" controls playsinline src="$encoded"></video>"""
+    val api = if (isYouTube) """<script>window.__ytReady=false;window.__ytState=-1;window.__ytError=0;window.__ytTime=0;window.__ytDuration=0;window.onYouTubeIframeAPIReady=function(){window.__ytPlayer=new YT.Player('player',{events:{onReady:function(){window.__ytReady=true;setInterval(function(){try{window.__ytTime=window.__ytPlayer.getCurrentTime()||0;window.__ytDuration=window.__ytPlayer.getDuration()||0}catch(e){}},250)},onStateChange:function(e){window.__ytState=e.data},onError:function(e){window.__ytError=e.data}}})};var s=document.createElement('script');s.src='https://www.youtube.com/iframe_api';document.head.appendChild(s);</script>""" else ""
+    return """<!doctype html><html><head><meta charset="utf-8"><meta name="referrer" content="strict-origin-when-cross-origin"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><style>*{box-sizing:border-box}html,body,#player{width:100%;height:100%;margin:0;background:#000}body{overflow:hidden}video,iframe{display:block;border:0}video{object-fit:contain}</style></head><body>$media<script>window.__nativeKeyAction='';document.addEventListener('fullscreenchange',function(){});document.addEventListener('keydown',function(e){if(e.key==='F11'){e.preventDefault();window.__nativeKeyAction='F11'}else if(e.key==='Escape'&&!document.fullscreenElement){window.__nativeKeyAction='Escape'}},true);</script>$api</body></html>"""
+}
+
+private fun htmlAttribute(value: String): String = value.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;").replace("'", "&#39;")
 
 internal interface NativeVideoAdapter {
     val component: JComponent
@@ -46,21 +68,48 @@ private class WebViewAdapter : NativeVideoAdapter {
     override fun dispose() { native.dispose() }
 }
 
-/** One native WebView per window, released when its owner closes. No app bridge is exposed to pages. */
+/** Serves only a constant player shell on loopback, with one unguessable route per host. */
+internal class VideoWrapperServer(source: String) : AutoCloseable {
+    private val server = HttpServer.create(InetSocketAddress("127.0.0.1", 0), 0)
+    private val token = UUID.randomUUID().toString()
+    private lateinit var html: ByteArray
+    val address: String
+    init {
+        server.createContext("/$token/") { exchange ->
+            if (exchange.requestURI.path != "/$token/" || exchange.requestMethod != "GET") {
+                exchange.sendResponseHeaders(404, -1); exchange.close()
+            } else {
+                exchange.responseHeaders.add("Content-Type", "text/html; charset=utf-8")
+                exchange.responseHeaders.add("Cache-Control", "no-store")
+                exchange.sendResponseHeaders(200, html.size.toLong())
+                exchange.responseBody.use { it.write(html) }
+            }
+        }
+        address = "http://127.0.0.1:${server.address.port}/$token/"
+        html = videoWrapperHtml(source, "http://127.0.0.1:${server.address.port}").toByteArray(StandardCharsets.UTF_8)
+        server.start()
+    }
+    override fun close() = server.stop(0)
+}
+
+/** One native WebView per window, released with its local shell. No app bridge is exposed. */
 internal class NativeVideoHost(private val onState: (VideoPageState) -> Unit, private val onFailure: (String) -> Unit, private val factory: () -> NativeVideoAdapter = { WebViewAdapter() }) {
     var view: NativeVideoAdapter? = null
         private set
     var lastProbeError: String? = null
         private set
     private var timer: Timer? = null
+    private var wrapper: VideoWrapperServer? = null
     private val closed = AtomicBoolean(false)
     private val probing = AtomicBoolean(false)
-    fun create(url: String): JPanel = JPanel(BorderLayout()).apply {
+    fun create(resource: CourseResource): JPanel = create(playerAddress(resource))
+    fun create(sourceAddress: String): JPanel = JPanel(BorderLayout()).apply {
         try {
             check(System.getProperty("os.name").startsWith("Windows"))
+            wrapper = VideoWrapperServer(sourceAddress)
             val native = factory()
             view = native
-            native.navigate(url)
+            native.navigate(wrapper!!.address)
             add(native.component, BorderLayout.CENTER)
             var attempts = 0
             timer = Timer(500) {
@@ -85,7 +134,7 @@ internal class NativeVideoHost(private val onState: (VideoPageState) -> Unit, pr
                                 }
                                 else {
                                     lastProbeError = "${error.javaClass.simpleName}: ${error.message}"
-                                    if (++attempts == 20) onFailure("Le lecteur reste indisponible. Vérifie la présence du runtime Microsoft Edge WebView2 et la connexion.")
+                                    if (++attempts == 20) onFailure("Le lecteur reste indisponible. Vérifie WebView2 et la connexion.")
                                 }
                             }
                         }
@@ -99,6 +148,7 @@ internal class NativeVideoHost(private val onState: (VideoPageState) -> Unit, pr
         if (closed.compareAndSet(false, true)) SwingUtilities.invokeLater {
             timer?.stop(); timer = null
             view?.dispose(); view = null
+            wrapper?.close(); wrapper = null
         }
     }
 }

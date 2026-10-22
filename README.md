@@ -48,8 +48,8 @@ Consulter le [catalogue détaillé](docs/courses/README.md) et la [couverture p�
 ## Installation
 
 1. Ouvrir la [dernière release Windows](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/latest).
-2. Télécharger l’installateur **AtelierApprentissage-1.7.2-Setup.exe**.
-3. Lancer **AtelierApprentissage-1.7.2-Setup.exe** et suivre l’assistant. L’installation est propre à l’utilisateur Windows, avec raccourcis sur le Bureau et dans le menu Démarrer.
+2. Télécharger l’installateur **AtelierApprentissage-1.8.0-Setup.exe**.
+3. Lancer **AtelierApprentissage-1.8.0-Setup.exe** et suivre l’assistant. L’installation est propre à l’utilisateur Windows, avec raccourcis sur le Bureau et dans le menu Démarrer.
 
 Java est inclus : aucun JDK ni Gradle n’est nécessaire. La désinstallation se fait depuis les applications installées des paramètres Windows. L’installateur n’est pas signé numériquement; Windows peut afficher un avertissement d’éditeur inconnu. `SHA256SUMS.txt` accompagne l’exécutable pour vérifier l’intégrité du téléchargement.
 
@@ -59,7 +59,7 @@ Dans le sommaire des cours de mathématiques, une recherche par titre ou objecti
 
 Le bouton **Ajouter aux favoris** marque une leçon de mathématiques à revoir. Dans **Sommaire**, activer **Favoris uniquement** pour retrouver les leçons marquées du cours; la recherche reste disponible. Les favoris sont enregistrés localement avec la progression et peuvent être retirés depuis la leçon.
 
-Dans les supports de mathématiques, les vidéos disposent de cartes avec titre, vignette YouTube lorsqu’elle est disponible et ouverture directe dans le navigateur. Les fichiers MP4 conservent une carte sans vignette. Le bouton **Lire dans l’app** ouvre le lecteur source dans une fenêtre de l’application : YouTube conserve ses commandes officielles, les MP4 utilisent celles du moteur vidéo Edge WebView2. Vitesse, sous-titres et qualité dépendent de la source. Le runtime Microsoft Edge WebView2 doit être présent; le bouton navigateur reste disponible.
+Dans les supports de mathématiques, les vidéos disposent de cartes avec titre, vignette YouTube lorsqu’elle est disponible et ouverture directe dans le navigateur. Les fichiers MP4 conservent une carte sans vignette. Le bouton **Lire dans l’app** ouvre le lecteur source dans une fenêtre adaptative : YouTube conserve ses commandes officielles et les MP4 utilisent celles du moteur vidéo Edge WebView2. En plein écran, l’en-tête de l’application disparaît; **Échap** restaure la fenêtre précédente. Vitesse, sous-titres et qualité dépendent de la source. Le runtime Microsoft Edge WebView2 doit être présent; le bouton navigateur reste disponible.
 
 Les notes et documents audio sont intégrés; les supports PDF externes et les vidéos nécessitent une connexion Internet.
 

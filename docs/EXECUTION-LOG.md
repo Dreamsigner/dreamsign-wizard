@@ -836,3 +836,25 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   effectivement 1.6.0 → 1.7.2 et valide le checksum SHA-256 de 64 caractères.
 - Aucun installateur exécuté sur le poste utilisateur; les contrôles
   d’installation ont été effectués sur les runners Windows jetables.
+
+## 22 octobre 2026 — Candidate lecteur vidéo cadré et plein écran 1.8.0
+
+- Cause : le moteur ouvrait directement la page YouTube watch ou le document MP4;
+  le mode plein écran conservait l’en-tête Compose et la taille native du média.
+- Coque de lecture locale : iframe YouTube embed officiel avec API IFrame,
+  commandes officielles et Referer fourni par le contexte; aucun commentaire
+  ni page watch dans la navigation intégrée. MP4 en cadre plein viewport avec
+  object-fit:contain. Le lien navigateur garde l’adresse source complète.
+- En-tête absent en plein écran; état testé pour boutons app/source et restauration
+  d’une fenêtre normale ou maximisée. Escape DOM synchronisé; F11 lorsque le
+  focus est dans un iframe YouTube inter-origines reste non certifié.
+- Validation locale finale hors ligne : 160 tests desktop et un test WebView2
+  natif réussis; distribution 1.8.0 construite. Le module jdk.httpserver est
+  présent dans le runtime réduit. Aucun nouveau paquet tiers installé.
+- Smoke avec coque de production : MP4 décodé, commandes pause/déplacement/
+  vitesse/volume vérifiées, cadre mesuré après 800x500 puis 1200x800.
+  Image synthétique décodée inspectée. Les sources réelles MIT MP4 et YouTube
+  embed de la séance 1 d’algèbre linéaire sont effectivement lues localement.
+- Test local hors écran avec profil isolé, aucun Computer Use ni données
+  utilisateur accédées. Candidate 1.8.0; fixture 1.8.1 non publiée.
+  Livraison et vérifications du runner Windows à confirmer.
