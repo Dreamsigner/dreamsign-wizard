@@ -580,3 +580,26 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   ont été téléchargées et relues : 116 tests sans échec/erreur/ignoré,
   captures du lecteur continu à 500/1 100 px et diagnostic de l’EXE du paquet
   positif pour LaTeX/PDF, sans accès aux données utilisateur ni fenêtre.
+
+
+## 2026-10-22 — Installateur Windows par utilisateur
+
+- Lot autorisé : distribution Windows classique, sans modification pédagogique.
+  Version installateur 1.1.0, UUID de mise à niveau stable, installation par
+  utilisateur, choix du dossier, raccourcis Bureau/menu Démarrer. Les données
+  `%LOCALAPPDATA%/AtelierApprentissage` restent séparées de l’application
+  `%LOCALAPPDATA%/DuolingoKmpApp`. Aucun déplacement de sauvegarde.
+- Construction native via Compose/jpackage et WiX déjà disponibles. Les notices
+  et le guide sont générés comme ressources communes pour chaque distribution.
+  Le premier essai combiné a détecté une dépendance Gradle implicite entre la
+  préparation des notices et celle des ressources applicatives : dépendance
+  explicitée, avec configuration différée de la tâche enregistrée par Compose.
+- Ajout d’un test d’installation exclusif aux VM GitHub Windows jetables :
+  sauvegarde fictive préexistante, installation 1.1.0, diagnostic de l’EXE
+  installé, raccourcis, notices, inscription HKCU, mise à niveau de test vers
+  1.1.1, désinstallation et intégrité exacte de la sauvegarde à chaque étape.
+  La version 1.1.1 est uniquement une fixture CI, jamais publiée comme livrable.
+- Aucun installateur exécuté sur le poste utilisateur. Pas de certificat de
+  signature disponible dans ce lot; les avertissements d’éditeur inconnu
+  restent possibles. La mise à jour automatique n’est pas implémentée.
+- Vérifications de construction et résultat du test CI à confirmer ci-dessous.

@@ -135,7 +135,33 @@ compose.desktop {
             modules("jdk.unsupported")
             targetFormats(org.jetbrains.compose.desktop.application.dsl.TargetFormat.Msi, org.jetbrains.compose.desktop.application.dsl.TargetFormat.Exe)
             packageName = "DuolingoKmpApp"
-            packageVersion = "1.0.0"
+            packageVersion = providers.gradleProperty("desktopPackageVersion").orElse("1.1.0").get()
+            appResourcesRootDir.set(layout.buildDirectory.dir("installer-resources"))
+            vendor = "Dreamsigner"
+            description = "Atelier d’apprentissage — Mathématiques, informatique et TCF"
+            windows {
+                // Stable identity for subsequent installer upgrades; never regenerate this UUID.
+                upgradeUuid = "a7739778-106b-4e27-8c53-857132e4d69f"
+                perUserInstall = true
+                menu = true
+                menuGroup = "Atelier d’apprentissage"
+                shortcut = true
+                dirChooser = true
+                installationPath = "DuolingoKmpApp"
+            }
         }
     }
 }
+
+
+val prepareInstallerResources by tasks.registering(Sync::class) {
+    from(rootProject.file("docs/licences")) { include("*.txt") }
+    from(rootProject.file("docs/windows-testing.md")) { rename { "LISEZ-MOI.md" } }
+    into(layout.buildDirectory.dir("installer-resources/common"))
+}
+tasks.withType<org.jetbrains.compose.desktop.application.tasks.AbstractJPackageTask>().configureEach {
+    dependsOn(prepareInstallerResources)
+    inputs.files(prepareInstallerResources)
+}
+
+tasks.matching { it.name == "prepareAppResources" }.configureEach { dependsOn(prepareInstallerResources) }

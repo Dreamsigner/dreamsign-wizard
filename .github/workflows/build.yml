@@ -81,6 +81,35 @@ jobs:
           if ($checks.courses -lt 1 -or $checks.lessons -lt 1 -or $checks.exercises -lt 1 -or $checks.uiStarted -ne $false -or $checks.userDataAccessed -ne $false) { throw 'Invalid installation report.' }
           if ($checks.mathRenderingVerified -ne $true -or $checks.pdfRenderingVerified -ne $true) { throw 'The distributed document engines failed verification.' }
           Compress-Archive -Path (Join-Path $launcher.Directory.FullName '*') -DestinationPath (Join-Path $env:RUNNER_TEMP 'DuolingoKmpApp-Windows.zip')
+      - name: Build Windows installer
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          gradle :composeApp:packageExe --stacktrace
+          if ($LASTEXITCODE -ne 0) { throw 'Installer build failed.' }
+          $setupDir = Join-Path $env:RUNNER_TEMP 'windows-setup'
+          New-Item -ItemType Directory -Path $setupDir -Force | Out-Null
+          $source = 'composeApp/build/compose/binaries/main/exe/DuolingoKmpApp-1.1.0.exe'
+          $setup = Join-Path $setupDir 'AtelierApprentissage-1.1.0-Setup.exe'
+          Copy-Item -LiteralPath $source -Destination $setup
+          New-Item -ItemType Directory -Path 'composeApp/build/installer-fixtures' -Force | Out-Null
+          Copy-Item -LiteralPath $source -Destination 'composeApp/build/installer-fixtures/1.1.0.exe'
+          $hash = (Get-FileHash -LiteralPath $setup -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$hash  AtelierApprentissage-1.1.0-Setup.exe" | Set-Content -LiteralPath (Join-Path $setupDir 'SHA256SUMS.txt') -Encoding ascii
+      - name: Verify installation, upgrade and uninstall on disposable runner
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          # Build an unpublished, newer package solely to test the stable upgrade identity.
+          gradle :composeApp:packageExe -PdesktopPackageVersion=1.1.1 --stacktrace
+          if ($LASTEXITCODE -ne 0) { throw 'Upgrade fixture build failed.' }
+          ./tools/test_windows_installer.ps1 -Installer 'composeApp/build/installer-fixtures/1.1.0.exe' -UpgradeInstaller 'composeApp/build/compose/binaries/main/exe/DuolingoKmpApp-1.1.1.exe'
+      - uses: actions/upload-artifact@v7
+        with:
+          name: AtelierApprentissage-Windows-Setup
+          path: ${{ runner.temp }}/windows-setup/*
+          if-no-files-found: error
+          retention-days: 14
       - uses: actions/upload-artifact@v7
         with:
           name: DuolingoKmpApp-Windows
@@ -97,4 +126,5 @@ jobs:
             composeApp/build/reports/ui-snapshots/
             composeApp/build/reports/installation-check.json
             composeApp/build/reports/fraction-coverage/
+            composeApp/build/reports/installer/
           retention-days: 14

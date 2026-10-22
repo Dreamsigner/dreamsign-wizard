@@ -1,18 +1,35 @@
 # Tester le paquet Windows
 
-## Ouvrir l'application
+## Installer l’application
 
-1. Dans le run GitHub Actions du commit à tester, télécharger l'artefact
-   **DuolingoKmpApp-Windows**.
-2. Extraire le téléchargement. S'il contient encore un fichier
-   `DuolingoKmpApp-Windows.zip`, extraire aussi cette archive.
-3. Conserver ensemble `DuolingoKmpApp.exe`, `app` et `runtime`, puis ouvrir
-   `DuolingoKmpApp.exe`. Ne pas lancer l'exécutable depuis l'archive.
+1. Dans une exécution GitHub Actions réussie de `main`, télécharger **AtelierApprentissage-Windows-Setup**.
+2. Extraire l’archive, puis lancer `AtelierApprentissage-1.1.0-Setup.exe`.
+3. Suivre l’assistant, puis utiliser le raccourci du Bureau ou du menu Démarrer.
 
-Le paquet contient son environnement Java. Gradle et un JDK séparé ne sont
-pas nécessaires pour le tester. Il s'agit d'un dossier d'application portable,
-pas d'un installateur. Les pages de référence des cours nécessitent Internet;
-les leçons, corrections et documents audio sont intégrés.
+L’installation est propre à l’utilisateur courant, par défaut dans
+`%LOCALAPPDATA%/DuolingoKmpApp`. Les données de progression restent séparées,
+dans `%LOCALAPPDATA%/AtelierApprentissage`. La version portable existante et
+la version installée utilisent cette même sauvegarde : fermer l’une avant
+d’utiliser l’autre. Aucun déplacement de données n’est nécessaire.
+
+Pour désinstaller, utiliser les applications installées dans les paramètres
+Windows. La progression n’est pas supprimée. Un futur installateur de version
+supérieure peut remplacer l’application installée grâce à son identifiant
+stable; la recherche et le téléchargement automatiques de mises à jour ne sont
+pas encore implémentés.
+
+L’exécutable n’est pas signé numériquement. `SHA256SUMS.txt` permet de vérifier
+le téléchargement avec `Get-FileHash -Algorithm SHA256`.
+
+## Utilisation portable
+
+L’artefact **DuolingoKmpApp-Windows** reste un ZIP portable. Extraire aussi le
+ZIP intérieur s’il est présent, puis lancer `DuolingoKmpApp.exe` en conservant
+les dossiers `app` et `runtime`. Ne pas lancer l’exécutable dans l’archive.
+
+Les deux distributions contiennent Java. Gradle et un JDK séparé ne sont pas
+nécessaires. Les notes, exercices et documents audio sont intégrés; les supports
+PDF externes et vidéos sont disponibles online.
 
 ## Vérifications utilisateur utiles
 

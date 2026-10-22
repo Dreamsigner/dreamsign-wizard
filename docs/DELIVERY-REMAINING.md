@@ -38,7 +38,7 @@ Ce bilan complète le registre; il ne transforme pas l'inventaire OSSU en cours 
 
 ## 4. Distribution et fonctions absentes
 
-- Livraison actuelle : ZIP portable avec Java embarqué, pas un installateur Windows signé. Installateur, signature de code et mise à jour automatique ne sont pas livrés.
+- Distributions : ZIP portable et installateur Windows par utilisateur avec Java embarqué. Le lot installateur est vérifié séparément dans le registre. La signature de code et la mise à jour automatique ne sont pas livrées.
 - Aucune synchronisation entre appareils ni sauvegarde cloud. La progression est conservée localement; préserver progress.json lors des mises à jour.
 - Android et iOS sont explicitement abandonnés dans le périmètre actif, pas présentés comme des livrables en attente. Leur reprise nécessiterait une nouvelle décision, des builds/essais adaptés et, pour un iPhone réel, une signature Apple disponible.
 

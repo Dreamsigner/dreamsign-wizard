@@ -13,7 +13,7 @@ Application d’apprentissage en français pour Windows, développée en Kotlin 
 ## Fonctionnalités
 
 - Lecture des notes de cours avec sommaire, ressources de référence et exercices associés.
-- Consultation des supports PDF dans l’application, avec navigation par page et zoom.
+- Consultation des supports PDF dans l’application, avec défilement vertical continu et zoom.
 - Exercices avec indices, corrections expliquées et reprise des questions incorrectes en fin de séance.
 - Affichage des expressions mathématiques avec un moteur de rendu LaTeX local.
 - Ateliers TCF de compréhension écrite et orale, rédaction et production orale avec réécoute et auto-évaluation.
@@ -47,12 +47,15 @@ Consulter le [catalogue détaillé](docs/courses/README.md) et la [couverture p�
 
 ## Installation
 
-1. Ouvrir la page [GitHub Actions — Build](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/workflows/build.yml) et sélectionner une exécution réussie de la branche `main`.
-2. Télécharger l’artefact **DuolingoKmpApp-Windows** dans la section **Artifacts**. Une connexion GitHub peut être nécessaire.
-3. Extraire l’archive téléchargée, puis `DuolingoKmpApp-Windows.zip` si une seconde archive est présente.
-4. Lancer **DuolingoKmpApp.exe** en conservant les dossiers `app` et `runtime` à ses côtés.
+1. Ouvrir [GitHub Actions — Build](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/workflows/build.yml) et sélectionner une exécution réussie de `main`.
+2. Télécharger l’artefact **AtelierApprentissage-Windows-Setup**, puis extraire l’archive.
+3. Lancer **AtelierApprentissage-1.1.0-Setup.exe** et suivre l’assistant. L’installation est propre à l’utilisateur Windows, avec raccourcis sur le Bureau et dans le menu Démarrer.
 
-Le paquet est portable et inclut Java : aucun JDK ni Gradle n’est nécessaire pour utiliser l’application. Les notes et documents audio sont intégrés; les supports PDF externes et les vidéos nécessitent une connexion Internet.
+Java est inclus : aucun JDK ni Gradle n’est nécessaire. La désinstallation se fait depuis les applications installées des paramètres Windows. L’installateur n’est pas signé numériquement; Windows peut afficher un avertissement d’éditeur inconnu. `SHA256SUMS.txt` accompagne l’exécutable pour vérifier l’intégrité du téléchargement.
+
+L’artefact **DuolingoKmpApp-Windows** reste disponible pour une utilisation portable : extraire le ZIP et lancer `DuolingoKmpApp.exe`, avec les dossiers `app` et `runtime` à ses côtés.
+
+Les notes et documents audio sont intégrés; les supports PDF externes et les vidéos nécessitent une connexion Internet.
 
 La progression est enregistrée dans `%LOCALAPPDATA%/AtelierApprentissage/progress.json`. Elle n’est pas synchronisée entre appareils.
 
@@ -77,6 +80,7 @@ Versions du projet : Kotlin **2.2.21** et Compose Multiplatform **1.9.3**. Les d
 | `gradle :composeApp:compileKotlinDesktop` | Compiler l’application Windows |
 | `gradle :composeApp:desktopTest` | Exécuter les tests Kotlin et Compose desktop |
 | `gradle :composeApp:createDistributable` | Construire l’application portable avec son runtime |
+| `gradle :composeApp:packageExe` | Construire l’installateur Windows par utilisateur |
 | `gradle :composeApp:sourcePdfSmokeTest` | Vérifier le lecteur avec un PDF officiel; nécessite Internet |
 | `python tools/validate_curriculum.py --generate` | Valider le catalogue et régénérer les données Kotlin |
 | `python tools/validate_course_resources.py` | Vérifier l’index des supports pédagogiques |
