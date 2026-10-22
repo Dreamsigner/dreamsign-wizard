@@ -618,3 +618,30 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   et sauvegarde inchangée. La fixture 1.1.1 n’est pas publiée. L’assistant
   graphique d’installation n’a pas été inspecté avec Computer Use; les opérations
   vérifiées sont exécutées silencieusement sur une VM GitHub jetable.
+
+
+## 22 octobre 2026 — Aperçus vidéo des mathématiques
+
+- Lot annoncé avant modification : estimation 8–15 k tokens générés. Périmètre :
+  aperçus et ouverture directe des vidéos des maths sur Windows. Lecture intégrée
+  différée; aucune modification du contenu pédagogique des autres catégories.
+- Cartes natives dans les notes avant exercice, l’aide et le lecteur de cours.
+  Disposition horizontale sur grand écran, verticale en largeur réduite.
+  Titre source, langue, disponibilité online et action explicite vers le navigateur.
+- Vignettes YouTube chargées hors du thread UI; cache mémoire de huit images.
+  Hôte HTTPS fixe, identifiants validés, redirections refusées, plafond 1 Mio,
+  dimensions contrôlées avant décodage, délais connexion/lecture de 4 s.
+  Aucun téléchargement de vidéo, cookie, clé API ou fichier de cache sur disque.
+- Repli explicite pour MP4, échec réseau et image invalide. L’ouverture du lien
+  exact reste possible; une erreur navigateur est signalée sans quitter la leçon.
+- Six nouveaux tests desktop réussis : analyse d’URL, bornes/cache/décodage,
+  cartes à 500/1100 px, image injectée, MP4, activation clavier/échec navigateur
+  et absence de chargement dans la présentation historique utilisée hors maths.
+  Les captures de ces deux dispositions ont été inspectées sans Computer Use;
+  l’image chargée de la capture est une fixture grise, pas une vidéo vérifiée.
+- Contrôle réseau direct d’une vignette référencée : HTTP 200, image/jpeg, 9690
+  octets. Il ne constitue pas une vérification de disponibilité de toutes les vidéos.
+- Installateur porté à 1.2.0; identité de mise à niveau inchangée. Fixture CI
+  non publiée : 1.2.1. Suite complète, paquet et preuves CI à confirmer ci-dessous.
+- Validation locale complète : 122 tests desktop sans échec/erreur/ignoré,
+  app-image et installateur 1.2.0 construits. Captures à 500/1100 px inspectées.

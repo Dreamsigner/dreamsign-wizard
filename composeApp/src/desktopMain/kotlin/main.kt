@@ -47,7 +47,9 @@ private fun desktopApplication() = application {
                 adapter = androidx.compose.foundation.rememberScrollbarAdapter(state), modifier = modifier,
             ) },
         ) {
-            MathRenderingProvider(DesktopMathRenderer) { App() }
+            com.duolingo.app.ui.VideoThumbnailProvider(androidx.compose.runtime.remember { com.duolingo.app.ui.DesktopVideoThumbnailLoader() }) {
+                MathRenderingProvider(DesktopMathRenderer) { App() }
+            }
         }
     }
 }

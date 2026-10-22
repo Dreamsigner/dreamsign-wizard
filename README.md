@@ -49,11 +49,13 @@ Consulter le [catalogue détaillé](docs/courses/README.md) et la [couverture p�
 
 1. Ouvrir [GitHub Actions — Build](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/workflows/build.yml) et sélectionner une exécution réussie de `main`.
 2. Télécharger l’artefact **AtelierApprentissage-Windows-Setup**, puis extraire l’archive.
-3. Lancer **AtelierApprentissage-1.1.0-Setup.exe** et suivre l’assistant. L’installation est propre à l’utilisateur Windows, avec raccourcis sur le Bureau et dans le menu Démarrer.
+3. Lancer **AtelierApprentissage-1.2.0-Setup.exe** et suivre l’assistant. L’installation est propre à l’utilisateur Windows, avec raccourcis sur le Bureau et dans le menu Démarrer.
 
 Java est inclus : aucun JDK ni Gradle n’est nécessaire. La désinstallation se fait depuis les applications installées des paramètres Windows. L’installateur n’est pas signé numériquement; Windows peut afficher un avertissement d’éditeur inconnu. `SHA256SUMS.txt` accompagne l’exécutable pour vérifier l’intégrité du téléchargement.
 
 L’artefact **DuolingoKmpApp-Windows** reste disponible pour une utilisation portable : extraire le ZIP et lancer `DuolingoKmpApp.exe`, avec les dossiers `app` et `runtime` à ses côtés.
+
+Dans les supports de mathématiques, les vidéos disposent de cartes avec titre, vignette YouTube lorsqu’elle est disponible et ouverture directe dans le navigateur. Les fichiers MP4 conservent une carte sans vignette. La lecture vidéo intégrée n’est pas implémentée.
 
 Les notes et documents audio sont intégrés; les supports PDF externes et les vidéos nécessitent une connexion Internet.
 

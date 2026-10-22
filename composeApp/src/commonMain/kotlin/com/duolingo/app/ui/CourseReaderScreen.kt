@@ -27,6 +27,7 @@ fun CourseReaderScreen(
     onStartLesson: (Lesson) -> Unit,
     onClose: () -> Unit,
     typesetMath: Boolean = false,
+    showVideoPreviews: Boolean = false,
 ) {
     val listState = key(course.id) { rememberLazyListState() }
     var showContents by remember(course.id) { mutableStateOf(false) }
@@ -45,14 +46,14 @@ fun CourseReaderScreen(
                         Text(course.title, fontSize = 28.sp, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
                         Text("Toutes les notes rédigées en français pour ce parcours sont réunies ici et disponibles hors ligne, y compris pour les leçons encore verrouillées.", color = Graphite)
                         Text("Ces notes de pratique ne remplacent pas le cours original complet. Les supports de référence ci-dessous s’ouvrent avec Internet.", color = Graphite)
-                        CourseReferenceLinks(course)
+                        CourseReferenceLinks(course, showVideoPreviews)
                     }
                 }
                 items(course.lessons, key = { it.id }) { lesson ->
                     Surface(color = White, shape = LearningShape) {
                         Column(Modifier.fillMaxWidth().padding(24.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
                             Text(lesson.title, fontSize = 22.sp, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
-                            LessonNotes(lesson, includeHeading = false, typesetMath = typesetMath)
+                            LessonNotes(lesson, includeHeading = false, typesetMath = typesetMath, showVideoPreviews = showVideoPreviews)
                             Text("Exercices associés : ${lesson.exercises.size}", fontWeight = FontWeight.Medium)
                             LearningButton("Pratiquer · ${lesson.title}", { onStartLesson(lesson) }, enabled = canPractice(lesson))
                             if (!canPractice(lesson)) Text("Termine les prérequis pour pratiquer. Le cours reste consultable.", color = Graphite)
@@ -77,10 +78,10 @@ fun CourseReaderScreen(
 }
 
 @Composable
-private fun CourseReferenceLinks(course: LearningUnit) {
+private fun CourseReferenceLinks(course: LearningUnit, showVideoPreviews: Boolean) {
     val uri = androidx.compose.ui.platform.LocalUriHandler.current
     val resources = CourseResources.forCourse(course.id)
-    if (resources.isNotEmpty()) ReferenceLinks(resources)
+    if (resources.isNotEmpty()) ReferenceLinks(resources, showVideoPreviews)
     else if (course.sourceUrl.isNotBlank()) TextButton({ runCatching { uri.openUri(course.sourceUrl) } }, Modifier.heightIn(min = 48.dp)) {
         Text("Ouvrir le cours original · ${course.courseCode.ifBlank { course.title }}")
     }

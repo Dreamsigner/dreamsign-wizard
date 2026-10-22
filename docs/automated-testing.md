@@ -121,3 +121,13 @@ des tests prouvent un rendu donné ; elles ne couvrent pas toutes les tailles,
 la lecture d'écran native ou chaque écran du catalogue. Android et iOS sont hors
 du périmètre actif; leurs résultats historiques ne valident pas la version Windows
 livrée. Une archive iOS non signée n'est pas installable sur un iPhone réel.
+
+## Aperçus vidéo (mathématiques, Windows)
+
+`VideoPreviewTest` vérifie les URL YouTube autorisées, le cache borné, les images
+invalides/trop grandes, les cartes étroites/larges, le repli MP4, l’ouverture du
+lien exact et l’activation clavier avec erreur navigateur. Ces tests utilisent
+un chargeur injectable sans réseau. Les captures `video-preview-*.png` sont
+produites dans `composeApp/build/reports/ui-snapshots` et archivées en CI.
+L’image chargée dans le test est une fixture : le test ne certifie pas la
+disponibilité en ligne d’une vidéo ni sa lecture dans le navigateur.

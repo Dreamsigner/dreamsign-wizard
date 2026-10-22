@@ -14,13 +14,20 @@ import com.duolingo.app.data.CourseResource
 import com.duolingo.app.ui.pdf.PdfDocumentDialog
 
 @Composable
-internal fun ReferenceLinks(resources: List<CourseResource>) {
+internal fun ReferenceLinks(resources: List<CourseResource>, showVideoPreviews: Boolean = false) {
     val uri = LocalUriHandler.current
     var failure by remember(resources) { mutableStateOf<String?>(null) }
     var openedPdf by remember(resources) { mutableStateOf<CourseResource?>(null) }
     resources.distinctBy { it.url }
         .sortedBy { if (it.kind.contains("pdf")) 0 else if (it.kind == "video") 1 else 2 }.forEach { resource ->
-        TextButton({
+        if (showVideoPreviews && resource.kind == "video") {
+            VideoPreview(resource) {
+                failure = null
+                try { uri.openUri(resource.url) } catch (_: Exception) {
+                    failure = "Impossible d’ouvrir ce support. Vérifie la connexion ou le navigateur par défaut."
+                }
+            }
+        } else TextButton({
             failure = null
             if (resource.kind.contains("pdf")) openedPdf = resource
             else try { uri.openUri(resource.url) } catch (_: Exception) { failure = "Impossible d’ouvrir ce support. Vérifie la connexion ou le navigateur par défaut." }

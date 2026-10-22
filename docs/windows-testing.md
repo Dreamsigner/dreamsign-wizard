@@ -3,7 +3,7 @@
 ## Installer l’application
 
 1. Dans une exécution GitHub Actions réussie de `main`, télécharger **AtelierApprentissage-Windows-Setup**.
-2. Extraire l’archive, puis lancer `AtelierApprentissage-1.1.0-Setup.exe`.
+2. Extraire l’archive, puis lancer `AtelierApprentissage-1.2.0-Setup.exe`.
 3. Suivre l’assistant, puis utiliser le raccourci du Bureau ou du menu Démarrer.
 
 L’installation est propre à l’utilisateur courant, par défaut dans
@@ -75,3 +75,17 @@ ressources audio intégrées et exerce les moteurs LaTeX/PDF avec des documents
 originaux en mémoire. Il n'ouvre pas l'interface et n'accède pas à la
 progression personnelle. Il refuse de remplacer un rapport existant. Il ne
 vérifie ni les périphériques audio ni l'apparence d'une fenêtre réelle.
+
+## Aperçus vidéo des mathématiques
+
+Dans un cours de mathématiques, ouvrir les supports d’une leçon. Une carte affiche
+le titre et la langue de chaque vidéo. « Ouvrir la vidéo » lance son lien exact
+dans le navigateur. Une vignette YouTube est chargée lorsqu’elle est disponible;
+les fichiers MP4 et les échecs réseau affichent « Aperçu non disponible ».
+Les notes et exercices restent utilisables hors ligne. La lecture intégrée dans
+l’application n’est pas proposée.
+
+Les aperçus contactent uniquement `i.ytimg.com` en HTTPS, sans cookies ni clé API.
+Le cache de huit images est limité à la session, sans enregistrement sur disque.
+Une image ne peut dépasser 1 Mio ni 1280 × 720 pixels; les connexions et lectures
+réseau sont limitées à quatre secondes chacune. Aucune vidéo n’est téléchargée.

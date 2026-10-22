@@ -66,6 +66,9 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
     val mathematical = viewModel.subjects.value.any { subject ->
         (subject.category == SubjectCategory.MATHEMATICS || subject.category == SubjectCategory.COMPUTER_SCIENCE) && subject.units.any { unit -> unit.lessons.any { it.id == lesson.id } }
     }
+    val showVideoPreviews = viewModel.subjects.value.any { subject ->
+        subject.category == SubjectCategory.MATHEMATICS && subject.units.any { unit -> unit.lessons.any { it.id == lesson.id } }
+    }
     var showHelp by remember(lesson.id) { mutableStateOf(false) }
     var showExplanation by remember(lesson.id, index, checked) { mutableStateOf(false) }
     val exit = { viewModel.navigateTo(AppScreen.LEARNING_PATH) }
@@ -118,7 +121,7 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
         Box(Modifier.padding(padding).fillMaxSize(), contentAlignment = Alignment.TopCenter) {
             Column(Modifier.widthIn(max = 920.dp).fillMaxWidth().verticalScroll(questionScrollState).padding(24.dp), verticalArrangement = Arrangement.spacedBy(20.dp)) {
                 when {
-                    showNotes -> LessonNotes(lesson, typesetMath = mathematical)
+                    showNotes -> LessonNotes(lesson, typesetMath = mathematical, showVideoPreviews = showVideoPreviews)
                     exercise == null -> EmptyLearningState("Aucun exercice disponible", "Les notes du cours restent accessibles avec le bouton d’aide.")
                     unsupported -> EmptyLearningState("Association de paires indisponible", "Cet exercice n’est pas encore pris en charge. Reviens au cours pour choisir une autre leçon ; aucune réponse ni récompense ne sera enregistrée ici.")
                     else -> {
@@ -199,7 +202,7 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
         title = { Text("Le cours et l’indice") },
         text = {
             Column(Modifier.heightIn(max = 460.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                LessonNotes(lesson, typesetMath = mathematical)
+                LessonNotes(lesson, typesetMath = mathematical, showVideoPreviews = showVideoPreviews)
                 if (!showNotes && exercise != null) {
                     Text("Indice pour cet exercice", fontWeight = FontWeight.Bold)
                     LessonDocument(exercise.hint, typesetMath = mathematical)
@@ -252,7 +255,7 @@ private fun WrittenProductionPractice(
 }
 
 @Composable
-internal fun LessonNotes(lesson: Lesson, includeHeading: Boolean = true, typesetMath: Boolean = false) {
+internal fun LessonNotes(lesson: Lesson, includeHeading: Boolean = true, typesetMath: Boolean = false, showVideoPreviews: Boolean = false) {
     val uriHandler = LocalUriHandler.current
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         if (includeHeading) Text("Comprendre avant de pratiquer", fontSize = 24.sp, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
@@ -263,7 +266,7 @@ internal fun LessonNotes(lesson: Lesson, includeHeading: Boolean = true, typeset
         val pairedResources = lesson.exercises.firstOrNull()?.let { CourseResources.forExercise(it.id) }.orEmpty()
         if (pairedResources.isNotEmpty()) {
             Text("Supports associés à cette leçon", fontWeight = FontWeight.Bold)
-            ReferenceLinks(pairedResources)
+            ReferenceLinks(pairedResources, showVideoPreviews)
         } else if (lesson.sourceUrls.isNotEmpty()) {
             Text("Pour aller plus loin", fontWeight = FontWeight.Bold)
             lesson.sourceUrls.forEachIndexed { index, url ->
