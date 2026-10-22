@@ -65,9 +65,9 @@ class NativeVideoSmokeTest {
             }
             val advanced = playing.await(45, TimeUnit.SECONDS)
             val initialReports = Path.of("build/reports/native-video"); Files.createDirectories(initialReports)
-            Files.writeString(initialReports.resolve("initial-state.txt"), "observed=${observed.get()} failure=${failure.get()}")
+            Files.writeString(initialReports.resolve("initial-state.txt"), "observed=${observed.get()} failure=${failure.get()} nativeError=${host.lastProbeError}")
             assertTrue(advanced, "WebView2 did not decode/play the controlled fixture; observed=${observed.get()} failure=${failure.get()}")
-            assertNull(failure.get())
+            assertNull(failure.get(), host.lastProbeError)
             val state = requireNotNull(observed.get())
             assertTrue(state.mediaTime > 0.1 && state.duration > 0.0 && state.controls)
             var mp4Decoded = false

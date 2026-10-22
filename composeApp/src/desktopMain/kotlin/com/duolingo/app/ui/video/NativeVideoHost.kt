@@ -50,6 +50,8 @@ private class WebViewAdapter : NativeVideoAdapter {
 internal class NativeVideoHost(private val onState: (VideoPageState) -> Unit, private val onFailure: (String) -> Unit, private val factory: () -> NativeVideoAdapter = { WebViewAdapter() }) {
     var view: NativeVideoAdapter? = null
         private set
+    var lastProbeError: String? = null
+        private set
     private var timer: Timer? = null
     private val closed = AtomicBoolean(false)
     private val probing = AtomicBoolean(false)
@@ -63,7 +65,8 @@ internal class NativeVideoHost(private val onState: (VideoPageState) -> Unit, pr
             var attempts = 0
             timer = Timer(500) {
                 if (!closed.get() && probing.compareAndSet(false, true)) {
-                    val query = try { native.evaluate(VIDEO_PAGE_PROBE) } catch (_: Exception) {
+                    val query = try { native.evaluate(VIDEO_PAGE_PROBE) } catch (error: Exception) {
+                        lastProbeError = "${error.javaClass.simpleName}: ${error.message}"
                         probing.set(false)
                         if (++attempts == 20) onFailure("Le lecteur natif ne répond pas. Ouvre la source dans le navigateur.")
                         return@Timer
@@ -77,9 +80,13 @@ internal class NativeVideoHost(private val onState: (VideoPageState) -> Unit, pr
                                     if (state.url.startsWith("chrome-error:")) onFailure("Le lecteur n’a pas pu charger cette vidéo. Vérifie la connexion ou ouvre la source dans le navigateur.")
                                     else onState(state)
                                 }.onFailure {
+                                    lastProbeError = "${it.javaClass.simpleName}: ${it.message}"
                                     if (++attempts == 20) onFailure("Le lecteur ne fournit pas son état. Ouvre la source dans le navigateur.")
                                 }
-                                else if (++attempts == 20) onFailure("Le lecteur reste indisponible. Vérifie la présence du runtime Microsoft Edge WebView2 et la connexion.")
+                                else {
+                                    lastProbeError = "${error.javaClass.simpleName}: ${error.message}"
+                                    if (++attempts == 20) onFailure("Le lecteur reste indisponible. Vérifie la présence du runtime Microsoft Edge WebView2 et la connexion.")
+                                }
                             }
                         }
                     }

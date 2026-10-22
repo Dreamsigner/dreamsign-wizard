@@ -85,6 +85,7 @@ jobs:
       - name: Verify native WebView2 video playback
         env:
           ATELIER_VIDEO_REMOTE_SMOKE: "true"
+          WEBVIEW2_USER_DATA_FOLDER: "${{ runner.temp }}\\atelier-video-webview2"
           WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS: "--disable-backgrounding-occluded-windows --disable-renderer-backgrounding"
         shell: pwsh
         run: |
