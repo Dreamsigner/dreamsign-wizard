@@ -35,16 +35,48 @@ function Invoke-CheckedProcess([string]$File, [string[]]$Arguments) {
     if (!$process.WaitForExit(180000)) { $process.Kill(); throw 'Installer check timed out.' }
     if ($process.ExitCode -ne 0) { throw "Process failed with code $($process.ExitCode): $File" }
 }
-function Read-InstalledEntry([string]$Version) {
-    $entries = @(Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*' -ErrorAction SilentlyContinue |
-        Where-Object { $_.DisplayName -eq 'DuolingoKmpApp' })
-    if ($entries.Count -ne 1 -or $entries[0].DisplayVersion -ne $Version -or $entries[0].WindowsInstaller -ne 1) {
-        throw 'Expected exactly one per-user Windows Installer registration at the requested version.'
+# Ask Windows Installer directly rather than assuming an ARP registry view.
+# The jpackage bootstrapper embeds its MSI ProductCode as a UTF-8 resource.
+Add-Type -TypeDefinition @"
+using System;
+using System.Runtime.InteropServices;
+using System.Text;
+public static class SetupIdentity {
+    [DllImport("kernel32.dll", CharSet=CharSet.Unicode, SetLastError=true)]
+    static extern IntPtr LoadLibraryEx(string path, IntPtr file, uint flags);
+    [DllImport("kernel32.dll", CharSet=CharSet.Unicode, SetLastError=true)]
+    static extern IntPtr FindResource(IntPtr module, string name, IntPtr type);
+    [DllImport("kernel32.dll")] static extern uint SizeofResource(IntPtr module, IntPtr resource);
+    [DllImport("kernel32.dll")] static extern IntPtr LoadResource(IntPtr module, IntPtr resource);
+    [DllImport("kernel32.dll")] static extern IntPtr LockResource(IntPtr resource);
+    [DllImport("kernel32.dll")] static extern bool FreeLibrary(IntPtr module);
+    public static string ProductCode(string path) {
+        var module = LoadLibraryEx(path, IntPtr.Zero, 2); // Data only: never execute setup.
+        if (module == IntPtr.Zero) throw new Exception("Cannot read installer resources.");
+        try {
+            var resource = FindResource(module, "product_code", new IntPtr(10));
+            uint size = SizeofResource(module, resource);
+            if (resource == IntPtr.Zero || size == 0 || size > 128) throw new Exception("Missing installer identity.");
+            var bytes = new byte[size];
+            Marshal.Copy(LockResource(LoadResource(module, resource)), bytes, 0, bytes.Length);
+            return Encoding.UTF8.GetString(bytes).TrimEnd('\0');
+        } finally { FreeLibrary(module); }
     }
-    return $entries[0]
 }
-function Assert-InstalledApp([string]$Version, [string]$Phase) {
-    $entry = Read-InstalledEntry $Version
+"@
+$msiEngine = New-Object -ComObject WindowsInstaller.Installer
+function Read-InstalledEntry([string]$Version, [string]$SetupPath) {
+    $code = [SetupIdentity]::ProductCode((Resolve-Path -LiteralPath $SetupPath).Path)
+    if ($code -notmatch '^\{[0-9A-Fa-f-]{36}\}$') { throw 'Invalid installer identity.' }
+    $installedVersion = $msiEngine.ProductInfo($code, 'VersionString')
+    $assignment = $msiEngine.ProductInfo($code, 'AssignmentType')
+    if ($installedVersion -ne $Version -or $assignment -ne '0' -or $msiEngine.ProductState($code) -ne 5) {
+        throw 'Expected an installed per-user MSI product at the requested version.'
+    }
+    return [pscustomobject]@{ ProductCode = $code; Version = $installedVersion }
+}
+function Assert-InstalledApp([string]$Version, [string]$Phase, [string]$SetupPath) {
+    $entry = Read-InstalledEntry $Version $SetupPath
     $launcher = Join-Path $appDir 'DuolingoKmpApp.exe'
     if (!(Test-Path -LiteralPath $launcher)) { throw 'Installed application launcher is missing.' }
     foreach ($notice in @('THIRD-PARTY-NOTICES.txt', 'LISEZ-MOI.md')) {
@@ -63,15 +95,15 @@ function Assert-InstalledApp([string]$Version, [string]$Phase) {
     return $entry
 }
 Invoke-CheckedProcess (Resolve-Path -LiteralPath $Installer).Path @('/quiet', '/norestart', '/L*v', ('"{0}"' -f (Join-Path $reportDir 'install.log')))
-$first = Assert-InstalledApp '1.1.0' 'installed'
+$first = Assert-InstalledApp '1.1.0' 'installed' $Installer
 Invoke-CheckedProcess (Resolve-Path -LiteralPath $UpgradeInstaller).Path @('/quiet', '/norestart', '/L*v', ('"{0}"' -f (Join-Path $reportDir 'upgrade.log')))
-$updated = Assert-InstalledApp '1.1.1' 'upgraded'
-if ($first.PSChildName -eq $updated.PSChildName) { throw 'The upgrade did not replace the MSI product registration.' }
-if ($updated.PSChildName -notmatch '^\{[0-9A-Fa-f-]{36}\}$') { throw 'Invalid uninstall product code.' }
-Invoke-CheckedProcess 'msiexec.exe' @('/x', $updated.PSChildName, '/quiet', '/norestart', '/L*v', ('"{0}"' -f (Join-Path $reportDir 'uninstall.log')))
+$updated = Assert-InstalledApp '1.1.1' 'upgraded' $UpgradeInstaller
+if ($first.ProductCode -eq $updated.ProductCode -or $msiEngine.ProductState($first.ProductCode) -ne -1) { throw 'The upgrade did not replace the old MSI product registration.' }
+if ($updated.ProductCode -notmatch '^\{[0-9A-Fa-f-]{36}\}$') { throw 'Invalid uninstall product code.' }
+Invoke-CheckedProcess 'msiexec.exe' @('/x', $updated.ProductCode, '/quiet', '/norestart', '/L*v', ('"{0}"' -f (Join-Path $reportDir 'uninstall.log')))
 Assert-Progress
 if (Test-Path -LiteralPath (Join-Path $appDir 'DuolingoKmpApp.exe')) { throw 'The app launcher remains after uninstall.' }
-if (Test-Path -LiteralPath $updated.PSPath) { throw 'Uninstall registration remains after uninstall.' }
+if ($msiEngine.ProductState($updated.ProductCode) -ne -1 -or $msiEngine.ProductState($first.ProductCode) -ne -1) { throw 'An MSI product remains registered after uninstall.' }
 [ordered]@{
     installedVersion = '1.1.0'; upgradedVersion = '1.1.1'; installedAppDiagnostic = $true
     perUserRegistration = $true; shortcutsVerified = $true; noticesVerified = $true
