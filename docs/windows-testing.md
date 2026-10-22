@@ -3,7 +3,7 @@
 ## Installer l’application
 
 1. Dans une exécution GitHub Actions réussie de `main`, télécharger **AtelierApprentissage-Windows-Setup**.
-2. Extraire l’archive, puis lancer `AtelierApprentissage-1.8.2-Setup.exe`.
+2. Extraire l’archive, puis lancer `AtelierApprentissage-1.8.4-Setup.exe`.
 3. Suivre l’assistant, puis utiliser le raccourci du Bureau ou du menu Démarrer.
 
 L’installation est propre à l’utilisateur courant, par défaut dans
@@ -91,7 +91,7 @@ réseau sont limitées à quatre secondes chacune. Aucune vidéo n’est téléc
 
 ## Mises à jour automatiques
 
-Installer une première fois la version 1.8.2 depuis les [releases GitHub](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/latest).
+Installer une première fois la version 1.8.4 depuis les [releases GitHub](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/latest).
 L’installation Windows standard `%LOCALAPPDATA%/DuolingoKmpApp` active les mises à jour automatiques.
 Les copies portables et chemins d’installation personnalisés affichent que la mise à jour manuelle reste nécessaire.
 
@@ -109,7 +109,7 @@ Le checksum vérifie l’intégrité du fichier diffusé par GitHub; il ne rempl
 
 ### Publier une version compatible (maintenance)
 
-Actualiser la version du paquet, les noms d’artefacts et la fixture de mise à niveau dans le workflow et son test, puis créer le tag `vMAJOR.MINOR.PATCH` correspondant. Le job de release vérifie que le tag stable et le commit source correspondent avant de publier l’EXE et `SHA256SUMS.txt`, après les contrôles Windows. Le paquet de fixture de version supérieure (actuellement 1.8.3) sert uniquement au test d’installation et n’est jamais publié. Les artefacts Actions seuls ne déclenchent aucune mise à jour.
+Actualiser la version du paquet, les noms d’artefacts et la fixture de mise à niveau dans le workflow et son test, puis créer le tag `vMAJOR.MINOR.PATCH` correspondant. Le job de release vérifie que le tag stable et le commit source correspondent avant de publier l’EXE et `SHA256SUMS.txt`, après les contrôles Windows. Le paquet de fixture de version supérieure (actuellement 1.8.5) sert uniquement au test d’installation et n’est jamais publié. Les artefacts Actions seuls ne déclenchent aucune mise à jour.
 
 ## Lecteur vidéo intégré (mathématiques)
 

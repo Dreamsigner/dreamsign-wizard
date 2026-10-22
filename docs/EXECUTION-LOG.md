@@ -870,3 +870,13 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   redimensionnement 1184x761; dimensions AWT et viewport consignées.
 - Candidate 1.8.2, fixture de mise à niveau 1.8.3. Les tags précédents restent
   inchangés. Validation Windows et publication à confirmer.
+
+## 22 octobre 2026 — Dimensions réelles du runner et candidate 1.8.4
+
+- CI 1.8.2 (39866988901, artifact 12464382718) : Windows plafonne la fenêtre
+  demandée 1200x800 à 1044x788. Le conteneur Swing, le viewport et le cadre
+  vidéo atteignent tous 1028x749; le seuil absolu 1100 était incorrect.
+- Le smoke compare désormais les dimensions DOM aux dimensions Swing réelles
+  (tolérance 4 px) et exige une croissance minimale de 50 px dans chaque axe.
+  Les mesures Swing sont lues sur EDT. Le test natif local isolé passe.
+- Candidate 1.8.4 et fixture 1.8.5, sans réécriture des tags précédents.

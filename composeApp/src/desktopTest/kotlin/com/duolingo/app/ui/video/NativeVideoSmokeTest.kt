@@ -96,8 +96,19 @@ class NativeVideoSmokeTest {
                 append(component.javaClass.simpleName).append(component.bounds)
                 if (component is Container) component.components.forEach { append(" {").append(awtTree(it)).append('}') }
             }
-            fun diagnostic(label: String, page: VideoPageState): String = "$label page=$page frame=${frame?.bounds} content=${frame?.contentPane?.bounds} playerPanel=${playerPanel?.bounds} native=${host.view?.component?.bounds} tree=${frame?.contentPane?.let(::awtTree)}"
+            fun awtSnapshot(): String {
+                var value = ""
+                SwingUtilities.invokeAndWait {
+                    value = "frame=${frame?.bounds} content=${frame?.contentPane?.bounds} playerPanel=${playerPanel?.bounds} native=${host.view?.component?.bounds} tree=${frame?.contentPane?.let(::awtTree)}"
+                }
+                return value
+            }
+            fun diagnostic(label: String, page: VideoPageState): String = "$label page=$page ${awtSnapshot()}"
             val resizeDiagnostics = mutableListOf(diagnostic("before-resize", initialSize))
+            var initialPanelWidth = 0; var initialPanelHeight = 0
+            SwingUtilities.invokeAndWait {
+                playerPanel?.let { initialPanelWidth = it.width; initialPanelHeight = it.height }
+            }
             SwingUtilities.invokeAndWait {
                 val window = requireNotNull(frame)
                 window.setSize(1200, 800)
@@ -114,19 +125,34 @@ class NativeVideoSmokeTest {
             }
             val resizeDeadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(10)
             var resized: VideoPageState? = null
+            var lastResizeState: VideoPageState? = null
             var probeIndex = 0
             while (resized == null && System.nanoTime() < resizeDeadline) {
                 val measurement = parseVideoPageState(adapter.evaluate(VIDEO_PAGE_PROBE).get(5, TimeUnit.SECONDS))
-                if (probeIndex % 5 == 0 || (measurement.elementWidth > 1100 && measurement.elementHeight > 700)) {
+                lastResizeState = measurement
+                if (probeIndex % 5 == 0) {
                     resizeDiagnostics += diagnostic("after-resize-probe-$probeIndex", measurement)
                 }
-                if (measurement.elementWidth > 1100 && measurement.elementHeight > 700) resized = measurement
+                var panelWidth = 0; var panelHeight = 0; var nativeWidth = 0; var nativeHeight = 0
+                SwingUtilities.invokeAndWait {
+                    playerPanel?.let { panelWidth = it.width; panelHeight = it.height }
+                    host.view?.component?.let { nativeWidth = it.width; nativeHeight = it.height }
+                }
+                val matchesSwingBounds = kotlin.math.abs(measurement.viewportWidth - panelWidth) <= 4 &&
+                    kotlin.math.abs(measurement.viewportHeight - panelHeight) <= 4 &&
+                    kotlin.math.abs(measurement.elementWidth - nativeWidth) <= 4 &&
+                    kotlin.math.abs(measurement.elementHeight - nativeHeight) <= 4
+                val growsWithHost = measurement.elementWidth >= initialSize.elementWidth + 50 &&
+                    measurement.elementHeight >= initialSize.elementHeight + 50 &&
+                    panelWidth >= initialPanelWidth + 50 && panelHeight >= initialPanelHeight + 50
+                if (matchesSwingBounds && growsWithHost) resized = measurement
                 else Thread.sleep(100)
                 probeIndex++
             }
+            resized?.let { resizeDiagnostics += diagnostic("resize-confirmed", it) }
             Files.writeString(reports.resolve("resize-diagnostics.txt"), resizeDiagnostics.joinToString("\n", postfix = "\n"))
             Files.writeString(reports.resolve("initial-state.txt"), "observed=${observed.get()} failure=${failure.get()} nativeError=${host.lastProbeError}\n${resizeDiagnostics.joinToString("\n")}\n")
-            assertNotNull(resized, "Production video element did not fill resized host: $resized")
+            assertNotNull(resized, "Production video element did not track actual resized Swing bounds with meaningful growth: last=$lastResizeState ${awtSnapshot()}; see ${reports.resolve("resize-diagnostics.txt")}")
             val controls = requireNotNull(host.view).evaluate("""(function(){var v=document.querySelector('video');v.pause();v.playbackRate=1.5;v.volume=0.4;return new Promise(function(resolve){var done=function(){resolve({paused:v.paused,time:v.currentTime,rate:v.playbackRate,volume:v.volume});};v.addEventListener('seeked',done,{once:true});v.currentTime=0.75;setTimeout(done,3000);});})()""").get(5, TimeUnit.SECONDS)
             val values = kotlinx.serialization.json.Json.parseToJsonElement(controls) as kotlinx.serialization.json.JsonObject
             assertEquals("true", values["paused"].toString(), controls)
