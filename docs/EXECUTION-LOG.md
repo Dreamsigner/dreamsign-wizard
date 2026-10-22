@@ -655,28 +655,12 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   lecture vidéo intégrée et mise à jour automatique toujours absentes.
 
 
-## 22 octobre 2026 — Suivi natif des tokens et recherche du sommaire
+## 22 octobre 2026 — Recherche du sommaire des mathématiques
 
-- T001 : registre par tâche fondé sur les événements `token_count` du journal
-  actif Codex, en lecture seule. Le journal sur D: était une copie ancienne;
-  le journal actif sur C: est uniquement lu, jamais modifié. Les résultats
-  agrégés sont dans `docs/TOKEN-USAGE.md` et `docs/metrics/task-tokens.json`.
-  L’état privé (chemin source et baseline) reste dans `build/task-tokens`, ignoré
-  par Git. Deux tests du calcul de consommation réussis. Les entrées en cache
-  et sorties de raisonnement sont des sous-ensembles, pas des coûts additionnels.
-- T002 : recherche par titre et objectif dans le sommaire des maths. Accents et
-  casse ignorés, tous les mots doivent correspondre. Les index d’origine et
-  prérequis sont conservés. Effacement et état sans résultat explicites.
-  Les autres catégories gardent leur présentation existante.
-- Estimations annoncées avant modification : T001 3–6 k sorties, T002 4–7 k
-  sorties. Les relevés sont horodatés et ne prétendent pas inclure la réponse
-  finale tant que le compteur correspondant n’a pas été écrit par Codex.
-- Version Windows 1.3.0, fixture de mise à niveau CI 1.3.1 non publiée.
-  Résultats de la validation applicative à confirmer ci-dessous.
-- Validation locale : 126 tests desktop sans échec/erreur/ignoré, 32 tests
-  Python réussis, app-image et installateur 1.3.0 construits. Captures du sommaire
-  à 500/1100 px inspectées. T002 dépasse la fourchette initiale de 4–7 k sorties;
-  l’estimation reste inchangée pour permettre une comparaison honnête.
-- Pour les prochaines tâches : terminer le dernier relevé T002 à la frontière
-  de la reprise, puis ouvrir un nouvel identifiant via `tools/task_tokens.py`.
-  Publier les relevés horodatés; ne pas inventer les tokens encore non écrits.
+- Recherche par titre et objectif dans le sommaire des maths. Accents et casse
+  ignorés, tous les mots doivent correspondre. Index d’origine et prérequis
+  conservés. Effacement et état sans résultat explicites. Les autres catégories
+  gardent leur présentation existante.
+- Validation locale : 126 tests desktop sans échec/erreur/ignoré, app-image et
+  installateur 1.3.0 construits. Captures à 500/1100 px inspectées.
+- Fixture de mise à niveau CI 1.3.1 non publiée. Résultat CI à confirmer.
