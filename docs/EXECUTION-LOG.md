@@ -664,3 +664,8 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
 - Validation locale : 126 tests desktop sans échec/erreur/ignoré, app-image et
   installateur 1.3.0 construits. Captures à 500/1100 px inspectées.
 - Fixture de mise à niveau CI 1.3.1 non publiée. Résultat CI à confirmer.
+- Livraison confirmée : code `1c08fa1`, CI `39719259245` réussie,
+  Setup `12400074222`, portable `12400631407`, preuves `12400047837`.
+  126 tests desktop sans échec/erreur/ignoré, 30 tests Python du projet;
+  installation 1.3.0, fixture 1.3.1, désinstallation et progression préservée.
+  Aucun installateur exécuté sur le poste utilisateur.
