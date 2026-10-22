@@ -62,6 +62,17 @@ class NativeVideoSmokeTest {
                     setLocation(-12000, -12000)
                     add(host.create("http://127.0.0.1:${server.address.port}/")); setSize(800, 500); isVisible = true
                 }
+                // The library attaches its native peer on the Canvas's first paint.
+                // A window outside the CI desktop may never receive an OS paint event.
+                fun paintNativePeers(component: java.awt.Component) {
+                    if (component is java.awt.Canvas) {
+                        check(component.isDisplayable)
+                        val buffer = java.awt.image.BufferedImage(800, 500, java.awt.image.BufferedImage.TYPE_INT_ARGB)
+                        val graphics = buffer.createGraphics()
+                        try { component.paint(graphics) } finally { graphics.dispose() }
+                    } else if (component is java.awt.Container) component.components.forEach { paintNativePeers(it) }
+                }
+                paintNativePeers(requireNotNull(frame))
             }
             val advanced = playing.await(45, TimeUnit.SECONDS)
             val initialReports = Path.of("build/reports/native-video"); Files.createDirectories(initialReports)
