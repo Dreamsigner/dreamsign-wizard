@@ -3,7 +3,7 @@
 ## Installer l’application
 
 1. Dans une exécution GitHub Actions réussie de `main`, télécharger **AtelierApprentissage-Windows-Setup**.
-2. Extraire l’archive, puis lancer `AtelierApprentissage-1.3.0-Setup.exe`.
+2. Extraire l’archive, puis lancer `AtelierApprentissage-1.4.0-Setup.exe`.
 3. Suivre l’assistant, puis utiliser le raccourci du Bureau ou du menu Démarrer.
 
 L’installation est propre à l’utilisateur courant, par défaut dans
@@ -89,3 +89,25 @@ Les aperçus contactent uniquement `i.ytimg.com` en HTTPS, sans cookies ni clé 
 Le cache de huit images est limité à la session, sans enregistrement sur disque.
 Une image ne peut dépasser 1 Mio ni 1280 × 720 pixels; les connexions et lectures
 réseau sont limitées à quatre secondes chacune. Aucune vidéo n’est téléchargée.
+
+## Mises à jour automatiques
+
+Installer une première fois la version 1.4.0 depuis les [releases GitHub](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/latest).
+L’installation Windows standard `%LOCALAPPDATA%/DuolingoKmpApp` active les mises à jour automatiques.
+Les copies portables et chemins d’installation personnalisés affichent que la mise à jour manuelle reste nécessaire.
+
+- Vérification cinq secondes après le démarrage puis toutes les six heures. Le bouton de vérification permet de relancer la recherche.
+- Seules les releases stables plus récentes et leurs fichiers attendus du dépôt officiel sont acceptés. Aucun compte GitHub n’est demandé.
+- Après contrôle de taille et de SHA-256, l’application annonce la version prête. Si **Mises à jour auto** est activé, elle s’installe silencieusement à la fermeture, sans redémarrage du PC ni réouverture forcée de l’application.
+- **Installer et redémarrer** ferme l’app, attend sa sauvegarde finale et relance l’app après installation. La case Auto désactivée empêche toute application automatique, y compris pour une version déjà téléchargée.
+- Sans réseau, en cas de téléchargement incomplet, de checksum incorrect ou d’erreur GitHub, les cours restent accessibles et aucune nouvelle version n’est exécutée.
+
+Les fichiers de travail et préférences restent dans `%LOCALAPPDATA%/AtelierApprentissage/updates`.
+`last-result.json` et `updater.log` servent au diagnostic d’une installation échouée.
+`progress.json` reste séparé et n’est pas remplacé par les paquets.
+L’installateur reste non signé : les restrictions de sécurité de Windows ou d’un poste administré peuvent empêcher son exécution. Aucun réglage système n’est modifié par le programme de mise à jour.
+Le checksum vérifie l’intégrité du fichier diffusé par GitHub; il ne remplace pas une signature d’éditeur indépendante.
+
+### Publier une version compatible (maintenance)
+
+Actualiser la version du paquet, les noms d’artefacts et la fixture de mise à niveau dans le workflow et son test, puis créer le tag `vMAJOR.MINOR.PATCH` correspondant. Le job de release ne publie l’EXE et `SHA256SUMS.txt` qu’après les contrôles Windows. Les paquets de test de version supérieure ne sont jamais publiés. Les artefacts Actions seuls ne déclenchent aucune mise à jour.

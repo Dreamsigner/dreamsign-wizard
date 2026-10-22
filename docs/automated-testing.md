@@ -139,3 +139,17 @@ disponibilité en ligne d’une vidéo ni sa lecture dans le navigateur.
 verrouillée. Les captures à 500/1100 px vérifient recherche, absence de résultats
 et effacement. L’affichage historique hors maths ne reçoit pas de recherche.
 
+
+## Mise à jour Windows
+
+`WindowsUpdateTest` contrôle versions numériques, refus des brouillons/préreleases,
+provenance des fichiers, redirections HTTPS, taille, nom/checksum, staging et cache,
+refus d’un fichier corrompu, absence de téléchargement en portable, persistance du
+réglage Auto et mise à jour explicite si Auto est désactivé. Les captures 500/1100 px
+sont produites hors écran par Compose. Aucun installateur n’est lancé par ces tests.
+
+Sur le runner Windows jetable, `test_windows_installer.ps1` lance l’EXE installé
+avec un mode de vérification réservé à GitHub Actions. Ce mode utilise le même
+lanceur et le même assistant PowerShell que l’interface : attente de fermeture,
+recontrôle SHA-256, installation silencieuse et résultat JSON. La version de test
+supérieure est vérifiée, puis désinstallée; la progression fictive doit rester identique.

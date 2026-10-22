@@ -669,3 +669,24 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   126 tests desktop sans échec/erreur/ignoré, 30 tests Python du projet;
   installation 1.3.0, fixture 1.3.1, désinstallation et progression préservée.
   Aucun installateur exécuté sur le poste utilisateur.
+
+
+## 22 octobre 2026 — Mise à jour automatique Windows
+
+- Vérification des releases stables du dépôt officiel, staging limité et contrôle
+  SHA-256 avant installation. Vérifications au démarrage et toutes les six heures,
+  téléchargement en arrière-plan, application à la fermeture ou redémarrage explicite.
+- Réglage Auto persistant et désactivable; portable et chemins personnalisés exclus
+  de l’installation automatique. Progression et préférences de mise à jour séparées.
+- Assistant local fixe, données JSON séparées du code, attente de la fin du processus
+  puis recontrôle d’intégrité et installation `/quiet /norestart`. Les commandes encodées
+  initialement bloquées ont été abandonnées; aucune protection système n’a été modifiée.
+- Publication GitHub Releases ajoutée pour le tag correspondant à 1.4.0, après succès
+  des vérifications. La fixture 1.4.1 ne doit pas être publiée.
+- Dix tests ciblés réussis. Validation complète, captures, installation et publication
+  effective de la release à confirmer ci-dessous.
+- Validation locale complète : 136 tests desktop sans échec/erreur/ignoré,
+  app-image et installateur 1.4.0 construits. Captures des contrôles inspectées
+  à 500/1100 px. Diagnostic EXE sans accès aux données utilisateur réussi;
+  version applicative 1.4.0 transmise au runtime. La copie portable reste
+  exclue des mises à jour automatiques. Vérification installée réservée au CI.

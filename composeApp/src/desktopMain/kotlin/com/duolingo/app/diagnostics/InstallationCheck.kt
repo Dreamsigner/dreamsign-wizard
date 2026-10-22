@@ -23,7 +23,9 @@ internal data class InstallationCheckReport(
     val mathRenderingVerified: Boolean = false,
     val pdfRenderingVerified: Boolean = false,
     val uiStarted: Boolean = false,
-    val userDataAccessed: Boolean = false
+    val userDataAccessed: Boolean = false,
+    val updaterInstalledEdition: Boolean = false,
+    val updaterVersion: String = ""
 )
 
 @OptIn(ExperimentalResourceApi::class)
