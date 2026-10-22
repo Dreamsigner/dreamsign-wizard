@@ -31,7 +31,7 @@ fun main(args: Array<String>) {
         val reports = Path.of(args[4]).toAbsolutePath().normalize()
         require(installer.startsWith(workspace.resolve("composeApp/build")) && reports.startsWith(workspace.resolve("composeApp/build/reports")))
         java.nio.file.Files.createDirectories(reports)
-        val release = UpdateRelease(AppVersion(1, 4, 1), installer.fileName.toString(), "", "", java.nio.file.Files.size(installer))
+        val release = UpdateRelease(AppVersion(1, 4, 3), installer.fileName.toString(), "", "", java.nio.file.Files.size(installer))
         launchUpdateHelper(reports, PreparedUpdate(release, installer, fileSha256(installer)), requireNotNull(installedApplicationPath()), ProcessHandle.current().pid(), false)
         return
     }

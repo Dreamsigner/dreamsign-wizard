@@ -690,3 +690,9 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   à 500/1100 px. Diagnostic EXE sans accès aux données utilisateur réussi;
   version applicative 1.4.0 transmise au runtime. La copie portable reste
   exclue des mises à jour automatiques. Vérification installée réservée au CI.
+- Le premier run tagué `39722314843` a validé l’installation initiale,
+  la détection du chemin installé et la version runtime, puis bloqué la release :
+  `Get-FileHash` absent dans le PowerShell enfant. Le checksum a été déplacé
+  vers SHA256 .NET, indépendant du chargement de modules PowerShell. Aucun
+  réglage système changé; aucune release publiée pour le tag 1.4.0.
+- Nouvelle candidate 1.4.2 (fixture de test 1.4.3), sans déplacer le tag existant.

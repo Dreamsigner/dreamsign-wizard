@@ -121,7 +121,7 @@ class WindowsUpdateTest {
 
     @Test fun updaterHelperIsBundledAndWaitsForExitAndRechecksHash() {
         val script = updateHelperScript()
-        listOf("Wait-Process", "Get-FileHash", "SHA256", "'/quiet','/norestart'", "3010").forEach { assertTrue(it in script) }
+        listOf("Wait-Process", "ComputeHash", "SHA256", "'/quiet','/norestart'", "3010").forEach { assertTrue(it in script) }
         assertFalse("Invoke-Expression" in script)
     }
     @Test fun readyUpdateAndDisabledAutomaticControlsAreAccessibleAtTwoWidths() {

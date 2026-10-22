@@ -96,7 +96,7 @@ function Assert-InstalledApp([string]$Version, [string]$Phase, [string]$SetupPat
     return $entry
 }
 Invoke-CheckedProcess (Resolve-Path -LiteralPath $Installer).Path @('/quiet', '/norestart', '/L*v', ('"{0}"' -f (Join-Path $reportDir 'install.log')))
-$first = Assert-InstalledApp '1.4.0' 'installed' $Installer
+$first = Assert-InstalledApp '1.4.2' 'installed' $Installer
 # Exercise the production native updater launcher and its Windows PowerShell helper.
 $launcher = Join-Path $appDir 'DuolingoKmpApp.exe'
 $result = Join-Path $reportDir 'last-result.json'
@@ -106,7 +106,7 @@ while (!(Test-Path -LiteralPath $result) -and (Get-Date) -lt $deadline) { Start-
 if (!(Test-Path -LiteralPath $result)) { throw 'Updater did not produce a result.' }
 $updateResult = Get-Content -LiteralPath $result -Raw | ConvertFrom-Json
 if ($updateResult.success -ne $true) { throw 'Automatic update helper failed.' }
-$updated = Assert-InstalledApp '1.4.1' 'upgraded' $UpgradeInstaller
+$updated = Assert-InstalledApp '1.4.3' 'upgraded' $UpgradeInstaller
 if ($first.ProductCode -eq $updated.ProductCode -or $msiEngine.ProductState($first.ProductCode) -ne -1) { throw 'The upgrade did not replace the old MSI product registration.' }
 if ($updated.ProductCode -notmatch '^\{[0-9A-Fa-f-]{36}\}$') { throw 'Invalid uninstall product code.' }
 Invoke-CheckedProcess 'msiexec.exe' @('/x', $updated.ProductCode, '/quiet', '/norestart', '/L*v', ('"{0}"' -f (Join-Path $reportDir 'uninstall.log')))
@@ -114,7 +114,7 @@ Assert-Progress
 if (Test-Path -LiteralPath (Join-Path $appDir 'DuolingoKmpApp.exe')) { throw 'The app launcher remains after uninstall.' }
 if ($msiEngine.ProductState($updated.ProductCode) -ne -1 -or $msiEngine.ProductState($first.ProductCode) -ne -1) { throw 'An MSI product remains registered after uninstall.' }
 [ordered]@{
-    installedVersion = '1.4.0'; upgradedVersion = '1.4.1'; installedAppDiagnostic = $true
+    installedVersion = '1.4.2'; upgradedVersion = '1.4.3'; installedAppDiagnostic = $true
     perUserRegistration = $true; shortcutsVerified = $true; noticesVerified = $true
     updateHelperVerified = $true; upgradeVerified = $true; uninstallVerified = $true; progressPreserved = $true
     sourceCommit = $env:GITHUB_SHA

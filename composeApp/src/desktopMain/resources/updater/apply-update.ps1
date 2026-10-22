@@ -4,7 +4,13 @@ $config = Get-Content -LiteralPath $Payload -Raw -Encoding UTF8 | ConvertFrom-Js
 try {
     $parent = Get-Process -Id $config.parentPid -ErrorAction SilentlyContinue
     if ($parent) { $parent | Wait-Process -Timeout 120 -ErrorAction Stop }
-    $hash = (Get-FileHash -LiteralPath $config.installer -Algorithm SHA256).Hash.ToLowerInvariant()
+    # Use the framework API: Windows PowerShell may inherit a PowerShell 7 module path.
+    $stream = [System.IO.File]::OpenRead($config.installer)
+    try {
+        $hasher = [System.Security.Cryptography.SHA256]::Create()
+        try { $hash = ([BitConverter]::ToString($hasher.ComputeHash($stream))).Replace('-','').ToLowerInvariant() }
+        finally { $hasher.Dispose() }
+    } finally { $stream.Dispose() }
     if ($hash -ne $config.sha256) { throw 'Installer integrity check failed' }
     $installer = Start-Process -FilePath $config.installer -ArgumentList '/quiet','/norestart' -WindowStyle Hidden -PassThru
     if (-not $installer.WaitForExit(600000)) { throw 'Installer timeout' }
