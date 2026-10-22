@@ -821,3 +821,18 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
 - Candidate 1.7.2, fixture 1.7.3 non publiée. AST PowerShell et diff vérifiés.
   Le code applicatif testé est inchangé; validation complète et publication
   de cette candidate à confirmer par la CI. Aucun tag existant déplacé.
+
+
+## 22 octobre 2026 — Livraison Paramètres 1.7.2 confirmée
+
+- Code publié `e89471d`, tag v1.7.2, run 39860041095 réussi.
+  Rapports Windows-checks 12461228162 téléchargés et lus : 157 tests desktop
+  et un test vidéo natif, zéro échec/erreur/ignoré. Installation 1.7.2,
+  mise à niveau réelle via le lanceur vers la fixture 1.7.3, désinstallation
+  et progression préservée; diagnostic, raccourcis et notices validés.
+- Release stable publiée avec AtelierApprentissage-1.7.2-Setup.exe
+  (63 885 312 octets) et SHA256SUMS.txt. Le transport de mise à jour de
+  production, exécuté depuis les JAR de la distribution locale, détecte
+  effectivement 1.6.0 → 1.7.2 et valide le checksum SHA-256 de 64 caractères.
+- Aucun installateur exécuté sur le poste utilisateur; les contrôles
+  d’installation ont été effectués sur les runners Windows jetables.
