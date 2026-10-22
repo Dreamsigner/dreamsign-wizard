@@ -161,7 +161,7 @@ ou non autorisées, le routage vers le fournisseur natif, la séparation du lien
 navigateur, les états du lecteur et sa libération unique. Les contrôles de fenêtre
 sont capturés à 500/1100 px avec Compose, sans piloter le bureau.
 
-`desktopVideoNativeTest` est réservé au runner Windows jetable. Il ouvre un vrai
+`desktopVideoNativeTest` est activé sur le runner Windows jetable. Il ouvre un vrai
 WebView2, charge une page locale avec deux clips synthétiques originaux de deux
 secondes (WebM VP8 et MP4 H.264), vérifie décodage et progression du temps, les
 contrôles HTML5, puis exporte une image de la vidéo décodée et ferme le composant.
@@ -172,3 +172,9 @@ Son rapport distingue lecteur trouvé, état média et lecture vérifiée. L’a
 de lecture à distance (consentement, restrictions du fournisseur, réseau) ne doit
 pas être présentée comme une lecture réussie. Les captures de fixture ne constituent
 pas des captures de tous les lecteurs tiers ni un contrôle de leurs menus complets.
+
+Le test natif peut aussi être lancé localement par opt-in explicite
+(`-PnativeVideoLocalOptIn=true`), avec `WEBVIEW2_USER_DATA_FOLDER` redirigé vers
+un dossier de test. Sa fenêtre est hors écran, sans demande de focus, et son
+profil est isolé. Les paramètres empêchant la mise en sommeil des fenêtres
+occluses doivent rester limités au processus de test.

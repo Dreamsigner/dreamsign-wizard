@@ -42,7 +42,7 @@ private class WebViewAdapter : NativeVideoAdapter {
     private val native = WebViewComponent.create(WebViewComponent.Mode.HEAVYWEIGHT).apply { setDefaultContextMenuEnabled(true) }
     override val component: JComponent get() = native
     override fun navigate(url: String) { native.setUrl(url) }
-    override fun evaluate(script: String): CompletableFuture<String> = native.evalAsync(script)
+    override fun evaluate(script: String): CompletableFuture<String> = native.evalAsync("return ($script);")
     override fun dispose() { native.dispose() }
 }
 
@@ -73,8 +73,11 @@ internal class NativeVideoHost(private val onState: (VideoPageState) -> Unit, pr
                             probing.set(false)
                             if (!closed.get()) {
                                 if (error == null) runCatching { parseVideoPageState(raw) }.onSuccess { state ->
+                                    attempts = 0
                                     if (state.url.startsWith("chrome-error:")) onFailure("Le lecteur n’a pas pu charger cette vidéo. Vérifie la connexion ou ouvre la source dans le navigateur.")
                                     else onState(state)
+                                }.onFailure {
+                                    if (++attempts == 20) onFailure("Le lecteur ne fournit pas son état. Ouvre la source dans le navigateur.")
                                 }
                                 else if (++attempts == 20) onFailure("Le lecteur reste indisponible. Vérifie la présence du runtime Microsoft Edge WebView2 et la connexion.")
                             }

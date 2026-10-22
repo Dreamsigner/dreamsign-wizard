@@ -15,7 +15,9 @@ import kotlin.test.*
 class NativeVideoSmokeTest {
     @Test fun systemWebViewPlaysControlledFixtureWithSourceControlsAndReleases() {
         check(System.getProperty("atelier.native.video.test") == "true")
-        check(System.getenv("GITHUB_ACTIONS") == "true" && System.getenv("RUNNER_OS") == "Windows")
+        val ci = System.getenv("GITHUB_ACTIONS") == "true" && System.getenv("RUNNER_OS") == "Windows"
+        check(ci || System.getProperty("atelier.native.video.local.optin") == "true")
+        if (!ci) check(!System.getenv("WEBVIEW2_USER_DATA_FOLDER").isNullOrBlank())
         val clip = requireNotNull(javaClass.getResourceAsStream("/media/test-motion.webm")).use { it.readBytes() }
         val mp4 = requireNotNull(javaClass.getResourceAsStream("/media/test-motion.mp4")).use { it.readBytes() }
         val server = HttpServer.create(InetSocketAddress("127.0.0.1", 0), 0)
@@ -45,10 +47,17 @@ class NativeVideoSmokeTest {
             SwingUtilities.invokeAndWait {
                 frame = JFrame("Atelier — native video test").apply {
                     defaultCloseOperation = JFrame.DISPOSE_ON_CLOSE
+                    type = java.awt.Window.Type.UTILITY
+                    isAutoRequestFocus = false
+                    focusableWindowState = false
+                    setLocation(-12000, -12000)
                     add(host.create("http://127.0.0.1:${server.address.port}/")); setSize(800, 500); isVisible = true
                 }
             }
-            assertTrue(playing.await(45, TimeUnit.SECONDS), "WebView2 did not decode/play the controlled fixture")
+            val advanced = playing.await(45, TimeUnit.SECONDS)
+            val initialReports = Path.of("build/reports/native-video"); Files.createDirectories(initialReports)
+            Files.writeString(initialReports.resolve("initial-state.txt"), "observed=${observed.get()} failure=${failure.get()}")
+            assertTrue(advanced, "WebView2 did not decode/play the controlled fixture; observed=${observed.get()} failure=${failure.get()}")
             assertNull(failure.get())
             val state = requireNotNull(observed.get())
             assertTrue(state.mediaTime > 0.1 && state.duration > 0.0 && state.controls)
@@ -60,6 +69,8 @@ class NativeVideoSmokeTest {
                 if (!mp4Decoded) Thread.sleep(100)
             }
             assertTrue(mp4Decoded, "WebView2 did not decode/play the MP4 fixture")
+            val controls = requireNotNull(host.view).evaluate("""(function(){var v=document.querySelector('video');v.pause();v.currentTime=0.75;v.playbackRate=1.5;v.volume=0.4;return v.paused&&Math.abs(v.currentTime-0.75)<0.01&&v.playbackRate===1.5&&Math.abs(v.volume-0.4)<0.00001;})()""").get(5, TimeUnit.SECONDS)
+            assertEquals("true", controls, "Pause, seeking, speed and volume must remain controllable")
             val raw = requireNotNull(host.view).evaluate("""(function(){var v=document.querySelector('video'),c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);return c.toDataURL('image/png');})()""").get(10, TimeUnit.SECONDS)
             val image = kotlinx.serialization.json.Json.parseToJsonElement(raw).let { (it as kotlinx.serialization.json.JsonPrimitive).content }
             val reports = Path.of("build/reports/native-video"); Files.createDirectories(reports)
@@ -86,7 +97,7 @@ class NativeVideoSmokeTest {
                     remote.add("""{"source":"${if (resource.url.contains("youtube")) "youtube" else "mit_mp4"}","playerFound":$found,"mediaReady":$ready,"playbackVerified":$verified}""")
                 }
             }
-            Files.writeString(reports.resolve("summary.json"), """{"webView2Created":true,"videoDecoded":true,"mp4Decoded":true,"sourceControls":true,"duration":${state.duration},"currentTime":${state.mediaTime},"fixture":"original-ffmpeg-testsrc","remoteChecks":[${remote.joinToString(",")}]}""")
+            Files.writeString(reports.resolve("summary.json"), """{"webView2Created":true,"videoDecoded":true,"mp4Decoded":true,"sourceControls":true,"pauseSeekSpeedVolumeVerified":true,"duration":${state.duration},"currentTime":${state.mediaTime},"fixture":"original-ffmpeg-testsrc","remoteChecks":[${remote.joinToString(",")}]}""")
         } finally {
             host.close()
             SwingUtilities.invokeAndWait { frame?.dispose() }

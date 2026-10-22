@@ -178,6 +178,7 @@ val desktopVideoNativeTest by tasks.registering(Test::class) {
     classpath = desktopTestTask.get().classpath
     filter.includeTestsMatching("com.duolingo.app.ui.video.NativeVideoSmokeTest")
     systemProperty("atelier.native.video.test", "true")
+    systemProperty("atelier.native.video.local.optin", providers.gradleProperty("nativeVideoLocalOptIn").orElse("false").get())
     systemProperty("java.awt.headless", "false")
     jvmArgs("--add-modules=jdk.httpserver")
 }

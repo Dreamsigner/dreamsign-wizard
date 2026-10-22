@@ -724,5 +724,9 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   vérification native à confirmer ci-dessous.
 - Validation locale complète : 142 tests desktop sans échec/erreur/ignoré;
   app-image et installateur 1.5.0 construits. Captures d’en-tête de lecteur
-  inspectées à 500/1100 px. Le test native WebView2 reste réservé à la CI
-  jetable pour ne pas lancer de fenêtre de lecture sur le poste utilisateur.
+  inspectées à 500/1100 px.
+- Contrôle natif local explicite avec profil isolé et fenêtre hors écran :
+  décodage WebM/MP4 et progression temporelle établis, image décodée inspectée.
+  Le premier essai a révélé une erreur d’intégration : `evalAsync` attend un
+  corps JavaScript avec `return`, pas une expression seule. Corrigé dans
+  l’adaptateur; les résultats malformés ne sont plus ignorés silencieusement.
