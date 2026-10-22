@@ -38,7 +38,9 @@ object DesktopVideoPlayer : VideoPlayer {
                         fullscreen = state.placement == WindowPlacement.Fullscreen,
                         onFullscreen = { state.placement = if (state.placement == WindowPlacement.Fullscreen) WindowPlacement.Floating else WindowPlacement.Fullscreen },
                         onBrowser = { runCatching { uri.openUri(resource.url) } }, onClose = onClose)
-                    if (address != null) SwingPanel(factory = { host.create(address) }, modifier = Modifier.weight(1f).fillMaxWidth())
+                    if (address != null) key(address) {
+                        SwingPanel(factory = { host.create(address) }, modifier = Modifier.weight(1f).fillMaxWidth())
+                    }
                     else Text("Cette source vidéo n’est pas prise en charge dans le lecteur intégré.", Modifier.padding(24.dp), color = ActionRed)
                     if (failure) TextButton({ runCatching { uri.openUri("https://developer.microsoft.com/microsoft-edge/webview2/") } }, Modifier.heightIn(min = 48.dp)) { Text("Informations sur WebView2") }
                 }
