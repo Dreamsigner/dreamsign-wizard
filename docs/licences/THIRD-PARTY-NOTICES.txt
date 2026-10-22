@@ -494,3 +494,60 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 Font inventory called out by the resolved upstream notices
 ---------------------------------------------------------
 The inspected core JAR bundles the Latin and mathematical font resources used by the renderer. Its `META-INF/LICENSE` also describes optional Greek `fc*` and Cyrillic `wn*` fonts, but these font files are not present in the core JAR and the companion artifacts that supply them are excluded from this package. The core JAR's bundled font-license texts (`License_for_dsrom.txt`, `Knuth_License.txt`, and `OFL.txt`) are reproduced above.
+
+
+SwingWebView 1.0.10 (ca.weblite:webview)
+-------------------------------------
+Source: https://github.com/webliteca/swingwebview
+Maven Central: https://repo.maven.apache.org/maven2/ca/weblite/webview/1.0.10/
+Uses the system Microsoft Edge WebView2 Runtime on Windows; that runtime is not
+redistributed inside this application. Upstream wrapper license follows.
+
+MIT License
+
+Copyright (c) 2019 Steve Hannah
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+Underlying webview project
+--------------------------
+https://github.com/webview/webview
+
+MIT License
+
+Copyright (c) 2017 Serge Zaitsev
+Copyright (c) 2022 Steffen André Langnes
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

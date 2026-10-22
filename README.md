@@ -47,9 +47,9 @@ Consulter le [catalogue détaillé](docs/courses/README.md) et la [couverture p�
 
 ## Installation
 
-1. Ouvrir [GitHub Actions — Build](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/workflows/build.yml) et sélectionner une exécution réussie de `main`.
-2. Télécharger l’installateur **AtelierApprentissage-1.4.2-Setup.exe**.
-3. Lancer **AtelierApprentissage-1.4.2-Setup.exe** et suivre l’assistant. L’installation est propre à l’utilisateur Windows, avec raccourcis sur le Bureau et dans le menu Démarrer.
+1. Ouvrir la [dernière release Windows](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/latest).
+2. Télécharger l’installateur **AtelierApprentissage-1.5.0-Setup.exe**.
+3. Lancer **AtelierApprentissage-1.5.0-Setup.exe** et suivre l’assistant. L’installation est propre à l’utilisateur Windows, avec raccourcis sur le Bureau et dans le menu Démarrer.
 
 Java est inclus : aucun JDK ni Gradle n’est nécessaire. La désinstallation se fait depuis les applications installées des paramètres Windows. L’installateur n’est pas signé numériquement; Windows peut afficher un avertissement d’éditeur inconnu. `SHA256SUMS.txt` accompagne l’exécutable pour vérifier l’intégrité du téléchargement.
 
@@ -57,7 +57,7 @@ L’artefact **DuolingoKmpApp-Windows** reste disponible pour une utilisation po
 
 Dans le sommaire des cours de mathématiques, une recherche par titre ou objectif permet d’atteindre une leçon, sans modifier son ordre ni ses prérequis.
 
-Dans les supports de mathématiques, les vidéos disposent de cartes avec titre, vignette YouTube lorsqu’elle est disponible et ouverture directe dans le navigateur. Les fichiers MP4 conservent une carte sans vignette. La lecture vidéo intégrée n’est pas implémentée.
+Dans les supports de mathématiques, les vidéos disposent de cartes avec titre, vignette YouTube lorsqu’elle est disponible et ouverture directe dans le navigateur. Les fichiers MP4 conservent une carte sans vignette. Le bouton **Lire dans l’app** ouvre le lecteur source dans une fenêtre de l’application : YouTube conserve ses commandes officielles, les MP4 utilisent celles du moteur vidéo Edge WebView2. Vitesse, sous-titres et qualité dépendent de la source. Le runtime Microsoft Edge WebView2 doit être présent; le bouton navigateur reste disponible.
 
 Les notes et documents audio sont intégrés; les supports PDF externes et les vidéos nécessitent une connexion Internet.
 

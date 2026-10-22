@@ -1,0 +1,96 @@
+package com.duolingo.app.ui.video
+
+import com.sun.net.httpserver.HttpServer
+import java.net.InetSocketAddress
+import java.nio.file.Files
+import java.nio.file.Path
+import java.util.Base64
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicReference
+import javax.swing.*
+import kotlin.test.*
+
+/** Opt-in only: a real WebView2 window, controlled through its own Java API, no OS input automation. */
+class NativeVideoSmokeTest {
+    @Test fun systemWebViewPlaysControlledFixtureWithSourceControlsAndReleases() {
+        check(System.getProperty("atelier.native.video.test") == "true")
+        check(System.getenv("GITHUB_ACTIONS") == "true" && System.getenv("RUNNER_OS") == "Windows")
+        val clip = requireNotNull(javaClass.getResourceAsStream("/media/test-motion.webm")).use { it.readBytes() }
+        val mp4 = requireNotNull(javaClass.getResourceAsStream("/media/test-motion.mp4")).use { it.readBytes() }
+        val server = HttpServer.create(InetSocketAddress("127.0.0.1", 0), 0)
+        server.createContext("/clip.webm") { exchange ->
+            exchange.responseHeaders.add("Content-Type", "video/webm")
+            exchange.sendResponseHeaders(200, clip.size.toLong()); exchange.responseBody.use { it.write(clip) }
+        }
+        server.createContext("/clip.mp4") { exchange ->
+            exchange.responseHeaders.add("Content-Type", "video/mp4")
+            exchange.sendResponseHeaders(200, mp4.size.toLong()); exchange.responseBody.use { it.write(mp4) }
+        }
+        val html = """<!doctype html><html><body style="margin:0;background:#141414"><video controls muted autoplay loop playsinline src="/clip.webm" style="width:100%;height:45vh"></video><video id="mp4" controls muted autoplay loop playsinline src="/clip.mp4" style="width:100%;height:45vh"></video></body></html>""".toByteArray()
+        server.createContext("/") { exchange ->
+            exchange.responseHeaders.add("Content-Type", "text/html; charset=utf-8")
+            exchange.sendResponseHeaders(200, html.size.toLong()); exchange.responseBody.use { it.write(html) }
+        }
+        server.start()
+        val playing = CountDownLatch(1)
+        val observed = AtomicReference<VideoPageState>()
+        val failure = AtomicReference<String>()
+        val host = NativeVideoHost(onState = { state ->
+            observed.set(state)
+            if (state.mediaReady >= 2 && state.mediaTime > 0.1 && state.controls) playing.countDown()
+        }, onFailure = { failure.set(it); playing.countDown() })
+        var frame: JFrame? = null
+        try {
+            SwingUtilities.invokeAndWait {
+                frame = JFrame("Atelier — native video test").apply {
+                    defaultCloseOperation = JFrame.DISPOSE_ON_CLOSE
+                    add(host.create("http://127.0.0.1:${server.address.port}/")); setSize(800, 500); isVisible = true
+                }
+            }
+            assertTrue(playing.await(45, TimeUnit.SECONDS), "WebView2 did not decode/play the controlled fixture")
+            assertNull(failure.get())
+            val state = requireNotNull(observed.get())
+            assertTrue(state.mediaTime > 0.1 && state.duration > 0.0 && state.controls)
+            var mp4Decoded = false
+            val deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(20)
+            while (!mp4Decoded && System.nanoTime() < deadline) {
+                val result = requireNotNull(host.view).evaluate("(function(){var v=document.getElementById('mp4');return v.readyState>=2&&v.currentTime>0.1;})()").get(5, TimeUnit.SECONDS)
+                mp4Decoded = result == "true"
+                if (!mp4Decoded) Thread.sleep(100)
+            }
+            assertTrue(mp4Decoded, "WebView2 did not decode/play the MP4 fixture")
+            val raw = requireNotNull(host.view).evaluate("""(function(){var v=document.querySelector('video'),c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);return c.toDataURL('image/png');})()""").get(10, TimeUnit.SECONDS)
+            val image = kotlinx.serialization.json.Json.parseToJsonElement(raw).let { (it as kotlinx.serialization.json.JsonPrimitive).content }
+            val reports = Path.of("build/reports/native-video"); Files.createDirectories(reports)
+            Files.write(reports.resolve("decoded-fixture-frame.png"), Base64.getDecoder().decode(image.substringAfter(',')))
+            val remote = mutableListOf<String>()
+            if (System.getenv("ATELIER_VIDEO_REMOTE_SMOKE") == "true") {
+                val resources = com.duolingo.app.data.CourseResources.forSession("mit_18_06sc_2011", 1).filter { it.kind == "video" }
+                resources.filter { it.url.contains("youtube.com/watch") || it.url.substringBefore('?').endsWith(".mp4") }.take(2).forEach { resource ->
+                    val adapter = requireNotNull(host.view)
+                    SwingUtilities.invokeAndWait { adapter.navigate(playerAddress(resource)) }
+                    val until = System.nanoTime() + TimeUnit.SECONDS.toNanos(25)
+                    var verified = false; var ready = 0; var found = false
+                    while (!verified && System.nanoTime() < until) {
+                        try {
+                            adapter.evaluate("(function(){var v=document.querySelector('video');if(v){v.muted=true;v.play().catch(function(){});}return true;})()").get(3, TimeUnit.SECONDS)
+                            val page = parseVideoPageState(adapter.evaluate(VIDEO_PAGE_PROBE).get(3, TimeUnit.SECONDS))
+                            if (!page.url.contains("127.0.0.1")) {
+                                ready = page.mediaReady; found = page.hasVideo
+                                verified = page.hasVideo && page.mediaReady >= 2 && page.mediaTime > 0.1
+                            }
+                        } catch (_: Exception) { }
+                        if (!verified) Thread.sleep(250)
+                    }
+                    remote.add("""{"source":"${if (resource.url.contains("youtube")) "youtube" else "mit_mp4"}","playerFound":$found,"mediaReady":$ready,"playbackVerified":$verified}""")
+                }
+            }
+            Files.writeString(reports.resolve("summary.json"), """{"webView2Created":true,"videoDecoded":true,"mp4Decoded":true,"sourceControls":true,"duration":${state.duration},"currentTime":${state.mediaTime},"fixture":"original-ffmpeg-testsrc","remoteChecks":[${remote.joinToString(",")}]}""")
+        } finally {
+            host.close()
+            SwingUtilities.invokeAndWait { frame?.dispose() }
+            server.stop(0)
+        }
+    }
+}

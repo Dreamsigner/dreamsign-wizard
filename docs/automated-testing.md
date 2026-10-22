@@ -153,3 +153,22 @@ avec un mode de vérification réservé à GitHub Actions. Ce mode utilise le m�
 lanceur et le même assistant PowerShell que l’interface : attente de fermeture,
 recontrôle SHA-256, installation silencieuse et résultat JSON. La version de test
 supérieure est vérifiée, puis désinstallée; la progression fictive doit rester identique.
+
+## Lecteur vidéo intégré
+
+`VideoPlaybackTest` couvre les sources des cours de maths, le refus des URI locales
+ou non autorisées, le routage vers le fournisseur natif, la séparation du lien
+navigateur, les états du lecteur et sa libération unique. Les contrôles de fenêtre
+sont capturés à 500/1100 px avec Compose, sans piloter le bureau.
+
+`desktopVideoNativeTest` est réservé au runner Windows jetable. Il ouvre un vrai
+WebView2, charge une page locale avec deux clips synthétiques originaux de deux
+secondes (WebM VP8 et MP4 H.264), vérifie décodage et progression du temps, les
+contrôles HTML5, puis exporte une image de la vidéo décodée et ferme le composant.
+Les clips de test sont produits avec FFmpeg `testsrc`, sans média tiers.
+
+Le contrôle réseau optionnel tente aussi une vidéo YouTube et un MP4 du catalogue.
+Son rapport distingue lecteur trouvé, état média et lecture vérifiée. L’absence
+de lecture à distance (consentement, restrictions du fournisseur, réseau) ne doit
+pas être présentée comme une lecture réussie. Les captures de fixture ne constituent
+pas des captures de tous les lecteurs tiers ni un contrôle de leurs menus complets.

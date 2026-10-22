@@ -705,3 +705,24 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   le transport de production exécuté depuis les JAR distribués : version 1.4.2
   et checksum de 64 caractères validés. Installateur non signé; mises à jour
   des installations personnalisées et portables non automatisées.
+
+
+## 22 octobre 2026 — Lecteur vidéo dans l’application
+
+- Fournisseur natif Windows ajouté aux cartes vidéo des mathématiques. Fenêtre
+  de l’application contenant le lecteur source YouTube officiel ou MP4, commandes
+  propres au fournisseur, plein écran, navigateur de secours et libération native.
+- Composant WebView2 Swing figé `ca.weblite:webview:1.0.10`, Maven Central, JAR
+  985 639 octets. Le runtime Edge système reste prérequis; aucune installation
+  automatique ni transformation de l’application Compose en site web. Notices
+  de licence du composant et du projet webview ajoutées au paquet.
+- Six tests ciblés réussis, dont vérification des adresses des vidéos du catalogue
+  de maths et cycle de vie avec moteur simulé. Contrôle réel WebView2/WebM/MP4
+  prévu dans la CI, avec clips synthétiques et rapport de lecture séparé des
+  tentatives distantes YouTube/MIT. Aucune interaction Computer Use.
+- Candidate 1.5.0, fixture de mise à niveau 1.5.1 non publiée. Suite complète et
+  vérification native à confirmer ci-dessous.
+- Validation locale complète : 142 tests desktop sans échec/erreur/ignoré;
+  app-image et installateur 1.5.0 construits. Captures d’en-tête de lecteur
+  inspectées à 500/1100 px. Le test native WebView2 reste réservé à la CI
+  jetable pour ne pas lancer de fenêtre de lecture sur le poste utilisateur.

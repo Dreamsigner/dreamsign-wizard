@@ -75,6 +75,7 @@ kotlin {
             dependencies {
                 implementation(compose.desktop.currentOs)
                 implementation("org.apache.pdfbox:pdfbox:3.0.8")
+                implementation("ca.weblite:webview:1.0.10")
                 implementation("org.scilab.forge:jlatexmath:1.0.7") {
                     // The core math glyphs (including \alpha and \sum) work without these
                     // optional language-font modules; do not bundle their extra font sets.
@@ -116,6 +117,7 @@ tasks.withType<org.gradle.api.tasks.testing.Test>().configureEach {
 
 val desktopTestTask = tasks.named<org.gradle.api.tasks.testing.Test>("desktopTest") {
     exclude("**/SourcePdfSmokeTest.class")
+    exclude("**/NativeVideoSmokeTest.class")
 }
 tasks.register<org.gradle.api.tasks.testing.Test>("sourcePdfSmokeTest") {
     description = "Opt-in network check of an official MIT PDF with the production desktop reader."
@@ -129,14 +131,14 @@ tasks.register<org.gradle.api.tasks.testing.Test>("sourcePdfSmokeTest") {
 compose.desktop {
     application {
         mainClass = "MainKt"
-        jvmArgs("-Datelier.version=${providers.gradleProperty("desktopPackageVersion").orElse("1.4.2").get()}")
+        jvmArgs("-Datelier.version=${providers.gradleProperty("desktopPackageVersion").orElse("1.5.0").get()}")
         nativeDistributions {
             // PDFBox 3 uses sun.misc.Unsafe.invokeCleaner via this module. The reduced
             // jlink runtime otherwise falls back to inaccessible Java 8 internals.
             modules("jdk.unsupported")
             targetFormats(org.jetbrains.compose.desktop.application.dsl.TargetFormat.Msi, org.jetbrains.compose.desktop.application.dsl.TargetFormat.Exe)
             packageName = "DuolingoKmpApp"
-            packageVersion = providers.gradleProperty("desktopPackageVersion").orElse("1.4.2").get()
+            packageVersion = providers.gradleProperty("desktopPackageVersion").orElse("1.5.0").get()
             appResourcesRootDir.set(layout.buildDirectory.dir("installer-resources"))
             vendor = "Dreamsigner"
             description = "Atelier d’apprentissage — Mathématiques, informatique et TCF"
@@ -166,3 +168,16 @@ tasks.withType<org.jetbrains.compose.desktop.application.tasks.AbstractJPackageT
 }
 
 tasks.matching { it.name == "prepareAppResources" }.configureEach { dependsOn(prepareInstallerResources) }
+
+
+val desktopVideoNativeTest by tasks.registering(Test::class) {
+    description = "Opt-in real WebView2 video fixture playback on disposable Windows CI, without Computer Use."
+    group = "verification"
+    dependsOn("desktopTestClasses")
+    testClassesDirs = desktopTestTask.get().testClassesDirs
+    classpath = desktopTestTask.get().classpath
+    filter.includeTestsMatching("com.duolingo.app.ui.video.NativeVideoSmokeTest")
+    systemProperty("atelier.native.video.test", "true")
+    systemProperty("java.awt.headless", "false")
+    jvmArgs("--add-modules=jdk.httpserver")
+}

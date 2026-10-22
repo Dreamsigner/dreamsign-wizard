@@ -3,7 +3,7 @@
 ## Installer l’application
 
 1. Dans une exécution GitHub Actions réussie de `main`, télécharger **AtelierApprentissage-Windows-Setup**.
-2. Extraire l’archive, puis lancer `AtelierApprentissage-1.4.2-Setup.exe`.
+2. Extraire l’archive, puis lancer `AtelierApprentissage-1.5.0-Setup.exe`.
 3. Suivre l’assistant, puis utiliser le raccourci du Bureau ou du menu Démarrer.
 
 L’installation est propre à l’utilisateur courant, par défaut dans
@@ -82,8 +82,7 @@ Dans un cours de mathématiques, ouvrir les supports d’une leçon. Une carte a
 le titre et la langue de chaque vidéo. « Ouvrir la vidéo » lance son lien exact
 dans le navigateur. Une vignette YouTube est chargée lorsqu’elle est disponible;
 les fichiers MP4 et les échecs réseau affichent « Aperçu non disponible ».
-Les notes et exercices restent utilisables hors ligne. La lecture intégrée dans
-l’application n’est pas proposée.
+Les notes et exercices restent utilisables hors ligne. Le bouton « Lire dans l’app » ouvre désormais une fenêtre vidéo intégrée.
 
 Les aperçus contactent uniquement `i.ytimg.com` en HTTPS, sans cookies ni clé API.
 Le cache de huit images est limité à la session, sans enregistrement sur disque.
@@ -92,7 +91,7 @@ réseau sont limitées à quatre secondes chacune. Aucune vidéo n’est téléc
 
 ## Mises à jour automatiques
 
-Installer une première fois la version 1.4.2 depuis les [releases GitHub](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/latest).
+Installer une première fois la version 1.5.0 depuis les [releases GitHub](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/latest).
 L’installation Windows standard `%LOCALAPPDATA%/DuolingoKmpApp` active les mises à jour automatiques.
 Les copies portables et chemins d’installation personnalisés affichent que la mise à jour manuelle reste nécessaire.
 
@@ -111,3 +110,25 @@ Le checksum vérifie l’intégrité du fichier diffusé par GitHub; il ne rempl
 ### Publier une version compatible (maintenance)
 
 Actualiser la version du paquet, les noms d’artefacts et la fixture de mise à niveau dans le workflow et son test, puis créer le tag `vMAJOR.MINOR.PATCH` correspondant. Le job de release ne publie l’EXE et `SHA256SUMS.txt` qu’après les contrôles Windows. Les paquets de test de version supérieure ne sont jamais publiés. Les artefacts Actions seuls ne déclenchent aucune mise à jour.
+
+## Lecteur vidéo intégré (mathématiques)
+
+Dans les supports d’une leçon, choisir **Lire dans l’app**. La fenêtre vidéo
+conserve les commandes du lecteur source : YouTube officiel ou lecteur MP4 de
+WebView2. Utiliser les commandes de cette source pour lire, mettre en pause,
+régler son/vitesse, sélectionner sous-titres ou qualité lorsqu’ils sont proposés.
+Le bouton **Plein écran** agrandit la fenêtre; **Fermer la vidéo** libère le
+lecteur natif pour arrêter sa lecture. Les cours restent consultables derrière
+cette fenêtre. Aucune vidéo n’est recopiée ou réhébergée par l’application.
+
+Le système Microsoft Edge WebView2 Runtime est un prérequis. Il n’est pas installé
+automatiquement par l’application. En cas d’échec, suivre le lien Microsoft affiché
+ou ouvrir la source dans le navigateur. Le lecteur web utilise un profil distinct
+de celui du navigateur externe; les choix de confidentialité et restrictions de
+YouTube restent ceux du fournisseur. L’application ne les accepte ni ne les contourne.
+Les vidéos restent disponibles online, avec les limitations du réseau et de leur source.
+
+Le composant natif `ca.weblite:webview:1.0.10` est figé (JAR Maven Central mesuré :
+985 639 octets). Il réutilise le moteur système; aucun navigateur Chromium complet
+n’est ajouté au paquet. Le moteur peut mettre des flux en cache dans son profil
+local. La progression d’apprentissage reste dans son fichier séparé.

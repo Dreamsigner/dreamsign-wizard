@@ -37,7 +37,7 @@ fun VideoThumbnailProvider(loader: VideoThumbnailLoader, content: @Composable ()
 }
 
 @Composable
-internal fun VideoPreview(resource: CourseResource, onOpen: () -> Unit) {
+internal fun VideoPreview(resource: CourseResource, onPlay: (() -> Unit)? = null, onOpen: () -> Unit) {
     val loader = LocalVideoThumbnailLoader.current
     val videoId = remember(resource.url) { youtubeVideoId(resource.url) }
     var loading by remember(resource.url, loader) { mutableStateOf(videoId != null) }
@@ -68,6 +68,11 @@ internal fun VideoPreview(resource: CourseResource, onOpen: () -> Unit) {
                     Text(resource.title.substringBeforeLast(" — ", resource.title), color = Ink, fontWeight = FontWeight.Bold, fontSize = 18.sp, lineHeight = 25.sp)
                     Text("${if (resource.language == "fr") "Français" else "Anglais"} · Disponible online", color = Graphite, fontSize = 13.sp)
                     if (resource.notes.isNotBlank()) Text(resource.notes, color = Graphite)
+                    if (onPlay != null) Button(onPlay, modifier = Modifier.heightIn(min = 48.dp),
+                        colors = ButtonDefaults.buttonColors(backgroundColor = ActionRed, contentColor = White)) {
+                        Icon(Icons.Default.PlayArrow, contentDescription = null)
+                        Spacer(Modifier.width(8.dp)); Text("Lire dans l’app")
+                    }
                     Text("Ouverture dans le navigateur", color = Graphite, fontSize = 13.sp)
                     Button(onClick = onOpen, modifier = Modifier.heightIn(min = 48.dp),
                         colors = ButtonDefaults.buttonColors(backgroundColor = ActionRed, contentColor = White)) {
