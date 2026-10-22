@@ -810,3 +810,14 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   distribution 1.7.0 construite hors ligne. Captures Paramètres inspectées.
 - Workflow préparé pour v1.7.0, fixture de mise à niveau 1.7.1 non publiée.
   Publication et vérifications du runner Windows encore à confirmer.
+
+## 22 octobre 2026 — Correction du contrôle de livraison, candidate 1.7.2
+
+- Le run tagué 1.7.0 (39858858792) a validé tests desktop, diagnostic du paquet,
+  lecteur vidéo natif et construction des deux installateurs, puis bloqué la
+  publication : le script de test attendait encore les versions 1.6.0/1.6.1.
+- Versions attendues désormais passées explicitement au script par le workflow,
+  validées et reprises dans les assertions et le rapport. Aucun contrôle retiré.
+- Candidate 1.7.2, fixture 1.7.3 non publiée. AST PowerShell et diff vérifiés.
+  Le code applicatif testé est inchangé; validation complète et publication
+  de cette candidate à confirmer par la CI. Aucun tag existant déplacé.

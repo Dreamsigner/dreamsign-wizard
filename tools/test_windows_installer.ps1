@@ -1,8 +1,18 @@
 param(
     [Parameter(Mandatory)][string]$Installer,
-    [Parameter(Mandatory)][string]$UpgradeInstaller
+    [Parameter(Mandatory)][string]$UpgradeInstaller,
+    [Parameter(Mandatory)][string]$ExpectedVersion,
+    [Parameter(Mandatory)][string]$ExpectedUpgradeVersion
 )
 $ErrorActionPreference = 'Stop'
+foreach ($version in @($ExpectedVersion, $ExpectedUpgradeVersion)) {
+    if ($version -notmatch '^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$') {
+        throw "Expected a numeric three-part package version, got: $version"
+    }
+}
+if ([version]$ExpectedUpgradeVersion -le [version]$ExpectedVersion) {
+    throw 'The upgrade package version must be greater than the installed package version.'
+}
 # This script installs/uninstalls software. Run exclusively on disposable GitHub Windows VMs.
 if ($env:GITHUB_ACTIONS -ne 'true' -or $env:RUNNER_OS -ne 'Windows' -or !$env:GITHUB_RUN_ID) {
     throw 'Installer smoke tests are restricted to disposable GitHub Windows runners.'
@@ -96,7 +106,7 @@ function Assert-InstalledApp([string]$Version, [string]$Phase, [string]$SetupPat
     return $entry
 }
 Invoke-CheckedProcess (Resolve-Path -LiteralPath $Installer).Path @('/quiet', '/norestart', '/L*v', ('"{0}"' -f (Join-Path $reportDir 'install.log')))
-$first = Assert-InstalledApp '1.6.0' 'installed' $Installer
+$first = Assert-InstalledApp $ExpectedVersion 'installed' $Installer
 # Exercise the production native updater launcher and its Windows PowerShell helper.
 $launcher = Join-Path $appDir 'DuolingoKmpApp.exe'
 $result = Join-Path $reportDir 'last-result.json'
@@ -106,7 +116,7 @@ while (!(Test-Path -LiteralPath $result) -and (Get-Date) -lt $deadline) { Start-
 if (!(Test-Path -LiteralPath $result)) { throw 'Updater did not produce a result.' }
 $updateResult = Get-Content -LiteralPath $result -Raw | ConvertFrom-Json
 if ($updateResult.success -ne $true) { throw 'Automatic update helper failed.' }
-$updated = Assert-InstalledApp '1.6.1' 'upgraded' $UpgradeInstaller
+$updated = Assert-InstalledApp $ExpectedUpgradeVersion 'upgraded' $UpgradeInstaller
 if ($first.ProductCode -eq $updated.ProductCode -or $msiEngine.ProductState($first.ProductCode) -ne -1) { throw 'The upgrade did not replace the old MSI product registration.' }
 if ($updated.ProductCode -notmatch '^\{[0-9A-Fa-f-]{36}\}$') { throw 'Invalid uninstall product code.' }
 Invoke-CheckedProcess 'msiexec.exe' @('/x', $updated.ProductCode, '/quiet', '/norestart', '/L*v', ('"{0}"' -f (Join-Path $reportDir 'uninstall.log')))
@@ -114,7 +124,7 @@ Assert-Progress
 if (Test-Path -LiteralPath (Join-Path $appDir 'DuolingoKmpApp.exe')) { throw 'The app launcher remains after uninstall.' }
 if ($msiEngine.ProductState($updated.ProductCode) -ne -1 -or $msiEngine.ProductState($first.ProductCode) -ne -1) { throw 'An MSI product remains registered after uninstall.' }
 [ordered]@{
-    installedVersion = '1.6.0'; upgradedVersion = '1.6.1'; installedAppDiagnostic = $true
+    installedVersion = $ExpectedVersion; upgradedVersion = $ExpectedUpgradeVersion; installedAppDiagnostic = $true
     perUserRegistration = $true; shortcutsVerified = $true; noticesVerified = $true
     updateHelperVerified = $true; upgradeVerified = $true; uninstallVerified = $true; progressPreserved = $true
     sourceCommit = $env:GITHUB_SHA

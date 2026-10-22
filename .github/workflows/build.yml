@@ -99,21 +99,21 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Installer build failed.' }
           $setupDir = Join-Path $env:RUNNER_TEMP 'windows-setup'
           New-Item -ItemType Directory -Path $setupDir -Force | Out-Null
-          $source = 'composeApp/build/compose/binaries/main/exe/DuolingoKmpApp-1.7.0.exe'
-          $setup = Join-Path $setupDir 'AtelierApprentissage-1.7.0-Setup.exe'
+          $source = 'composeApp/build/compose/binaries/main/exe/DuolingoKmpApp-1.7.2.exe'
+          $setup = Join-Path $setupDir 'AtelierApprentissage-1.7.2-Setup.exe'
           Copy-Item -LiteralPath $source -Destination $setup
           New-Item -ItemType Directory -Path 'composeApp/build/installer-fixtures' -Force | Out-Null
-          Copy-Item -LiteralPath $source -Destination 'composeApp/build/installer-fixtures/1.7.0.exe'
+          Copy-Item -LiteralPath $source -Destination 'composeApp/build/installer-fixtures/1.7.2.exe'
           $hash = (Get-FileHash -LiteralPath $setup -Algorithm SHA256).Hash.ToLowerInvariant()
-          "$hash  AtelierApprentissage-1.7.0-Setup.exe" | Set-Content -LiteralPath (Join-Path $setupDir 'SHA256SUMS.txt') -Encoding ascii
+          "$hash  AtelierApprentissage-1.7.2-Setup.exe" | Set-Content -LiteralPath (Join-Path $setupDir 'SHA256SUMS.txt') -Encoding ascii
       - name: Verify installation, upgrade and uninstall on disposable runner
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
           # Build an unpublished, newer package solely to test the stable upgrade identity.
-          gradle :composeApp:packageExe '-PdesktopPackageVersion=1.7.1' --stacktrace
+          gradle :composeApp:packageExe '-PdesktopPackageVersion=1.7.3' --stacktrace
           if ($LASTEXITCODE -ne 0) { throw 'Upgrade fixture build failed.' }
-          ./tools/test_windows_installer.ps1 -Installer 'composeApp/build/installer-fixtures/1.7.0.exe' -UpgradeInstaller 'composeApp/build/compose/binaries/main/exe/DuolingoKmpApp-1.7.1.exe'
+          ./tools/test_windows_installer.ps1 -Installer 'composeApp/build/installer-fixtures/1.7.2.exe' -UpgradeInstaller 'composeApp/build/compose/binaries/main/exe/DuolingoKmpApp-1.7.3.exe' -ExpectedVersion '1.7.2' -ExpectedUpgradeVersion '1.7.3'
       - uses: actions/upload-artifact@v7
         with:
           name: AtelierApprentissage-Windows-Setup
@@ -143,7 +143,7 @@ jobs:
 
 
   publish-windows-release:
-    if: github.event_name == 'push' && github.ref == 'refs/tags/v1.7.0' && needs.package-windows.result == 'success'
+    if: github.event_name == 'push' && github.ref == 'refs/tags/v1.7.2' && needs.package-windows.result == 'success'
     needs: package-windows
     runs-on: ubuntu-latest
     permissions:
@@ -157,7 +157,7 @@ jobs:
         shell: bash
         env:
           TAG_NAME: ${{ github.ref_name }}
-          EXPECTED_VERSION: 1.7.0
+          EXPECTED_VERSION: 1.7.2
           EXPECTED_COMMIT: ${{ github.sha }}
         run: |
           set -euo pipefail
@@ -179,7 +179,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           TAG_NAME: ${{ github.ref_name }}
-          VERSION: 1.7.0
+          VERSION: 1.7.2
           ASSET_DIR: ${{ runner.temp }}/windows-setup
         shell: bash
         run: |
@@ -195,13 +195,13 @@ jobs:
           (cd "$ASSET_DIR" && sha256sum --check SHA256SUMS.txt)
           notes_file="$RUNNER_TEMP/release-notes.md"
           cat > "$notes_file" <<'NOTES'
-          ## Atelier Apprentissage 1.7.0
+          ## Atelier Apprentissage 1.7.2
 
           This release includes the Windows installer for Atelier Apprentissage.
 
           The new Settings section brings together the application version, automatic update controls, and local backup information. The navigation badge highlights an update ready to install or an error that needs attention.
 
-          Download `AtelierApprentissage-1.7.0-Setup.exe` and run it to install the application. Existing learner progress is preserved during upgrades.
+          Download `AtelierApprentissage-1.7.2-Setup.exe` and run it to install the application. Existing learner progress is preserved during upgrades.
 
           `SHA256SUMS.txt` contains the SHA-256 checksum for the installer.
           NOTES
