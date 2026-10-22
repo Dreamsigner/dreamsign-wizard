@@ -181,3 +181,12 @@ occluses doivent rester limités au processus de test.
 Le test peint explicitement le Canvas natif une première fois : le composant
 attache son moteur lors de ce rendu, qu’une fenêtre hors écran ne reçoit pas
 nécessairement du système. Il ne simule pas un décodage et ne pilote pas le bureau.
+
+## Favoris des leçons de mathématiques
+
+`FavoriteLessonsTest` couvre ajout, retrait, restauration, compatibilité avec les
+anciennes sauvegardes, refus des identifiants inconnus ou hors maths et erreurs de
+lecture/écriture. Les favoris ne donnent ni XP ni accès supplémentaire aux exercices.
+`LessonFavoritesUiTest` couvre activation au clavier, filtre combiné à la recherche,
+numérotation source, accès à une section verrouillée pour lecture seule, états vides
+et absence des contrôles hors maths. Captures à 500/1100 px dans `ui-snapshots`.

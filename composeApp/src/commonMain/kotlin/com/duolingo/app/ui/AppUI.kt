@@ -87,7 +87,10 @@ fun DuolingoApp(viewModel: AppViewModel = remember { AppViewModel() }) {
         if (screen == AppScreen.COURSE_READER && subject != null && selectedUnitId != null) {
             val unit = subject.units.first { it.id == selectedUnitId }
             CourseReaderScreen(unit, { subject.isLessonUnlocked(it, stats.completedLessonIds) }, viewModel::startLesson,
-                onClose = { viewModel.navigateTo(AppScreen.LEARNING_PATH) }, searchableContents = subject.category == SubjectCategory.MATHEMATICS, showVideoPreviews = subject.category == SubjectCategory.MATHEMATICS, typesetMath = subject.category == SubjectCategory.MATHEMATICS || subject.category == SubjectCategory.COMPUTER_SCIENCE)
+                onClose = { viewModel.navigateTo(AppScreen.LEARNING_PATH) }, searchableContents = subject.category == SubjectCategory.MATHEMATICS, showVideoPreviews = subject.category == SubjectCategory.MATHEMATICS, typesetMath = subject.category == SubjectCategory.MATHEMATICS || subject.category == SubjectCategory.COMPUTER_SCIENCE,
+                favoriteLessonIds = stats.favoriteLessonIds,
+                onToggleFavorite = if (subject.category == SubjectCategory.MATHEMATICS) viewModel::toggleMathLessonFavorite else null,
+                favoriteSaveStatus = persistence)
         } else if (screen == AppScreen.LESSON_QUIZ) {
             LessonQuizScreen(viewModel)
         } else {

@@ -160,6 +160,15 @@ class AppViewModel(
         }
     }
 
+    fun toggleMathLessonFavorite(lessonId: String) {
+        if (_subjects.value.none { subject -> subject.category == SubjectCategory.MATHEMATICS &&
+                subject.units.any { course -> course.lessons.any { it.id == lessonId } } }) return
+        val favorites = _userStats.value.favoriteLessonIds
+        _userStats.value = _userStats.value.copy(favoriteLessonIds =
+            if (lessonId in favorites) favorites - lessonId else favorites + lessonId)
+        persist()
+    }
+
     private fun persist() {
         pendingDraftSave?.cancel()
         pendingDraftSave = null

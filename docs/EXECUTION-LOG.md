@@ -760,3 +760,15 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   synthétique décodé, temps de lecture progressant et contrôles source présents.
   Un lanceur Java du JDK de construction a été ajouté temporairement au runtime
   local pour ce diagnostic puis retiré; aucun module ou moteur n’a été ajouté.
+
+## 22 octobre 2026 — Favoris des leçons de mathématiques
+
+- `favoriteLessonIds` utilise les identifiants stables des leçons et la sauvegarde
+  locale existante. Anciennes sauvegardes compatibles, original illisible préservé,
+  erreurs d’écriture signalées; aucun gain d’XP ou contournement de prérequis.
+- Ajout/retrait depuis les notes et filtre dans le sommaire, combiné à la recherche
+  sans réordonner les séances. Les autres catégories ne proposent pas ce contrôle.
+- Tests d’abord : quatre échecs attendus sur cinq tests de stockage avec le stub,
+  puis 13 tests ciblés réussis. Captures du filtre inspectées à 500 et 1100 px.
+- Suite desktop complète et installateur 1.6.0 construits localement. Validation
+  CI de livraison à confirmer; fixture de mise à niveau 1.6.1 non publiée.

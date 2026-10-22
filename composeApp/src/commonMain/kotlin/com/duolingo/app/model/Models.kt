@@ -178,5 +178,7 @@ data class UserStats(
     val textModeCompletedLessonIds: Set<String> = emptySet(),
     val spokenRecordingDurationsMillis: Map<String, Long> = emptyMap(),
     /** Subject ID -> stable course ID; absent in older saves and safe to default. */
-    val selectedCourseIds: Map<String, String> = emptyMap()
+    val selectedCourseIds: Map<String, String> = emptyMap(),
+    /** Stable lesson IDs; older progress files default to no favorites. */
+    val favoriteLessonIds: Set<String> = emptySet()
 )

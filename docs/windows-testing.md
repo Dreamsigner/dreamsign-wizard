@@ -3,7 +3,7 @@
 ## Installer l’application
 
 1. Dans une exécution GitHub Actions réussie de `main`, télécharger **AtelierApprentissage-Windows-Setup**.
-2. Extraire l’archive, puis lancer `AtelierApprentissage-1.5.4-Setup.exe`.
+2. Extraire l’archive, puis lancer `AtelierApprentissage-1.6.0-Setup.exe`.
 3. Suivre l’assistant, puis utiliser le raccourci du Bureau ou du menu Démarrer.
 
 L’installation est propre à l’utilisateur courant, par défaut dans
@@ -91,7 +91,7 @@ réseau sont limitées à quatre secondes chacune. Aucune vidéo n’est téléc
 
 ## Mises à jour automatiques
 
-Installer une première fois la version 1.5.4 depuis les [releases GitHub](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/latest).
+Installer une première fois la version 1.6.0 depuis les [releases GitHub](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/latest).
 L’installation Windows standard `%LOCALAPPDATA%/DuolingoKmpApp` active les mises à jour automatiques.
 Les copies portables et chemins d’installation personnalisés affichent que la mise à jour manuelle reste nécessaire.
 

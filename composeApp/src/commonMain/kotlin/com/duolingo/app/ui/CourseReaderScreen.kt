@@ -1,16 +1,18 @@
 package com.duolingo.app.ui
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.heading
-import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.semantics.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,15 +31,24 @@ fun CourseReaderScreen(
     typesetMath: Boolean = false,
     showVideoPreviews: Boolean = false,
     searchableContents: Boolean = false,
+    favoriteLessonIds: Set<String> = emptySet(),
+    onToggleFavorite: ((String) -> Unit)? = null,
+    favoriteSaveStatus: String? = null,
 ) {
     val listState = key(course.id) { rememberLazyListState() }
     var showContents by remember(course.id) { mutableStateOf(false) }
     var contentsQuery by remember(course.id) { mutableStateOf("") }
+    var favoritesOnly by remember(course.id) { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     Scaffold(backgroundColor = Paper, topBar = {
+        Column {
         TopAppBar(title = { Text("Cours et supports", fontWeight = FontWeight.Bold) }, backgroundColor = White,
             navigationIcon = { IconButton(onClose, Modifier.size(48.dp)) { Icon(Icons.Default.Close, "Fermer le cours") } },
             actions = { TextButton({ contentsQuery = ""; showContents = true }, Modifier.heightIn(min = 48.dp)) { Text("Sommaire") } }, elevation = 0.dp)
+        if (onToggleFavorite != null && favoriteSaveStatus != null) Surface(color = White) {
+            Text(favoriteSaveStatus, Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp), fontSize = 12.sp, color = Graphite)
+        }
+        }
     }) { padding ->
         BoxWithConstraints(Modifier.padding(padding).fillMaxSize()) {
             val side = ((maxWidth - 920.dp) / 2).coerceAtLeast(16.dp)
@@ -55,6 +66,18 @@ fun CourseReaderScreen(
                     Surface(color = White, shape = LearningShape) {
                         Column(Modifier.fillMaxWidth().padding(24.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
                             Text(lesson.title, fontSize = 22.sp, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
+                            if (onToggleFavorite != null) {
+                                val favorite = lesson.id in favoriteLessonIds
+                                val action = if (favorite) "Retirer des favoris" else "Ajouter aux favoris"
+                                TextButton({ onToggleFavorite(lesson.id) }, Modifier.heightIn(min = 48.dp).semantics {
+                                    contentDescription = "$action · ${lesson.title}"
+                                    stateDescription = if (favorite) "En favori" else "Pas en favori"
+                                }) {
+                                    Icon(Icons.Default.Star, contentDescription = null, tint = if (favorite) ActionRed else Graphite)
+                                    Spacer(Modifier.width(8.dp))
+                                    Text(action, color = if (favorite) ActionRed else Graphite)
+                                }
+                            }
                             LessonNotes(lesson, includeHeading = false, typesetMath = typesetMath, showVideoPreviews = showVideoPreviews)
                             Text("Exercices associés : ${lesson.exercises.size}", fontWeight = FontWeight.Medium)
                             LearningButton("Pratiquer · ${lesson.title}", { onStartLesson(lesson) }, enabled = canPractice(lesson))
@@ -69,7 +92,11 @@ fun CourseReaderScreen(
         title = { Text("Sommaire du cours") },
         text = {
             Column(Modifier.heightIn(max = 480.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                val indices = remember(course, contentsQuery) { matchingLessonIndices(course, contentsQuery) }
+                val indices = remember(course, contentsQuery, favoriteLessonIds, favoritesOnly, onToggleFavorite != null) {
+                    matchingLessonIndices(course, contentsQuery).filter { index ->
+                        onToggleFavorite == null || !favoritesOnly || course.lessons[index].id in favoriteLessonIds
+                    }
+                }
                 if (searchableContents) {
                     OutlinedTextField(contentsQuery, { contentsQuery = it }, modifier = Modifier.fillMaxWidth(),
                         label = { Text("Rechercher une leçon") }, placeholder = { Text("Titre ou objectif") }, singleLine = true)
@@ -78,13 +105,31 @@ fun CourseReaderScreen(
                         if (contentsQuery.isNotEmpty()) TextButton({ contentsQuery = "" }, Modifier.heightIn(min = 48.dp)) { Text("Effacer") }
                     }
                 }
-                if (indices.isEmpty()) Text("Aucune leçon trouvée. Essaie un autre titre ou objectif.", color = Graphite)
+                if (onToggleFavorite != null) Row(
+                    Modifier.fillMaxWidth().heightIn(min = 48.dp).toggleable(favoritesOnly, role = Role.Checkbox, onValueChange = { favoritesOnly = it }),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Checkbox(favoritesOnly, onCheckedChange = null)
+                    Spacer(Modifier.width(8.dp))
+                    Text("Favoris uniquement")
+                }
+                if (indices.isEmpty()) Text(
+                    if (onToggleFavorite != null && favoritesOnly) {
+                        if (contentsQuery.isBlank()) "Aucune leçon favorite dans ce cours. Ajoute une étoile depuis une leçon."
+                        else "Aucun favori ne correspond à cette recherche."
+                    } else "Aucune leçon trouvée. Essaie un autre titre ou objectif.", color = Graphite)
                 LazyColumn(Modifier.weight(1f, fill = false)) {
                     items(indices, key = { course.lessons[it].id }) { index ->
                         TextButton({
                             showContents = false
                             scope.launch { listState.scrollToItem(index + 1) }
-                        }, Modifier.fillMaxWidth().heightIn(min = 48.dp)) { Text("${index + 1}. ${course.lessons[index].title}") }
+                        }, Modifier.fillMaxWidth().heightIn(min = 48.dp)) {
+                            if (onToggleFavorite != null && course.lessons[index].id in favoriteLessonIds) {
+                                Icon(Icons.Default.Star, contentDescription = "Leçon favorite", tint = ActionRed)
+                                Spacer(Modifier.width(8.dp))
+                            }
+                            Text("${index + 1}. ${course.lessons[index].title}")
+                        }
                     }
                 }
             }
