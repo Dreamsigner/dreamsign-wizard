@@ -735,3 +735,10 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   pour le déplacement; les assertions attendent l’événement `seeked`.
   Lecture réelle établie pour les deux sources de la séance 1 MIT 18.06SC
   (MP4 et YouTube), sans automatiser de choix de confidentialité.
+- Validation Windows distante réussie sur `d58bf66`, run `39802392648` :
+  suite desktop, lecture native, installateur, installation/mise à niveau/
+  désinstallation et progression préservée. Le profil CI est isolé dans le
+  dossier temporaire du runner; un premier rendu explicite du Canvas attache
+  le moteur natif pour le test hors écran. Les candidates taguées 1.5.0 et
+  1.5.2 ont échoué à ce contrôle natif et ne sont pas publiées en Release.
+  Candidate de publication suivante : 1.5.4, fixture 1.5.5 non publiée.

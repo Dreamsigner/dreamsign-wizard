@@ -178,3 +178,6 @@ Le test natif peut aussi être lancé localement par opt-in explicite
 un dossier de test. Sa fenêtre est hors écran, sans demande de focus, et son
 profil est isolé. Les paramètres empêchant la mise en sommeil des fenêtres
 occluses doivent rester limités au processus de test.
+Le test peint explicitement le Canvas natif une première fois : le composant
+attache son moteur lors de ce rendu, qu’une fenêtre hors écran ne reçoit pas
+nécessairement du système. Il ne simule pas un décodage et ne pilote pas le bureau.
