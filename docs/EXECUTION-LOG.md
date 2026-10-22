@@ -596,10 +596,25 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   explicitée, avec configuration différée de la tâche enregistrée par Compose.
 - Ajout d’un test d’installation exclusif aux VM GitHub Windows jetables :
   sauvegarde fictive préexistante, installation 1.1.0, diagnostic de l’EXE
-  installé, raccourcis, notices, inscription HKCU, mise à niveau de test vers
+  installé, raccourcis, notices, inscription MSI par utilisateur, mise à niveau de test vers
   1.1.1, désinstallation et intégrité exacte de la sauvegarde à chaque étape.
   La version 1.1.1 est uniquement une fixture CI, jamais publiée comme livrable.
 - Aucun installateur exécuté sur le poste utilisateur. Pas de certificat de
   signature disponible dans ce lot; les avertissements d’éditeur inconnu
   restent possibles. La mise à jour automatique n’est pas implémentée.
 - Vérifications de construction et résultat du test CI à confirmer ci-dessous.
+
+- Validation locale : 116 tests desktop sans échec, création app-image et EXE
+  réussie. Lecture du MSI incorporé sans installation : version 1.1.0,
+  UpgradeCode stable et notices/guide présents. Aucun installateur exécuté sur
+  le poste utilisateur. Les erreurs CI de paramètre PowerShell tronqué et de
+  lecture d’une vue ARP du registre ont été corrigées : argument version cité,
+  identité du produit lue dans l’EXE puis contrôlée par l’API Windows Installer
+  (`AssignmentType=0`, produit installé, version exacte).
+- Livraison confirmée : `a6658d6`, CI `39713029803` réussie. Artefact Setup
+  `12397039260`, portable `12398165623`, preuves `12397768247`. Les preuves
+  téléchargées confirment 116 tests sans échec/erreur/ignoré, installation 1.1.0,
+  mise à niveau 1.1.1 de test, raccourcis/notices et diagnostics, désinstallation
+  et sauvegarde inchangée. La fixture 1.1.1 n’est pas publiée. L’assistant
+  graphique d’installation n’a pas été inspecté avec Computer Use; les opérations
+  vérifiées sont exécutées silencieusement sur une VM GitHub jetable.
