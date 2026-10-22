@@ -8,6 +8,9 @@ import java.util.Base64
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicReference
+import java.awt.Component
+import java.awt.Container
+import java.awt.Toolkit
 import javax.swing.*
 import kotlin.test.*
 
@@ -46,6 +49,7 @@ class NativeVideoSmokeTest {
             if (state.mediaReady >= 2 && state.mediaTime > 0.1 && state.controls) playing.countDown()
         }, onFailure = { failure.set(it); playing.countDown() })
         var frame: JFrame? = null
+        var playerPanel: JPanel? = null
         try {
             SwingUtilities.invokeAndWait {
                 frame = JFrame("Atelier — native video test").apply {
@@ -54,7 +58,8 @@ class NativeVideoSmokeTest {
                     isAutoRequestFocus = false
                     focusableWindowState = false
                     setLocation(-12000, -12000)
-                    add(host.create("http://127.0.0.1:${server.address.port}/clip.mp4")); setSize(800, 500); isVisible = true
+                    playerPanel = host.create("http://127.0.0.1:${server.address.port}/clip.mp4")
+                    add(requireNotNull(playerPanel)); setSize(800, 500); isVisible = true
                 }
                 // The library attaches its native peer on the Canvas's first paint.
                 // A window outside the CI desktop may never receive an OS paint event.
@@ -86,14 +91,41 @@ class NativeVideoSmokeTest {
             val initialSize = parseVideoPageState(adapter.evaluate(VIDEO_PAGE_PROBE).get(5, TimeUnit.SECONDS))
             assertTrue(initialSize.elementWidth > 700, "Production wrapper did not fill initial width: $initialSize")
             assertTrue(initialSize.elementHeight > 400, "Production wrapper did not fill initial height: $initialSize")
-            SwingUtilities.invokeAndWait { requireNotNull(frame).setSize(1200, 800) }
+            val reports = Path.of("build/reports/native-video"); Files.createDirectories(reports)
+            fun awtTree(component: Component): String = buildString {
+                append(component.javaClass.simpleName).append(component.bounds)
+                if (component is Container) component.components.forEach { append(" {").append(awtTree(it)).append('}') }
+            }
+            fun diagnostic(label: String, page: VideoPageState): String = "$label page=$page frame=${frame?.bounds} content=${frame?.contentPane?.bounds} playerPanel=${playerPanel?.bounds} native=${host.view?.component?.bounds} tree=${frame?.contentPane?.let(::awtTree)}"
+            val resizeDiagnostics = mutableListOf(diagnostic("before-resize", initialSize))
+            SwingUtilities.invokeAndWait {
+                val window = requireNotNull(frame)
+                window.setSize(1200, 800)
+                // The WebView library forwards its heavyweight Canvas componentResized event to sizeNative().
+                // Validate and lay out synchronously because an offscreen CI window may receive no OS paint event.
+                window.invalidate()
+                window.validate()
+                fun layoutTree(component: Container) {
+                    component.doLayout()
+                    component.components.filterIsInstance<Container>().forEach(::layoutTree)
+                }
+                layoutTree(window)
+                Toolkit.getDefaultToolkit().sync()
+            }
             val resizeDeadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(10)
             var resized: VideoPageState? = null
+            var probeIndex = 0
             while (resized == null && System.nanoTime() < resizeDeadline) {
                 val measurement = parseVideoPageState(adapter.evaluate(VIDEO_PAGE_PROBE).get(5, TimeUnit.SECONDS))
+                if (probeIndex % 5 == 0 || (measurement.elementWidth > 1100 && measurement.elementHeight > 700)) {
+                    resizeDiagnostics += diagnostic("after-resize-probe-$probeIndex", measurement)
+                }
                 if (measurement.elementWidth > 1100 && measurement.elementHeight > 700) resized = measurement
                 else Thread.sleep(100)
+                probeIndex++
             }
+            Files.writeString(reports.resolve("resize-diagnostics.txt"), resizeDiagnostics.joinToString("\n", postfix = "\n"))
+            Files.writeString(reports.resolve("initial-state.txt"), "observed=${observed.get()} failure=${failure.get()} nativeError=${host.lastProbeError}\n${resizeDiagnostics.joinToString("\n")}\n")
             assertNotNull(resized, "Production video element did not fill resized host: $resized")
             val controls = requireNotNull(host.view).evaluate("""(function(){var v=document.querySelector('video');v.pause();v.playbackRate=1.5;v.volume=0.4;return new Promise(function(resolve){var done=function(){resolve({paused:v.paused,time:v.currentTime,rate:v.playbackRate,volume:v.volume});};v.addEventListener('seeked',done,{once:true});v.currentTime=0.75;setTimeout(done,3000);});})()""").get(5, TimeUnit.SECONDS)
             val values = kotlinx.serialization.json.Json.parseToJsonElement(controls) as kotlinx.serialization.json.JsonObject
@@ -105,7 +137,6 @@ class NativeVideoSmokeTest {
             assertTrue(decodedDimensions.videoWidth > 0 && decodedDimensions.videoHeight > 0, "$decodedDimensions")
             val raw = adapter.evaluate("""(function(){var v=document.querySelector('video'),c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);return c.toDataURL('image/png');})()""").get(10, TimeUnit.SECONDS)
             val image = kotlinx.serialization.json.Json.parseToJsonElement(raw).let { (it as kotlinx.serialization.json.JsonPrimitive).content }
-            val reports = Path.of("build/reports/native-video"); Files.createDirectories(reports)
             Files.write(reports.resolve("decoded-fixture-frame.png"), Base64.getDecoder().decode(image.substringAfter(',')))
             val remote = mutableListOf<String>()
             if (System.getenv("ATELIER_VIDEO_REMOTE_SMOKE") == "true") {

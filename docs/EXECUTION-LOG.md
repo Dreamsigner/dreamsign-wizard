@@ -858,3 +858,15 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
 - Test local hors écran avec profil isolé, aucun Computer Use ni données
   utilisateur accédées. Candidate 1.8.0; fixture 1.8.1 non publiée.
   Livraison et vérifications du runner Windows à confirmer.
+
+## 22 octobre 2026 — Reprise de livraison vidéo 1.8.2
+
+- Candidate 1.8.0 non publiée : CI 39865840175 bloquée par la vérification
+  de redimensionnement du test natif hors écran; les 160 tests desktop passent.
+- Diagnostic : la fenêtre Swing redimensionnée exige une validation explicite
+  de sa mise en page sur le runner. Le test invalide/valide les conteneurs,
+  applique doLayout et synchronise Toolkit sans réduire ses assertions.
+- Vérification native locale réussie : cadre initial 784x461, cadre après
+  redimensionnement 1184x761; dimensions AWT et viewport consignées.
+- Candidate 1.8.2, fixture de mise à niveau 1.8.3. Les tags précédents restent
+  inchangés. Validation Windows et publication à confirmer.

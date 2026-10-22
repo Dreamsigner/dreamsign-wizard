@@ -27,7 +27,7 @@ internal fun playerAddress(resource: CourseResource): String {
 }
 
 internal data class VideoPageState(val url: String, val ready: Boolean, val hasVideo: Boolean, val mediaReady: Int, val fullscreen: Boolean, val mediaTime: Double = 0.0, val duration: Double = 0.0, val controls: Boolean = false,
-    val youtubeReady: Boolean = false, val youtubeState: Int = -1, val youtubeError: Int = 0, val elementWidth: Int = 0, val elementHeight: Int = 0, val videoWidth: Int = 0, val videoHeight: Int = 0, val keyAction: String = "")
+    val youtubeReady: Boolean = false, val youtubeState: Int = -1, val youtubeError: Int = 0, val elementWidth: Int = 0, val elementHeight: Int = 0, val videoWidth: Int = 0, val videoHeight: Int = 0, val viewportWidth: Int = 0, val viewportHeight: Int = 0, val keyAction: String = "")
 internal fun parseVideoPageState(raw: String): VideoPageState {
     require(raw.length <= 16384)
     val outer = Json.parseToJsonElement(raw)
@@ -38,9 +38,10 @@ internal fun parseVideoPageState(raw: String): VideoPageState {
         obj["youtubeReady"]?.jsonPrimitive?.booleanOrNull ?: false, obj["youtubeState"]?.jsonPrimitive?.intOrNull ?: -1,
         obj["youtubeError"]?.jsonPrimitive?.intOrNull ?: 0, obj["elementWidth"]?.jsonPrimitive?.intOrNull ?: 0,
         obj["elementHeight"]?.jsonPrimitive?.intOrNull ?: 0, obj["videoWidth"]?.jsonPrimitive?.intOrNull ?: 0,
-        obj["videoHeight"]?.jsonPrimitive?.intOrNull ?: 0, obj["keyAction"]?.jsonPrimitive?.contentOrNull ?: "")
+        obj["videoHeight"]?.jsonPrimitive?.intOrNull ?: 0, obj["viewportWidth"]?.jsonPrimitive?.intOrNull ?: 0,
+        obj["viewportHeight"]?.jsonPrimitive?.intOrNull ?: 0, obj["keyAction"]?.jsonPrimitive?.contentOrNull ?: "")
 }
-internal const val VIDEO_PAGE_PROBE = """JSON.stringify((function(){var v=document.querySelector('video'),p=document.querySelector('iframe')||v,r=(p||document.documentElement).getBoundingClientRect(),k=window.__nativeKeyAction||'';window.__nativeKeyAction='';return {url:location.href,ready:document.readyState==='complete',video:!!v,mediaReady:v?v.readyState:0,fullscreen:!!document.fullscreenElement,mediaTime:v?v.currentTime:(window.__ytTime||0),duration:v&&isFinite(v.duration)?v.duration:(window.__ytDuration||0),controls:v?!!v.controls:!!p,youtubeReady:!!window.__ytReady,youtubeState:window.__ytState===undefined?-1:window.__ytState,youtubeError:window.__ytError||0,elementWidth:Math.round(r.width),elementHeight:Math.round(r.height),videoWidth:v?v.videoWidth:0,videoHeight:v?v.videoHeight:0,keyAction:k};})())"""
+internal const val VIDEO_PAGE_PROBE = """JSON.stringify((function(){var v=document.querySelector('video'),p=document.querySelector('iframe')||v,r=(p||document.documentElement).getBoundingClientRect(),k=window.__nativeKeyAction||'';window.__nativeKeyAction='';return {url:location.href,ready:document.readyState==='complete',video:!!v,mediaReady:v?v.readyState:0,fullscreen:!!document.fullscreenElement,mediaTime:v?v.currentTime:(window.__ytTime||0),duration:v&&isFinite(v.duration)?v.duration:(window.__ytDuration||0),controls:v?!!v.controls:!!p,youtubeReady:!!window.__ytReady,youtubeState:window.__ytState===undefined?-1:window.__ytState,youtubeError:window.__ytError||0,elementWidth:Math.round(r.width),elementHeight:Math.round(r.height),videoWidth:v?v.videoWidth:0,videoHeight:v?v.videoHeight:0,viewportWidth:window.innerWidth,viewportHeight:window.innerHeight,keyAction:k};})())"""
 
 internal fun videoWrapperHtml(source: String, origin: String? = null): String {
     val isYouTube = source.startsWith("https://www.youtube.com/embed/")
