@@ -21,14 +21,23 @@ class NativeVideoSmokeTest {
         val clip = requireNotNull(javaClass.getResourceAsStream("/media/test-motion.webm")).use { it.readBytes() }
         val mp4 = requireNotNull(javaClass.getResourceAsStream("/media/test-motion.mp4")).use { it.readBytes() }
         val server = HttpServer.create(InetSocketAddress("127.0.0.1", 0), 0)
-        server.createContext("/clip.webm") { exchange ->
-            exchange.responseHeaders.add("Content-Type", "video/webm")
-            exchange.sendResponseHeaders(200, clip.size.toLong()); exchange.responseBody.use { it.write(clip) }
+        fun serveMedia(exchange: com.sun.net.httpserver.HttpExchange, bytes: ByteArray, mime: String) {
+            exchange.responseHeaders.add("Content-Type", mime)
+            exchange.responseHeaders.add("Accept-Ranges", "bytes")
+            val range = exchange.requestHeaders.getFirst("Range")
+            val match = range?.let { Regex("bytes=(\\d+)-(\\d*)").matchEntire(it) }
+            val start = match?.groupValues?.get(1)?.toIntOrNull() ?: 0
+            val end = match?.groupValues?.get(2)?.toIntOrNull()?.coerceAtMost(bytes.lastIndex) ?: bytes.lastIndex
+            if ((range != null && match == null) || start > end || start >= bytes.size) {
+                exchange.responseHeaders.add("Content-Range", "bytes */${bytes.size}")
+                exchange.sendResponseHeaders(416, -1); exchange.close(); return
+            }
+            if (match != null) exchange.responseHeaders.add("Content-Range", "bytes $start-$end/${bytes.size}")
+            exchange.sendResponseHeaders(if (match == null) 200 else 206, (end - start + 1).toLong())
+            exchange.responseBody.use { it.write(bytes, start, end - start + 1) }
         }
-        server.createContext("/clip.mp4") { exchange ->
-            exchange.responseHeaders.add("Content-Type", "video/mp4")
-            exchange.sendResponseHeaders(200, mp4.size.toLong()); exchange.responseBody.use { it.write(mp4) }
-        }
+        server.createContext("/clip.webm") { serveMedia(it, clip, "video/webm") }
+        server.createContext("/clip.mp4") { serveMedia(it, mp4, "video/mp4") }
         val html = """<!doctype html><html><body style="margin:0;background:#141414"><video controls muted autoplay loop playsinline src="/clip.webm" style="width:100%;height:45vh"></video><video id="mp4" controls muted autoplay loop playsinline src="/clip.mp4" style="width:100%;height:45vh"></video></body></html>""".toByteArray()
         server.createContext("/") { exchange ->
             exchange.responseHeaders.add("Content-Type", "text/html; charset=utf-8")
@@ -69,8 +78,12 @@ class NativeVideoSmokeTest {
                 if (!mp4Decoded) Thread.sleep(100)
             }
             assertTrue(mp4Decoded, "WebView2 did not decode/play the MP4 fixture")
-            val controls = requireNotNull(host.view).evaluate("""(function(){var v=document.querySelector('video');v.pause();v.currentTime=0.75;v.playbackRate=1.5;v.volume=0.4;return v.paused&&Math.abs(v.currentTime-0.75)<0.01&&v.playbackRate===1.5&&Math.abs(v.volume-0.4)<0.00001;})()""").get(5, TimeUnit.SECONDS)
-            assertEquals("true", controls, "Pause, seeking, speed and volume must remain controllable")
+            val controls = requireNotNull(host.view).evaluate("""(function(){var v=document.querySelector('video');v.pause();v.playbackRate=1.5;v.volume=0.4;return new Promise(function(resolve){var done=function(){resolve({paused:v.paused,time:v.currentTime,rate:v.playbackRate,volume:v.volume});};v.addEventListener('seeked',done,{once:true});v.currentTime=0.75;setTimeout(done,3000);});})()""").get(5, TimeUnit.SECONDS)
+            val values = kotlinx.serialization.json.Json.parseToJsonElement(controls) as kotlinx.serialization.json.JsonObject
+            assertEquals("true", values["paused"].toString(), controls)
+            assertTrue(kotlin.math.abs(values["time"].toString().toDouble() - 0.75) < 0.01, controls)
+            assertEquals(1.5, values["rate"].toString().toDouble(), controls)
+            assertTrue(kotlin.math.abs(values["volume"].toString().toDouble() - 0.4) < 0.00001, controls)
             val raw = requireNotNull(host.view).evaluate("""(function(){var v=document.querySelector('video'),c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);return c.toDataURL('image/png');})()""").get(10, TimeUnit.SECONDS)
             val image = kotlinx.serialization.json.Json.parseToJsonElement(raw).let { (it as kotlinx.serialization.json.JsonPrimitive).content }
             val reports = Path.of("build/reports/native-video"); Files.createDirectories(reports)

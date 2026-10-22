@@ -730,3 +730,8 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   Le premier essai a révélé une erreur d’intégration : `evalAsync` attend un
   corps JavaScript avec `return`, pas une expression seule. Corrigé dans
   l’adaptateur; les résultats malformés ne sont plus ignorés silencieusement.
+- Test natif local réussi : pause, déplacement à 0,75 s, vitesse 1,5× et
+  volume vérifiés. Le serveur de fixture gère les requêtes HTTP Range, requises
+  pour le déplacement; les assertions attendent l’événement `seeked`.
+  Lecture réelle établie pour les deux sources de la séance 1 MIT 18.06SC
+  (MP4 et YouTube), sans automatiser de choix de confidentialité.

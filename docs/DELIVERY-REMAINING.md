@@ -25,7 +25,11 @@ Ce bilan complète le registre; il ne transforme pas l'inventaire OSSU en cours 
 
 ## 2. Supports et lecture
 
-- La lecture vidéo intégrée reste à développer; les aperçus livrés ouvrent le navigateur.
+- Lecteur vidéo Windows implémenté sur la candidate 1.5.0 : fenêtre native
+  WebView2, commandes source et navigateur de secours. Validation locale :
+  142 tests desktop réussis, lecture native WebM/MP4, pause/déplacement/vitesse/
+  volume, puis lecture réelle YouTube et MP4 MIT séance 1. La publication de
+  cette candidate et la vérification de toutes les sources restent à confirmer.
 
 - L'application affiche ses notes originales françaises et donne accès aux supports officiels; elle ne contient pas une traduction intégrale des manuels MIT.
 - Contrôler progressivement le contenu et le rendu de chaque PDF: les réponses HTTP et le rendu réussi d'un document ne vérifient pas l'ensemble des 1235 ressources indexées.
