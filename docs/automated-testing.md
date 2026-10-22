@@ -131,3 +131,18 @@ un chargeur injectable sans réseau. Les captures `video-preview-*.png` sont
 produites dans `composeApp/build/reports/ui-snapshots` et archivées en CI.
 L’image chargée dans le test est une fixture : le test ne certifie pas la
 disponibilité en ligne d’une vidéo ni sa lecture dans le navigateur.
+
+## Recherche dans le sommaire des mathématiques
+
+`CourseContentsSearchTest` contrôle les accents français et la casse, les requêtes
+à plusieurs mots, l’ordre des séances et le saut vers l’index d’origine d’une leçon
+verrouillée. Les captures à 500/1100 px vérifient recherche, absence de résultats
+et effacement. L’affichage historique hors maths ne reçoit pas de recherche.
+
+## Historique des tokens par tâche
+
+Le registre [TOKEN-USAGE](TOKEN-USAGE.md) est généré par `tools/task_tokens.py`.
+`test_task_tokens.py` vérifie les écarts de compteurs natifs, les entrées en cache,
+le raisonnement inclus dans les sorties, les relevés cumulatifs répétés, les lignes
+incomplètes et le rejet d’une remise à zéro du compteur. Aucune conversation ni
+configuration globale n’est copiée ou modifiée.

@@ -135,7 +135,7 @@ compose.desktop {
             modules("jdk.unsupported")
             targetFormats(org.jetbrains.compose.desktop.application.dsl.TargetFormat.Msi, org.jetbrains.compose.desktop.application.dsl.TargetFormat.Exe)
             packageName = "DuolingoKmpApp"
-            packageVersion = providers.gradleProperty("desktopPackageVersion").orElse("1.2.0").get()
+            packageVersion = providers.gradleProperty("desktopPackageVersion").orElse("1.3.0").get()
             appResourcesRootDir.set(layout.buildDirectory.dir("installer-resources"))
             vendor = "Dreamsigner"
             description = "Atelier d’apprentissage — Mathématiques, informatique et TCF"

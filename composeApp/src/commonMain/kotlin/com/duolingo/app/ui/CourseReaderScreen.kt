@@ -28,14 +28,16 @@ fun CourseReaderScreen(
     onClose: () -> Unit,
     typesetMath: Boolean = false,
     showVideoPreviews: Boolean = false,
+    searchableContents: Boolean = false,
 ) {
     val listState = key(course.id) { rememberLazyListState() }
     var showContents by remember(course.id) { mutableStateOf(false) }
+    var contentsQuery by remember(course.id) { mutableStateOf("") }
     val scope = rememberCoroutineScope()
     Scaffold(backgroundColor = Paper, topBar = {
         TopAppBar(title = { Text("Cours et supports", fontWeight = FontWeight.Bold) }, backgroundColor = White,
             navigationIcon = { IconButton(onClose, Modifier.size(48.dp)) { Icon(Icons.Default.Close, "Fermer le cours") } },
-            actions = { TextButton({ showContents = true }, Modifier.heightIn(min = 48.dp)) { Text("Sommaire") } }, elevation = 0.dp)
+            actions = { TextButton({ contentsQuery = ""; showContents = true }, Modifier.heightIn(min = 48.dp)) { Text("Sommaire") } }, elevation = 0.dp)
     }) { padding ->
         BoxWithConstraints(Modifier.padding(padding).fillMaxSize()) {
             val side = ((maxWidth - 920.dp) / 2).coerceAtLeast(16.dp)
@@ -66,12 +68,24 @@ fun CourseReaderScreen(
     if (showContents) AlertDialog(onDismissRequest = { showContents = false },
         title = { Text("Sommaire du cours") },
         text = {
-            LazyColumn(Modifier.heightIn(max = 480.dp)) {
-                items(course.lessons.indices.toList(), key = { course.lessons[it].id }) { index ->
-                    TextButton({
-                        showContents = false
-                        scope.launch { listState.scrollToItem(index + 1) }
-                    }, Modifier.fillMaxWidth().heightIn(min = 48.dp)) { Text("${index + 1}. ${course.lessons[index].title}") }
+            Column(Modifier.heightIn(max = 480.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                val indices = remember(course, contentsQuery) { matchingLessonIndices(course, contentsQuery) }
+                if (searchableContents) {
+                    OutlinedTextField(contentsQuery, { contentsQuery = it }, modifier = Modifier.fillMaxWidth(),
+                        label = { Text("Rechercher une leçon") }, placeholder = { Text("Titre ou objectif") }, singleLine = true)
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                        Text("${indices.size} leçon${if (indices.size == 1) "" else "s"}", color = Graphite)
+                        if (contentsQuery.isNotEmpty()) TextButton({ contentsQuery = "" }, Modifier.heightIn(min = 48.dp)) { Text("Effacer") }
+                    }
+                }
+                if (indices.isEmpty()) Text("Aucune leçon trouvée. Essaie un autre titre ou objectif.", color = Graphite)
+                LazyColumn(Modifier.weight(1f, fill = false)) {
+                    items(indices, key = { course.lessons[it].id }) { index ->
+                        TextButton({
+                            showContents = false
+                            scope.launch { listState.scrollToItem(index + 1) }
+                        }, Modifier.fillMaxWidth().heightIn(min = 48.dp)) { Text("${index + 1}. ${course.lessons[index].title}") }
+                    }
                 }
             }
         }, confirmButton = { TextButton({ showContents = false }) { Text("Fermer") } }, backgroundColor = White)
@@ -97,5 +111,31 @@ private fun PrologGlossary() {
         Text("fait (fact) · règle (rule) · requête (query) · terme composé (compound term) · foncteur et arité (functor / arity) · unification (unification) · retour arrière (backtracking) · coupure (cut) · liste différence (difference list) · terme clos, sans variable (ground term) · flux (stream).")
         Text("La négation par l’échec (negation as failure), notée \\+ G, réussit lorsque la recherche de G se termine sans solution. Elle ne prouve pas une négation logique universelle; une recherche infinie ne constitue pas un échec fini.")
         Text("Choix terminologiques confrontés à Learn Prolog Now!, à sa présentation française Prolog tout de suite ! et aux cours universitaires français cités dans le dépôt.", color = Graphite)
+    }
+}
+
+/** Search authored titles/objectives; original indices preserve source order and scroll targets. */
+internal fun matchingLessonIndices(course: LearningUnit, query: String): List<Int> {
+    val words = searchKey(query).split(Regex("\\s+")).filter { it.isNotBlank() }
+    return course.lessons.indices.filter { index ->
+        val lesson = course.lessons[index]
+        val haystack = searchKey("${lesson.title} ${lesson.objective}")
+        words.all { it in haystack }
+    }
+}
+
+private fun searchKey(value: String): String = buildString {
+    value.lowercase().forEach { char ->
+        append(when (char) {
+            'à', 'â', 'ä' -> "a"
+            'é', 'è', 'ê', 'ë' -> "e"
+            'î', 'ï' -> "i"
+            'ô', 'ö' -> "o"
+            'ù', 'û', 'ü' -> "u"
+            'ç' -> "c"
+            'œ' -> "oe"
+            'æ' -> "ae"
+            else -> char.toString()
+        })
     }
 }
