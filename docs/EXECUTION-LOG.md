@@ -880,3 +880,20 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   (tolérance 4 px) et exige une croissance minimale de 50 px dans chaque axe.
   Les mesures Swing sont lues sur EDT. Le test natif local isolé passe.
 - Candidate 1.8.4 et fixture 1.8.5, sans réécriture des tags précédents.
+
+
+## 22 octobre 2026 — Livraison vidéo 1.8.4 vérifiée
+
+- Code d92e25547c726cad56242a8e9e0c0cc85dfda15f; tag v1.8.4 publié.
+  CI 39867752469 réussie; rapports Windows-checks 12465416553 téléchargés.
+- 160 tests desktop et un smoke WebView2 natif : zéro échec/erreur/ignoré.
+  MP4 décodé, commandes vérifiées, cadre après agrandissement 1028x749 égal
+  au viewport et aux dimensions Swing. PNG synthétique décodé inspecté.
+- Lecture distante CI : MIT MP4 vérifiée; lecteur YouTube trouvé sans lecture
+  démarrée. Les deux sources sont lues dans le smoke local précédent.
+- Installateur 1.8.4 testé puis mise à niveau réelle 1.8.5 via le lanceur;
+  diagnostic installé, enregistrement utilisateur, raccourcis, notices,
+  helper, désinstallation et conservation de progression tous vérifiés.
+- Release stable avec installateur et SHA-256. Les classes de mise à jour
+  de production détectent 1.7.2 vers 1.8.4 et valident le checksum (64 caractères).
+  Aucune installation ni modification des données de l’utilisateur effectuée.
