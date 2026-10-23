@@ -980,3 +980,13 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
 - Release stable avec EXE et SHA256SUMS.txt. Transport de mise à jour réel vérifié : détection1.9.2 vers1.10.2 et empreinte64caractères.
 - La lecture distante YouTube reste distincte de la validation locale/du contrat API : lecteur trouvé mais lecture distante non démarrée en CI; les tests MP4 et de reprise restent réussis. Ce lot ne modifie pas le lecteur.
 - Historique privé T007 actualisé avec les modèles et compteurs natifs, ainsi que le dépassement de l’estimation et les précisions successives du périmètre. Les données de suivi restent hors du dépôt.
+
+## 23 octobre 2026 — Candidat 1.11.0 : nettoyage et corrections adaptatives
+
+- Cache updater : nettoyage non récursif des seuls fichiers reconnus, suppression des installateurs déjà appliqués au démarrage même Auto désactivé, temporaires abandonnés depuis24h, cible vérifiée conservée pour réessayer. Aucun dossier de données personnelles ou cache Windows Installer visé. Helper nettoyé après succès; échec de nettoyage non bloquant. Tests offline/readonly/liens et véritable helper PowerShell en échec SHA vérifiés.
+- Halo : suppression des ombres sur cartes de cours, focus2dp réservé au clavier. Captures pointeur/clavier distinctes inspectées. Compteurs testés à360/400/700/900/1400 pixels avec grands nombres, sans chevauchement ni débordement.
+- Lecteur : panneau de sommaire permanent dès1000dp, popup compact conservé. Recherche/favoris/saut vers leçon et lecture des sections verrouillées vérifiés; marges calculées selon la zone de lecture disponible.
+- YouTube : probe public J7DzL2_Na80 avec yt-dlp2026.07.04 et Deno2.9.5 réussit, mais seulement pistesen/en-US exposées. Aucun téléchargement français positif sur cette vidéo. Messages runtimeJS/EJS et avertissement outilancien distingués du blocage/réseau; l’avertissement ne masque pas la cause. Aucun outil installé/mis à jour ni cookie de navigateur importé.
+- Validation locale :186 tests desktop réussis, zéro échec/erreur/ignoré; distribution construite hors ligne. Les nouvelles erreurs de fixtures de tests ont été corrigées avant ce résultat.
+- Rappel Windows demandé envoyé à06h50 heureDouala, résultatPlanificateur0. L’outil automation_update absent de la session a été remplacé par une tâche ponctuelle utilisant codexqueue vers ce même chat.
+- Unité signalée :12m/s signifie12mètres par seconde. Le correctif de lisibilité mathématique reste en attente de l’accord demandé selon la consigne du22octobre; aucun rendu mathématique modifié dans ce candidat.

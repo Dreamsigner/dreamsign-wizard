@@ -49,7 +49,11 @@ internal class WindowsUpdateController(
     private fun readAutomatic(): Boolean = try {
         !Files.exists(preference) || Properties().apply { Files.newInputStream(preference).use(::load) }.getProperty("automatic") == "true"
     } catch (_: Exception) { false }
-    fun start() { if (installed) scope.launch { delay(5000); while (isActive) { if (state.value.automatic) check(); delay(6 * 60 * 60 * 1000L) } } }
+    fun start() { if (installed) scope.launch {
+        UpdateCacheCleanup.onStartup(folder, requireNotNull(version))
+        delay(5000)
+        while (isActive) { if (state.value.automatic) check(); delay(6 * 60 * 60 * 1000L) }
+    } }
     private suspend fun saveAutomatic() = preferenceMutex.withLock {
         try {
             Files.createDirectories(folder)

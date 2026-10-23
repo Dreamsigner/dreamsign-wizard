@@ -131,14 +131,14 @@ tasks.register<org.gradle.api.tasks.testing.Test>("sourcePdfSmokeTest") {
 compose.desktop {
     application {
         mainClass = "MainKt"
-        jvmArgs("-Datelier.version=${providers.gradleProperty("desktopPackageVersion").orElse("1.10.2").get()}")
+        jvmArgs("-Datelier.version=${providers.gradleProperty("desktopPackageVersion").orElse("1.11.0").get()}")
         nativeDistributions {
             // PDFBox 3 uses sun.misc.Unsafe.invokeCleaner via this module. The reduced
             // jlink runtime otherwise falls back to inaccessible Java 8 internals.
             modules("jdk.unsupported", "jdk.httpserver")
             targetFormats(org.jetbrains.compose.desktop.application.dsl.TargetFormat.Msi, org.jetbrains.compose.desktop.application.dsl.TargetFormat.Exe)
             packageName = "DuolingoKmpApp"
-            packageVersion = providers.gradleProperty("desktopPackageVersion").orElse("1.10.2").get()
+            packageVersion = providers.gradleProperty("desktopPackageVersion").orElse("1.11.0").get()
             appResourcesRootDir.set(layout.buildDirectory.dir("installer-resources"))
             vendor = "Dreamsigner"
             description = "Atelier d’apprentissage — Mathématiques, informatique et TCF"

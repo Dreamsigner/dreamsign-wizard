@@ -38,6 +38,12 @@ class FrenchYouTubeDownloadTest {
             youtubeFailureMessage("ERROR: Unable to download API page: connection reset"),
         )
         assertTrue(youtubeFailureMessage("Sign in to confirm you’re not a bot").contains("bloqué"))
+        assertTrue(youtubeFailureMessage("WARNING: Your yt-dlp version (2026.07.04) is older than 90 days!").contains("Mets à jour yt-dlp"))
+        val blockedAndOld = youtubeFailureMessage("Your yt-dlp version is older than 90 days! Sign in to confirm you're not a bot")
+        assertTrue(blockedAndOld.contains("bloqué"))
+        assertTrue(blockedAndOld.contains("Mets à jour yt-dlp"))
+        assertTrue(youtubeFailureMessage("No supported JavaScript runtime could be found").contains("Deno 2.3"))
+        assertTrue(youtubeFailureMessage("Remote components challenge solver script was skipped").contains("composant JavaScript"))
     }
 
     @Test fun formatIdentifiersAreValidatedBeforeTheyCanEnterProcessArguments() {

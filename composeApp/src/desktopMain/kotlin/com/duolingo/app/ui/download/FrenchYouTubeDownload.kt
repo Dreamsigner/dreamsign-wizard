@@ -184,7 +184,11 @@ internal class YouTubeCommandException(message: String) : RuntimeException(messa
 
 internal fun youtubeFailureMessage(stderr: String): String {
     val detail = stderr.lowercase()
-    return when {
+    val message = when {
+        listOf("no supported javascript runtime", "no compatible javascript runtime", "javascript runtime could not be found").any(detail::contains) ->
+            "yt-dlp a besoin d’un moteur JavaScript compatible. Vérifie que Deno 2.3 ou plus récent est accessible dans PATH."
+        listOf("remote component", "challenge solver script").all(detail::contains) ->
+            "yt-dlp ne trouve pas son composant JavaScript pour YouTube. Vérifie son installation et réessaie."
         listOf("not a bot", "confirm you're not a bot", "confirm you’re not a bot", "confirm you are not a bot", "sign in to confirm", "http error 429", "too many requests", "http error 403").any(detail::contains) ->
             "YouTube a bloqué la lecture de cette vidéo (vérification anti-robot ou accès restreint). Aucun fichier n’a été créé."
         listOf("timed out", "timeout", "network is unreachable", "temporary failure", "unable to download api page", "connection reset", "http error 5").any(detail::contains) ->
@@ -195,6 +199,9 @@ internal fun youtubeFailureMessage(stderr: String): String {
             "Impossible d’extraire les pistes de cette vidéo YouTube. Elle peut être indisponible ou restreinte."
         else -> "YouTube n’a pas pu terminer l’opération. Aucun fichier n’a été enregistré."
     }
+    return if (listOf("yt-dlp version", "older than 90 days").all(detail::contains))
+        "$message yt-dlp.exe est ancien. Mets à jour yt-dlp puis réessaie."
+    else message
 }
 
 internal data class DownloadTools(val ytDlp: Path, val ffmpeg: Path, val ffprobe: Path)
@@ -227,7 +234,7 @@ internal class FrenchYouTubeDownloadService(
     suspend fun inspect(videoId: String): TrackInspection = runInterruptible(Dispatchers.IO) {
         require(videoId.matches(Regex("[A-Za-z0-9_-]{11}"))) { "Identifiant YouTube invalide." }
         val result = runner.run(listOf(
-            tools.ytDlp.toString(), "--ignore-config", "--no-playlist", "--skip-download", "--no-warnings",
+            tools.ytDlp.toString(), "--ignore-config", "--no-playlist", "--skip-download",
             "--socket-timeout", "15", "--retries", "1", "--dump-single-json", youtubeUrl(videoId),
         ), METADATA_TIMEOUT_MS)
         if (result.exitCode != 0) throw YouTubeCommandException(youtubeFailureMessage(result.stderr))
@@ -297,7 +304,7 @@ internal class FrenchYouTubeDownloadService(
     ) {
         val selector = if (isFrenchAudio) "$formatId[language~='(?i)^fr($|[-_])']" else formatId
         val result = runner.run(listOf(
-            tools.ytDlp.toString(), "--ignore-config", "--no-playlist", "--no-warnings", "--socket-timeout", "15", "--retries", "1",
+            tools.ytDlp.toString(), "--ignore-config", "--no-playlist", "--socket-timeout", "15", "--retries", "1",
             "--newline", "--progress", "--progress-template", "download:__ATELIER_PROGRESS__%(progress._percent_str)s",
             "--output", "$outputPrefix.%(ext)s", "-f", selector, youtubeUrl(videoId),
         ), DOWNLOAD_TIMEOUT_MS) { line ->

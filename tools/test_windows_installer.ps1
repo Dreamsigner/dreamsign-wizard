@@ -110,12 +110,27 @@ $first = Assert-InstalledApp $ExpectedVersion 'installed' $Installer
 # Exercise the production native updater launcher and its Windows PowerShell helper.
 $launcher = Join-Path $appDir 'DuolingoKmpApp.exe'
 $result = Join-Path $reportDir 'last-result.json'
-Invoke-CheckedProcess $launcher @('--self-check-updater', '--installer', ('"{0}"' -f (Resolve-Path -LiteralPath $UpgradeInstaller).Path), '--report-dir', ('"{0}"' -f $reportDir))
+$upgradeSource = (Resolve-Path -LiteralPath $UpgradeInstaller).Path
+$upgradeCacheCopy = Join-Path $reportDir "AtelierApprentissage-$ExpectedUpgradeVersion-Setup.exe"
+Copy-Item -LiteralPath $upgradeSource -Destination $upgradeCacheCopy
+$upgradeSourceHash = (Get-FileHash -LiteralPath $upgradeSource -Algorithm SHA256).Hash
+Invoke-CheckedProcess $launcher @('--self-check-updater', '--installer', ('"{0}"' -f $upgradeCacheCopy), '--report-dir', ('"{0}"' -f $reportDir))
 $deadline = (Get-Date).AddMinutes(3)
 while (!(Test-Path -LiteralPath $result) -and (Get-Date) -lt $deadline) { Start-Sleep -Milliseconds 500 }
 if (!(Test-Path -LiteralPath $result)) { throw 'Updater did not produce a result.' }
 $updateResult = Get-Content -LiteralPath $result -Raw | ConvertFrom-Json
 if ($updateResult.success -ne $true) { throw 'Automatic update helper failed.' }
+$cleanupDeadline = (Get-Date).AddSeconds(20)
+do {
+    $payloads = @(Get-ChildItem -LiteralPath $reportDir -Filter 'apply-*.json' -File -ErrorAction SilentlyContinue)
+    if (!(Test-Path -LiteralPath $upgradeCacheCopy) -and $payloads.Count -eq 0) { break }
+    Start-Sleep -Milliseconds 250
+} while ((Get-Date) -lt $cleanupDeadline)
+if (Test-Path -LiteralPath $upgradeCacheCopy) { throw 'The updater did not remove its cached installer after success.' }
+if (Get-ChildItem -LiteralPath $reportDir -Filter 'apply-*.json' -File -ErrorAction SilentlyContinue) { throw 'The updater left its payload file behind.' }
+if (!(Test-Path -LiteralPath $upgradeSource) -or (Get-FileHash -LiteralPath $upgradeSource -Algorithm SHA256).Hash -ne $upgradeSourceHash) {
+    throw 'The updater changed or removed the external upgrade fixture.'
+}
 $updated = Assert-InstalledApp $ExpectedUpgradeVersion 'upgraded' $UpgradeInstaller
 if ($first.ProductCode -eq $updated.ProductCode -or $msiEngine.ProductState($first.ProductCode) -ne -1) { throw 'The upgrade did not replace the old MSI product registration.' }
 if ($updated.ProductCode -notmatch '^\{[0-9A-Fa-f-]{36}\}$') { throw 'Invalid uninstall product code.' }
@@ -127,5 +142,6 @@ if ($msiEngine.ProductState($updated.ProductCode) -ne -1 -or $msiEngine.ProductS
     installedVersion = $ExpectedVersion; upgradedVersion = $ExpectedUpgradeVersion; installedAppDiagnostic = $true
     perUserRegistration = $true; shortcutsVerified = $true; noticesVerified = $true
     updateHelperVerified = $true; upgradeVerified = $true; uninstallVerified = $true; progressPreserved = $true
+    updaterCacheCleanupVerified = $true; externalInstallerPreserved = $true
     sourceCommit = $env:GITHUB_SHA
 } | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $reportDir 'summary.json') -Encoding utf8

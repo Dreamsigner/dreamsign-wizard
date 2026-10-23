@@ -21,6 +21,7 @@ Application d’apprentissage en français pour Windows, développée en Kotlin 
 - Interface de bureau avec navigation latérale et disposition adaptée au redimensionnement.
 - Espace de cours avec progression, prochaine leçon, recherche et filtres de disponibilité.
 - Transitions douces, survols et appuis animés, avec une identité visuelle rouge, encre et papier.
+- Sommaire latéral permanent dans le lecteur sur grand écran, et ouverture en fenêtre superposée sur petit écran.
 
 ![Catalogue des cours sur Windows](docs/images/windows-catalogue.png)
 
@@ -50,8 +51,8 @@ Consulter le [catalogue détaillé](docs/courses/README.md) et la [couverture p�
 ## Installation
 
 1. Ouvrir la [dernière release Windows](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/latest).
-2. Télécharger l’installateur **AtelierApprentissage-1.10.2-Setup.exe**.
-3. Lancer **AtelierApprentissage-1.10.2-Setup.exe** et suivre l’assistant. L’installation est propre à l’utilisateur Windows, avec raccourcis sur le Bureau et dans le menu Démarrer.
+2. Télécharger l’installateur **AtelierApprentissage-1.11.0-Setup.exe**.
+3. Lancer **AtelierApprentissage-1.11.0-Setup.exe** et suivre l’assistant. L’installation est propre à l’utilisateur Windows, avec raccourcis sur le Bureau et dans le menu Démarrer.
 
 Java est inclus : aucun JDK ni Gradle n’est nécessaire. La désinstallation se fait depuis les applications installées des paramètres Windows. L’installateur n’est pas signé numériquement; Windows peut afficher un avertissement d’éditeur inconnu. `SHA256SUMS.txt` accompagne l’exécutable pour vérifier l’intégrité du téléchargement.
 
@@ -71,11 +72,15 @@ Le bouton **Télécharger avec la piste audio française**, sous une vidéo YouT
 
 Le téléchargement requiert **yt-dlp**, **FFmpeg** (avec `ffprobe`) et un moteur JavaScript pris en charge par yt-dlp, par exemple **Deno**, installés sur le poste. Ces outils ne sont pas inclus dans l’installateur et l’application ne les installe pas automatiquement. Elle détecte `yt-dlp`, `ffmpeg` et `ffprobe` dans `PATH`; voir le guide Windows pour des chemins explicites.
 
+Une piste française doit être réellement accessible sur la vidéo choisie. L’absence de cette piste est distinguée d’un échec réseau, d’un blocage YouTube ou d’un moteur JavaScript manquant. L’application signale aussi les avertissements d’obsolescence de yt-dlp, sans masquer l’erreur principale. Elle ne met pas ces outils à jour automatiquement et n’importe pas les cookies du navigateur.
+
 Les notes et documents audio sont intégrés; les supports PDF externes et les vidéos nécessitent une connexion Internet.
 
 La section **Paramètres**, sous **Cours** et **Profil** dans la navigation, regroupe la version, les mises à jour et les informations de sauvegarde locale. Une pastille chiffrée sur son icône signale les actions en attente : mise à jour prête à installer ou erreur à traiter. Elle disparaît lorsque l’action n’est plus nécessaire; un téléchargement en cours ne crée pas d’alerte supplémentaire.
 
 La version installée à l’emplacement Windows standard vérifie automatiquement les releases GitHub stables. Les mises à jour sont téléchargées et vérifiées, puis appliquées à la fermeture de l’application. Dans **Paramètres**, le réglage **Mises à jour auto** permet de désactiver ce comportement; **Installer et redémarrer** applique immédiatement une version déjà prête. Les versions portables et installations dans un autre dossier conservent une mise à jour manuelle.
+
+Une mise à niveau remplace la version installée et préserve les données personnelles. Le cache de mise à jour nettoie les anciens installateurs devenus inutiles et les fichiers temporaires abandonnés depuis plus de 24 heures. L’installateur vérifié en attente reste disponible pour réessayer un échec; après réussite, sa copie en cache et le fichier de lancement temporaire sont supprimés. Les préférences et le dernier diagnostic sont conservés. Les installateurs téléchargés manuellement et le cache de maintenance géré par Windows restent distincts de ce nettoyage.
 
 La progression est enregistrée dans `%LOCALAPPDATA%/AtelierApprentissage/progress.json`. Elle n’est pas synchronisée entre appareils.
 

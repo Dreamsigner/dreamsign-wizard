@@ -77,7 +77,7 @@ class LearningUiTest {
             setContent { FixtureTheme { DuolingoApp(fixture.model) } }
             onNodeWithText("Lire le cours et les supports").performScrollTo().performClick()
             onNodeWithText("Cours et supports").assertIsDisplayed()
-            onNodeWithText("Sommaire").performClick()
+            onNodeWithText("Sommaire du cours").assertIsDisplayed()
             onNodeWithText("2. ${locked.title}").performClick()
             onNodeWithText(locked.learningNotes).assertIsDisplayed()
             onNodeWithText("Pratiquer · ${locked.title}").assertIsNotEnabled()

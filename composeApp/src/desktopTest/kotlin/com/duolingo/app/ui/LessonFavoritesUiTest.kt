@@ -21,7 +21,7 @@ class LessonFavoritesUiTest {
             learningNotes = "Notes de la section $i", sourceUrls = emptyList())
     })
 
-    @Test fun addingAndRemovingAFavoriteDoesNotUnlockOrStartPractice() = runDesktopComposeUiTest(width = 1100, height = 850) {
+    @Test fun addingAndRemovingAFavoriteDoesNotUnlockOrStartPractice() = runDesktopComposeUiTest(width = 900, height = 850) {
         var starts = 0
         setContent { LearningAppTheme { Surface {
             var favorites by remember { mutableStateOf(emptySet<String>()) }
@@ -41,7 +41,7 @@ class LessonFavoritesUiTest {
     }
 
     @Test fun favoritesCombineWithSearchAndJumpToOriginalLockedLessonAtBothWidths() {
-        listOf(500, 1100).forEach { width -> runDesktopComposeUiTest(width = width, height = 850) {
+        listOf(500, 900).forEach { width -> runDesktopComposeUiTest(width = width, height = 850) {
             setContent { LearningAppTheme { Surface {
                 CourseReaderScreen(course, { false }, {}, {}, searchableContents = true,
                     favoriteLessonIds = setOf("favorite-0", "favorite-2"), onToggleFavorite = {})

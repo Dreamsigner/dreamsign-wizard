@@ -25,7 +25,7 @@ class CourseContentsSearchTest {
         assertEquals(listOf(2), matchingLessonIndices(course, "aire"))
     }
 
-    @Test fun filteredResultJumpsToOriginalLockedSectionWithoutStartingExercises() = runDesktopComposeUiTest(width = 1100, height = 800) {
+    @Test fun filteredResultJumpsToOriginalLockedSectionWithoutStartingExercises() = runDesktopComposeUiTest(width = 900, height = 800) {
         var starts = 0
         setContent { LearningAppTheme { Surface {
             CourseReaderScreen(course, { false }, { starts++ }, {}, searchableContents = true)
@@ -39,7 +39,7 @@ class CourseContentsSearchTest {
     }
 
     @Test fun emptyResultsCanBeClearedAtBothWidths() {
-        listOf(500, 1100).forEach { width ->
+        listOf(500, 900).forEach { width ->
             runDesktopComposeUiTest(width = width, height = 800) {
                 setContent { LearningAppTheme { Surface { CourseReaderScreen(course, { false }, {}, {}, searchableContents = true) } } }
                 onNodeWithText("Sommaire").performClick()

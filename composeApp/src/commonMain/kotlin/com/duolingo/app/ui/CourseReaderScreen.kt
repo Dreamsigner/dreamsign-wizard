@@ -40,100 +40,141 @@ fun CourseReaderScreen(
     var contentsQuery by remember(course.id) { mutableStateOf("") }
     var favoritesOnly by remember(course.id) { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
-    Scaffold(backgroundColor = Paper, topBar = {
-        Column {
-        TopAppBar(title = { Text("Cours et supports", fontWeight = FontWeight.Bold) }, backgroundColor = White,
-            navigationIcon = { IconButton(onClose, Modifier.size(48.dp)) { Icon(Icons.Default.Close, "Fermer le cours") } },
-            actions = { TextButton({ contentsQuery = ""; showContents = true }, Modifier.heightIn(min = 48.dp)) { Text("Sommaire") } }, elevation = 0.dp)
-        if (onToggleFavorite != null && favoriteSaveStatus != null) Surface(color = White) {
-            Text(favoriteSaveStatus, Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp), fontSize = 12.sp, color = Graphite)
-        }
-        }
-    }) { padding ->
-        BoxWithConstraints(Modifier.padding(padding).fillMaxSize()) {
-            val side = ((maxWidth - 920.dp) / 2).coerceAtLeast(16.dp)
-            LazyColumn(Modifier.fillMaxSize(), state = listState, contentPadding = PaddingValues(horizontal = side, vertical = 24.dp),
-                verticalArrangement = Arrangement.spacedBy(20.dp)) {
-                item(key = "overview") {
-                    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                        Text(course.title, fontSize = 28.sp, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
-                        Text("Toutes les notes rédigées en français pour ce parcours sont réunies ici et disponibles hors ligne, y compris pour les leçons encore verrouillées.", color = Graphite)
-                        Text("Ces notes de pratique ne remplacent pas le cours original complet. Les supports de référence ci-dessous s’ouvrent avec Internet.", color = Graphite)
-                        CourseReferenceLinks(course, showVideoPreviews)
-                    }
+    BoxWithConstraints(Modifier.fillMaxSize()) {
+        val wide = maxWidth >= 1000.dp
+        Scaffold(backgroundColor = Paper, topBar = {
+            Column {
+                TopAppBar(title = { Text("Cours et supports", fontWeight = FontWeight.Bold) }, backgroundColor = White,
+                    navigationIcon = { IconButton(onClose, Modifier.size(48.dp)) { Icon(Icons.Default.Close, "Fermer le cours") } },
+                    actions = { if (!wide) TextButton({ contentsQuery = ""; showContents = true }, Modifier.heightIn(min = 48.dp)) { Text("Sommaire") } }, elevation = 0.dp)
+                if (onToggleFavorite != null && favoriteSaveStatus != null) Surface(color = White) {
+                    Text(favoriteSaveStatus, Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp), fontSize = 12.sp, color = Graphite)
                 }
-                items(course.lessons, key = { it.id }) { lesson ->
-                    Surface(color = White, shape = LearningShape) {
-                        Column(Modifier.fillMaxWidth().padding(24.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                            Text(lesson.title, fontSize = 22.sp, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
-                            if (onToggleFavorite != null) {
-                                val favorite = lesson.id in favoriteLessonIds
-                                val action = if (favorite) "Retirer des favoris" else "Ajouter aux favoris"
-                                TextButton({ onToggleFavorite(lesson.id) }, Modifier.heightIn(min = 48.dp).semantics {
-                                    contentDescription = "$action · ${lesson.title}"
-                                    stateDescription = if (favorite) "En favori" else "Pas en favori"
-                                }) {
-                                    Icon(Icons.Default.Star, contentDescription = null, tint = if (favorite) ActionRed else Graphite)
-                                    Spacer(Modifier.width(8.dp))
-                                    Text(action, color = if (favorite) ActionRed else Graphite)
+            }
+        }) { padding ->
+            BoxWithConstraints(Modifier.padding(padding).fillMaxSize()) {
+                val activeLessonIndex by remember(listState) {
+                    derivedStateOf { (listState.firstVisibleItemIndex - 1).takeIf { it >= 0 } ?: -1 }
+                }
+                val reading: @Composable (Modifier) -> Unit = { modifier ->
+                    BoxWithConstraints(modifier) {
+                        val side = ((maxWidth - 920.dp) / 2).coerceAtLeast(16.dp)
+                        LazyColumn(Modifier.fillMaxSize(), state = listState, contentPadding = PaddingValues(horizontal = side, vertical = 24.dp),
+                            verticalArrangement = Arrangement.spacedBy(20.dp)) {
+                            item(key = "overview") {
+                                Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                                    Text(course.title, fontSize = 28.sp, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
+                                    Text("Toutes les notes rédigées en français pour ce parcours sont réunies ici et disponibles hors ligne, y compris pour les leçons encore verrouillées.", color = Graphite)
+                                    Text("Ces notes de pratique ne remplacent pas le cours original complet. Les supports de référence ci-dessous s’ouvrent avec Internet.", color = Graphite)
+                                    CourseReferenceLinks(course, showVideoPreviews)
                                 }
                             }
-                            LessonNotes(lesson, includeHeading = false, typesetMath = typesetMath, showVideoPreviews = showVideoPreviews)
-                            Text("Exercices associés : ${lesson.exercises.size}", fontWeight = FontWeight.Medium)
-                            LearningButton("Pratiquer · ${lesson.title}", { onStartLesson(lesson) }, enabled = canPractice(lesson))
-                            if (!canPractice(lesson)) Text("Termine les prérequis pour pratiquer. Le cours reste consultable.", color = Graphite)
+                            items(course.lessons, key = { it.id }) { lesson ->
+                                Surface(color = White, shape = LearningShape) {
+                                    Column(Modifier.fillMaxWidth().padding(24.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                                        Text(lesson.title, fontSize = 22.sp, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
+                                        if (onToggleFavorite != null) {
+                                            val favorite = lesson.id in favoriteLessonIds
+                                            val action = if (favorite) "Retirer des favoris" else "Ajouter aux favoris"
+                                            TextButton({ onToggleFavorite(lesson.id) }, Modifier.heightIn(min = 48.dp).semantics {
+                                                contentDescription = "$action · ${lesson.title}"
+                                                stateDescription = if (favorite) "En favori" else "Pas en favori"
+                                            }) {
+                                                Icon(Icons.Default.Star, contentDescription = null, tint = if (favorite) ActionRed else Graphite)
+                                                Spacer(Modifier.width(8.dp))
+                                                Text(action, color = if (favorite) ActionRed else Graphite)
+                                            }
+                                        }
+                                        LessonNotes(lesson, includeHeading = false, typesetMath = typesetMath, showVideoPreviews = showVideoPreviews)
+                                        Text("Exercices associés : ${lesson.exercises.size}", fontWeight = FontWeight.Medium)
+                                        LearningButton("Pratiquer · ${lesson.title}", { onStartLesson(lesson) }, enabled = canPractice(lesson))
+                                        if (!canPractice(lesson)) Text("Termine les prérequis pour pratiquer. Le cours reste consultable.", color = Graphite)
+                                    }
+                                }
+                            }
                         }
                     }
+                }
+                if (wide) Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                    Surface(Modifier.width(304.dp).fillMaxHeight().padding(12.dp), color = White, shape = LearningShape) {
+                        CourseContentsPanel(course, contentsQuery, { contentsQuery = it }, searchableContents,
+                            favoriteLessonIds, onToggleFavorite, favoritesOnly, { favoritesOnly = it }, activeLessonIndex,
+                            onSelect = { index -> scope.launch { listState.animateScrollToItem(index + 1) } },
+                            modifier = Modifier.fillMaxSize().padding(16.dp), wide = true)
+                    }
+                    reading(Modifier.weight(1f).fillMaxHeight())
+                } else reading(Modifier.fillMaxSize())
+            }
+        }
+        if (showContents && !wide) AlertDialog(onDismissRequest = { showContents = false },
+            title = { Text("Sommaire du cours") },
+            text = {
+                CourseContentsPanel(course, contentsQuery, { contentsQuery = it }, searchableContents,
+                    favoriteLessonIds, onToggleFavorite, favoritesOnly, { favoritesOnly = it }, -1,
+                    onSelect = { index -> showContents = false; scope.launch { listState.scrollToItem(index + 1) } },
+                    modifier = Modifier.heightIn(max = 480.dp), wide = false)
+            }, confirmButton = { TextButton({ showContents = false }) { Text("Fermer") } }, backgroundColor = White)
+    }
+}
+
+@Composable
+private fun CourseContentsPanel(
+    course: LearningUnit,
+    query: String,
+    onQueryChange: (String) -> Unit,
+    searchable: Boolean,
+    favoriteLessonIds: Set<String>,
+    onToggleFavorite: ((String) -> Unit)?,
+    favoritesOnly: Boolean,
+    onFavoritesOnlyChange: (Boolean) -> Unit,
+    selectedIndex: Int,
+    onSelect: (Int) -> Unit,
+    modifier: Modifier,
+    wide: Boolean,
+) {
+    val indices = remember(course, query, favoriteLessonIds, favoritesOnly, onToggleFavorite != null) {
+        matchingLessonIndices(course, query).filter { index ->
+            onToggleFavorite == null || !favoritesOnly || course.lessons[index].id in favoriteLessonIds
+        }
+    }
+    Column(modifier, verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        if (wide) Text("Sommaire du cours", fontSize = 20.sp, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
+        if (searchable) {
+            OutlinedTextField(query, onQueryChange, modifier = Modifier.fillMaxWidth(),
+                label = { Text("Rechercher une leçon") }, placeholder = { Text("Titre ou objectif") }, singleLine = true)
+            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                Text("${indices.size} leçon${if (indices.size == 1) "" else "s"}", Modifier.weight(1f), color = Graphite)
+                if (query.isNotEmpty()) TextButton({ onQueryChange("") }, Modifier.heightIn(min = 48.dp)) { Text("Effacer") }
+            }
+        }
+        if (onToggleFavorite != null) Row(
+            Modifier.fillMaxWidth().heightIn(min = 48.dp).toggleable(favoritesOnly, role = Role.Checkbox, onValueChange = onFavoritesOnlyChange),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Checkbox(favoritesOnly, onCheckedChange = null)
+            Spacer(Modifier.width(8.dp))
+            Text("Favoris uniquement")
+        }
+        if (indices.isEmpty()) Text(
+            if (onToggleFavorite != null && favoritesOnly) {
+                if (query.isBlank()) "Aucune leçon favorite dans ce cours. Ajoute une étoile depuis une leçon."
+                else "Aucun favori ne correspond à cette recherche."
+            } else "Aucune leçon trouvée. Essaie un autre titre ou objectif.", color = Graphite)
+        LazyColumn(Modifier.weight(1f, fill = wide)) {
+            items(indices, key = { course.lessons[it].id }) { index ->
+                val selected = index == selectedIndex
+                TextButton(onClick = { onSelect(index) }, Modifier.fillMaxWidth().heightIn(min = 48.dp)
+                    .semantics { this.selected = selected },
+                    colors = ButtonDefaults.textButtonColors(backgroundColor = if (selected) Paper else White, contentColor = Ink)) {
+                    if (onToggleFavorite != null && course.lessons[index].id in favoriteLessonIds) {
+                        Icon(Icons.Default.Star, contentDescription = "Leçon favorite", tint = ActionRed)
+                        Spacer(Modifier.width(8.dp))
+                    }
+                    Text("${index + 1}. ${course.lessons[index].title}", fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal)
                 }
             }
         }
     }
-    if (showContents) AlertDialog(onDismissRequest = { showContents = false },
-        title = { Text("Sommaire du cours") },
-        text = {
-            Column(Modifier.heightIn(max = 480.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                val indices = remember(course, contentsQuery, favoriteLessonIds, favoritesOnly, onToggleFavorite != null) {
-                    matchingLessonIndices(course, contentsQuery).filter { index ->
-                        onToggleFavorite == null || !favoritesOnly || course.lessons[index].id in favoriteLessonIds
-                    }
-                }
-                if (searchableContents) {
-                    OutlinedTextField(contentsQuery, { contentsQuery = it }, modifier = Modifier.fillMaxWidth(),
-                        label = { Text("Rechercher une leçon") }, placeholder = { Text("Titre ou objectif") }, singleLine = true)
-                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                        Text("${indices.size} leçon${if (indices.size == 1) "" else "s"}", color = Graphite)
-                        if (contentsQuery.isNotEmpty()) TextButton({ contentsQuery = "" }, Modifier.heightIn(min = 48.dp)) { Text("Effacer") }
-                    }
-                }
-                if (onToggleFavorite != null) Row(
-                    Modifier.fillMaxWidth().heightIn(min = 48.dp).toggleable(favoritesOnly, role = Role.Checkbox, onValueChange = { favoritesOnly = it }),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Checkbox(favoritesOnly, onCheckedChange = null)
-                    Spacer(Modifier.width(8.dp))
-                    Text("Favoris uniquement")
-                }
-                if (indices.isEmpty()) Text(
-                    if (onToggleFavorite != null && favoritesOnly) {
-                        if (contentsQuery.isBlank()) "Aucune leçon favorite dans ce cours. Ajoute une étoile depuis une leçon."
-                        else "Aucun favori ne correspond à cette recherche."
-                    } else "Aucune leçon trouvée. Essaie un autre titre ou objectif.", color = Graphite)
-                LazyColumn(Modifier.weight(1f, fill = false)) {
-                    items(indices, key = { course.lessons[it].id }) { index ->
-                        TextButton({
-                            showContents = false
-                            scope.launch { listState.scrollToItem(index + 1) }
-                        }, Modifier.fillMaxWidth().heightIn(min = 48.dp)) {
-                            if (onToggleFavorite != null && course.lessons[index].id in favoriteLessonIds) {
-                                Icon(Icons.Default.Star, contentDescription = "Leçon favorite", tint = ActionRed)
-                                Spacer(Modifier.width(8.dp))
-                            }
-                            Text("${index + 1}. ${course.lessons[index].title}")
-                        }
-                    }
-                }
-            }
-        }, confirmButton = { TextButton({ showContents = false }) { Text("Fermer") } }, backgroundColor = White)
 }
 
 @Composable

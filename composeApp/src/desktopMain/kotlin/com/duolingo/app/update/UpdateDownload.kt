@@ -68,18 +68,23 @@ internal class GithubUpdateTransport : UpdateTransport {
 internal data class PreparedUpdate(val release: UpdateRelease, val installer: Path, val sha256: String)
 internal class UpdateRepository(private val folder: Path, private val transport: UpdateTransport) {
     fun prepare(current: AppVersion, progress: (Long, Long) -> Unit): PreparedUpdate? {
+        UpdateCacheCleanup.beforeCheck(folder, current)
         val release = parseUpdateRelease(transport.metadata() ?: return null, current) ?: return null
         Files.createDirectories(folder)
         val expected = installerChecksum(transport.checksum(release.checksumUrl), release.fileName)
         val target = folder.resolve(release.fileName)
         require(!Files.isSymbolicLink(target))
-        if (Files.isRegularFile(target) && Files.size(target) == release.size && fileSha256(target) == expected) return PreparedUpdate(release, target, expected)
+        if (Files.isRegularFile(target) && Files.size(target) == release.size && fileSha256(target) == expected) {
+            UpdateCacheCleanup.keepOnlyPrepared(folder, target)
+            return PreparedUpdate(release, target, expected)
+        }
         val partial = Files.createTempFile(folder, "download-", ".part")
         try {
             transport.download(release, partial) { progress(it, release.size) }
             require(Files.size(partial) == release.size && fileSha256(partial) == expected) { "Installer integrity check failed" }
             Files.newInputStream(partial).use { require(it.read() == 'M'.code && it.read() == 'Z'.code) }
             Files.move(partial, target, StandardCopyOption.REPLACE_EXISTING)
+            UpdateCacheCleanup.keepOnlyPrepared(folder, target)
             return PreparedUpdate(release, target, expected)
         } finally { Files.deleteIfExists(partial) }
     }

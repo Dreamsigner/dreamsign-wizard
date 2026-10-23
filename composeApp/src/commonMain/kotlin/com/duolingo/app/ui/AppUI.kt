@@ -34,7 +34,8 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalInputModeManager
+import androidx.compose.ui.input.InputMode
 import androidx.compose.ui.semantics.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -70,10 +71,11 @@ internal val Lesson.sourceSessionLabel: String?
         return "$kind · $number"
     }
 
-/** Material controls supply keyboard activation; this adds an explicit focus outline. */
+/** Material controls supply keyboard activation; only keyboard navigation needs a visible focus ring. */
 fun Modifier.learningFocus(source: MutableInteractionSource, focusColor: Color = Ink): Modifier = composed {
     val focused by source.collectIsFocusedAsState()
-    border(if (focused) 3.dp else 0.dp, if (focused) focusColor else Color.Transparent, LearningShape)
+    val keyboardMode = LocalInputModeManager.current.inputMode == InputMode.Keyboard
+    if (focused && keyboardMode) border(2.dp, focusColor, LearningShape) else this
 }
 
 @Composable
@@ -218,26 +220,36 @@ private fun NavigationIcon(icon: ImageVector, actionCount: Int = 0) {
 fun TopStatsHeader(stats: UserStats, subjects: List<Subject>, selectedSubject: Subject, onSelectSubject: (String) -> Unit) {
     var expanded by remember { mutableStateOf(false) }
     BoxWithConstraints(Modifier.fillMaxWidth().background(White).padding(horizontal = 16.dp, vertical = 8.dp)) {
-        val compact = maxWidth < 480.dp
+        val rowLayout = maxWidth >= 920.dp
         Column {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            if (rowLayout) Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f).widthIn(max = 420.dp)) {
                     Text("Domaine d’apprentissage", fontSize = 12.sp, color = Graphite, letterSpacing = 0.sp)
-                    val interaction = remember { MutableInteractionSource() }
-                    Box(Modifier.fillMaxWidth()) {
-                        TextButton({ expanded = true }, Modifier.fillMaxWidth().heightIn(min = 48.dp).border(1.dp, Concrete, LearningShape).learningFocus(interaction),
-                            interactionSource = interaction, shape = LearningShape, colors = ButtonDefaults.textButtonColors(contentColor = Ink)) {
-                            Text(selectedSubject.title, Modifier.weight(1f), style = MaterialTheme.typography.button.copy(letterSpacing = 0.sp, fontWeight = FontWeight.SemiBold))
-                            Icon(Icons.Default.ArrowDropDown, "Choisir une matière")
-                        }
-                        DropdownMenu(expanded, { expanded = false }, Modifier.widthIn(max = 360.dp)) {
-                            subjects.forEach { subject -> DropdownMenuItem({ onSelectSubject(subject.id); expanded = false }, Modifier.heightIn(min = 48.dp)) { Text(subject.title, letterSpacing = 0.sp) } }
-                        }
-                    }
+                    SubjectPicker(selectedSubject, subjects, { onSelectSubject(it) }, expanded, { expanded = it })
                 }
-                if (!compact) { Spacer(Modifier.width(24.dp)); StatsStrip(stats) }
+                Spacer(Modifier.width(24.dp))
+                StatsStrip(stats, Modifier.widthIn(min = 280.dp, max = 320.dp))
             }
-            if (compact) StatsStrip(stats)
+            if (!rowLayout) {
+                Text("Domaine d’apprentissage", fontSize = 12.sp, color = Graphite, letterSpacing = 0.sp)
+                SubjectPicker(selectedSubject, subjects, { onSelectSubject(it) }, expanded, { expanded = it })
+                StatsStrip(stats, Modifier.fillMaxWidth())
+            }
+        }
+    }
+}
+
+@Composable
+private fun SubjectPicker(selectedSubject: Subject, subjects: List<Subject>, onSelectSubject: (String) -> Unit, expanded: Boolean, onExpandedChange: (Boolean) -> Unit) {
+    val interaction = remember { MutableInteractionSource() }
+    Box(Modifier.fillMaxWidth()) {
+        TextButton({ onExpandedChange(true) }, Modifier.fillMaxWidth().heightIn(min = 48.dp).border(1.dp, Concrete, LearningShape).learningFocus(interaction),
+            interactionSource = interaction, shape = LearningShape, colors = ButtonDefaults.textButtonColors(contentColor = Ink)) {
+            Text(selectedSubject.title, Modifier.weight(1f), style = MaterialTheme.typography.button.copy(letterSpacing = 0.sp, fontWeight = FontWeight.SemiBold), maxLines = 1)
+            Icon(Icons.Default.ArrowDropDown, "Choisir une matière")
+        }
+        DropdownMenu(expanded, { onExpandedChange(false) }, Modifier.widthIn(max = 360.dp)) {
+            subjects.forEach { subject -> DropdownMenuItem({ onSelectSubject(subject.id); onExpandedChange(false) }, Modifier.heightIn(min = 48.dp)) { Text(subject.title, letterSpacing = 0.sp) } }
         }
     }
 }
@@ -257,11 +269,11 @@ fun BottomNavigationBar(currentScreen: AppScreen, onNavigate: (AppScreen) -> Uni
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun StatsStrip(stats: UserStats) {
-    FlowRow(horizontalArrangement = Arrangement.spacedBy(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        SymbolValue(LearningSymbol.FLAME, "${stats.streakDays} j")
-        SymbolValue(LearningSymbol.XP, "${stats.xp} XP")
-        SymbolValue(LearningSymbol.HEART, "${stats.hearts}/${stats.maxHearts}")
+private fun StatsStrip(stats: UserStats, modifier: Modifier = Modifier) {
+    FlowRow(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        SymbolValue(LearningSymbol.FLAME, "${stats.streakDays} j", Modifier.semantics { contentDescription = "Série : ${stats.streakDays} jours" })
+        SymbolValue(LearningSymbol.XP, "${stats.xp} XP", Modifier.semantics { contentDescription = "${stats.xp} points d’expérience" })
+        SymbolValue(LearningSymbol.HEART, "${stats.hearts}/${stats.maxHearts}", Modifier.semantics { contentDescription = "Vies : ${stats.hearts} sur ${stats.maxHearts}" })
     }
 }
 
@@ -381,10 +393,8 @@ private fun CourseChoice(unit: LearningUnit, selected: Boolean, completed: Set<S
     val surface by animateColorAsState(when { selected -> ActionRed.copy(alpha = 0.07f); hovered -> White; else -> Paper }, tween(INTERACTION_MOTION_MS, easing = FastOutSlowInEasing))
     val outline by animateColorAsState(when { selected -> ActionRed; hovered -> Graphite; else -> Concrete }, tween(INTERACTION_MOTION_MS, easing = FastOutSlowInEasing))
     val scale by animateFloatAsState(if (pressed) 0.985f else 1f, tween(INTERACTION_MOTION_MS, easing = FastOutSlowInEasing))
-    val elevation by animateFloatAsState(with(LocalDensity.current) { if (hovered || selected) 2.dp.toPx() else 0f }, tween(INTERACTION_MOTION_MS, easing = FastOutSlowInEasing))
     OutlinedButton(onClick, Modifier.fillMaxWidth().graphicsLayer {
         scaleX = scale; scaleY = scale
-        shadowElevation = elevation; shape = LearningShape
     }.learningFocus(source).semantics { this.selected = selected }, interactionSource = source,
         shape = LearningShape, border = BorderStroke(1.dp, outline),
         colors = ButtonDefaults.outlinedButtonColors(backgroundColor = surface, contentColor = Ink), contentPadding = PaddingValues(16.dp)) {
@@ -444,13 +454,11 @@ fun LessonNodeItem(lesson: Lesson, isCompleted: Boolean, onClick: () -> Unit) {
     val interaction = remember { MutableInteractionSource() }
     val (hovered, pressed) = interaction.hoveredAndPressed(!lesson.isLocked)
     val surface by animateColorAsState(if (hovered) Paper else White, tween(INTERACTION_MOTION_MS, easing = FastOutSlowInEasing))
-    val outline by animateColorAsState(when { isCompleted -> BrandRed; hovered -> Graphite; else -> Concrete }, tween(INTERACTION_MOTION_MS, easing = FastOutSlowInEasing))
+    val outline by animateColorAsState(when { isCompleted -> BrandRed; hovered && !lesson.isLocked -> Graphite; else -> Concrete }, tween(INTERACTION_MOTION_MS, easing = FastOutSlowInEasing))
     val scale by animateFloatAsState(if (pressed) 0.985f else 1f, tween(INTERACTION_MOTION_MS, easing = FastOutSlowInEasing))
-    val elevation by animateFloatAsState(with(LocalDensity.current) { if (hovered && !lesson.isLocked) 2.dp.toPx() else 0f }, tween(INTERACTION_MOTION_MS, easing = FastOutSlowInEasing))
     val state = when { isCompleted -> "Terminée · Réviser"; lesson.isLocked -> "Verrouillée · Terminer les prérequis"; else -> "Disponible · Commencer" }
     OutlinedButton(onClick, Modifier.fillMaxWidth().heightIn(min = 88.dp).graphicsLayer {
         scaleX = scale; scaleY = scale
-        shadowElevation = elevation; shape = LearningShape
     }.learningFocus(interaction).semantics { stateDescription = state },
         enabled = !lesson.isLocked, interactionSource = interaction, shape = LearningShape,
         border = BorderStroke(1.dp, outline),
