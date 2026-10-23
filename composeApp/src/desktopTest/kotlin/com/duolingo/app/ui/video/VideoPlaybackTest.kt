@@ -68,7 +68,7 @@ class VideoPlaybackTest {
             override fun evaluate(script: String) = CompletableFuture.completedFuture("{}")
             override fun dispose() { disposed++ }
         }
-        val host = NativeVideoHost({}, {}, { adapter })
+        val host = NativeVideoHost({}, {}, { adapter }, resumeStore = null)
         SwingUtilities.invokeAndWait { host.create(video); host.close(); host.close() }
         SwingUtilities.invokeAndWait { }
         assertTrue(navigated.startsWith("http://127.0.0.1:"))

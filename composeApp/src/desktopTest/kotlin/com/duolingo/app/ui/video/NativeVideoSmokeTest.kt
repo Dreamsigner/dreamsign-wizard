@@ -8,6 +8,7 @@ import java.util.Base64
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicReference
+import kotlinx.coroutines.runBlocking
 import java.awt.Component
 import java.awt.Container
 import java.awt.Toolkit
@@ -41,13 +42,16 @@ class NativeVideoSmokeTest {
         }
         server.createContext("/clip.mp4") { serveMedia(it, mp4, "video/mp4") }
         server.start()
+        val resumeDirectory = Files.createTempDirectory("native-video-resume")
+        val resumeStore = FileVideoResumeStore(resumeDirectory.resolve("video-playback.json"))
+        val resumeKey = "mp4:local-fixture:${server.address.port}"
         val playing = CountDownLatch(1)
         val observed = AtomicReference<VideoPageState>()
         val failure = AtomicReference<String>()
-        val host = NativeVideoHost(onState = { state ->
+        var host = NativeVideoHost(onState = { state ->
             observed.set(state)
             if (state.mediaReady >= 2 && state.mediaTime > 0.1 && state.controls) playing.countDown()
-        }, onFailure = { failure.set(it); playing.countDown() })
+        }, onFailure = { failure.set(it); playing.countDown() }, resumeStore = resumeStore)
         var frame: JFrame? = null
         var playerPanel: JPanel? = null
         try {
@@ -58,7 +62,7 @@ class NativeVideoSmokeTest {
                     isAutoRequestFocus = false
                     focusableWindowState = false
                     setLocation(-12000, -12000)
-                    playerPanel = host.create("http://127.0.0.1:${server.address.port}/clip.mp4")
+                    playerPanel = host.create("http://127.0.0.1:${server.address.port}/clip.mp4", resumeKey)
                     add(requireNotNull(playerPanel)); setSize(800, 500); isVisible = true
                 }
                 // The library attaches its native peer on the Canvas's first paint.
@@ -164,6 +168,65 @@ class NativeVideoSmokeTest {
             val raw = adapter.evaluate("""(function(){var v=document.querySelector('video'),c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);return c.toDataURL('image/png');})()""").get(10, TimeUnit.SECONDS)
             val image = kotlinx.serialization.json.Json.parseToJsonElement(raw).let { (it as kotlinx.serialization.json.JsonPrimitive).content }
             Files.write(reports.resolve("decoded-fixture-frame.png"), Base64.getDecoder().decode(image.substringAfter(',')))
+            val seekDeadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(5)
+            while (kotlin.math.abs((observed.get()?.mediaTime ?: 0.0) - 0.75) > 0.05 && System.nanoTime() < seekDeadline) Thread.sleep(100)
+            assertTrue(kotlin.math.abs((observed.get()?.mediaTime ?: 0.0) - 0.75) <= 0.05, "Periodic host probe did not observe the manual seek before close: ${observed.get()}")
+            host.close()
+            var flushed: VideoResumeEntry? = null
+            val flushDeadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(6)
+            while ((flushed == null || kotlin.math.abs(flushed.positionSeconds - 0.75) > 0.05) && System.nanoTime() < flushDeadline) {
+                flushed = resumeStore.read(resumeKey)
+                if (flushed == null || kotlin.math.abs(flushed.positionSeconds - 0.75) > 0.05) Thread.sleep(50)
+            }
+            val storedResume = requireNotNull(flushed) { "Close did not flush the final video position" }
+            assertTrue(kotlin.math.abs(storedResume.positionSeconds - 0.75) <= 0.05, "Close flush stored the wrong position: $storedResume")
+            assertTrue(kotlin.math.abs(storedResume.durationSeconds - requireNotNull(observed.get()).duration) <= 0.01, "Close flush changed the duration: $storedResume")
+            val resumed = CountDownLatch(1)
+            val resumeFailure = AtomicReference<String>()
+            host = NativeVideoHost(onState = { page ->
+                observed.set(page)
+                if (page.mediaReady >= 2 && kotlin.math.abs(page.mediaTime - 0.75) < 0.2) resumed.countDown()
+            }, onFailure = { resumeFailure.set(it) }, resumeStore = resumeStore)
+            SwingUtilities.invokeAndWait {
+                frame?.dispose()
+                frame = JFrame("Atelier — video resume test").apply {
+                    defaultCloseOperation = JFrame.DISPOSE_ON_CLOSE
+                    type = java.awt.Window.Type.UTILITY
+                    isAutoRequestFocus = false
+                    focusableWindowState = false
+                    setLocation(-12000, -12000)
+                    playerPanel = host.create("http://127.0.0.1:${server.address.port}/clip.mp4", resumeKey)
+                    add(requireNotNull(playerPanel)); setSize(800, 500); isVisible = true
+                }
+                fun paintAgain(component: java.awt.Component) {
+                    if (component is java.awt.Canvas) {
+                        val buffer = java.awt.image.BufferedImage(800, 500, java.awt.image.BufferedImage.TYPE_INT_ARGB)
+                        val graphics = buffer.createGraphics()
+                        try { component.paint(graphics) } finally { graphics.dispose() }
+                    } else if (component is Container) component.components.forEach(::paintAgain)
+                }
+                paintAgain(requireNotNull(frame))
+            }
+            assertTrue(resumed.await(15, TimeUnit.SECONDS), "Reopened production MP4 wrapper did not seek to the stored position: ${observed.get()} failure=${resumeFailure.get()}")
+            val appCloseFlush = runBlocking { flushVideoPlaybackPositions() }
+            assertEquals(1, appCloseFlush.activePlayers)
+            assertEquals(1, appCloseFlush.flushedPlayers)
+            assertEquals(0, appCloseFlush.failedPlayers)
+            val resumedControls = requireNotNull(host.view).evaluate("(function(){var v=document.querySelector('video');return {time:v.currentTime,paused:v.paused};})()" ).get(5, TimeUnit.SECONDS)
+            val resumedValues = kotlinx.serialization.json.Json.parseToJsonElement(resumedControls) as kotlinx.serialization.json.JsonObject
+            assertTrue(kotlin.math.abs(resumedValues["time"]!!.toString().toDouble() - 0.75) < 0.2, resumedControls)
+            assertEquals("true", resumedValues["paused"].toString(), "Resume must restore the position without forcing playback: $resumedControls")
+            // Model the documented IFrame API contract: seekTo starts playback
+            // unless already paused, whereas cueVideoById waits for user input.
+            val scriptAdapter = requireNotNull(host.view)
+            listOf(-1, 1, 2, 5).forEach { initial ->
+                scriptAdapter.evaluate("(function(){window.__testYtState=$initial;window.__testYtTime=0;window.__testYtCue=-1;window.__ytPlayer={getPlayerState:function(){return window.__testYtState;},seekTo:function(t){window.__testYtTime=t;if(window.__testYtState!==2)window.__testYtState=1;},cueVideoById:function(o){window.__testYtCue=o.startSeconds;window.__testYtState=5;}};return true;})()").get(5, TimeUnit.SECONDS)
+                assertTrue(videoSeekWasDispatched(scriptAdapter.evaluate(videoResumeSeekScript(true, 12.5, "Gbtma_UQpro")).get(5, TimeUnit.SECONDS), null))
+                val result = scriptAdapter.evaluate("({state:window.__testYtState,time:window.__testYtTime,cue:window.__testYtCue})").get(5, TimeUnit.SECONDS)
+                val model = kotlinx.serialization.json.Json.parseToJsonElement(result) as kotlinx.serialization.json.JsonObject
+                assertEquals(if (initial in listOf(1, 2)) initial else 5, model["state"]!!.toString().toInt(), result)
+                assertEquals(12.5, model[if (initial in listOf(1, 2)) "time" else "cue"]!!.toString().toDouble(), result)
+            }
             val remote = mutableListOf<String>()
             if (System.getenv("ATELIER_VIDEO_REMOTE_SMOKE") == "true") {
                 val resources = com.duolingo.app.data.CourseResources.forSession("mit_18_06sc_2011", 1).filter { it.kind == "video" }
@@ -187,11 +250,14 @@ class NativeVideoSmokeTest {
                     remoteShell.close()
                 }
             }
-            Files.writeString(reports.resolve("summary.json"), """{"webView2Created":true,"videoDecoded":true,"mp4Decoded":true,"sourceControls":true,"pauseSeekSpeedVolumeVerified":true,"duration":${state.duration},"currentTime":${state.mediaTime},"fixture":"original-ffmpeg-testsrc","remoteChecks":[${remote.joinToString(",")}]}""")
+            Files.writeString(reports.resolve("summary.json"), """{"webView2Created":true,"videoDecoded":true,"mp4Decoded":true,"sourceControls":true,"pauseSeekSpeedVolumeVerified":true,"mp4ResumeAfterReopenVerified":true,"applicationCloseFlushVerified":true,"youtubeResumeApiContractVerified":true,"duration":${state.duration},"currentTime":${state.mediaTime},"fixture":"original-ffmpeg-testsrc","remoteChecks":[${remote.joinToString(",")}]}""")
         } finally {
             host.close()
+            runBlocking { flushVideoPlaybackPositions() }
             SwingUtilities.invokeAndWait { frame?.dispose() }
             server.stop(0)
+            Files.deleteIfExists(resumeDirectory.resolve("video-playback.json"))
+            Files.deleteIfExists(resumeDirectory)
         }
     }
 }

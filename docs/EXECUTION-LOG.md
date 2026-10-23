@@ -897,3 +897,28 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
 - Release stable avec installateur et SHA-256. Les classes de mise à jour
   de production détectent 1.7.2 vers 1.8.4 et valident le checksum (64 caractères).
   Aucune installation ni modification des données de l’utilisateur effectuée.
+
+## 23 octobre 2026 — Candidate 1.9.0 : reprise vidéo et téléchargement français
+
+- Positions YouTube/MP4 stockées dans video-playback.json, indépendantes de
+  progress.json : clés par source, écritures sérialisées/atomiques hors EDT,
+  validation du fichier, intervalle de 5 s et flush avant sortie de l’application.
+- Une restauration échouée préserve l’ancienne position; fin réelle remet la
+  reprise à zéro. L’API YouTube utilise cueVideoById pour les états non démarrés
+  et seekTo pour les états lecture/pause, sans imposer une lecture automatique.
+- Téléchargement YouTube avec piste française existante (doublage IA inclus) :
+  métadonnées réelles, filtre strict FR, sélection de destination, confirmation
+  avant remplacement, progression/annulation, assemblage MP4 et contrôle ffprobe.
+  Les outils yt-dlp, FFmpeg/ffprobe et le runtime JS restent des prérequis locaux;
+  aucun exécutable supplémentaire installé ou embarqué automatiquement.
+- Local : 177 tests desktop et un test natif réussis. Reprise MP4 après fermeture
+  et réouverture et flush applicatif vérifiés dans WebView2; contrat API YouTube
+  exécuté sur un modèle JS des états documentés. Les sources MIT MP4 et YouTube
+  sont également lues dans le smoke distant local. Distribution construite.
+- Dialogue de téléchargement inspecté à 500/1100 px. Assemblage réel avec fixture
+  synthétique de 2 s : audio FR 880 Hz retenu (873.7 Hz décodés), repli EN refusé.
+  Cette fixture ne prouve pas le téléchargement d’un doublage YouTube public.
+- Les vidéos MIT Gbtma_UQpro et J7DzL2_Na80 ne renvoient que en/en-US via l’outil
+  installé; aucun téléchargement positif d’une piste YouTube française certifié.
+- Candidate 1.9.0 et fixture de mise à niveau 1.9.1; CI et publication à confirmer.
+  Suivi de tâche et compteurs agents conservés uniquement dans le registre privé.

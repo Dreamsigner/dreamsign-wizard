@@ -60,7 +60,12 @@ private fun desktopApplication() = application {
     }
     val updateState by updater.ui.collectAsState()
     val scope = rememberCoroutineScope()
-    val closeSafely: (Boolean) -> Unit = { restart -> scope.launch { if (updater.beforeClose(restart)) exitApplication() }; Unit }
+    var unsavedVideoCloseRequest by remember { mutableStateOf<Boolean?>(null) }
+    val closeSafely: (Boolean) -> Unit = { restart -> scope.launch {
+        val flushed = com.duolingo.app.ui.video.flushVideoPlaybackPositions()
+        if (flushed.failedPlayers > 0) unsavedVideoCloseRequest = restart
+        else if (updater.beforeClose(restart)) exitApplication()
+    }; Unit }
     LaunchedEffect(updater) { updater.start() }
     DisposableEffect(updater) { onDispose { updater.close() } }
     Window(
@@ -69,6 +74,20 @@ private fun desktopApplication() = application {
         state = rememberWindowState(width = 1280.dp, height = 840.dp)
     ) {
         window.minimumSize = Dimension(360, 480)
+        unsavedVideoCloseRequest?.let { restart ->
+            androidx.compose.material.AlertDialog(
+                onDismissRequest = { unsavedVideoCloseRequest = null },
+                title = { androidx.compose.material.Text("Position vidéo non enregistrée") },
+                text = { androidx.compose.material.Text("Impossible d’enregistrer une ou plusieurs positions vidéo. Les positions précédentes sont conservées.") },
+                confirmButton = { androidx.compose.material.TextButton(onClick = {
+                    unsavedVideoCloseRequest = null
+                    scope.launch { if (updater.beforeClose(restart)) exitApplication() }
+                }) { androidx.compose.material.Text("Quitter quand même") } },
+                dismissButton = { androidx.compose.material.TextButton(onClick = { unsavedVideoCloseRequest = null }) {
+                    androidx.compose.material.Text("Rester dans l’application")
+                } },
+            )
+        }
         PdfReaderProvider(
             androidx.compose.runtime.remember { DesktopPdfDocumentReader() },
             scrollbar = { state, modifier -> androidx.compose.foundation.VerticalScrollbar(
@@ -77,9 +96,11 @@ private fun desktopApplication() = application {
         ) {
             com.duolingo.app.ui.VideoThumbnailProvider(androidx.compose.runtime.remember { com.duolingo.app.ui.DesktopVideoThumbnailLoader() }) {
                 com.duolingo.app.ui.VideoPlaybackProvider(com.duolingo.app.ui.video.DesktopVideoPlayer) {
-                    MathRenderingProvider(DesktopMathRenderer) {
-                        App(settingsActionCount = updateState.actionCount) {
-                            UpdatePanel(updateState, updater::checkNow, updater::setAutomatic, { closeSafely(true) })
+                    com.duolingo.app.ui.VideoDownloadProvider(remember { com.duolingo.app.ui.download.defaultFrenchVideoDownloader() }) {
+                        MathRenderingProvider(DesktopMathRenderer) {
+                            App(settingsActionCount = updateState.actionCount) {
+                                UpdatePanel(updateState, updater::checkNow, updater::setAutomatic, { closeSafely(true) })
+                            }
                         }
                     }
                 }

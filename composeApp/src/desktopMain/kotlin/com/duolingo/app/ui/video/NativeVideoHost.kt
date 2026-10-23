@@ -13,6 +13,8 @@ import java.nio.charset.StandardCharsets
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.CompletableFuture
+import java.util.concurrent.Executors
+import java.util.concurrent.Future
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.swing.*
 
@@ -27,7 +29,7 @@ internal fun playerAddress(resource: CourseResource): String {
 }
 
 internal data class VideoPageState(val url: String, val ready: Boolean, val hasVideo: Boolean, val mediaReady: Int, val fullscreen: Boolean, val mediaTime: Double = 0.0, val duration: Double = 0.0, val controls: Boolean = false,
-    val youtubeReady: Boolean = false, val youtubeState: Int = -1, val youtubeError: Int = 0, val elementWidth: Int = 0, val elementHeight: Int = 0, val videoWidth: Int = 0, val videoHeight: Int = 0, val viewportWidth: Int = 0, val viewportHeight: Int = 0, val keyAction: String = "")
+    val youtubeReady: Boolean = false, val youtubeState: Int = -1, val youtubeError: Int = 0, val elementWidth: Int = 0, val elementHeight: Int = 0, val videoWidth: Int = 0, val videoHeight: Int = 0, val viewportWidth: Int = 0, val viewportHeight: Int = 0, val keyAction: String = "", val ended: Boolean = false)
 internal fun parseVideoPageState(raw: String): VideoPageState {
     require(raw.length <= 16384)
     val outer = Json.parseToJsonElement(raw)
@@ -39,9 +41,9 @@ internal fun parseVideoPageState(raw: String): VideoPageState {
         obj["youtubeError"]?.jsonPrimitive?.intOrNull ?: 0, obj["elementWidth"]?.jsonPrimitive?.intOrNull ?: 0,
         obj["elementHeight"]?.jsonPrimitive?.intOrNull ?: 0, obj["videoWidth"]?.jsonPrimitive?.intOrNull ?: 0,
         obj["videoHeight"]?.jsonPrimitive?.intOrNull ?: 0, obj["viewportWidth"]?.jsonPrimitive?.intOrNull ?: 0,
-        obj["viewportHeight"]?.jsonPrimitive?.intOrNull ?: 0, obj["keyAction"]?.jsonPrimitive?.contentOrNull ?: "")
+        obj["viewportHeight"]?.jsonPrimitive?.intOrNull ?: 0, obj["keyAction"]?.jsonPrimitive?.contentOrNull ?: "", obj["ended"]?.jsonPrimitive?.booleanOrNull ?: false)
 }
-internal const val VIDEO_PAGE_PROBE = """JSON.stringify((function(){var v=document.querySelector('video'),p=document.querySelector('iframe')||v,r=(p||document.documentElement).getBoundingClientRect(),k=window.__nativeKeyAction||'';window.__nativeKeyAction='';return {url:location.href,ready:document.readyState==='complete',video:!!v,mediaReady:v?v.readyState:0,fullscreen:!!document.fullscreenElement,mediaTime:v?v.currentTime:(window.__ytTime||0),duration:v&&isFinite(v.duration)?v.duration:(window.__ytDuration||0),controls:v?!!v.controls:!!p,youtubeReady:!!window.__ytReady,youtubeState:window.__ytState===undefined?-1:window.__ytState,youtubeError:window.__ytError||0,elementWidth:Math.round(r.width),elementHeight:Math.round(r.height),videoWidth:v?v.videoWidth:0,videoHeight:v?v.videoHeight:0,viewportWidth:window.innerWidth,viewportHeight:window.innerHeight,keyAction:k};})())"""
+internal const val VIDEO_PAGE_PROBE = """JSON.stringify((function(){var v=document.querySelector('video'),p=document.querySelector('iframe')||v,r=(p||document.documentElement).getBoundingClientRect(),k=window.__nativeKeyAction||'';window.__nativeKeyAction='';return {url:location.href,ready:document.readyState==='complete',video:!!v,mediaReady:v?v.readyState:0,fullscreen:!!document.fullscreenElement,mediaTime:v?v.currentTime:(window.__ytTime||0),duration:v&&isFinite(v.duration)?v.duration:(window.__ytDuration||0),controls:v?!!v.controls:!!p,youtubeReady:!!window.__ytReady,youtubeState:window.__ytState===undefined?-1:window.__ytState,youtubeError:window.__ytError||0,ended:v?!!v.ended:window.__ytState===0,elementWidth:Math.round(r.width),elementHeight:Math.round(r.height),videoWidth:v?v.videoWidth:0,videoHeight:v?v.videoHeight:0,viewportWidth:window.innerWidth,viewportHeight:window.innerHeight,keyAction:k};})())"""
 
 internal fun videoWrapperHtml(source: String, origin: String? = null): String {
     val isYouTube = source.startsWith("https://www.youtube.com/embed/")
@@ -94,7 +96,7 @@ internal class VideoWrapperServer(source: String) : AutoCloseable {
 }
 
 /** One native WebView per window, released with its local shell. No app bridge is exposed. */
-internal class NativeVideoHost(private val onState: (VideoPageState) -> Unit, private val onFailure: (String) -> Unit, private val factory: () -> NativeVideoAdapter = { WebViewAdapter() }) {
+internal class NativeVideoHost(private val onState: (VideoPageState) -> Unit, private val onFailure: (String) -> Unit, private val factory: () -> NativeVideoAdapter = { WebViewAdapter() }, private val resumeStore: FileVideoResumeStore? = productionVideoResumeStore(), private val onPersistenceWarning: (String) -> Unit = {}) {
     var view: NativeVideoAdapter? = null
         private set
     var lastProbeError: String? = null
@@ -102,11 +104,38 @@ internal class NativeVideoHost(private val onState: (VideoPageState) -> Unit, pr
     private var timer: Timer? = null
     private var wrapper: VideoWrapperServer? = null
     private val closed = AtomicBoolean(false)
+    private val registered = AtomicBoolean(false)
     private val probing = AtomicBoolean(false)
-    fun create(resource: CourseResource): JPanel = create(playerAddress(resource))
-    fun create(sourceAddress: String): JPanel = JPanel(BorderLayout()).apply {
+    private var resumeKey: String? = null
+    @Volatile private var resumeEntry: VideoResumeEntry? = null
+    @Volatile private var resumeLoaded = true
+    @Volatile private var resumeReadFailed = false
+    private var restorationStarted = false
+    private var seekIssued = false
+    @Volatile private var restored = false
+    private var restoreTarget = 0.0
+    private var restoreDuration = 0.0
+    private var persistenceDisabled = false
+    private var lastSavedAt = 0L
+    private var previousEnded = false
+    @Volatile private var lastPersistableState: VideoPageState? = null
+    fun create(resource: CourseResource): JPanel = create(playerAddress(resource), videoResumeKey(resource.url))
+    fun create(sourceAddress: String): JPanel = create(sourceAddress, null)
+    internal fun create(sourceAddress: String, stableResumeKey: String?): JPanel = JPanel(BorderLayout()).apply {
         try {
             check(System.getProperty("os.name").startsWith("Windows"))
+            resumeKey = stableResumeKey
+            if (stableResumeKey != null && resumeStore != null) {
+                if (registered.compareAndSet(false, true)) VideoPlaybackFlushRegistry.register(this@NativeVideoHost)
+                resumeLoaded = false
+                VIDEO_IO.execute {
+                    try { resumeEntry = resumeStore.read(stableResumeKey) }
+                    catch (error: Exception) {
+                        resumeReadFailed = true
+                        SwingUtilities.invokeLater { if (!closed.get()) onPersistenceWarning("La reprise vidéo n’a pas pu être lue. La lecture reste disponible, mais cette position ne sera pas remplacée.") }
+                    } finally { resumeLoaded = true }
+                }
+            }
             wrapper = VideoWrapperServer(sourceAddress)
             val native = factory()
             view = native
@@ -128,7 +157,7 @@ internal class NativeVideoHost(private val onState: (VideoPageState) -> Unit, pr
                                 if (error == null) runCatching { parseVideoPageState(raw) }.onSuccess { state ->
                                     attempts = 0
                                     if (state.url.startsWith("chrome-error:")) onFailure("Le lecteur n’a pas pu charger cette vidéo. Vérifie la connexion ou ouvre la source dans le navigateur.")
-                                    else onState(state)
+                                    else handlePlaybackState(state, native)
                                 }.onFailure {
                                     lastProbeError = "${it.javaClass.simpleName}: ${it.message}"
                                     if (++attempts == 20) onFailure("Le lecteur ne fournit pas son état. Ouvre la source dans le navigateur.")
@@ -145,11 +174,111 @@ internal class NativeVideoHost(private val onState: (VideoPageState) -> Unit, pr
         } catch (_: LinkageError) { onFailure("Le lecteur natif ne peut pas démarrer. Le runtime Microsoft Edge WebView2 est requis.") }
         catch (_: Exception) { onFailure("Le lecteur n’est pas disponible. Tu peux ouvrir la vidéo dans le navigateur.") }
     }
-    fun close() {
-        if (closed.compareAndSet(false, true)) SwingUtilities.invokeLater {
-            timer?.stop(); timer = null
-            view?.dispose(); view = null
-            wrapper?.close(); wrapper = null
+    private fun handlePlaybackState(state: VideoPageState, native: NativeVideoAdapter) {
+        val key = resumeKey
+        val store = resumeStore
+        if (key == null || store == null) {
+            onState(state)
+            return
         }
+        if (!resumeLoaded || resumeReadFailed || persistenceDisabled) {
+            onState(state)
+            return
+        }
+        if (!restored) {
+            val mediaLoaded = if (state.youtubeReady) state.duration > 0.0 else state.hasVideo && state.mediaReady >= 1 && state.duration > 0.0
+            if (mediaLoaded && !restorationStarted) {
+                restorationStarted = true
+                restoreDuration = state.duration
+                restoreTarget = restoredVideoPosition(resumeEntry, state.duration)
+                if (restoreTarget <= 0.0) {
+                    restored = true
+                    previousEnded = state.ended
+                } else {
+                    try {
+                        native.evaluate(videoResumeSeekScript(state.youtubeReady, restoreTarget,
+                            resumeKey?.takeIf { it.startsWith("youtube:") }?.removePrefix("youtube:"))).orTimeout(4, TimeUnit.SECONDS).whenComplete { result, error ->
+                            SwingUtilities.invokeLater {
+                                if (!closed.get()) {
+                                    if (videoSeekWasDispatched(result, error)) seekIssued = true
+                                    else {
+                                        persistenceDisabled = true
+                                        onPersistenceWarning("La position vidéo n’a pas pu être restaurée. L’ancienne reprise est conservée.")
+                                    }
+                                }
+                            }
+                        }
+                    } catch (_: Exception) {
+                        persistenceDisabled = true
+                        onPersistenceWarning("La position vidéo n’a pas pu être restaurée. L’ancienne reprise est conservée.")
+                    }
+                }
+            }
+            if (!restored && seekIssued) {
+                if ((state.youtubeReady && state.youtubeState == 5) ||
+                    videoRestorePositionConfirmed(restoreTarget, state.mediaTime, state.duration, state.youtubeReady)) {
+                    restored = true
+                    previousEnded = state.ended
+                    lastSavedAt = System.nanoTime()
+                } else if (lastSavedAt != 0L && videoRestoreTimedOut(System.nanoTime(), lastSavedAt)) {
+                    persistenceDisabled = true
+                    onPersistenceWarning("La position vidéo n’a pas été confirmée. L’ancienne reprise est conservée.")
+                } else if (lastSavedAt == 0L) lastSavedAt = System.nanoTime()
+            }
+        }
+        if (restored && (state.mediaReady >= 1 || (state.youtubeReady && state.youtubeState in listOf(0, 1, 2, 5)))) {
+            val reliableState = if (state.youtubeReady && state.youtubeState == 5 && restoreTarget > 0.0)
+                state.copy(mediaTime = restoreTarget, duration = restoreDuration) else state
+            lastPersistableState = reliableState
+            val now = System.nanoTime()
+            val endedTransition = state.ended && !previousEnded
+            previousEnded = state.ended
+            if (endedTransition || now - lastSavedAt >= TimeUnit.SECONDS.toNanos(5)) {
+                val entry = videoPositionToPersist(reliableState)
+                if (entry != null) {
+                    lastSavedAt = now
+                    VIDEO_IO.execute {
+                        try { store.write(key, entry) }
+                        catch (_: Exception) { SwingUtilities.invokeLater { if (!closed.get()) { persistenceDisabled = true; onPersistenceWarning("Impossible d’enregistrer la reprise vidéo. Vérifie l’espace disque et les droits d’accès.") } } }
+                    }
+                }
+            }
+        }
+        onState(state)
+    }
+    internal fun queueFlushForShutdown(): java.util.concurrent.CompletableFuture<Boolean>? {
+        val state = lastPersistableState ?: return null
+        val key = resumeKey ?: return null
+        val store = resumeStore ?: return null
+        if (!restored || resumeReadFailed) return null
+        if (persistenceDisabled) return java.util.concurrent.CompletableFuture.completedFuture(false)
+        val entry = videoPositionToPersist(state) ?: return null
+        return java.util.concurrent.CompletableFuture.supplyAsync({
+            try {
+                store.write(key, entry)
+                true
+            } catch (_: Exception) {
+                SwingUtilities.invokeLater { if (!closed.get()) onPersistenceWarning("Impossible d’enregistrer la reprise vidéo à la fermeture. L’ancienne position est conservée.") }
+                false
+            }
+        }, VIDEO_IO)
+    }
+    fun close() {
+        if (closed.compareAndSet(false, true)) {
+            if (registered.compareAndSet(true, false)) VideoPlaybackFlushRegistry.unregister(this)
+            queueFlushForShutdown()?.let { flush ->
+                Thread({ runCatching { flush.get(5, TimeUnit.SECONDS) } }, "video-resume-final-flush").apply { isDaemon = false; start() }
+            }
+            SwingUtilities.invokeLater {
+                timer?.stop(); timer = null
+                view?.dispose(); view = null
+                wrapper?.close(); wrapper = null
+            }
+        }
+    }
+
+    companion object {
+        private val VIDEO_IO = Executors.newSingleThreadExecutor { runnable -> Thread(runnable, "video-resume-io").apply { isDaemon = true } }
+        internal fun persistenceBarrier(): CompletableFuture<Boolean> = CompletableFuture.supplyAsync({ true }, VIDEO_IO)
     }
 }

@@ -17,7 +17,9 @@ import com.duolingo.app.ui.pdf.PdfDocumentDialog
 internal fun ReferenceLinks(resources: List<CourseResource>, showVideoPreviews: Boolean = false) {
     val uri = LocalUriHandler.current
     val videoPlayer = LocalVideoPlayer.current
+    val videoDownloader = LocalVideoDownloader.current
     var openedVideo by remember(resources) { mutableStateOf<CourseResource?>(null) }
+    var downloadingVideo by remember(resources) { mutableStateOf<CourseResource?>(null) }
     var failure by remember(resources) { mutableStateOf<String?>(null) }
     var openedPdf by remember(resources) { mutableStateOf<CourseResource?>(null) }
     resources.distinctBy { it.url }
@@ -27,6 +29,11 @@ internal fun ReferenceLinks(resources: List<CourseResource>, showVideoPreviews: 
                 failure = null
                 try { uri.openUri(resource.url) } catch (_: Exception) {
                     failure = "Impossible d’ouvrir ce support. Vérifie la connexion ou le navigateur par défaut."
+                }
+            }
+            if (videoDownloader != null && youtubeVideoId(resource.url) != null) {
+                TextButton({ downloadingVideo = resource }, Modifier.fillMaxWidth().heightIn(min = 48.dp)) {
+                    Text("Télécharger avec la piste audio française", color = ActionRed)
                 }
             }
         } else TextButton({
@@ -55,4 +62,5 @@ internal fun ReferenceLinks(resources: List<CourseResource>, showVideoPreviews: 
     failure?.let { Text(it, color = ActionRed) }
     openedPdf?.let { PdfDocumentDialog(it, onClose = { openedPdf = null }) }
     openedVideo?.let { videoPlayer?.Player(it, onClose = { openedVideo = null }) }
+    downloadingVideo?.let { videoDownloader?.Download(it, onClose = { downloadingVideo = null }) }
 }

@@ -3,7 +3,7 @@
 ## Installer l’application
 
 1. Dans une exécution GitHub Actions réussie de `main`, télécharger **AtelierApprentissage-Windows-Setup**.
-2. Extraire l’archive, puis lancer `AtelierApprentissage-1.8.4-Setup.exe`.
+2. Extraire l’archive, puis lancer `AtelierApprentissage-1.9.0-Setup.exe`.
 3. Suivre l’assistant, puis utiliser le raccourci du Bureau ou du menu Démarrer.
 
 L’installation est propre à l’utilisateur courant, par défaut dans
@@ -59,6 +59,35 @@ paquet ne nécessite pas de supprimer cette sauvegarde. Une sauvegarde illisible
 est préservée et l'application signale l'erreur. Il n'y a pas de synchronisation
 entre appareils.
 
+## Reprise vidéo et téléchargement avec audio français
+
+Les positions YouTube et MP4 sont enregistrées séparément dans
+`%LOCALAPPDATA%/AtelierApprentissage/video-playback.json`. Ce fichier ne modifie
+pas `progress.json`. Un fichier illisible est conservé et un message signale
+que sa position ne peut pas être enregistrée. La reprise ne remplace pas une
+synchronisation entre appareils. Les vidéos terminées repartent du début.
+
+Sous une carte YouTube, **Télécharger avec la piste audio française** examine
+les pistes accessibles. Le doublage automatique de YouTube est accepté comme
+une piste française existante; aucun doublage ni sous-titre traduit n’est
+fabriqué par l’application. Sans piste française accessible, aucun téléchargement
+n’est proposé. Le fichier MP4 est contrôlé avant publication à la destination;
+un fichier existant exige une confirmation de remplacement.
+
+Le poste doit disposer de `yt-dlp.exe`, `ffmpeg.exe`, `ffprobe.exe` et d’un moteur
+JavaScript pris en charge par yt-dlp (Deno est utilisé sur le poste de validation).
+Ces dépendances ne sont pas embarquées et ne sont pas installées automatiquement.
+Les trois exécutables sont recherchés dans `PATH`. Pour un emplacement personnalisé,
+les variables d’environnement `ATELIER_YT_DLP_PATH`, `ATELIER_FFMPEG_PATH` et
+`ATELIER_FFPROBE_PATH` acceptent le chemin complet correspondant, avant lancement
+de l’application. Un outil manquant est signalé dans le dialogue.
+
+Vérification utilisateur : arrêter une vidéo à un instant identifiable, fermer
+son lecteur puis le rouvrir; répéter après redémarrage de l’application. Pour le
+téléchargement, choisir une vidéo qui propose effectivement une piste française
+et vérifier le son du MP4 final. Les restrictions réseau ou les pistes que
+YouTube n’expose pas à l’outil peuvent empêcher le téléchargement.
+
 ## Diagnostic sans ouvrir de fenêtre
 
 Depuis PowerShell, dans le dossier extrait, choisir un nouveau nom de rapport :
@@ -91,7 +120,7 @@ réseau sont limitées à quatre secondes chacune. Aucune vidéo n’est téléc
 
 ## Mises à jour automatiques
 
-Installer une première fois la version 1.8.4 depuis les [releases GitHub](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/latest).
+Installer une première fois la version 1.9.0 depuis les [releases GitHub](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/latest).
 L’installation Windows standard `%LOCALAPPDATA%/DuolingoKmpApp` active les mises à jour automatiques.
 Les copies portables et chemins d’installation personnalisés affichent que la mise à jour manuelle reste nécessaire.
 
@@ -109,7 +138,7 @@ Le checksum vérifie l’intégrité du fichier diffusé par GitHub; il ne rempl
 
 ### Publier une version compatible (maintenance)
 
-Actualiser la version du paquet, les noms d’artefacts et la fixture de mise à niveau dans le workflow et son test, puis créer le tag `vMAJOR.MINOR.PATCH` correspondant. Le job de release vérifie que le tag stable et le commit source correspondent avant de publier l’EXE et `SHA256SUMS.txt`, après les contrôles Windows. Le paquet de fixture de version supérieure (actuellement 1.8.5) sert uniquement au test d’installation et n’est jamais publié. Les artefacts Actions seuls ne déclenchent aucune mise à jour.
+Actualiser la version du paquet, les noms d’artefacts et la fixture de mise à niveau dans le workflow et son test, puis créer le tag `vMAJOR.MINOR.PATCH` correspondant. Le job de release vérifie que le tag stable et le commit source correspondent avant de publier l’EXE et `SHA256SUMS.txt`, après les contrôles Windows. Le paquet de fixture de version supérieure (actuellement 1.9.1) sert uniquement au test d’installation et n’est jamais publié. Les artefacts Actions seuls ne déclenchent aucune mise à jour.
 
 ## Lecteur vidéo intégré (mathématiques)
 

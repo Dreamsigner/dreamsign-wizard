@@ -47,6 +47,7 @@ object DesktopVideoPlayer : VideoPlayer {
         val supported = remember(resource.url) { runCatching { playerAddress(resource); true }.getOrDefault(false) }
         val state = rememberWindowState(width = 1100.dp, height = 760.dp)
         var message by remember(resource.url) { mutableStateOf("Chargement du lecteur source…") }
+        var persistenceWarning by remember(resource.url) { mutableStateOf<String?>(null) }
         var failure by remember(resource.url) { mutableStateOf(false) }
         var fullscreenSession by remember(resource.url) { mutableStateOf(FullscreenSession()) }
         lateinit var host: NativeVideoHost
@@ -69,7 +70,7 @@ object DesktopVideoPlayer : VideoPlayer {
             }
             fullscreenSession = fullscreenSession.onSourceFullscreen(page.fullscreen)
             state.placement = fullscreenSession.placement
-        }, onFailure = { message = it; failure = true }) }
+        }, onFailure = { message = it; failure = true }, onPersistenceWarning = { persistenceWarning = it }) }
         DisposableEffect(host) { onDispose { host.close() } }
         Window(onCloseRequest = onClose, title = "Vidéo · ${resource.title.substringBeforeLast(" — ", resource.title)}", state = state) {
             val isFullscreen = state.placement == WindowPlacement.Fullscreen
@@ -92,7 +93,7 @@ object DesktopVideoPlayer : VideoPlayer {
             }) {
                 VideoPlayerLayout(
                     title = resource.title.substringBeforeLast(" — ", resource.title),
-                    message = message,
+                    message = persistenceWarning ?: message,
                     fullscreen = isFullscreen,
                     onFullscreen = { if (isFullscreen) leaveFullscreen() else enterFullscreen() },
                     onBrowser = { runCatching { uri.openUri(resource.url) } },
