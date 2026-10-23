@@ -6,36 +6,97 @@ data class FractionExpressionSpan(val start: Int, val end: Int, val latex: Strin
 /** Finds mathematical quotient expressions in ordinary copy without consuming adjacent prose. */
 fun findFractionExpressions(source: String): List<FractionExpressionSpan> {
     if (source.isEmpty()) return emptyList()
+    // Hide recognized physical units while scanning so their slash and superscript remain literal.
+    val scanSource = source.toCharArray().also { chars ->
+        findPhysicalUnitExpressions(source).forEach { span ->
+            for (index in span.start until span.end) chars[index] = ' '
+        }
+    }.concatToString()
     val spans = mutableListOf<FractionExpressionSpan>()
     var cursor = 0
-    while (cursor < source.length) {
-        if (source[cursor] == '`') {
-            val close = source.indexOf('`', cursor + 1)
-            cursor = if (close < 0) source.length else close + 1
+    while (cursor < scanSource.length) {
+        if (scanSource[cursor] == '`') {
+            val close = scanSource.indexOf('`', cursor + 1)
+            cursor = if (close < 0) scanSource.length else close + 1
             continue
         }
-        if (source[cursor] == '|' && source.indexOf('|', cursor + 1) < 0) {
+        if (scanSource[cursor] == '|' && scanSource.indexOf('|', cursor + 1) < 0) {
             // Do not reinterpret the contents of an unclosed absolute-value group as standalone math.
             break
         }
-        if (source.startsWith("https://", cursor) || source.startsWith("http://", cursor)) {
-            cursor = source.indexOfAny(charArrayOf(' ', '\n', '\t'), cursor).let { if (it < 0) source.length else it }
+        if (scanSource.startsWith("https://", cursor) || scanSource.startsWith("http://", cursor)) {
+            cursor = scanSource.indexOfAny(charArrayOf(' ', '\n', '\t'), cursor).let { if (it < 0) scanSource.length else it }
             continue
         }
-        if (!isStartBoundary(source, cursor)) { cursor++; continue }
-        val parser = ExpressionParser(source, cursor)
+        if (!isStartBoundary(scanSource, cursor)) { cursor++; continue }
+        val parser = ExpressionParser(scanSource, cursor)
         val expression = parser.parseFormula()
         if (expression == null) { cursor++; continue }
         val end = parser.position
         if (end <= cursor) { cursor++; continue }
         if (!parser.sawSlash) { cursor = end; continue }
-        if (!isEndBoundary(source, end)) { cursor++; continue }
+        if (!isEndBoundary(scanSource, end)) { cursor++; continue }
         val raw = source.substring(cursor, end)
         if (isKnownNonMathSlash(raw) || isDateOrPath(source, cursor, end)) { cursor = end; continue }
         spans += FractionExpressionSpan(cursor, end, expression.latex())
         cursor = end
     }
     return spans
+}
+
+/** Recognized slash-form physical units, retained as a single linear text span. */
+data class PhysicalUnitSpan(val start: Int, val end: Int)
+
+private const val UNIT_SYMBOLS = "(?:km|cm|mm|μm|nm|kg|mg|g|ms|min|h|s|m|A|K|mol|cd|kHz|MHz|Hz|kN|N|kPa|Pa|kJ|J|kW|W|mV|V|C|Ω|S|Wb|T|H|L|l|bar|atm|cal|eV|rad|sr)"
+private const val UNIT_POWER = "(?:[²³]|\\^\\s*\\{?[23]\\}?)?"
+private val physicalUnitPattern = Regex("(?<![\\p{L}\\p{N}_])$UNIT_SYMBOLS$UNIT_POWER(?:·$UNIT_SYMBOLS$UNIT_POWER)*\\s*/\\s*$UNIT_SYMBOLS$UNIT_POWER(?:·$UNIT_SYMBOLS$UNIT_POWER)*(?![\\p{L}\\p{N}_])")
+
+fun findPhysicalUnitExpressions(source: String): List<PhysicalUnitSpan> {
+    val codeRanges = Regex("`[^`\\n]*`").findAll(source).map { it.range }.toList()
+    return physicalUnitPattern.findAll(source).mapNotNull { match ->
+        val start = match.range.first
+        val before = source.substring(0, start)
+        val contextStart = before.indexOfLast { it.isWhitespace() || it in "([{<\\\"'" }.let { it + 1 }
+        val preceding = before.substring(contextStart)
+        val inUrl = preceding.contains("http://") || preceding.contains("https://")
+        val inPath = preceding.startsWith("/") || preceding.startsWith("./") || preceding.startsWith("../") || Regex("^[A-Za-z]:/").containsMatchIn(preceding)
+        if (inUrl || inPath || codeRanges.any { start in it }) null else PhysicalUnitSpan(start, match.range.last + 1)
+    }.toList()
+}
+
+/** Converts upright TeX unit quotients to a linear upright unit while preserving the exponent. */
+fun linearizeExplicitPhysicalUnitFractions(latex: String): String = explicitUnitFractionPattern.replace(latex) { match ->
+    val numerator = match.groupValues[1]
+    val denominator = match.groupValues[2]
+    val exponent = match.groupValues[3]
+    if (!isKnownPhysicalUnitRatio(numerator, denominator)) match.value
+    else "\\mathrm{$numerator/$denominator${exponent.takeIf(String::isNotEmpty)?.let { "^{${it}}" } ?: ""}}"
+}
+
+private val explicitUnitFractionPattern = Regex("\\\\frac\\s*\\{\\s*\\\\mathrm\\{([A-Za-zμΩ]+)\\}\\s*}\\s*\\{\\s*\\\\mathrm\\{([A-Za-zμΩ]+)\\}\\s*(?:\\^\\s*\\{?(\\d+)\\}?)?\\s*}")
+
+private fun isKnownPhysicalUnitRatio(numerator: String, denominator: String): Boolean =
+    numerator in physicalUnitSymbols && denominator in physicalUnitSymbols
+
+private val physicalUnitSymbols = setOf(
+    "km", "cm", "mm", "μm", "nm", "kg", "mg", "g", "ms", "min", "h", "s", "m", "A", "K", "mol", "cd",
+    "Hz", "kHz", "MHz", "N", "kN", "Pa", "kPa", "J", "kJ", "W", "kW", "C", "V", "mV", "Ω", "S", "Wb",
+    "T", "H", "L", "l", "bar", "atm", "cal", "eV", "rad", "sr",
+)
+
+/** Formats a numeric quantity followed by a recognized unit quotient in linear TeX. */
+fun formatPhysicalQuantity(source: String): String? {
+    val unit = findPhysicalUnitExpressions(source).singleOrNull() ?: return null
+    if (source.isBlank()) return null
+    val end = source.indexOfLast { !it.isWhitespace() } + 1
+    if (unit.end != end) return null
+    val rawUnit = source.substring(unit.start, unit.end)
+    val renderedUnit = rawUnit.replace("²", "^{2}").replace("³", "^{3}")
+    val prefix = source.substring(0, unit.start).trim()
+    if (prefix.isEmpty()) return "\\mathrm{$renderedUnit}"
+    if (!Regex("[+−-]?\\d+(?:[.,]\\d+)?|[+−-]?\\d+/\\d+").matches(prefix)) return null
+    val number = formatFractionExpression(prefix) ?: prefix.replace('−', '-')
+    return "$number\\,\\mathrm{$renderedUnit}"
 }
 
 /** Formats a whole quotient-bearing formula, returning null unless every character is parsed. */

@@ -179,3 +179,9 @@ Le sommaire reste en panneau latéral à partir de1000dp de largeur du lecteur, 
 Le test d’installation CI vérifie aussi la suppression de la copie d’installateur dans le cache et du payload, tout en conservant l’installateur externe d’origine. Les temporaires récents et les fichiers inconnus restent intacts; progression/préférences, dernier résultat et journal ne sont pas supprimés. Le cache système Windows Installer et les téléchargements manuels sont hors périmètre.
 
 Le candidat1.11.2 corrige la taille des fractions mais n’est pas publié : le contrôle vidéo natif échoue en CI. Pour examiner son rendu localement, utiliser la distribution construite dans `composeApp/build/compose/binaries/main/app/DuolingoKmpApp/`; les mises à jour publiques restent sur1.11.0.
+
+## Unités physiques et fractions
+
+Le rendu partagé conserve les unités composées sur une ligne (`12 m/s`, `9,8 m/s²`, `km/h`), y compris les unités rédigées avec une fraction LaTeX en caractères droits dans le catalogue. Les fractions numériques et algébriques restent verticales : dans `1/2 m/s`, seule la valeur numérique est une fraction.
+
+Le test du catalogue classe séparément unités et fractions, et continue de signaler les slashs non reconnus. Les captures natives `linear-units-readable-fractions-360.png` et `linear-units-readable-fractions-1000.png`, dans `composeApp/build/reports/ui-snapshots/`, comparent les unités simples, le cas LaTeX du cursus et les vraies fractions. Ce correctif est disponible dans la distribution locale; il ne constitue pas une nouvelle release publiée.

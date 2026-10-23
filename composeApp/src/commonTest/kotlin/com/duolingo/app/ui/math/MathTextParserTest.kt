@@ -3,6 +3,7 @@ package com.duolingo.app.ui.math
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class MathTextParserTest {
     @Test
@@ -22,6 +23,40 @@ class MathTextParserTest {
     @Test
     fun unmatchedDelimiterRemainsOrdinaryText() {
         assertEquals(listOf(LearningTextSegment.Text("Texte \$ incomplet")), parseLearningText("Texte \$ incomplet"))
+    }
+
+    @Test
+    fun keepsPhysicalUnitsLinearAndStillTypesetsActualFractions() {
+        val parsed = parseLearningText("12 m/s ; 9,8 m/s² ; 1/2 m/s ; x/s ; dx/x ; 1/cos² x", true)
+        assertEquals(listOf("\\frac{1}{2}", "\\frac{x}{s}", "\\frac{dx}{x}", "\\frac{1}{\\cos^{2} x}"),
+            parsed.filterIsInstance<LearningTextSegment.Math>().map { it.latex })
+        val literalText = parsed.filterIsInstance<LearningTextSegment.Text>().joinToString("") { it.value }
+        assertTrue("12 m/s" in literalText && "9,8 m/s²" in literalText && " m/s" in literalText)
+    }
+
+    @Test
+    fun unitScanningKeepsEarlierProseAndDoesNotTreatUrlSlashesAsUnits() {
+        val source = "Une vitesse vaut 12 m/s; https://example.com/m/s reste un lien; puis 9,8 m/s²."
+        val spans = findPhysicalUnitExpressions(source)
+        assertEquals(listOf("m/s", "m/s²"), spans.map { source.substring(it.start, it.end) })
+        val parsed = parseLearningText(source, true)
+        assertTrue(parsed.filterIsInstance<LearningTextSegment.Math>().isEmpty())
+        assertTrue(parsed.filterIsInstance<LearningTextSegment.Text>().joinToString("") { it.value }.contains(source))
+    }
+
+    @Test
+    fun linearizesOnlyExplicitUprightPhysicalUnitFractions() {
+        assertEquals(
+            listOf(LearningTextSegment.Text("12 "), LearningTextSegment.Math("\\mathrm{m/s}", false)),
+            parseLearningText("12 \$\\frac{\\mathrm{m}}{\\mathrm{s}}\$", true),
+        )
+        assertEquals("\\frac{dx}{x}", normalizeMathFormula("\\frac{dx}{x}"))
+        assertEquals("\\frac{1}{\\cos^{2} x}", normalizeMathFormula("1/cos² x"))
+        assertEquals("\\mathrm{m/s}", normalizeMathFormula("m/s"))
+        assertEquals("12\\,\\mathrm{m/s}", normalizeMathFormula("12 m/s"))
+        assertEquals("\\frac{1}{2}\\,\\mathrm{m/s}", normalizeMathFormula("1/2 m/s"))
+        assertEquals("9,8\\,\\mathrm{m/s^{2}}", normalizeMathFormula("9,8 m/s²"))
+        assertEquals("9,8\\,\\mathrm{m / s^2}", normalizeMathFormula("9,8 m / s^2"))
     }
 
     @Test

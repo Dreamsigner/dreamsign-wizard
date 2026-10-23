@@ -15,6 +15,7 @@ class FractionCorpusCoverageTest {
         val invalid = mutableListOf<String>()
         var fields = 0
         var fractions = 0
+        var physicalUnits = 0
         fun inspect(id: String, source: String) {
             fields++
             parseLessonDocument(source).filter { it.kind != LessonBlockKind.CODE }.forEach { block ->
@@ -27,13 +28,21 @@ class FractionCorpusCoverageTest {
                                 else -> error("Unreachable")
                             }
                             if ('/' !in value) return@segmentLoop
+                            val unitRanges = findPhysicalUnitExpressions(value)
+                            physicalUnits += unitRanges.size
+                            val withoutUnits = value.toCharArray().also { chars ->
+                                unitRanges.forEach { span -> for (index in span.start until span.end) chars[index] = ' ' }
+                            }.concatToString()
                             // Filesystem paths are literal references, never numerical ratios.
-                            val cleaned = value.replace(Regex("(?:https?://\\S+|(?<![A-Za-z0-9])/(?:tmp|usr|home|opt|etc|var)/[A-Za-z0-9_./-]*|[A-Za-z]:/\\S+)"), "")
+                            val cleaned = withoutUnits.replace(Regex("(?:https?://\\S+|(?<![A-Za-z0-9])/(?:tmp|usr|home|opt|etc|var)/[A-Za-z0-9_./-]*|[A-Za-z]:/\\S+)"), "")
                             if ('/' in cleaned) missing += "$id\t${value}"
                         }
-                        is LearningTextSegment.Math -> if ("\\frac" in segment.latex) {
-                            fractions += Regex("\\\\frac\\{").findAll(segment.latex).count()
-                            if (renderMathBitmap(segment.latex, 24f, Color.Black, segment.display) == null) invalid += "$id\t${segment.latex}"
+                        is LearningTextSegment.Math -> {
+                            physicalUnits += findPhysicalUnitExpressions(segment.latex).size
+                            if ("\\frac" in segment.latex) {
+                                fractions += Regex("\\\\frac\\{").findAll(segment.latex).count()
+                                if (renderMathBitmap(segment.latex, 24f, Color.Black, segment.display) == null) invalid += "$id\t${segment.latex}"
+                            }
                         }
                         else -> Unit // Inline code keeps its authored programming meaning.
                     }
@@ -71,9 +80,10 @@ class FractionCorpusCoverageTest {
         val directory = File("build/reports/fraction-coverage").apply { mkdirs() }
         File(directory, "unclassified.tsv").writeText(missing.joinToString("\n"))
         File(directory, "invalid-latex.tsv").writeText(invalid.joinToString("\n"))
-        File(directory, "summary.txt").writeText("fields=$fields\nrenderedFractions=$fractions\nunclassified=${missing.size}\ninvalid=${invalid.size}\n")
+        File(directory, "summary.txt").writeText("fields=$fields\nrenderedFractions=$fractions\nrecognizedPhysicalUnits=$physicalUnits\nunclassified=${missing.size}\ninvalid=${invalid.size}\n")
         assertTrue(missing.isEmpty(), "${missing.size} unclassified source fragments; see fraction-coverage/unclassified.tsv")
         assertTrue(invalid.isEmpty(), "${invalid.size} invalid fraction renderings; see fraction-coverage/invalid-latex.tsv")
+        assertTrue(physicalUnits > 0, "The authored catalogue must exercise recognized physical unit notation")
         assertTrue(fractions > 900, "The whole catalogue must be exercised, not just screenshot examples: $fractions")
     }
 }

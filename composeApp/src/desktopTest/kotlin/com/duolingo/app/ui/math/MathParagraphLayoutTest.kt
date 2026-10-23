@@ -30,19 +30,19 @@ class MathParagraphLayoutTest {
         val fraction = requireNotNull(renderMathBitmap("\\frac{12}{34}", 18f, Color.Black, false))
         assertTrue(fraction.height >= digits.height * 2, "Both fraction rows need room for readable digits")
         listOf(360, 1000).forEach { width ->
-            runDesktopComposeUiTest(width = width, height = 440) {
+            runDesktopComposeUiTest(width = width, height = 560) {
                 setContent { MaterialTheme { Surface {
                     MathRenderingProvider(DesktopMathRenderer) {
-                        com.duolingo.app.ui.OptionsList(listOf("12 m/s", "1/2", "(x+1)/(x-1)"), 0, false, {}, typesetMath = true)
+                        com.duolingo.app.ui.OptionsList(listOf("12 m/s", "9,8 m/s²", "1/2 m/s", "12 \$\\frac{\\mathrm{m}}{\\mathrm{s}}\$", "1/2", "(x+1)/(x-1)"), 0, false, {}, typesetMath = true)
                     }
                 } } }
-                val rows = listOf("12 m/s", "1/2", "(x+1)/(x-1)").map { option ->
+                val rows = listOf("12 m/s", "9,8 m/s²", "1/2 m/s", "12 \$\\frac{\\mathrm{m}}{\\mathrm{s}}\$", "1/2", "(x+1)/(x-1)").map { option ->
                     onNodeWithText(option).assertIsDisplayed().fetchSemanticsNode().boundsInRoot
                 }
                 rows.zipWithNext().forEach { (first, second) ->
                     assertTrue(first.bottom <= second.top, "Fractions must not overlap the following answer")
                 }
-                save("readable-fractions-$width")
+                save("linear-units-readable-fractions-$width")
             }
         }
     }

@@ -43,7 +43,7 @@ private fun parseMathSegments(source: String, recognizeLegacyMath: Boolean): Lis
         }
         if (cursor > textStart) result += LearningTextSegment.Text(source.substring(textStart, cursor))
         val latex = source.substring(contentStart, end)
-        if (latex.isNotBlank()) result += LearningTextSegment.Math(latex, display)
+        if (latex.isNotBlank()) result += LearningTextSegment.Math(linearizeExplicitPhysicalUnitFractions(latex), display)
         else result += LearningTextSegment.Text(delimiter)
         cursor = end + delimiter.length
         textStart = cursor
@@ -60,6 +60,7 @@ private data class MathCandidate(val start: Int, val end: Int, val latex: String
 private fun parseLegacyMath(source: String): List<LearningTextSegment> {
     val matrixCell = "[-−+]?(?:\\d+(?:\\.\\d+)?|\\d+/\\d+)"
     val matrixRow = "\\[\\s*$matrixCell(?:\\s*,\\s*$matrixCell)+\\s*\\]"
+    val unitSpans = findPhysicalUnitExpressions(source)
     val candidates = buildList {
         findFractionExpressions(source).forEach { span -> add(MathCandidate(span.start, span.end, span.latex)) }
         Regex("\\[$matrixRow(?:\\s*,\\s*$matrixRow)+\\]").findAll(source).forEach { match ->
@@ -72,6 +73,7 @@ private fun parseLegacyMath(source: String): List<LearningTextSegment> {
             Regex("(?<![A-Za-z0-9])[A-Za-z0-9][₀₁₂₃₄₅₆₇₈₉ₓₙₖₘₐₑᵢ]+(?![A-Za-z0-9])"),
         )
         powerPatterns.forEach { pattern -> pattern.findAll(source).forEach { match ->
+                if (unitSpans.any { match.range.first < it.end && match.range.last + 1 > it.start }) return@forEach
                 normalizeMathFormula(match.value)?.let { add(MathCandidate(match.range.first, match.range.last + 1, it)) }
             } }
     }.sortedWith(compareBy<MathCandidate> { it.start }.thenByDescending { it.end })
@@ -128,7 +130,8 @@ fun normalizeMathFormula(source: String): String? {
 
     replaceNumericMatrix(value)?.let { return it }
     if ("[[" in value || "]]" in value) return null
-    if ('\\' in value) return value // Explicit LaTeX supplied by curriculum authors.
+    if ('\\' in value) return linearizeExplicitPhysicalUnitFractions(value) // Preserve authored math; linearize only upright SI unit quotients.
+    formatPhysicalQuantity(value)?.let { return it }
     formatFractionExpression(value)?.let { return it }
     Regex("^([A-Za-z0-9]+)\\s*/\\s*([A-Za-z0-9]+)$").matchEntire(value)?.let {
         return "\\frac{${it.groupValues[1]}}{${it.groupValues[2]}}"
