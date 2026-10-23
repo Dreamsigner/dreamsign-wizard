@@ -1,0 +1,18 @@
+Codemap scan: 2026-10-23
+Repository HEAD before documentation: d8c68fa9ee934de99ad0ca19dc5dda1907bb5860
+Tracked files inventoried: 265
+
+Baseline and deltas
+- No previous CODEMAPS or .reports codemap baseline was present. Added five first-scan documents under docs/CODEMAPS; files added/removed/modified since a prior scan and percentage diff are unknown, not zero.
+- No dependency delta can be established without a previous dependency inventory.
+
+Architecture observations
+- Single Kotlin Multiplatform Compose app; no server API or remote learner database found in the inspected source.
+- Learner progress is device-local. Windows is the documented maintained distribution; Android/iOS source targets remain declared.
+- Growth capability gaps verified in the app/dependency scan: no app-level lesson sharing/deep links or referral flow; no analytics SDK/event pipeline. Course source links and YouTube links are present but do not provide app-level sharing or acquisition measurement.
+
+Warnings
+- README installation instructions name AtelierApprentissage-1.11.0-Setup.exe; Gradle default package version and CI release workflow use 1.11.2. This is the documented distinction between published stable and an unpublished candidate blocked by native video checks; verify live release status before promotion.
+- Other documentation staleness cannot be determined reliably from a missing codemap baseline or filesystem timestamps.
+
+Validation: focused read of README, Gradle settings/build/version catalog, Windows workflow, app entry/state/persistence/resource sources; no application files changed and no tests run (documentation-only update).
