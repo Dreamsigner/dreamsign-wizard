@@ -1,6 +1,6 @@
 # Bilan de livraison et travaux restants
 
-État vérifié le 22 octobre 2026. Périmètre actif : Windows natif uniquement.
+État vérifié le 23 octobre 2026. Périmètre actif : Windows natif uniquement.
 Ce bilan complète le registre; il ne transforme pas l'inventaire OSSU en cours rédigés.
 
 ## Livré et vérifié
@@ -8,8 +8,9 @@ Ce bilan complète le registre; il ne transforme pas l'inventaire OSSU en cours 
 - Catalogue : 15 unités, 391 leçons/ateliers, 1190 exercices; progression locale persistante.
 - Ordre pédagogique OSSU documenté, glossaire français Prolog, reprise différée des questions ratées jusqu'à correction.
 - Lecture des notes par cours, liens appariés aux exercices, lecteur PDF natif, formules composées localement, explications et icônes originales.
-- Dernière validation Windows : 177 tests desktop et un test natif vidéo réussis. Les moteurs LaTeX/PDF/audio restent vérifiés; le contrôle global des fractions et les captures Compose sont consignés dans le registre. Les rendus automatisés ne certifient pas tous les supports.
-- Code livré : `0da2706`, version Windows 1.9.2 publiée sur [GitHub Releases](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/tag/v1.9.2). [Run de livraison 39882896573](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/runs/39882896573), rapports `12471587100` téléchargés : installation, mise à niveau réelle via le lanceur de l’app, désinstallation et progression préservée. Installateur et empreinte SHA-256 disponibles dans la Release.
+- Dernière validation Windows : 181 tests desktop et un test natif vidéo réussis. Les moteurs LaTeX/PDF/audio restent vérifiés; le contrôle global des fractions et les captures Compose sont consignés dans le registre. Les rendus automatisés ne certifient pas tous les supports.
+- Code livré : `9f0b277`, version Windows 1.10.2 publiée sur [GitHub Releases](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/tag/v1.10.2). [Run de livraison 39891926710](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/runs/39891926710), rapports `12475676647` téléchargés : installation, mise à niveau réelle via le lanceur de l’app, désinstallation et progression préservée. Installateur et empreinte SHA-256 disponibles dans la Release.
+- Espace de cours redessiné : panneau sombre, progression et prochaine leçon regroupées, typographie plus calme, sélection et filtres sobres. Recherche et filtres de leçons conservant ordre et prérequis. Transitions entre destinations, retours de survol/appui, progression et recherche animées. Captures natives inspectées à 400/900/1400 pixels et à mi-transition; navigation répétée testée. Pas de mesure universelle de fréquence d’affichage.
 - Section Paramètres sous Cours et Profil : version, réglages des mises à jour et informations de sauvegarde. Pastille chiffrée des actions requises; erreurs de préférences, de vérification et d’installation conservées séparément. Navigation au clavier et dispositions étroites vérifiées.
 - Recherche par titre/objectif dans le sommaire des mathématiques, sans modifier ordre, prérequis ou progression. Captures inspectées à 500/1100 px.
 - Favoris des leçons de mathématiques : ajout/retrait, filtre combiné à la recherche, conservation de l’ordre et des prérequis, sauvegarde locale compatible avec les anciens fichiers. Captures inspectées à 500/1100 px; ajout au clavier et erreurs de sauvegarde couverts par les tests.

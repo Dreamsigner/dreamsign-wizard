@@ -972,3 +972,11 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
 - La capture intermédiaire du premier fondu croisé montrait des textes superposés. Intégration finale : fondu traversant la surface papier, sortie80ms puis entrée120ms, sans transition de taille globale. Les échelles et ombres sont interpolées, pas changées brutalement; les animations utilisent l’horloge Compose.
 
 - Validation finale locale du candidat : 181 tests desktop réussis, zéro échec/erreur/ignoré; distribution construite hors ligne. Captures finales 400/900/1400 et état intermédiaire du fondu inspectés. Les captures attestent le rendu; aucune fréquence d’affichage universelle n’est revendiquée.
+
+## 23 octobre 2026 — Livraison 1.10.2 vérifiée
+
+- Source `9f0b277e4f293425bf6ab052703ccedd2c2a448e`, tag stable v1.10.2; CI 39891926710 réussie, rapports Windows-checks 12475676647 téléchargés.
+- 181 tests desktop et 1 test natif vidéo : zéro échec/erreur/ignoré. Installation1.10.2 et mise à niveau réelle vers fixture1.10.3 vérifiées, ainsi que diagnostic, raccourcis, notices, helper, désinstallation et conservation de progression. Aucun installateur lancé sur le poste utilisateur.
+- Release stable avec EXE et SHA256SUMS.txt. Transport de mise à jour réel vérifié : détection1.9.2 vers1.10.2 et empreinte64caractères.
+- La lecture distante YouTube reste distincte de la validation locale/du contrat API : lecteur trouvé mais lecture distante non démarrée en CI; les tests MP4 et de reprise restent réussis. Ce lot ne modifie pas le lecteur.
+- Historique privé T007 actualisé avec les modèles et compteurs natifs, ainsi que le dépassement de l’estimation et les précisions successives du périmètre. Les données de suivi restent hors du dépôt.
