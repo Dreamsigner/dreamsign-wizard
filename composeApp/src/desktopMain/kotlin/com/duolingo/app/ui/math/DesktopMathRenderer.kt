@@ -78,7 +78,10 @@ internal fun renderMathBitmap(latex: String, sizePx: Float, color: Color, displa
     val renderedColor = if (color == Color.Unspecified) Color.Black else color
     formula.setColor(java.awt.Color(renderedColor.red, renderedColor.green, renderedColor.blue, renderedColor.alpha))
     val icon = formula.createTeXIcon(
-        if (display) TeXConstants.STYLE_DISPLAY else TeXConstants.STYLE_TEXT,
+        // Text-style fractions shrink both rows to script size, making units such
+        // as m/s unreadable in answer choices. The placeholder takes the full
+        // bitmap height, so full-size fractions can safely expand their line.
+        if (display || latex.contains("\\frac")) TeXConstants.STYLE_DISPLAY else TeXConstants.STYLE_TEXT,
         sizePx,
     )
     val canvas = BufferedImage(icon.iconWidth.coerceAtLeast(1), icon.iconHeight.coerceAtLeast(1), BufferedImage.TYPE_INT_ARGB)

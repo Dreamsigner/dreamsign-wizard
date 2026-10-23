@@ -997,3 +997,10 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
 - Installateur1.11.0 et mise à niveau vers fixture1.11.1 : remplacement de l’ancien produit, diagnostics, raccourcis, notices, helper, désinstallation, conservation de progression vérifiés. Nouveaux indicateurs updaterCacheCleanupVerified/externalInstallerPreserved tous deux vrais, source exacte contrôlée. Aucun installateur exécuté sur le poste utilisateur.
 - Le run main39908902980 a rencontré un crash natif0xC0000005 à la réouverture du lecteur, après186 tests desktop verts. Analyse de la bibliothèque et smoke local isolé réalisés : pas de cause prouvée, aucun correctif natif inventé. Le lecteur n’a pas été modifié; le second run conserve toutes les assertions et réussit. Intermittence consignée au bilan restant.
 - Release stable publiée avec EXE et SHA256SUMS.txt. Transport de mise à jour réel vérifié :1.10.2 vers1.11.0, empreinte64caractères. Historique privéT008 mis à jour; le correctif mathématique reste non autorisé et n’est pas inclus.
+
+## 23 octobre 2026 — Lisibilité des fractions (candidat1.11.2)
+
+- Accord explicite reçu pour le correctif d’affichage estimé2000–4000tokens. Aucun changement de valeur, correction ou réponse d’exercice.
+- Le rendu TeX textuel réduisait les deux rangées des fractions au format indice. Les fractions utilisent désormais le style lisible à numérateur/dénominateur pleins; les placeholders existants adaptent leur hauteur.
+- Test de hauteur des chiffres, réponses12m/s/1sur2/fraction algébrique, captures natives360/1000pixels et absence de chevauchement. Tests ciblés réussis; capture360 inspectée.
+- Validation complète locale :187tests desktop réussis, zéro échec/erreur/ignoré; distribution Windows construite hors ligne. Rendu mathématique seul modifié, aucun changement du lecteur vidéo natif.

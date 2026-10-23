@@ -3,7 +3,7 @@
 ## Installer l’application
 
 1. Dans une exécution GitHub Actions réussie de `main`, télécharger **AtelierApprentissage-Windows-Setup**.
-2. Extraire l’archive, puis lancer `AtelierApprentissage-1.11.0-Setup.exe`.
+2. Extraire l’archive, puis lancer `AtelierApprentissage-1.11.2-Setup.exe`.
 3. Suivre l’assistant, puis utiliser le raccourci du Bureau ou du menu Démarrer.
 
 L’installation est propre à l’utilisateur courant, par défaut dans
@@ -120,7 +120,7 @@ réseau sont limitées à quatre secondes chacune. Aucune vidéo n’est téléc
 
 ## Mises à jour automatiques
 
-Installer une première fois la version 1.11.0 depuis les [releases GitHub](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/latest).
+Installer une première fois la version 1.11.2 depuis les [releases GitHub](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/latest).
 L’installation Windows standard `%LOCALAPPDATA%/DuolingoKmpApp` active les mises à jour automatiques.
 Les copies portables et chemins d’installation personnalisés affichent que la mise à jour manuelle reste nécessaire.
 
@@ -138,7 +138,7 @@ Le checksum vérifie l’intégrité du fichier diffusé par GitHub; il ne rempl
 
 ### Publier une version compatible (maintenance)
 
-Actualiser la version du paquet, les noms d’artefacts et la fixture de mise à niveau dans le workflow et son test, puis créer le tag `vMAJOR.MINOR.PATCH` correspondant. Le job de release vérifie que le tag stable et le commit source correspondent avant de publier l’EXE et `SHA256SUMS.txt`, après les contrôles Windows. Le paquet de fixture de version supérieure (actuellement 1.11.1) sert uniquement au test d’installation et n’est jamais publié. Les artefacts Actions seuls ne déclenchent aucune mise à jour.
+Actualiser la version du paquet, les noms d’artefacts et la fixture de mise à niveau dans le workflow et son test, puis créer le tag `vMAJOR.MINOR.PATCH` correspondant. Le job de release vérifie que le tag stable et le commit source correspondent avant de publier l’EXE et `SHA256SUMS.txt`, après les contrôles Windows. Le paquet de fixture de version supérieure (actuellement 1.11.3) sert uniquement au test d’installation et n’est jamais publié. Les artefacts Actions seuls ne déclenchent aucune mise à jour.
 
 ## Lecteur vidéo intégré (mathématiques)
 
@@ -164,7 +164,7 @@ Le composant natif `ca.weblite:webview:1.0.10` est figé (JAR Maven Central mesu
 n’est ajouté au paquet. Le moteur peut mettre des flux en cache dans son profil
 local. La progression d’apprentissage reste dans son fichier séparé.
 
-## Contrôle de l’espace de cours (1.11.0)
+## Contrôle de l’espace de cours (1.11.2)
 
 Dans Cours, vérifier le panneau sombre du cours, sa progression et Continuer, puis l’accès aux supports. La loupe recherche dans le titre et l’objectif des leçons; Toutes, Disponibles et Terminées conservent l’ordre d’origine et les prérequis. Une recherche sans résultat propose Réinitialiser. Changer de cours remet recherche et filtres à zéro.
 
@@ -172,7 +172,7 @@ Les tests Compose couvrent ces parcours, le clavier, les leçons verrouillées e
 
 Les transitions de navigation utilisent un fondu traversant la surface papier : l’écran sort avant l’apparition du suivant, pour éviter les textes superposés. Le survol et l’appui font évoluer brièvement les couleurs, l’échelle et les ombres des contrôles actifs. Vérifier les clics répétés sur Cours/Profil/Paramètres et le changement de cours; le dernier choix doit rester actif. Une capture native à horloge contrôlée documente un état intermédiaire de transition. Ces contrôles valident le comportement et le rendu; ils ne constituent pas une mesure de fréquence d’affichage sur chaque matériel.
 
-## Sommaire adaptatif, compteurs et cache (1.11.0)
+## Sommaire adaptatif, compteurs et cache (1.11.2)
 
 Le sommaire reste en panneau latéral à partir de1000dp de largeur du lecteur, avec défilement indépendant et recherche/favoris communs au popup compact. Tester le saut vers une leçon, le redimensionnement et le retour au cours. Les compteurs doivent rester visibles sans chevaucher le sélecteur de domaine, y compris avec de grands nombres.
 

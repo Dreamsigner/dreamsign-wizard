@@ -25,6 +25,29 @@ import kotlin.test.assertTrue
 
 class MathParagraphLayoutTest {
     @Test
+    fun answerFractionsAndUnitsRemainReadableWithoutOverlappingRows() {
+        val digits = requireNotNull(renderMathBitmap("1234", 18f, Color.Black, false))
+        val fraction = requireNotNull(renderMathBitmap("\\frac{12}{34}", 18f, Color.Black, false))
+        assertTrue(fraction.height >= digits.height * 2, "Both fraction rows need room for readable digits")
+        listOf(360, 1000).forEach { width ->
+            runDesktopComposeUiTest(width = width, height = 440) {
+                setContent { MaterialTheme { Surface {
+                    MathRenderingProvider(DesktopMathRenderer) {
+                        com.duolingo.app.ui.OptionsList(listOf("12 m/s", "1/2", "(x+1)/(x-1)"), 0, false, {}, typesetMath = true)
+                    }
+                } } }
+                val rows = listOf("12 m/s", "1/2", "(x+1)/(x-1)").map { option ->
+                    onNodeWithText(option).assertIsDisplayed().fetchSemanticsNode().boundsInRoot
+                }
+                rows.zipWithNext().forEach { (first, second) ->
+                    assertTrue(first.bottom <= second.top, "Fractions must not overlap the following answer")
+                }
+                save("readable-fractions-$width")
+            }
+        }
+    }
+
+    @Test
     fun inlineCommandsHaveCodeTypographyAndAVisibleBackground() = runDesktopComposeUiTest(width = 900, height = 300) {
         setContent { MaterialTheme { Surface {
             LearningText("Utiliser `pwd` pour afficher le répertoire courant.", Modifier.padding(24.dp).testTag("code-copy"),
