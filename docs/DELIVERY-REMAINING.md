@@ -8,8 +8,8 @@ Ce bilan complète le registre; il ne transforme pas l'inventaire OSSU en cours 
 - Catalogue : 15 unités, 391 leçons/ateliers, 1190 exercices; progression locale persistante.
 - Ordre pédagogique OSSU documenté, glossaire français Prolog, reprise différée des questions ratées jusqu'à correction.
 - Lecture des notes par cours, liens appariés aux exercices, lecteur PDF natif, formules composées localement, explications et icônes originales.
-- Dernière validation Windows : 181 tests desktop et un test natif vidéo réussis. Les moteurs LaTeX/PDF/audio restent vérifiés; le contrôle global des fractions et les captures Compose sont consignés dans le registre. Les rendus automatisés ne certifient pas tous les supports.
-- Code livré : `9f0b277`, version Windows 1.10.2 publiée sur [GitHub Releases](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/tag/v1.10.2). [Run de livraison 39891926710](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/runs/39891926710), rapports `12475676647` téléchargés : installation, mise à niveau réelle via le lanceur de l’app, désinstallation et progression préservée. Installateur et empreinte SHA-256 disponibles dans la Release.
+- Dernière validation Windows : 186 tests desktop et un test natif vidéo réussis. Les moteurs LaTeX/PDF/audio restent vérifiés; le contrôle global des fractions et les captures Compose sont consignés dans le registre. Les rendus automatisés ne certifient pas tous les supports.
+- Code livré : `f4ec2bd`, version Windows 1.11.0 publiée sur [GitHub Releases](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/tag/v1.11.0). [Run de livraison 39908903023](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/runs/39908903023), rapports `12482658084` téléchargés : installation, mise à niveau réelle via le lanceur de l’app, désinstallation et progression préservée. Installateur et empreinte SHA-256 disponibles dans la Release.
 - Espace de cours redessiné : panneau sombre, progression et prochaine leçon regroupées, typographie plus calme, sélection et filtres sobres. Recherche et filtres de leçons conservant ordre et prérequis. Transitions entre destinations, retours de survol/appui, progression et recherche animées. Captures natives inspectées à 400/900/1400 pixels et à mi-transition; navigation répétée testée. Pas de mesure universelle de fréquence d’affichage.
 - Section Paramètres sous Cours et Profil : version, réglages des mises à jour et informations de sauvegarde. Pastille chiffrée des actions requises; erreurs de préférences, de vérification et d’installation conservées séparément. Navigation au clavier et dispositions étroites vérifiées.
 - Recherche par titre/objectif dans le sommaire des mathématiques, sans modifier ordre, prérequis ou progression. Captures inspectées à 500/1100 px.
@@ -18,6 +18,9 @@ Ce bilan complète le registre; il ne transforme pas l'inventaire OSSU en cours 
 - Reprise automatique YouTube/MP4 : fichier séparé `video-playback.json`, clé par source, positions validées, écritures atomiques hors interface et flush avant sortie. Reprise MP4 après fermeture/réouverture vérifiée nativement; contrat API YouTube vérifié par modèle JS des états documentés. La fin réelle remet la reprise à zéro; une erreur conserve le fichier existant.
 - Téléchargement YouTube avec piste audio française déjà accessible, y compris doublage automatique : sélection stricte sans repli anglais, fichier de destination choisi, confirmation de remplacement, progression/annulation, assemblage MP4 et contrôle ffprobe. yt-dlp, FFmpeg/ffprobe et runtime JS restent des prérequis locaux non embarqués. Assemblage et sélection vérifiés avec une fixture synthétique réelle; aucun téléchargement positif d’un doublage YouTube public certifié. Les deux cours MIT interrogés ne renvoient que en/en-US via l’outil installé.
 - Génération IA retirée. Android/iOS conservés sans développement actif. Aucun Computer Use utilisé.
+
+- Cache updater nettoyé de manière ciblée, temporaires abandonnés retirés, installateur réessayable conservé en cas d’échec. CI vérifie la suppression de sa copie et du payload après réussite, sans toucher à l’installateur externe ou à la progression.
+- Sommaire en panneau latéral dès1000dp, popup compact conservé, compteurs adaptatifs et focus clavier distinct du clic souris.
 
 ## 1. Couverture pédagogique complète — chantier majeur restant
 
@@ -65,3 +68,8 @@ Ce bilan complète le registre; il ne transforme pas l'inventaire OSSU en cours 
 ## Lecture des preuves
 
 Les modifications documentaires ne doivent pas être confondues avec le commit applicatif du ZIP testé. Vérifier le SHA de la construction téléchargée. Voir [EXECUTION-LOG](EXECUTION-LOG.md), [tests automatisés](automated-testing.md) et [guide Windows](windows-testing.md).
+
+
+## Incident natif intermittent à suivre
+
+Un runner de main39908902980 a terminé les186 tests desktop, puis le processus natif WebView2 a planté avec0xC0000005 lors de la création du second lecteur après fermeture du premier. Le smoke local isolé et la seconde exécution de39908903023 ont réussi, sans changement du lecteur ni affaiblissement des assertions. L’analyse du bytecode exclut la double libération suspectée; la cause reste indéterminée. Ne pas présenter cette intermittence comme corrigée. Les rapports des deux exécutions sont conservés.

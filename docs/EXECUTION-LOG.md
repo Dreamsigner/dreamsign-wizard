@@ -990,3 +990,10 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
 - Validation locale :186 tests desktop réussis, zéro échec/erreur/ignoré; distribution construite hors ligne. Les nouvelles erreurs de fixtures de tests ont été corrigées avant ce résultat.
 - Rappel Windows demandé envoyé à06h50 heureDouala, résultatPlanificateur0. L’outil automation_update absent de la session a été remplacé par une tâche ponctuelle utilisant codexqueue vers ce même chat.
 - Unité signalée :12m/s signifie12mètres par seconde. Le correctif de lisibilité mathématique reste en attente de l’accord demandé selon la consigne du22octobre; aucun rendu mathématique modifié dans ce candidat.
+
+## 23 octobre 2026 — Livraison 1.11.0 vérifiée
+
+- Source f4ec2bd38801ce7399d945cfc8f31cf30a5e65e0, tag stable v1.11.0. Run39908903023 réussi lors de la seconde exécution, rapports Windows-checks12482658084 téléchargés;186 tests desktop et1test natif réussis, zéro échec/erreur/ignoré.
+- Installateur1.11.0 et mise à niveau vers fixture1.11.1 : remplacement de l’ancien produit, diagnostics, raccourcis, notices, helper, désinstallation, conservation de progression vérifiés. Nouveaux indicateurs updaterCacheCleanupVerified/externalInstallerPreserved tous deux vrais, source exacte contrôlée. Aucun installateur exécuté sur le poste utilisateur.
+- Le run main39908902980 a rencontré un crash natif0xC0000005 à la réouverture du lecteur, après186 tests desktop verts. Analyse de la bibliothèque et smoke local isolé réalisés : pas de cause prouvée, aucun correctif natif inventé. Le lecteur n’a pas été modifié; le second run conserve toutes les assertions et réussit. Intermittence consignée au bilan restant.
+- Release stable publiée avec EXE et SHA256SUMS.txt. Transport de mise à jour réel vérifié :1.10.2 vers1.11.0, empreinte64caractères. Historique privéT008 mis à jour; le correctif mathématique reste non autorisé et n’est pas inclus.
