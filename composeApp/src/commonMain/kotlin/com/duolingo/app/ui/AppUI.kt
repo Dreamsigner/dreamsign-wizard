@@ -63,7 +63,9 @@ fun LearningButton(text: String, onClick: () -> Unit, modifier: Modifier = Modif
     Button(onClick, modifier.heightIn(min = 48.dp).learningFocus(interaction), enabled = enabled,
         interactionSource = interaction, shape = LearningShape,
         colors = ButtonDefaults.buttonColors(backgroundColor = ActionRed, contentColor = White),
-        elevation = ButtonDefaults.elevation(0.dp, 0.dp, 0.dp)) { Text(text, fontWeight = FontWeight.Bold) }
+        elevation = ButtonDefaults.elevation(0.dp, 0.dp, 0.dp)) {
+        Text(text, style = MaterialTheme.typography.button.copy(letterSpacing = 0.sp, fontWeight = FontWeight.SemiBold))
+    }
 }
 
 @Composable
@@ -121,7 +123,8 @@ fun DuolingoApp(
 
 @Composable
 private fun AppNavigation(screen: AppScreen, stats: UserStats, expanded: Boolean, settingsActionCount: Int, navigate: (AppScreen) -> Unit) {
-    Column(Modifier.width(if (expanded) 224.dp else 104.dp).fillMaxHeight().verticalScroll(rememberScrollState()).padding(16.dp),
+    Column(Modifier.width(if (expanded) 224.dp else 104.dp).fillMaxHeight().verticalScroll(rememberScrollState())
+        .padding(horizontal = if (expanded) 16.dp else 4.dp, vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)) {
         PixelIcon(LearningSymbol.BOOK, Modifier.size(40.dp))
         Text(if (expanded) "Atelier\nd’apprentissage" else "Atelier", fontWeight = FontWeight.ExtraBold, fontSize = if (expanded) 20.sp else 16.sp)
@@ -131,7 +134,7 @@ private fun AppNavigation(screen: AppScreen, stats: UserStats, expanded: Boolean
         NavigationChoice("Paramètres", Icons.Default.Settings, screen == AppScreen.SETTINGS, expanded, settingsActionCount) { navigate(AppScreen.SETTINGS) }
         Spacer(Modifier.height(32.dp))
         if (expanded) {
-            Text("À petits pas,\nchaque jour.", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Text("À petits pas,\nchaque jour.", fontSize = 20.sp, fontWeight = FontWeight.SemiBold, letterSpacing = 0.sp)
             SymbolValue(LearningSymbol.COMPLETED, "${stats.completedLessonIds.size} leçons terminées")
             SymbolValue(LearningSymbol.XP, "${stats.xp} XP accumulés")
             VoxelBookshelf()
@@ -149,8 +152,8 @@ private fun NavigationChoice(label: String, icon: ImageVector, selected: Boolean
         interactionSource = interaction, shape = LearningShape,
         colors = ButtonDefaults.textButtonColors(backgroundColor = if (selected) Concrete else Color.Transparent, contentColor = Ink)) {
         if (expanded) Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            NavigationIcon(icon, actionCount); Spacer(Modifier.width(12.dp)); Text(label, fontWeight = FontWeight.Bold)
-        } else Column(horizontalAlignment = Alignment.CenterHorizontally) { NavigationIcon(icon, actionCount); Text(label, fontSize = 12.sp) }
+            NavigationIcon(icon, actionCount); Spacer(Modifier.width(12.dp)); Text(label, style = MaterialTheme.typography.button.copy(letterSpacing = 0.sp, fontWeight = FontWeight.SemiBold))
+        } else Column(horizontalAlignment = Alignment.CenterHorizontally) { NavigationIcon(icon, actionCount); Text(label, fontSize = 12.sp, letterSpacing = 0.sp) }
     }
 }
 
@@ -179,13 +182,18 @@ fun TopStatsHeader(stats: UserStats, subjects: List<Subject>, selectedSubject: S
         val compact = maxWidth < 480.dp
         Column {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Box(Modifier.weight(1f)) {
-                    TextButton({ expanded = true }, Modifier.fillMaxWidth().heightIn(min = 48.dp), colors = ButtonDefaults.textButtonColors(contentColor = Ink)) {
-                        Text(selectedSubject.title, Modifier.weight(1f), fontWeight = FontWeight.Bold)
-                        Icon(Icons.Default.ArrowDropDown, "Choisir une matière")
-                    }
-                    DropdownMenu(expanded, { expanded = false }, Modifier.widthIn(max = 360.dp)) {
-                        subjects.forEach { subject -> DropdownMenuItem({ onSelectSubject(subject.id); expanded = false }, Modifier.heightIn(min = 48.dp)) { Text(subject.title) } }
+                Column(Modifier.weight(1f).widthIn(max = 420.dp)) {
+                    Text("Domaine d’apprentissage", fontSize = 12.sp, color = Graphite, letterSpacing = 0.sp)
+                    val interaction = remember { MutableInteractionSource() }
+                    Box(Modifier.fillMaxWidth()) {
+                        TextButton({ expanded = true }, Modifier.fillMaxWidth().heightIn(min = 48.dp).border(1.dp, Concrete, LearningShape).learningFocus(interaction),
+                            interactionSource = interaction, shape = LearningShape, colors = ButtonDefaults.textButtonColors(contentColor = Ink)) {
+                            Text(selectedSubject.title, Modifier.weight(1f), style = MaterialTheme.typography.button.copy(letterSpacing = 0.sp, fontWeight = FontWeight.SemiBold))
+                            Icon(Icons.Default.ArrowDropDown, "Choisir une matière")
+                        }
+                        DropdownMenu(expanded, { expanded = false }, Modifier.widthIn(max = 360.dp)) {
+                            subjects.forEach { subject -> DropdownMenuItem({ onSelectSubject(subject.id); expanded = false }, Modifier.heightIn(min = 48.dp)) { Text(subject.title, letterSpacing = 0.sp) } }
+                        }
                     }
                 }
                 if (!compact) { Spacer(Modifier.width(24.dp)); StatsStrip(stats) }
@@ -226,31 +234,65 @@ fun LearningPathScreen(subject: Subject, completedLessonIds: Set<String>, onStar
     val unit = subject.units.find { it.id == selectedUnitId } ?: subject.units.firstOrNull()
     val courseListState = key(subject.id) { rememberLazyListState() }
     val lessonListState = key(subject.id, unit?.id) { rememberLazyListState() }
+    var searchExpanded by remember(subject.id, unit?.id) { mutableStateOf(false) }
+    var query by remember(subject.id, unit?.id) { mutableStateOf("") }
+    var filter by remember(subject.id, unit?.id) { mutableStateOf(LessonFilter.ALL) }
     BoxWithConstraints(Modifier.fillMaxSize()) {
         val split = maxWidth >= 880.dp
         val gutter = if (maxWidth >= 600.dp) 24.dp else 16.dp
         // Desktop: 260 dp course column + 24 dp gutter + flexible lesson workspace.
         Row(Modifier.fillMaxSize().padding(gutter), horizontalArrangement = Arrangement.spacedBy(24.dp)) {
             if (split) LazyColumn(Modifier.width(260.dp).fillMaxHeight(), state = courseListState, verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                item { Text("Mes cours", fontSize = 28.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.semantics { heading() }) }
+                item { Text("Mes cours", fontSize = 26.sp, fontWeight = FontWeight.SemiBold, letterSpacing = 0.sp, modifier = Modifier.semantics { heading() }) }
                 item { Text(subject.description, color = Graphite) }
                 items(subject.units, key = { it.id }) { course -> CourseChoice(course, course.id == unit?.id, completed) { onSelectUnit(course.id) } }
             }
             LazyColumn(Modifier.weight(1f).fillMaxHeight(), state = lessonListState, verticalArrangement = Arrangement.spacedBy(16.dp), contentPadding = PaddingValues(bottom = 24.dp)) {
                 if (!split) {
-                    item { Text("Mes cours", fontSize = 28.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.semantics { heading() }) }
+                    item { Text("Mes cours", fontSize = 26.sp, fontWeight = FontWeight.SemiBold, letterSpacing = 0.sp, modifier = Modifier.semantics { heading() }) }
                     item { CoursePicker(subject.units, unit, onSelectUnit) }
                 }
                 if (unit == null) item { EmptyLearningState("Aucune leçon", "Ce cours ne contient pas encore de leçon.") }
                 else {
-                    item { CourseOverview(unit, completed) }
-                    item { OutlinedButton(onOpenCourse, Modifier.fillMaxWidth().heightIn(min = 48.dp), shape = LearningShape) {
-                        PixelIcon(LearningSymbol.BOOK, description = null); Spacer(Modifier.width(10.dp)); Text("Lire le cours et les supports")
-                    } }
                     val next = unit.lessons.firstOrNull { it.id !in completed && it.id !in lockedIds }
-                    if (next != null) item { LearningButton("Continuer · ${next.title}", { onStartLesson(next.copy(isLocked = false)) }, Modifier.fillMaxWidth()) }
-                    item { Text("Les leçons", fontSize = 20.sp, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() }) }
-                    items(unit.lessons, key = { it.id }) { lesson ->
+                    item { CourseOverview(unit, completed, next) { lesson -> onStartLesson(lesson.copy(isLocked = false)) } }
+                    item { OutlinedButton(onOpenCourse, Modifier.fillMaxWidth().heightIn(min = 48.dp), shape = LearningShape) {
+                        PixelIcon(LearningSymbol.BOOK, description = null); Spacer(Modifier.width(10.dp)); Text("Lire le cours et les supports", style = MaterialTheme.typography.button.copy(letterSpacing = 0.sp, fontWeight = FontWeight.Medium))
+                    } }
+                    item {
+                        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                            Text("Les leçons", Modifier.weight(1f).semantics { heading() }, fontSize = 21.sp, fontWeight = FontWeight.SemiBold, letterSpacing = 0.sp)
+                            IconButton(onClick = { searchExpanded = !searchExpanded; if (!searchExpanded) query = "" },
+                                modifier = Modifier.size(48.dp).semantics { contentDescription = if (searchExpanded) "Fermer la recherche" else "Rechercher une leçon" }) {
+                                Icon(if (searchExpanded) Icons.Default.Close else Icons.Default.Search, null, tint = Ink)
+                            }
+                        }
+                        if (searchExpanded) OutlinedTextField(query, { query = it }, Modifier.fillMaxWidth().heightIn(min = 56.dp), singleLine = true,
+                            label = { Text("Rechercher dans ce cours", letterSpacing = 0.sp) }, shape = LearningShape)
+                    }
+                    item { LessonFilterChoices(filter) { filter = it } }
+                    val visibleLessons = unit.lessons.filter { lesson ->
+                        val search = query.trim()
+                        val matchesQuery = search.isBlank() || lesson.title.contains(search, ignoreCase = true) || lesson.objective.contains(search, ignoreCase = true)
+                        val done = lesson.id in completed || lesson.isCompleted
+                        val matchesFilter = when (filter) {
+                            LessonFilter.ALL -> true
+                            LessonFilter.AVAILABLE -> !done && lesson.id !in lockedIds
+                            LessonFilter.COMPLETED -> done
+                        }
+                        matchesQuery && matchesFilter
+                    }
+                    item { Text("${visibleLessons.size} sur ${unit.lessons.size} leçons", fontSize = 13.sp, color = Graphite, letterSpacing = 0.sp) }
+                    if (visibleLessons.isEmpty()) item {
+                        Column(Modifier.fillMaxWidth().background(White, LearningShape).padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Text(if (unit.lessons.isEmpty()) "Aucune leçon dans ce cours" else "Aucune leçon ne correspond", fontWeight = FontWeight.SemiBold, letterSpacing = 0.sp)
+                            Text(if (unit.lessons.isEmpty()) "Choisis un autre cours pour continuer." else "Essaie une autre recherche ou réinitialise les filtres.", color = Graphite)
+                            if (unit.lessons.isNotEmpty()) TextButton({ query = ""; filter = LessonFilter.ALL }, Modifier.heightIn(min = 48.dp)) {
+                                Text("Réinitialiser", letterSpacing = 0.sp)
+                            }
+                        }
+                    }
+                    items(visibleLessons, key = { it.id }) { lesson ->
                         val display = lesson.copy(isLocked = lesson.id in lockedIds)
                         LessonNodeItem(display, lesson.id in completed) { onStartLesson(display) }
                     }
@@ -260,16 +302,35 @@ fun LearningPathScreen(subject: Subject, completedLessonIds: Set<String>, onStar
     }
 }
 
+private enum class LessonFilter { ALL, AVAILABLE, COMPLETED }
+
+@Composable
+private fun LessonFilterChoices(selected: LessonFilter, onSelect: (LessonFilter) -> Unit) {
+    Row(Modifier.fillMaxWidth().semantics { selectableGroup() }, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        listOf(LessonFilter.ALL to "Toutes", LessonFilter.AVAILABLE to "Disponibles", LessonFilter.COMPLETED to "Terminées").forEach { (filter, label) ->
+            val active = selected == filter
+            val interaction = remember(filter) { MutableInteractionSource() }
+            OutlinedButton(onClick = { onSelect(filter) }, Modifier.weight(1f).heightIn(min = 48.dp).learningFocus(interaction)
+                .semantics { this.selected = active }, interactionSource = interaction, shape = RoundedCornerShape(12.dp),
+                border = BorderStroke(1.dp, if (active) Ink else Concrete),
+                colors = ButtonDefaults.outlinedButtonColors(backgroundColor = if (active) Ink else Color.Transparent, contentColor = if (active) White else Ink),
+                contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp)) {
+                Text(label, fontSize = 12.sp, fontWeight = if (active) FontWeight.SemiBold else FontWeight.Normal, letterSpacing = 0.sp, maxLines = 1)
+            }
+        }
+    }
+}
+
 @Composable
 private fun CourseChoice(unit: LearningUnit, selected: Boolean, completed: Set<String>, onClick: () -> Unit) {
     val source = remember { MutableInteractionSource() }
     OutlinedButton(onClick, Modifier.fillMaxWidth().learningFocus(source).semantics { this.selected = selected }, interactionSource = source,
-        shape = LearningShape, border = BorderStroke(if (selected) 2.dp else 1.dp, if (selected) Ink else Concrete),
-        colors = ButtonDefaults.outlinedButtonColors(backgroundColor = if (selected) White else Paper, contentColor = Ink), contentPadding = PaddingValues(16.dp)) {
+        shape = LearningShape, border = BorderStroke(1.dp, if (selected) ActionRed else Concrete),
+        colors = ButtonDefaults.outlinedButtonColors(backgroundColor = if (selected) ActionRed.copy(alpha = 0.07f) else Paper, contentColor = Ink), contentPadding = PaddingValues(16.dp)) {
         Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            if (unit.courseCode.isNotBlank()) Text(unit.courseCode, color = ActionRed, fontWeight = FontWeight.Bold)
-            Text(unit.title, fontWeight = FontWeight.Bold, fontSize = 16.sp)
-            Text("${unit.lessons.count { it.id in completed }} / ${unit.lessons.size} leçons", color = Graphite)
+            if (unit.courseCode.isNotBlank()) Text(unit.courseCode, color = ActionRed, fontWeight = FontWeight.SemiBold, letterSpacing = 0.sp)
+            Text(unit.title, fontWeight = FontWeight.SemiBold, fontSize = 16.sp, letterSpacing = 0.sp)
+            Text("${unit.lessons.count { it.id in completed }} / ${unit.lessons.size} leçons", color = Graphite, letterSpacing = 0.sp)
         }
     }
 }
@@ -279,7 +340,7 @@ private fun CoursePicker(units: List<LearningUnit>, selected: LearningUnit?, onS
     var expanded by remember { mutableStateOf(false) }
     Box {
         OutlinedButton({ expanded = true }, Modifier.fillMaxWidth().heightIn(min = 56.dp), shape = LearningShape) {
-            Text(selected?.title ?: "Choisir un cours", Modifier.weight(1f)); Icon(Icons.Default.ArrowDropDown, null)
+            Text(selected?.title ?: "Choisir un cours", Modifier.weight(1f), letterSpacing = 0.sp); Icon(Icons.Default.ArrowDropDown, null)
         }
         DropdownMenu(expanded, { expanded = false }) {
             units.forEach { unit -> DropdownMenuItem({ onSelect(unit.id); expanded = false }, Modifier.heightIn(min = 48.dp)) { Text(unit.title) } }
@@ -288,17 +349,27 @@ private fun CoursePicker(units: List<LearningUnit>, selected: LearningUnit?, onS
 }
 
 @Composable
-private fun CourseOverview(unit: LearningUnit, completed: Set<String>) {
+private fun CourseOverview(unit: LearningUnit, completed: Set<String>, next: Lesson?, onContinue: (Lesson) -> Unit) {
     val count = unit.lessons.count { it.id in completed }
-    Surface(shape = LearningShape, color = White) {
-        Column(Modifier.fillMaxWidth().padding(24.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            if (unit.courseCode.isNotBlank() || unit.edition.isNotBlank()) Text(listOf(unit.courseCode, unit.edition).filter { it.isNotBlank() }.joinToString(" · "), color = Graphite)
-            Text(unit.title, fontSize = 26.sp, fontWeight = FontWeight.ExtraBold)
-            if (unit.description.isNotBlank()) Text(unit.description, color = Graphite, fontSize = 16.sp)
-            Text("$count / ${unit.lessons.size} leçons terminées", fontWeight = FontWeight.Bold)
-            LinearProgressIndicator(if (unit.lessons.isEmpty()) 0f else count.toFloat() / unit.lessons.size, Modifier.fillMaxWidth().height(8.dp), color = BrandRed, backgroundColor = Concrete)
-            val expected = unit.expectedLessonCount
-            if (expected != null && expected != unit.lessons.size) Text("${unit.lessons.size} leçons disponibles sur $expected prévues dans la source.", color = Graphite)
+    Surface(shape = LearningShape, color = Ink) {
+        BoxWithConstraints(Modifier.fillMaxWidth()) {
+            val illustrated = maxWidth >= 600.dp
+            Row(Modifier.fillMaxWidth().padding(24.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(24.dp)) {
+                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    if (unit.courseCode.isNotBlank() || unit.edition.isNotBlank()) Text(
+                        listOf(unit.courseCode, unit.edition).filter { it.isNotBlank() }.joinToString(" · "), color = Concrete, fontSize = 13.sp, letterSpacing = 0.sp)
+                    Text(unit.title, color = White, fontSize = 29.sp, fontWeight = FontWeight.SemiBold, letterSpacing = 0.sp)
+                    if (unit.description.isNotBlank()) Text(unit.description, color = White.copy(alpha = 0.82f), fontSize = 15.sp, letterSpacing = 0.sp)
+                    Text("$count / ${unit.lessons.size} leçons terminées", color = White, fontWeight = FontWeight.SemiBold, letterSpacing = 0.sp)
+                    LinearProgressIndicator(if (unit.lessons.isEmpty()) 0f else count.toFloat() / unit.lessons.size,
+                        Modifier.fillMaxWidth().height(4.dp), color = Concrete, backgroundColor = Graphite)
+                    val expected = unit.expectedLessonCount
+                    if (expected != null && expected != unit.lessons.size) Text(
+                        "${unit.lessons.size} leçons disponibles sur $expected prévues dans la source.", color = Concrete, fontSize = 13.sp, letterSpacing = 0.sp)
+                    if (next != null) LearningButton("Continuer · ${next.title}", { onContinue(next) }, Modifier.fillMaxWidth())
+                }
+                if (illustrated) VoxelBookshelf(Modifier.width(160.dp).height(64.dp))
+            }
         }
     }
 }
@@ -315,10 +386,10 @@ fun LessonNodeItem(lesson: Lesson, isCompleted: Boolean, onClick: () -> Unit) {
             tint = if (isCompleted) ActionRed else Graphite, modifier = Modifier.size(32.dp))
         Spacer(Modifier.width(16.dp))
         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            lesson.sourceSessionLabel?.let { Text(it, fontSize = 13.sp, color = Graphite) }
-            Text(lesson.title, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-            Text("${lesson.exercises.size} exercices · ${lesson.xpReward} XP à la première réussite", fontSize = 14.sp, color = Graphite)
-            Text(state, fontSize = 14.sp, color = if (lesson.isLocked) Graphite else ActionRed)
+            lesson.sourceSessionLabel?.let { Text(it, fontSize = 13.sp, color = Graphite, letterSpacing = 0.sp) }
+            Text(lesson.title, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, letterSpacing = 0.sp)
+            Text("${lesson.exercises.size} exercices · ${lesson.xpReward} XP à la première réussite", fontSize = 14.sp, color = Graphite, letterSpacing = 0.sp)
+            Text(state, fontSize = 14.sp, color = if (lesson.isLocked) Graphite else ActionRed, letterSpacing = 0.sp)
         }
     }
 }

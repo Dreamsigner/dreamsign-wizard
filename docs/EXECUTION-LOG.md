@@ -955,3 +955,11 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
 - L’historique privé T006 contient les compteurs réels orchestrateur/exécuteurs
   et leur dépassement de l’estimation. Rattrapage documentaire privé des trois
   travaux précédents effectué sans inventer de compteurs manquants.
+
+## 23 octobre 2026 — Espace de cours 1.10.0
+
+- Direction visuelle centrée sur la lisibilité et la beauté : panneau de cours sombre, titre éditorial, progression et Continuer regroupés, illustration pixel-art existante sur les fenêtres larges, cartes sélectionnées et filtres plus sobres.
+- Typographie des boutons et cartes sans espacement excessif; domaine d’apprentissage explicite, rail intermédiaire sans libellé coupé, focus clavier visible.
+- Recherche titre/objectif et filtres Toutes/Disponibles/Terminées, remise à zéro et réinitialisation par cours. Ordre et prérequis conservés; aucun changement de contenu ou de sauvegarde.
+- 180 tests desktop locaux réussis, zéro échec/erreur/ignoré; distribution Windows locale construite hors ligne. Captures Compose réelles inspectées à 400, 900 et 1400 pixels; capture du README actualisée. Aucun Computer Use ni donnée utilisateur utilisés.
+- Candidat 1.10.0 préparé avec fixture 1.10.1. Les contrôles CI et la publication restent à confirmer.

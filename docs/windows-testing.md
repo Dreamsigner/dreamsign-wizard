@@ -3,7 +3,7 @@
 ## Installer l’application
 
 1. Dans une exécution GitHub Actions réussie de `main`, télécharger **AtelierApprentissage-Windows-Setup**.
-2. Extraire l’archive, puis lancer `AtelierApprentissage-1.9.2-Setup.exe`.
+2. Extraire l’archive, puis lancer `AtelierApprentissage-1.10.0-Setup.exe`.
 3. Suivre l’assistant, puis utiliser le raccourci du Bureau ou du menu Démarrer.
 
 L’installation est propre à l’utilisateur courant, par défaut dans
@@ -120,7 +120,7 @@ réseau sont limitées à quatre secondes chacune. Aucune vidéo n’est téléc
 
 ## Mises à jour automatiques
 
-Installer une première fois la version 1.9.2 depuis les [releases GitHub](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/latest).
+Installer une première fois la version 1.10.0 depuis les [releases GitHub](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/latest).
 L’installation Windows standard `%LOCALAPPDATA%/DuolingoKmpApp` active les mises à jour automatiques.
 Les copies portables et chemins d’installation personnalisés affichent que la mise à jour manuelle reste nécessaire.
 
@@ -138,7 +138,7 @@ Le checksum vérifie l’intégrité du fichier diffusé par GitHub; il ne rempl
 
 ### Publier une version compatible (maintenance)
 
-Actualiser la version du paquet, les noms d’artefacts et la fixture de mise à niveau dans le workflow et son test, puis créer le tag `vMAJOR.MINOR.PATCH` correspondant. Le job de release vérifie que le tag stable et le commit source correspondent avant de publier l’EXE et `SHA256SUMS.txt`, après les contrôles Windows. Le paquet de fixture de version supérieure (actuellement 1.9.3) sert uniquement au test d’installation et n’est jamais publié. Les artefacts Actions seuls ne déclenchent aucune mise à jour.
+Actualiser la version du paquet, les noms d’artefacts et la fixture de mise à niveau dans le workflow et son test, puis créer le tag `vMAJOR.MINOR.PATCH` correspondant. Le job de release vérifie que le tag stable et le commit source correspondent avant de publier l’EXE et `SHA256SUMS.txt`, après les contrôles Windows. Le paquet de fixture de version supérieure (actuellement 1.10.1) sert uniquement au test d’installation et n’est jamais publié. Les artefacts Actions seuls ne déclenchent aucune mise à jour.
 
 ## Lecteur vidéo intégré (mathématiques)
 
@@ -163,3 +163,9 @@ Le composant natif `ca.weblite:webview:1.0.10` est figé (JAR Maven Central mesu
 985 639 octets). Il réutilise le moteur système; aucun navigateur Chromium complet
 n’est ajouté au paquet. Le moteur peut mettre des flux en cache dans son profil
 local. La progression d’apprentissage reste dans son fichier séparé.
+
+## Contrôle de l’espace de cours (1.10.0)
+
+Dans Cours, vérifier le panneau sombre du cours, sa progression et Continuer, puis l’accès aux supports. La loupe recherche dans le titre et l’objectif des leçons; Toutes, Disponibles et Terminées conservent l’ordre d’origine et les prérequis. Une recherche sans résultat propose Réinitialiser. Changer de cours remet recherche et filtres à zéro.
+
+Les tests Compose couvrent ces parcours, le clavier, les leçons verrouillées et la navigation vers Profil/Paramètres. Les captures avec le catalogue réel sont produites à 400, 900 et 1400 pixels dans `composeApp/build/reports/ui-snapshots/learning-path-*.png`. Elles utilisent une sauvegarde en mémoire et ne lisent pas la progression du poste.

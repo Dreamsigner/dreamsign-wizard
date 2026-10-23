@@ -19,6 +19,7 @@ Application d’apprentissage en français pour Windows, développée en Kotlin 
 - Ateliers TCF de compréhension écrite et orale, rédaction et production orale avec réécoute et auto-évaluation.
 - Sauvegarde locale de la progression, des XP, du cours sélectionné et des brouillons.
 - Interface de bureau avec navigation latérale et disposition adaptée au redimensionnement.
+- Espace de cours avec progression, prochaine leçon, recherche et filtres de disponibilité.
 
 ![Catalogue des cours sur Windows](docs/images/windows-catalogue.png)
 
@@ -48,14 +49,16 @@ Consulter le [catalogue détaillé](docs/courses/README.md) et la [couverture p�
 ## Installation
 
 1. Ouvrir la [dernière release Windows](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/latest).
-2. Télécharger l’installateur **AtelierApprentissage-1.9.2-Setup.exe**.
-3. Lancer **AtelierApprentissage-1.9.2-Setup.exe** et suivre l’assistant. L’installation est propre à l’utilisateur Windows, avec raccourcis sur le Bureau et dans le menu Démarrer.
+2. Télécharger l’installateur **AtelierApprentissage-1.10.0-Setup.exe**.
+3. Lancer **AtelierApprentissage-1.10.0-Setup.exe** et suivre l’assistant. L’installation est propre à l’utilisateur Windows, avec raccourcis sur le Bureau et dans le menu Démarrer.
 
 Java est inclus : aucun JDK ni Gradle n’est nécessaire. La désinstallation se fait depuis les applications installées des paramètres Windows. L’installateur n’est pas signé numériquement; Windows peut afficher un avertissement d’éditeur inconnu. `SHA256SUMS.txt` accompagne l’exécutable pour vérifier l’intégrité du téléchargement.
 
 L’artefact **DuolingoKmpApp-Windows** reste disponible pour une utilisation portable : extraire le ZIP et lancer `DuolingoKmpApp.exe`, avec les dossiers `app` et `runtime` à ses côtés.
 
-Dans le sommaire des cours de mathématiques, une recherche par titre ou objectif permet d’atteindre une leçon, sans modifier son ordre ni ses prérequis.
+Dans **Cours**, le panneau du cours réunit sa progression et l’action **Continuer**. La loupe ouvre une recherche par titre ou objectif. Les filtres **Toutes**, **Disponibles** et **Terminées** permettent de retrouver une séance, sans modifier son ordre ni ses prérequis. **Réinitialiser** efface les filtres; changer de cours réinitialise la recherche.
+
+Dans le sommaire des cours de mathématiques, une recherche par titre ou objectif permet aussi d’atteindre une leçon.
 
 Le bouton **Ajouter aux favoris** marque une leçon de mathématiques à revoir. Dans **Sommaire**, activer **Favoris uniquement** pour retrouver les leçons marquées du cours; la recherche reste disponible. Les favoris sont enregistrés localement avec la progression et peuvent être retirés depuis la leçon.
 
