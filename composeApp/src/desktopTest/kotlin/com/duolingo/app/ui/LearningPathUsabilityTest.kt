@@ -31,9 +31,13 @@ class LearningPathUsabilityTest {
                     saveSnapshot("learning-path-$width")
                     onNode(hasText("Profil") and hasClickAction()).performClick()
                     onNodeWithText("Mon parcours").assertIsDisplayed()
+                    onNode(hasText("Profil") and hasClickAction()).performClick()
+                    onNodeWithText("Mon parcours").assertIsDisplayed()
                     onNode(hasText("Paramètres") and hasClickAction()).assert(SemanticsMatcher.expectValue(SemanticsProperties.StateDescription, "2 actions requises"))
                     onNode(hasText("Paramètres") and hasClickAction()).performClick()
                     onNodeWithText("Données et progression").assertIsDisplayed()
+                    onNode(hasText("Cours") and hasClickAction()).performClick()
+                    onNodeWithText("Les leçons").assertExists()
                     onNode(hasText("Cours") and hasClickAction()).performClick()
                     onNodeWithText("Les leçons").assertExists()
                 }
@@ -70,11 +74,27 @@ class LearningPathUsabilityTest {
 
             onNodeWithText("Toutes").performClick()
             onNodeWithText("Rechercher dans ce cours").performClick().performTextInput("réservoir")
-            onNodeWithText("Cours suivant").performClick()
+            onNode(hasText("Cours suivant") and hasClickAction()).performClick().performClick()
             onNodeWithText("1 sur 1 leçons").assertExists()
             onNodeWithText("Rechercher dans ce cours").assertDoesNotExist()
             onNodeWithText("Une leçon suivante").assertExists()
         } finally { fixture.model.close() }
+    }
+
+    @Test
+    fun navigationFadeThroughCanBeCapturedAtAControlledIntermediateFrame() = runDesktopComposeUiTest(width = 1400, height = 900) {
+        val model = AppViewModel(MemoryStore(), today = { "2026-10-20" })
+        try {
+            mainClock.autoAdvance = false
+            setContent { LearningAppTheme { DuolingoApp(model) } }
+            mainClock.advanceTimeByFrame()
+            onNode(hasText("Profil") and hasClickAction()).performClick()
+            mainClock.advanceTimeBy(100)
+            saveSnapshot("learning-profile-transition-midpoint")
+            mainClock.advanceTimeBy(150)
+            onNodeWithText("Mon parcours").assertExists()
+            mainClock.autoAdvance = true
+        } finally { model.close() }
     }
 
     @Test

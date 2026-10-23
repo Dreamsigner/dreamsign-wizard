@@ -963,3 +963,12 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
 - Recherche titre/objectif et filtres Toutes/Disponibles/Terminées, remise à zéro et réinitialisation par cours. Ordre et prérequis conservés; aucun changement de contenu ou de sauvegarde.
 - 180 tests desktop locaux réussis, zéro échec/erreur/ignoré; distribution Windows locale construite hors ligne. Captures Compose réelles inspectées à 400, 900 et 1400 pixels; capture du README actualisée. Aucun Computer Use ni donnée utilisateur utilisés.
 - Candidat 1.10.0 préparé avec fixture 1.10.1. Les contrôles CI et la publication restent à confirmer.
+
+## 23 octobre 2026 — Complément visuel et animations, candidat 1.10.2
+
+- Le candidat 1.10.0 a été interrompu avant publication après la précision demandant des effets et animations. Son tag est conservé; aucune release stable 1.10.0 n’a été créée.
+- Complément prévu : transitions brèves entre destinations, retour animé au survol et à l’appui, progression interpolée et recherche en fondu, avec focus clair sur le panneau sombre. Les contrôles Windows complets du candidat 1.10.2 restent à confirmer.
+
+- La capture intermédiaire du premier fondu croisé montrait des textes superposés. Intégration finale : fondu traversant la surface papier, sortie80ms puis entrée120ms, sans transition de taille globale. Les échelles et ombres sont interpolées, pas changées brutalement; les animations utilisent l’horloge Compose.
+
+- Validation finale locale du candidat : 181 tests desktop réussis, zéro échec/erreur/ignoré; distribution construite hors ligne. Captures finales 400/900/1400 et état intermédiaire du fondu inspectés. Les captures attestent le rendu; aucune fréquence d’affichage universelle n’est revendiquée.

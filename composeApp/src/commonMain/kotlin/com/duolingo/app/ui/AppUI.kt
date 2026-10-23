@@ -5,6 +5,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
+import androidx.compose.foundation.interaction.collectIsHoveredAsState
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,6 +14,16 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.togetherWith
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -20,7 +32,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -37,6 +51,11 @@ val Paper = Color(0xFFF7F5F0)
 val Concrete = Color(0xFFD9D7D2)
 val White = Color(0xFFFFFFFF)
 val LearningShape = RoundedCornerShape(16.dp)
+private const val SCREEN_FADE_MS = 200
+private const val INTERACTION_MOTION_MS = 140
+private const val COURSE_FADE_MS = 180
+private const val SEARCH_FADE_MS = 180
+private const val PROGRESS_MOTION_MS = 400
 
 /** Keep the source order visible without renaming stable published lesson IDs. */
 internal val Lesson.sourceSessionLabel: String?
@@ -52,17 +71,28 @@ internal val Lesson.sourceSessionLabel: String?
     }
 
 /** Material controls supply keyboard activation; this adds an explicit focus outline. */
-fun Modifier.learningFocus(source: MutableInteractionSource): Modifier = composed {
+fun Modifier.learningFocus(source: MutableInteractionSource, focusColor: Color = Ink): Modifier = composed {
     val focused by source.collectIsFocusedAsState()
-    border(if (focused) 3.dp else 0.dp, if (focused) Ink else Color.Transparent, LearningShape)
+    border(if (focused) 3.dp else 0.dp, if (focused) focusColor else Color.Transparent, LearningShape)
 }
 
 @Composable
-fun LearningButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier, enabled: Boolean = true) {
+private fun MutableInteractionSource.hoveredAndPressed(enabled: Boolean = true): Pair<Boolean, Boolean> {
+    val hovered by collectIsHoveredAsState()
+    val pressed by collectIsPressedAsState()
+    return (enabled && hovered) to (enabled && pressed)
+}
+
+@Composable
+fun LearningButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier, enabled: Boolean = true, focusColor: Color = Ink) {
     val interaction = remember { MutableInteractionSource() }
-    Button(onClick, modifier.heightIn(min = 48.dp).learningFocus(interaction), enabled = enabled,
+    val (hovered, pressed) = interaction.hoveredAndPressed(enabled)
+    val background by animateColorAsState(if (enabled && hovered) BrandRed else ActionRed, tween(INTERACTION_MOTION_MS, easing = FastOutSlowInEasing))
+    val scale by animateFloatAsState(if (pressed) 0.985f else 1f, tween(INTERACTION_MOTION_MS, easing = FastOutSlowInEasing))
+    Button(onClick, modifier.heightIn(min = 48.dp).graphicsLayer { scaleX = scale; scaleY = scale }
+        .learningFocus(interaction, focusColor), enabled = enabled,
         interactionSource = interaction, shape = LearningShape,
-        colors = ButtonDefaults.buttonColors(backgroundColor = ActionRed, contentColor = White),
+        colors = ButtonDefaults.buttonColors(backgroundColor = background, contentColor = White),
         elevation = ButtonDefaults.elevation(0.dp, 0.dp, 0.dp)) {
         Text(text, style = MaterialTheme.typography.button.copy(letterSpacing = 0.sp, fontWeight = FontWeight.SemiBold))
     }
@@ -106,14 +136,18 @@ fun DuolingoApp(
                     topBar = { if (subject != null && screen != AppScreen.SETTINGS) TopStatsHeader(stats, subjects, subject, viewModel::selectSubject) },
                     bottomBar = { if (!rail) BottomNavigationBar(screen, viewModel::navigateTo, settingsActionCount) }) { padding ->
                     Box(Modifier.padding(padding).fillMaxSize()) {
-                        when (screen) {
+                        AnimatedContent(targetState = screen, modifier = Modifier.fillMaxSize(), transitionSpec = {
+                            // Fade through the paper surface so outgoing and incoming text never overlap.
+                            (fadeIn(tween(SCREEN_FADE_MS - 80, delayMillis = 80, easing = FastOutSlowInEasing)) togetherWith
+                                fadeOut(tween(80, easing = FastOutSlowInEasing))).using(null)
+                        }) { targetScreen -> when (targetScreen) {
                             AppScreen.LEARNING_PATH -> if (subject != null) LearningPathScreen(subject, stats.completedLessonIds, viewModel::startLesson, selectedUnitId,
                                 onOpenCourse = { viewModel.navigateTo(AppScreen.COURSE_READER) }) { viewModel.selectCourse(subject.id, it) }
                                 else EmptyLearningState("Aucun cours disponible", "Les cours apparaîtront ici dès qu’ils seront disponibles.")
                             AppScreen.PROFILE -> ProfileScreen(stats, persistence)
                             AppScreen.SETTINGS -> SettingsScreen(persistence, settingsContent)
                             AppScreen.LESSON_QUIZ, AppScreen.COURSE_READER -> Unit
-                        }
+                        } }
                     }
                 }
             }
@@ -145,12 +179,17 @@ private fun AppNavigation(screen: AppScreen, stats: UserStats, expanded: Boolean
 @Composable
 private fun NavigationChoice(label: String, icon: ImageVector, selected: Boolean, expanded: Boolean, actionCount: Int = 0, onClick: () -> Unit) {
     val interaction = remember { MutableInteractionSource() }
-    TextButton(onClick, Modifier.fillMaxWidth().heightIn(min = 56.dp).learningFocus(interaction).semantics {
+    val (hovered, pressed) = interaction.hoveredAndPressed()
+    val background by animateColorAsState(when { selected -> Concrete; hovered -> Concrete.copy(alpha = 0.65f); else -> Color.Transparent },
+        tween(INTERACTION_MOTION_MS, easing = FastOutSlowInEasing))
+    val scale by animateFloatAsState(if (pressed) 0.985f else 1f, tween(INTERACTION_MOTION_MS, easing = FastOutSlowInEasing))
+    TextButton(onClick, Modifier.fillMaxWidth().heightIn(min = 56.dp).graphicsLayer { scaleX = scale; scaleY = scale }
+        .learningFocus(interaction).semantics {
         this.selected = selected
         if (actionCount > 0) stateDescription = settingsActionDescription(actionCount)
     },
         interactionSource = interaction, shape = LearningShape,
-        colors = ButtonDefaults.textButtonColors(backgroundColor = if (selected) Concrete else Color.Transparent, contentColor = Ink)) {
+        colors = ButtonDefaults.textButtonColors(backgroundColor = background, contentColor = Ink)) {
         if (expanded) Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             NavigationIcon(icon, actionCount); Spacer(Modifier.width(12.dp)); Text(label, style = MaterialTheme.typography.button.copy(letterSpacing = 0.sp, fontWeight = FontWeight.SemiBold))
         } else Column(horizontalAlignment = Alignment.CenterHorizontally) { NavigationIcon(icon, actionCount); Text(label, fontSize = 12.sp, letterSpacing = 0.sp) }
@@ -237,6 +276,15 @@ fun LearningPathScreen(subject: Subject, completedLessonIds: Set<String>, onStar
     var searchExpanded by remember(subject.id, unit?.id) { mutableStateOf(false) }
     var query by remember(subject.id, unit?.id) { mutableStateOf("") }
     var filter by remember(subject.id, unit?.id) { mutableStateOf(LessonFilter.ALL) }
+    var previousUnitId by remember(subject.id) { mutableStateOf(unit?.id) }
+    val unitOpacity = remember(subject.id) { Animatable(1f) }
+    LaunchedEffect(subject.id, unit?.id) {
+        if (previousUnitId != unit?.id) {
+            unitOpacity.snapTo(0.85f)
+            unitOpacity.animateTo(1f, tween(COURSE_FADE_MS, easing = FastOutSlowInEasing))
+            previousUnitId = unit?.id
+        }
+    }
     BoxWithConstraints(Modifier.fillMaxSize()) {
         val split = maxWidth >= 880.dp
         val gutter = if (maxWidth >= 600.dp) 24.dp else 16.dp
@@ -247,7 +295,8 @@ fun LearningPathScreen(subject: Subject, completedLessonIds: Set<String>, onStar
                 item { Text(subject.description, color = Graphite) }
                 items(subject.units, key = { it.id }) { course -> CourseChoice(course, course.id == unit?.id, completed) { onSelectUnit(course.id) } }
             }
-            LazyColumn(Modifier.weight(1f).fillMaxHeight(), state = lessonListState, verticalArrangement = Arrangement.spacedBy(16.dp), contentPadding = PaddingValues(bottom = 24.dp)) {
+            LazyColumn(Modifier.weight(1f).fillMaxHeight().graphicsLayer { alpha = unitOpacity.value }, state = lessonListState,
+                verticalArrangement = Arrangement.spacedBy(16.dp), contentPadding = PaddingValues(bottom = 24.dp)) {
                 if (!split) {
                     item { Text("Mes cours", fontSize = 26.sp, fontWeight = FontWeight.SemiBold, letterSpacing = 0.sp, modifier = Modifier.semantics { heading() }) }
                     item { CoursePicker(subject.units, unit, onSelectUnit) }
@@ -267,8 +316,12 @@ fun LearningPathScreen(subject: Subject, completedLessonIds: Set<String>, onStar
                                 Icon(if (searchExpanded) Icons.Default.Close else Icons.Default.Search, null, tint = Ink)
                             }
                         }
-                        if (searchExpanded) OutlinedTextField(query, { query = it }, Modifier.fillMaxWidth().heightIn(min = 56.dp), singleLine = true,
-                            label = { Text("Rechercher dans ce cours", letterSpacing = 0.sp) }, shape = LearningShape)
+                        AnimatedVisibility(visible = searchExpanded,
+                            enter = fadeIn(tween(SEARCH_FADE_MS, easing = FastOutSlowInEasing)),
+                            exit = fadeOut(tween(SEARCH_FADE_MS, easing = FastOutSlowInEasing))) {
+                            OutlinedTextField(query, { query = it }, Modifier.fillMaxWidth().heightIn(min = 56.dp), singleLine = true,
+                                label = { Text("Rechercher dans ce cours", letterSpacing = 0.sp) }, shape = LearningShape)
+                        }
                     }
                     item { LessonFilterChoices(filter) { filter = it } }
                     val visibleLessons = unit.lessons.filter { lesson ->
@@ -324,9 +377,17 @@ private fun LessonFilterChoices(selected: LessonFilter, onSelect: (LessonFilter)
 @Composable
 private fun CourseChoice(unit: LearningUnit, selected: Boolean, completed: Set<String>, onClick: () -> Unit) {
     val source = remember { MutableInteractionSource() }
-    OutlinedButton(onClick, Modifier.fillMaxWidth().learningFocus(source).semantics { this.selected = selected }, interactionSource = source,
-        shape = LearningShape, border = BorderStroke(1.dp, if (selected) ActionRed else Concrete),
-        colors = ButtonDefaults.outlinedButtonColors(backgroundColor = if (selected) ActionRed.copy(alpha = 0.07f) else Paper, contentColor = Ink), contentPadding = PaddingValues(16.dp)) {
+    val (hovered, pressed) = source.hoveredAndPressed()
+    val surface by animateColorAsState(when { selected -> ActionRed.copy(alpha = 0.07f); hovered -> White; else -> Paper }, tween(INTERACTION_MOTION_MS, easing = FastOutSlowInEasing))
+    val outline by animateColorAsState(when { selected -> ActionRed; hovered -> Graphite; else -> Concrete }, tween(INTERACTION_MOTION_MS, easing = FastOutSlowInEasing))
+    val scale by animateFloatAsState(if (pressed) 0.985f else 1f, tween(INTERACTION_MOTION_MS, easing = FastOutSlowInEasing))
+    val elevation by animateFloatAsState(with(LocalDensity.current) { if (hovered || selected) 2.dp.toPx() else 0f }, tween(INTERACTION_MOTION_MS, easing = FastOutSlowInEasing))
+    OutlinedButton(onClick, Modifier.fillMaxWidth().graphicsLayer {
+        scaleX = scale; scaleY = scale
+        shadowElevation = elevation; shape = LearningShape
+    }.learningFocus(source).semantics { this.selected = selected }, interactionSource = source,
+        shape = LearningShape, border = BorderStroke(1.dp, outline),
+        colors = ButtonDefaults.outlinedButtonColors(backgroundColor = surface, contentColor = Ink), contentPadding = PaddingValues(16.dp)) {
         Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             if (unit.courseCode.isNotBlank()) Text(unit.courseCode, color = ActionRed, fontWeight = FontWeight.SemiBold, letterSpacing = 0.sp)
             Text(unit.title, fontWeight = FontWeight.SemiBold, fontSize = 16.sp, letterSpacing = 0.sp)
@@ -351,6 +412,10 @@ private fun CoursePicker(units: List<LearningUnit>, selected: LearningUnit?, onS
 @Composable
 private fun CourseOverview(unit: LearningUnit, completed: Set<String>, next: Lesson?, onContinue: (Lesson) -> Unit) {
     val count = unit.lessons.count { it.id in completed }
+    val progress by animateFloatAsState(
+        targetValue = if (unit.lessons.isEmpty()) 0f else (count.toFloat() / unit.lessons.size).coerceIn(0f, 1f),
+        animationSpec = tween(PROGRESS_MOTION_MS, easing = FastOutSlowInEasing)
+    )
     Surface(shape = LearningShape, color = Ink) {
         BoxWithConstraints(Modifier.fillMaxWidth()) {
             val illustrated = maxWidth >= 600.dp
@@ -361,12 +426,12 @@ private fun CourseOverview(unit: LearningUnit, completed: Set<String>, next: Les
                     Text(unit.title, color = White, fontSize = 29.sp, fontWeight = FontWeight.SemiBold, letterSpacing = 0.sp)
                     if (unit.description.isNotBlank()) Text(unit.description, color = White.copy(alpha = 0.82f), fontSize = 15.sp, letterSpacing = 0.sp)
                     Text("$count / ${unit.lessons.size} leçons terminées", color = White, fontWeight = FontWeight.SemiBold, letterSpacing = 0.sp)
-                    LinearProgressIndicator(if (unit.lessons.isEmpty()) 0f else count.toFloat() / unit.lessons.size,
+                    LinearProgressIndicator(progress,
                         Modifier.fillMaxWidth().height(4.dp), color = Concrete, backgroundColor = Graphite)
                     val expected = unit.expectedLessonCount
                     if (expected != null && expected != unit.lessons.size) Text(
                         "${unit.lessons.size} leçons disponibles sur $expected prévues dans la source.", color = Concrete, fontSize = 13.sp, letterSpacing = 0.sp)
-                    if (next != null) LearningButton("Continuer · ${next.title}", { onContinue(next) }, Modifier.fillMaxWidth())
+                    if (next != null) LearningButton("Continuer · ${next.title}", { onContinue(next) }, Modifier.fillMaxWidth(), focusColor = White)
                 }
                 if (illustrated) VoxelBookshelf(Modifier.width(160.dp).height(64.dp))
             }
@@ -377,11 +442,19 @@ private fun CourseOverview(unit: LearningUnit, completed: Set<String>, next: Les
 @Composable
 fun LessonNodeItem(lesson: Lesson, isCompleted: Boolean, onClick: () -> Unit) {
     val interaction = remember { MutableInteractionSource() }
+    val (hovered, pressed) = interaction.hoveredAndPressed(!lesson.isLocked)
+    val surface by animateColorAsState(if (hovered) Paper else White, tween(INTERACTION_MOTION_MS, easing = FastOutSlowInEasing))
+    val outline by animateColorAsState(when { isCompleted -> BrandRed; hovered -> Graphite; else -> Concrete }, tween(INTERACTION_MOTION_MS, easing = FastOutSlowInEasing))
+    val scale by animateFloatAsState(if (pressed) 0.985f else 1f, tween(INTERACTION_MOTION_MS, easing = FastOutSlowInEasing))
+    val elevation by animateFloatAsState(with(LocalDensity.current) { if (hovered && !lesson.isLocked) 2.dp.toPx() else 0f }, tween(INTERACTION_MOTION_MS, easing = FastOutSlowInEasing))
     val state = when { isCompleted -> "Terminée · Réviser"; lesson.isLocked -> "Verrouillée · Terminer les prérequis"; else -> "Disponible · Commencer" }
-    OutlinedButton(onClick, Modifier.fillMaxWidth().heightIn(min = 88.dp).learningFocus(interaction).semantics { stateDescription = state },
+    OutlinedButton(onClick, Modifier.fillMaxWidth().heightIn(min = 88.dp).graphicsLayer {
+        scaleX = scale; scaleY = scale
+        shadowElevation = elevation; shape = LearningShape
+    }.learningFocus(interaction).semantics { stateDescription = state },
         enabled = !lesson.isLocked, interactionSource = interaction, shape = LearningShape,
-        border = BorderStroke(1.dp, if (isCompleted) BrandRed else Concrete),
-        colors = ButtonDefaults.outlinedButtonColors(backgroundColor = White, contentColor = Ink, disabledContentColor = Graphite), contentPadding = PaddingValues(16.dp)) {
+        border = BorderStroke(1.dp, outline),
+        colors = ButtonDefaults.outlinedButtonColors(backgroundColor = surface, contentColor = Ink, disabledContentColor = Graphite), contentPadding = PaddingValues(16.dp)) {
         Icon(when { isCompleted -> Icons.Default.CheckCircle; lesson.isLocked -> Icons.Default.Lock; else -> Icons.Default.PlayArrow }, null,
             tint = if (isCompleted) ActionRed else Graphite, modifier = Modifier.size(32.dp))
         Spacer(Modifier.width(16.dp))
