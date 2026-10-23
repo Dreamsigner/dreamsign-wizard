@@ -177,3 +177,5 @@ Les transitions de navigation utilisent un fondu traversant la surface papier : 
 Le sommaire reste en panneau latéral à partir de1000dp de largeur du lecteur, avec défilement indépendant et recherche/favoris communs au popup compact. Tester le saut vers une leçon, le redimensionnement et le retour au cours. Les compteurs doivent rester visibles sans chevaucher le sélecteur de domaine, y compris avec de grands nombres.
 
 Le test d’installation CI vérifie aussi la suppression de la copie d’installateur dans le cache et du payload, tout en conservant l’installateur externe d’origine. Les temporaires récents et les fichiers inconnus restent intacts; progression/préférences, dernier résultat et journal ne sont pas supprimés. Le cache système Windows Installer et les téléchargements manuels sont hors périmètre.
+
+Le candidat1.11.2 corrige la taille des fractions mais n’est pas publié : le contrôle vidéo natif échoue en CI. Pour examiner son rendu localement, utiliser la distribution construite dans `composeApp/build/compose/binaries/main/app/DuolingoKmpApp/`; les mises à jour publiques restent sur1.11.0.

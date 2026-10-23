@@ -51,8 +51,8 @@ Consulter le [catalogue détaillé](docs/courses/README.md) et la [couverture p�
 ## Installation
 
 1. Ouvrir la [dernière release Windows](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/latest).
-2. Télécharger l’installateur **AtelierApprentissage-1.11.2-Setup.exe**.
-3. Lancer **AtelierApprentissage-1.11.2-Setup.exe** et suivre l’assistant. L’installation est propre à l’utilisateur Windows, avec raccourcis sur le Bureau et dans le menu Démarrer.
+2. Télécharger l’installateur **AtelierApprentissage-1.11.0-Setup.exe**.
+3. Lancer **AtelierApprentissage-1.11.0-Setup.exe** et suivre l’assistant. L’installation est propre à l’utilisateur Windows, avec raccourcis sur le Bureau et dans le menu Démarrer.
 
 Java est inclus : aucun JDK ni Gradle n’est nécessaire. La désinstallation se fait depuis les applications installées des paramètres Windows. L’installateur n’est pas signé numériquement; Windows peut afficher un avertissement d’éditeur inconnu. `SHA256SUMS.txt` accompagne l’exécutable pour vérifier l’intégrité du téléchargement.
 

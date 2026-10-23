@@ -1004,3 +1004,9 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
 - Le rendu TeX textuel réduisait les deux rangées des fractions au format indice. Les fractions utilisent désormais le style lisible à numérateur/dénominateur pleins; les placeholders existants adaptent leur hauteur.
 - Test de hauteur des chiffres, réponses12m/s/1sur2/fraction algébrique, captures natives360/1000pixels et absence de chevauchement. Tests ciblés réussis; capture360 inspectée.
 - Validation complète locale :187tests desktop réussis, zéro échec/erreur/ignoré; distribution Windows construite hors ligne. Rendu mathématique seul modifié, aucun changement du lecteur vidéo natif.
+
+## 23 octobre 2026 — Correctif fractions prêt, publication bloquée
+
+- Codecc223bbb2343bd53217723393c9c049f91b623c8, candidatv1.11.2 :187tests desktop réussis localement et dans les étapes CI; captures360/1000 inspectées, distribution locale disponible. Valeurs et réponses inchangées.
+- La publication39949394503 échoue au contrôle vidéo natif dans ses deux exécutions : premier arrêt0xC0000005, second0xC0000374. Les journaux sont conservés; aucun test n’a été ignoré ou affaibli. Le lecteur natif n’a pas été modifié par ce correctif.
+- La dernière release publique reste1.11.0; le README continue de pointer son installateur.1.11.2 n’est pas proposée par les mises à jour. Le correctif d’affichage est vérifiable dans la distribution locale; la livraison automatique reste à débloquer séparément.

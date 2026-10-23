@@ -73,3 +73,7 @@ Les modifications documentaires ne doivent pas être confondues avec le commit a
 ## Incident natif intermittent à suivre
 
 Un runner de main39908902980 a terminé les186 tests desktop, puis le processus natif WebView2 a planté avec0xC0000005 lors de la création du second lecteur après fermeture du premier. Le smoke local isolé et la seconde exécution de39908903023 ont réussi, sans changement du lecteur ni affaiblissement des assertions. L’analyse du bytecode exclut la double libération suspectée; la cause reste indéterminée. Ne pas présenter cette intermittence comme corrigée. Les rapports des deux exécutions sont conservés.
+
+## Correctif d’affichage en attente de publication
+
+Le candidat1.11.2 (cc223bb) agrandit les fractions dans les exercices, avec187tests desktop réussis et captures360/1000 vérifiées. Sa publication est bloquée par deux échecs du test vidéo natif (0xC0000005 puis0xC0000374), sans modification du lecteur par ce lot. La dernière release publique reste1.11.0. Ne pas annoncer le correctif comme installé ou disponible par mise à jour tant que cette validation ne passe pas.
