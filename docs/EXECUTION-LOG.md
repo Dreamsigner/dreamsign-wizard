@@ -935,3 +935,23 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
 - Le test conserve fermeture/réouverture réelle et consigne ses étapes de cycle
   de vie. Local : 177 tests desktop + 1 test natif et distribution 1.9.2 réussis.
   Revalidation runner requise; fixture de mise à niveau 1.9.3.
+
+
+## 23 octobre 2026 — Livraison 1.9.2 vérifiée
+
+- Code 0da2706eba82db9495f8c597bc55607cc8f629ad, tag stable v1.9.2 publié.
+  CI 39882896573 réussie; rapports Windows-checks 12471587100 téléchargés.
+- 177 tests desktop + 1 natif : zéro échec, erreur ou test ignoré. Le cycle de
+  vie consigne la destruction du premier lecteur et l’ouverture du second;
+  reprise MP4 et flush applicatif vérifiés sur le runner Windows.
+- Source MIT MP4 lue en CI; lecteur YouTube trouvé mais lecture distante non
+  démarrée sur le runner. Le smoke local lit les deux sources. Le contrat de
+  reprise YouTube reste distingué de sa validation externe globale.
+- Installation 1.9.2, mise à niveau réelle vers fixture 1.9.3 via le lanceur,
+  diagnostic, enregistrement, raccourcis, notices, helper et désinstallation
+  vérifiés; progression préservée. Aucun installateur lancé sur le poste utilisateur.
+- Release avec installateur et SHA-256; transport de mise à jour de production
+  vérifié : détection de 1.8.4 vers 1.9.2 et checksum de 64 caractères.
+- L’historique privé T006 contient les compteurs réels orchestrateur/exécuteurs
+  et leur dépassement de l’estimation. Rattrapage documentaire privé des trois
+  travaux précédents effectué sans inventer de compteurs manquants.

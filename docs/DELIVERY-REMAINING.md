@@ -8,12 +8,14 @@ Ce bilan complète le registre; il ne transforme pas l'inventaire OSSU en cours 
 - Catalogue : 15 unités, 391 leçons/ateliers, 1190 exercices; progression locale persistante.
 - Ordre pédagogique OSSU documenté, glossaire français Prolog, reprise différée des questions ratées jusqu'à correction.
 - Lecture des notes par cours, liens appariés aux exercices, lecteur PDF natif, formules composées localement, explications et icônes originales.
-- Dernière validation Windows : 160 tests desktop et un test natif vidéo réussis. Les moteurs LaTeX/PDF/audio restent vérifiés; le contrôle global des fractions et les captures Compose sont consignés dans le registre. Les rendus automatisés ne certifient pas tous les supports.
-- Code livré : `d92e255`, version Windows 1.8.4 publiée sur [GitHub Releases](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/tag/v1.8.4). [Run de livraison 39867752469](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/runs/39867752469), rapports `12465416553` téléchargés : installation, mise à niveau réelle via le lanceur de l’app, désinstallation et progression préservée. Installateur et empreinte SHA-256 disponibles dans la Release.
+- Dernière validation Windows : 177 tests desktop et un test natif vidéo réussis. Les moteurs LaTeX/PDF/audio restent vérifiés; le contrôle global des fractions et les captures Compose sont consignés dans le registre. Les rendus automatisés ne certifient pas tous les supports.
+- Code livré : `0da2706`, version Windows 1.9.2 publiée sur [GitHub Releases](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/tag/v1.9.2). [Run de livraison 39882896573](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/runs/39882896573), rapports `12471587100` téléchargés : installation, mise à niveau réelle via le lanceur de l’app, désinstallation et progression préservée. Installateur et empreinte SHA-256 disponibles dans la Release.
 - Section Paramètres sous Cours et Profil : version, réglages des mises à jour et informations de sauvegarde. Pastille chiffrée des actions requises; erreurs de préférences, de vérification et d’installation conservées séparément. Navigation au clavier et dispositions étroites vérifiées.
 - Recherche par titre/objectif dans le sommaire des mathématiques, sans modifier ordre, prérequis ou progression. Captures inspectées à 500/1100 px.
 - Favoris des leçons de mathématiques : ajout/retrait, filtre combiné à la recherche, conservation de l’ordre et des prérequis, sauvegarde locale compatible avec les anciens fichiers. Captures inspectées à 500/1100 px; ajout au clavier et erreurs de sauvegarde couverts par les tests.
 - Aperçus vidéo dans les supports de mathématiques : cartes adaptatives, vignettes YouTube si disponibles, lien direct vers la vidéo et repli hors ligne/MP4. Captures Compose inspectées à 500 et 1100 px. Les vignettes du test sont injectées; une vignette réelle a également été contrôlée par HTTP. Lecteur intégré Windows livré; la disponibilité de toutes les vidéos et de tous les menus tiers reste à vérifier.
+- Reprise automatique YouTube/MP4 : fichier séparé `video-playback.json`, clé par source, positions validées, écritures atomiques hors interface et flush avant sortie. Reprise MP4 après fermeture/réouverture vérifiée nativement; contrat API YouTube vérifié par modèle JS des états documentés. La fin réelle remet la reprise à zéro; une erreur conserve le fichier existant.
+- Téléchargement YouTube avec piste audio française déjà accessible, y compris doublage automatique : sélection stricte sans repli anglais, fichier de destination choisi, confirmation de remplacement, progression/annulation, assemblage MP4 et contrôle ffprobe. yt-dlp, FFmpeg/ffprobe et runtime JS restent des prérequis locaux non embarqués. Assemblage et sélection vérifiés avec une fixture synthétique réelle; aucun téléchargement positif d’un doublage YouTube public certifié. Les deux cours MIT interrogés ne renvoient que en/en-US via l’outil installé.
 - Génération IA retirée. Android/iOS conservés sans développement actif. Aucun Computer Use utilisé.
 
 ## 1. Couverture pédagogique complète — chantier majeur restant
@@ -27,7 +29,7 @@ Ce bilan complète le registre; il ne transforme pas l'inventaire OSSU en cours 
 
 ## 2. Supports et lecture
 
-- Lecteur vidéo Windows corrigé en 1.8.4 : YouTube utilise uniquement le lecteur
+- Lecteur vidéo Windows corrigé en 1.8.4 et complété en 1.9.2 : YouTube utilise uniquement le lecteur
   embed officiel; le lien navigateur conserve la page complète. Les MP4 occupent
   le viewport en conservant leurs proportions. Le plein écran masque l’en-tête
   applicatif; les transitions et restaurations sont couvertes par les tests.
