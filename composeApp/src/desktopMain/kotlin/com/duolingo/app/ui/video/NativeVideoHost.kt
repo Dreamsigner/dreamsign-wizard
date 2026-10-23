@@ -62,13 +62,53 @@ internal interface NativeVideoAdapter {
     fun navigate(url: String)
     fun evaluate(script: String): CompletableFuture<String>
     fun dispose()
+    fun disposeWhenIdle(): CompletableFuture<Unit> {
+        dispose()
+        return CompletableFuture.completedFuture(Unit)
+    }
 }
 private class WebViewAdapter : NativeVideoAdapter {
     private val native = WebViewComponent.create(WebViewComponent.Mode.HEAVYWEIGHT).apply { setDefaultContextMenuEnabled(true) }
+    private val pending = mutableSetOf<CompletableFuture<String>>()
+    private var closing = false
+    private val disposed = CompletableFuture<Unit>()
     override val component: JComponent get() = native
-    override fun navigate(url: String) { native.setUrl(url) }
-    override fun evaluate(script: String): CompletableFuture<String> = native.evalAsync("return ($script);")
-    override fun dispose() { native.dispose() }
+    private fun onEdt(action: () -> Unit) {
+        if (SwingUtilities.isEventDispatchThread()) action() else SwingUtilities.invokeLater(action)
+    }
+    override fun navigate(url: String) { onEdt { if (!closing) native.setUrl(url) } }
+    override fun evaluate(script: String): CompletableFuture<String> {
+        val result = CompletableFuture<String>()
+        onEdt {
+            if (closing) result.completeExceptionally(IllegalStateException("Video player closed"))
+            else try {
+                val evaluation = native.evalAsync("return ($script);")
+                pending += evaluation
+                evaluation.whenComplete { value, error -> onEdt {
+                    pending -= evaluation
+                    if (error == null) result.complete(value) else result.completeExceptionally(error)
+                    finishDisposal()
+                } }
+            } catch (error: Exception) { result.completeExceptionally(error) }
+        }
+        return result
+    }
+    private fun finishDisposal() {
+        if (closing && pending.isEmpty() && !disposed.isDone) {
+            try {
+                // Let the embedded Canvas remove its native peer before its parent
+                // window is destroyed; explicit dispose remains safe and idempotent.
+                native.parent?.remove(native)
+                native.dispose()
+                disposed.complete(Unit)
+            } catch (error: Exception) { disposed.completeExceptionally(error) }
+        }
+    }
+    override fun dispose() { disposeWhenIdle() }
+    override fun disposeWhenIdle(): CompletableFuture<Unit> {
+        onEdt { closing = true; finishDisposal() }
+        return disposed
+    }
 }
 
 /** Serves only a constant player shell on loopback, with one unguessable route per host. */
@@ -97,6 +137,7 @@ internal class VideoWrapperServer(source: String) : AutoCloseable {
 
 /** One native WebView per window, released with its local shell. No app bridge is exposed. */
 internal class NativeVideoHost(private val onState: (VideoPageState) -> Unit, private val onFailure: (String) -> Unit, private val factory: () -> NativeVideoAdapter = { WebViewAdapter() }, private val resumeStore: FileVideoResumeStore? = productionVideoResumeStore(), private val onPersistenceWarning: (String) -> Unit = {}) {
+    internal val disposalComplete = CompletableFuture<Unit>()
     var view: NativeVideoAdapter? = null
         private set
     var lastProbeError: String? = null
@@ -271,8 +312,12 @@ internal class NativeVideoHost(private val onState: (VideoPageState) -> Unit, pr
             }
             SwingUtilities.invokeLater {
                 timer?.stop(); timer = null
-                view?.dispose(); view = null
-                wrapper?.close(); wrapper = null
+                val native = view
+                view = null
+                (native?.disposeWhenIdle() ?: CompletableFuture.completedFuture(Unit)).whenComplete { _, error ->
+                    wrapper?.close(); wrapper = null
+                    if (error == null) disposalComplete.complete(Unit) else disposalComplete.completeExceptionally(error)
+                }
             }
         }
     }

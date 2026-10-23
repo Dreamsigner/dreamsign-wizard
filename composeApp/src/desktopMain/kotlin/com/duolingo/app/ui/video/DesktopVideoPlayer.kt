@@ -72,7 +72,11 @@ object DesktopVideoPlayer : VideoPlayer {
             state.placement = fullscreenSession.placement
         }, onFailure = { message = it; failure = true }, onPersistenceWarning = { persistenceWarning = it }) }
         DisposableEffect(host) { onDispose { host.close() } }
-        Window(onCloseRequest = onClose, title = "Vidéo · ${resource.title.substringBeforeLast(" — ", resource.title)}", state = state) {
+        val closePlayer: () -> Unit = {
+            host.close()
+            host.disposalComplete.whenComplete { _, _ -> javax.swing.SwingUtilities.invokeLater(onClose) }
+        }
+        Window(onCloseRequest = closePlayer, title = "Vidéo · ${resource.title.substringBeforeLast(" — ", resource.title)}", state = state) {
             val isFullscreen = state.placement == WindowPlacement.Fullscreen
             fun leaveFullscreen() {
                 if (fullscreenSession.sourceFullscreen) host.view?.evaluate("(function(){if(document.fullscreenElement)document.exitFullscreen();return true;})()")
@@ -97,7 +101,7 @@ object DesktopVideoPlayer : VideoPlayer {
                     fullscreen = isFullscreen,
                     onFullscreen = { if (isFullscreen) leaveFullscreen() else enterFullscreen() },
                     onBrowser = { runCatching { uri.openUri(resource.url) } },
-                    onClose = onClose,
+                    onClose = closePlayer,
                     content = {
                         if (supported) SwingPanel(factory = { host.create(resource) }, modifier = Modifier.fillMaxSize())
                         else Text("Cette source vidéo n’est pas prise en charge dans le lecteur intégré.", Modifier.padding(24.dp), color = ActionRed)

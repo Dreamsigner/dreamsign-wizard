@@ -64,7 +64,10 @@ private fun desktopApplication() = application {
     val closeSafely: (Boolean) -> Unit = { restart -> scope.launch {
         val flushed = com.duolingo.app.ui.video.flushVideoPlaybackPositions()
         if (flushed.failedPlayers > 0) unsavedVideoCloseRequest = restart
-        else if (updater.beforeClose(restart)) exitApplication()
+        else if (updater.beforeClose(restart)) {
+            com.duolingo.app.ui.video.closeVideoPlayersBeforeExit()
+            exitApplication()
+        }
     }; Unit }
     LaunchedEffect(updater) { updater.start() }
     DisposableEffect(updater) { onDispose { updater.close() } }
@@ -81,7 +84,10 @@ private fun desktopApplication() = application {
                 text = { androidx.compose.material.Text("Impossible d’enregistrer une ou plusieurs positions vidéo. Les positions précédentes sont conservées.") },
                 confirmButton = { androidx.compose.material.TextButton(onClick = {
                     unsavedVideoCloseRequest = null
-                    scope.launch { if (updater.beforeClose(restart)) exitApplication() }
+                    scope.launch { if (updater.beforeClose(restart)) {
+                        com.duolingo.app.ui.video.closeVideoPlayersBeforeExit()
+                        exitApplication()
+                    } }
                 }) { androidx.compose.material.Text("Quitter quand même") } },
                 dismissButton = { androidx.compose.material.TextButton(onClick = { unsavedVideoCloseRequest = null }) {
                     androidx.compose.material.Text("Rester dans l’application")

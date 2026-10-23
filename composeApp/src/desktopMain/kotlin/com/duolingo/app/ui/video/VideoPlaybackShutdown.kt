@@ -39,3 +39,13 @@ internal object VideoPlaybackFlushRegistry {
     fun unregister(host: NativeVideoHost) { active -= host }
     fun snapshot(): List<NativeVideoHost> = active.toList()
 }
+
+internal suspend fun closeVideoPlayersBeforeExit() = withContext(Dispatchers.IO) {
+    val hosts = VideoPlaybackFlushRegistry.snapshot()
+    hosts.forEach { it.close() }
+    val deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(5)
+    hosts.forEach { host ->
+        val remaining = deadline - System.nanoTime()
+        if (remaining > 0L) runCatching { host.disposalComplete.get(remaining, TimeUnit.NANOSECONDS) }
+    }
+}

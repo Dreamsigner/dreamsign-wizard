@@ -171,7 +171,10 @@ class NativeVideoSmokeTest {
             val seekDeadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(5)
             while (kotlin.math.abs((observed.get()?.mediaTime ?: 0.0) - 0.75) > 0.05 && System.nanoTime() < seekDeadline) Thread.sleep(100)
             assertTrue(kotlin.math.abs((observed.get()?.mediaTime ?: 0.0) - 0.75) <= 0.05, "Periodic host probe did not observe the manual seek before close: ${observed.get()}")
+            Files.writeString(reports.resolve("lifecycle.txt"), "Closing first player after confirmed seek\n")
             host.close()
+            host.disposalComplete.get(8, TimeUnit.SECONDS)
+            Files.writeString(reports.resolve("lifecycle.txt"), "First native player disposed\n", java.nio.file.StandardOpenOption.APPEND)
             var flushed: VideoResumeEntry? = null
             val flushDeadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(6)
             while ((flushed == null || kotlin.math.abs(flushed.positionSeconds - 0.75) > 0.05) && System.nanoTime() < flushDeadline) {
@@ -187,6 +190,7 @@ class NativeVideoSmokeTest {
                 observed.set(page)
                 if (page.mediaReady >= 2 && kotlin.math.abs(page.mediaTime - 0.75) < 0.2) resumed.countDown()
             }, onFailure = { resumeFailure.set(it) }, resumeStore = resumeStore)
+            Files.writeString(reports.resolve("lifecycle.txt"), "Creating second player\n", java.nio.file.StandardOpenOption.APPEND)
             SwingUtilities.invokeAndWait {
                 frame?.dispose()
                 frame = JFrame("Atelier — video resume test").apply {
@@ -207,6 +211,7 @@ class NativeVideoSmokeTest {
                 }
                 paintAgain(requireNotNull(frame))
             }
+            Files.writeString(reports.resolve("lifecycle.txt"), "Second player attached; waiting for resume\n", java.nio.file.StandardOpenOption.APPEND)
             assertTrue(resumed.await(15, TimeUnit.SECONDS), "Reopened production MP4 wrapper did not seek to the stored position: ${observed.get()} failure=${resumeFailure.get()}")
             val appCloseFlush = runBlocking { flushVideoPlaybackPositions() }
             assertEquals(1, appCloseFlush.activePlayers)
@@ -253,6 +258,7 @@ class NativeVideoSmokeTest {
             Files.writeString(reports.resolve("summary.json"), """{"webView2Created":true,"videoDecoded":true,"mp4Decoded":true,"sourceControls":true,"pauseSeekSpeedVolumeVerified":true,"mp4ResumeAfterReopenVerified":true,"applicationCloseFlushVerified":true,"youtubeResumeApiContractVerified":true,"duration":${state.duration},"currentTime":${state.mediaTime},"fixture":"original-ffmpeg-testsrc","remoteChecks":[${remote.joinToString(",")}]}""")
         } finally {
             host.close()
+            runCatching { host.disposalComplete.get(8, TimeUnit.SECONDS) }
             runBlocking { flushVideoPlaybackPositions() }
             SwingUtilities.invokeAndWait { frame?.dispose() }
             server.stop(0)

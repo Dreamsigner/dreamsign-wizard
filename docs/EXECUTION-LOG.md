@@ -922,3 +922,16 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   installé; aucun téléchargement positif d’une piste YouTube française certifié.
 - Candidate 1.9.0 et fixture de mise à niveau 1.9.1; CI et publication à confirmer.
   Suivi de tâche et compteurs agents conservés uniquement dans le registre privé.
+
+## 23 octobre 2026 — Cycle de fermeture natif et candidate 1.9.2
+
+- Candidate 1.9.0 non publiée : run 39881519171, rapports 12470573915.
+  177 tests applicatifs passent; le processus du test natif quitte avec
+  0xC0000005 lors du cycle fermeture/réouverture, sans rapport JUnit final.
+- WebViewAdapter confine maintenant navigation/évaluations/destruction à EDT,
+  suit les évaluations natives encore actives et diffère la libération jusqu’à
+  leur achèvement. Le Canvas natif est retiré avant fermeture du parent.
+  La fenêtre et la sortie applicative attendent cette libération hors EDT.
+- Le test conserve fermeture/réouverture réelle et consigne ses étapes de cycle
+  de vie. Local : 177 tests desktop + 1 test natif et distribution 1.9.2 réussis.
+  Revalidation runner requise; fixture de mise à niveau 1.9.3.
