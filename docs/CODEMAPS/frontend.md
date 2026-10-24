@@ -1,4 +1,4 @@
-<!-- Generated: 2026-10-23 | Files scanned: 265 tracked files inventoried; focused source/config scan | Token estimate: ~400 (characters/4 heuristic) -->
+<!-- Generated: 2026-10-23 | Updated: 2026-10-24 (sharing flow) | Files scanned: 265 tracked files inventoried; focused source/config scan | Token estimate: ~400 (characters/4 heuristic) -->
 
 # Frontend and state
 
@@ -14,4 +14,4 @@ Desktop main.kt → App.kt / theme → DuolingoApp
 
 `desktopMain/kotlin/main.kt` is the actual desktop entry point and supplies PDF, video, math and update implementations. Android and iOS have native entry points, but Windows is the documented maintained distribution.
 
-The scan found no app-level share action, deep-link route, social publishing flow or analytics SDK/event pipeline. Existing course reference URLs and YouTube links open learning sources; they are not shareable lesson links. For francophone math/CS learners, Windows-only distribution is a material install-and-share barrier, and the code currently gives no referral or measurement loop to observe acquisition and return use.
+`LessonQuizScreen` can open `ui/share/ChallengeShareDialog` for supported short questions. A restricted DTO carries only the lesson title, prompt, options and optional formula/code. The dialog copies text or captures the full Compose card; the injected desktop `ChallengeShareService` saves a PNG through a native file chooser. No answer, hint, explanation or learner state is exported. No deep-link route, web challenge, referral flow or analytics pipeline is implemented.

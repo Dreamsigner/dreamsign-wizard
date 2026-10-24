@@ -185,3 +185,11 @@ Le candidat1.11.2 corrige la taille des fractions mais n’est pas publié : le 
 Le rendu partagé conserve les unités composées sur une ligne (`12 m/s`, `9,8 m/s²`, `km/h`), y compris les unités rédigées avec une fraction LaTeX en caractères droits dans le catalogue. Les fractions numériques et algébriques restent verticales : dans `1/2 m/s`, seule la valeur numérique est une fraction.
 
 Le test du catalogue classe séparément unités et fractions, et continue de signaler les slashs non reconnus. Les captures natives `linear-units-readable-fractions-360.png` et `linear-units-readable-fractions-1000.png`, dans `composeApp/build/reports/ui-snapshots/`, comparent les unités simples, le cas LaTeX du cursus et les vraies fractions. Ce correctif est disponible dans la distribution locale; il ne constitue pas une nouvelle release publiée.
+
+## Partager un défi
+
+Pendant un exercice compatible, **Partager ce défi** ouvre un aperçu neutre : titre de leçon, question, choix et, si nécessaire, formule ou extrait de code. **Copier le texte** prépare le message pour une autre application. Sur Windows, **Enregistrer PNG** ouvre le sélecteur de fichier; un fichier existant nécessite confirmation avant remplacement. Annuler n'annonce pas une réussite, et une erreur permet de réessayer.
+
+La carte ne contient ni réponse correcte, ni sélection de l'élève, ni indice, ni explication, ni progression personnelle. Le partage reste disponible après vérification d'une réponse, sans emporter le corrigé. Les formats nécessitant un audio, un passage de lecture ou une autre interaction sont exclus, ainsi que les questions trop longues pour ce format. Le contenu éligible est conservé en entier; il n'est pas tronqué pour créer une carte.
+
+Sur une fenêtre étroite ou courte, faire défiler l'aperçu et vérifier que les commandes restent accessibles. L'image doit contenir tous les choix, y compris ceux hors de la zone visible de l'aperçu. Le partage ne crée pas de défi interactif sur Internet : l'image ou le texte est envoyé par l'utilisateur depuis son application de messagerie.

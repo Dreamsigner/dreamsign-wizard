@@ -35,6 +35,8 @@ import com.duolingo.app.ui.math.LearningText
 import com.duolingo.app.ui.math.LearningFormula
 import androidx.compose.ui.text.TextStyle
 import com.duolingo.app.data.CourseResources
+import com.duolingo.app.ui.share.ChallengeShareDialog
+import com.duolingo.app.ui.share.challengeShareCard
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -79,6 +81,8 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
     val written = exercise as? Exercise.WrittenProduction
     val spoken = exercise as? Exercise.SpokenProduction
     val writtenResponse = written?.let { stats.writtenDrafts[it.id] }.orEmpty()
+    var showChallengeShare by remember(lesson.id, index) { mutableStateOf(false) }
+    val shareCard = exercise?.let { challengeShareCard(lesson, it) }
     Scaffold(backgroundColor = Paper,
         topBar = {
             Surface(color = White) {
@@ -101,6 +105,10 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
             Surface(color = White) {
                 Box(Modifier.fillMaxWidth().padding(16.dp), contentAlignment = Alignment.Center) {
                     Column(Modifier.widthIn(max = 760.dp).fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    if (!showNotes && shareCard != null) TextButton(
+                        onClick = { showChallengeShare = true },
+                        modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
+                    ) { Text("Partager ce défi", color = Ink) }
                     if (checked && !showNotes) Text(
                         if (written != null || spoken != null) "Entraînement auto-évalué terminé" else if (correct) "Bonne réponse" else "Cette question reviendra en fin de séance",
                         color = if (correct) Ink else ActionRed, fontWeight = FontWeight.Bold)
@@ -211,6 +219,7 @@ fun LessonQuizScreen(viewModel: AppViewModel) {
         },
         confirmButton = { TextButton({ showHelp = false }, Modifier.heightIn(min = 48.dp)) { Text("Revenir à la leçon") } },
         shape = LearningShape, backgroundColor = White)
+    if (showChallengeShare && shareCard != null && !showNotes) ChallengeShareDialog(shareCard) { showChallengeShare = false }
 }
 
 @Composable

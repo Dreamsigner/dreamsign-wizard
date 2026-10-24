@@ -17,6 +17,8 @@ import com.duolingo.app.ui.pdf.DesktopPdfDocumentReader
 import androidx.compose.runtime.*
 import com.duolingo.app.update.*
 import kotlinx.coroutines.launch
+import com.duolingo.app.ui.share.LocalChallengeShareService
+import com.duolingo.app.ui.share.DesktopChallengeShareService
 
 fun main(args: Array<String>) {
     if (args.firstOrNull() == "--self-check-updater") {
@@ -104,8 +106,10 @@ private fun desktopApplication() = application {
                 com.duolingo.app.ui.VideoPlaybackProvider(com.duolingo.app.ui.video.DesktopVideoPlayer) {
                     com.duolingo.app.ui.VideoDownloadProvider(remember { com.duolingo.app.ui.download.defaultFrenchVideoDownloader() }) {
                         MathRenderingProvider(DesktopMathRenderer) {
-                            App(settingsActionCount = updateState.actionCount) {
-                                UpdatePanel(updateState, updater::checkNow, updater::setAutomatic, { closeSafely(true) })
+                            CompositionLocalProvider(LocalChallengeShareService provides remember { DesktopChallengeShareService() }) {
+                                App(settingsActionCount = updateState.actionCount) {
+                                    UpdatePanel(updateState, updater::checkNow, updater::setAutomatic, { closeSafely(true) })
+                                }
                             }
                         }
                     }

@@ -15,6 +15,7 @@ Application d’apprentissage en français pour Windows, développée en Kotlin 
 - Lecture des notes de cours avec sommaire, ressources de référence et exercices associés.
 - Consultation des supports PDF dans l’application, avec défilement vertical continu et zoom.
 - Exercices avec indices, corrections expliquées et reprise des questions incorrectes en fin de séance.
+- Partage d’un défi : copier la question et ses choix, ou enregistrer une carte PNG sur Windows, sans dévoiler la correction.
 - Affichage des expressions mathématiques avec un moteur de rendu LaTeX local.
 - Ateliers TCF de compréhension écrite et orale, rédaction et production orale avec réécoute et auto-évaluation.
 - Sauvegarde locale de la progression, des XP, du cours sélectionné et des brouillons.

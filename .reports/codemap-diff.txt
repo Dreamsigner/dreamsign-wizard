@@ -16,3 +16,10 @@ Warnings
 - Other documentation staleness cannot be determined reliably from a missing codemap baseline or filesystem timestamps.
 
 Validation: focused read of README, Gradle settings/build/version catalog, Windows workflow, app entry/state/persistence/resource sources; no application files changed and no tests run (documentation-only update).
+
+Incremental update: 2026-10-24 — challenge sharing
+- Added common ui/share/ChallengeShare.kt, desktop ui/share/DesktopChallengeShareService.kt and desktop ChallengeShareTest.kt.
+- Modified LessonQuizScreen.kt and desktop main.kt for a sharing dialog and platform PNG service.
+- Updated frontend codemap and user documentation. No new dependency, server, database or migration.
+- The original no-sharing observation above describes the initial 2026-10-23 baseline; local text/PNG sharing now exists. No web deep links, referral tracking or analytics pipeline were added.
+- Focused frontend update; no claim of a new exhaustive repository scan.
