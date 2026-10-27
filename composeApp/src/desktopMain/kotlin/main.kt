@@ -19,6 +19,8 @@ import com.duolingo.app.update.*
 import kotlinx.coroutines.launch
 import com.duolingo.app.ui.share.LocalChallengeShareService
 import com.duolingo.app.ui.share.DesktopChallengeShareService
+import com.duolingo.app.ui.studio.DesktopStudioController
+import com.duolingo.app.ui.studio.LocalStudioController
 
 fun main(args: Array<String>) {
     if (args.firstOrNull() == "--self-check-updater") {
@@ -40,6 +42,8 @@ fun main(args: Array<String>) {
             runBlocking {
                 val report = checkInstallation()
                 checkDesktopDocumentEngines()
+                // Verify Atelier IA's HTTP module in the reduced packaged runtime, without a request.
+                java.net.http.HttpClient.newHttpClient()
                 writeInstallationCheckReport(Path.of(args[2]), report.copy(mathRenderingVerified = true, pdfRenderingVerified = true,
                     updaterInstalledEdition = installedApplicationPath() != null, updaterVersion = System.getProperty("atelier.version", "")))
             }
@@ -75,7 +79,7 @@ private fun desktopApplication() = application {
     DisposableEffect(updater) { onDispose { updater.close() } }
     Window(
         onCloseRequest = { closeSafely(false) },
-        title = "Atelier d’apprentissage — Maths, Informatique et TCF",
+        title = "Atelier d’apprentissage — Tuteur IA et cours",
         state = rememberWindowState(width = 1280.dp, height = 840.dp)
     ) {
         window.minimumSize = Dimension(360, 480)
@@ -107,8 +111,12 @@ private fun desktopApplication() = application {
                     com.duolingo.app.ui.VideoDownloadProvider(remember { com.duolingo.app.ui.download.defaultFrenchVideoDownloader() }) {
                         MathRenderingProvider(DesktopMathRenderer) {
                             CompositionLocalProvider(LocalChallengeShareService provides remember { DesktopChallengeShareService() }) {
-                                App(settingsActionCount = updateState.actionCount) {
-                                    UpdatePanel(updateState, updater::checkNow, updater::setAutomatic, { closeSafely(true) })
+                                val studio = remember { DesktopStudioController() }
+                                DisposableEffect(studio) { onDispose { studio.close() } }
+                                CompositionLocalProvider(LocalStudioController provides studio) {
+                                    App(settingsActionCount = updateState.actionCount) {
+                                        UpdatePanel(updateState, updater::checkNow, updater::setAutomatic, { closeSafely(true) })
+                                    }
                                 }
                             }
                         }

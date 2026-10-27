@@ -1,8 +1,10 @@
-<!-- Generated: 2026-10-23 | Files scanned: 265 tracked files inventoried; focused source/config scan | Token estimate: ~350 (characters/4 heuristic) -->
+<!-- Generated: 2026-10-23 | Updated: 2026-10-27 | Files scanned: 265 at baseline; focused studio update | Token estimate: ~450 (characters/4 heuristic) -->
 
 # Backend and external calls
 
 There is no server-side backend, application API, authentication service, or remote learner database in the inspected app. The equivalent app logic is local:
+
+Atelier IA (2026-10-26): desktop `ui/studio/DesktopStudioController.kt` also implements the common studio port. It owns session state/persistence and calls an injected `StudioTutor`; the production tutor uses Java HTTP Chat Completions against the user's provider. HTTPS is required remotely; loopback HTTP can omit a key. Requests are bounded/cancellable, redirects refused, and failed pending turns are retryable. This is an outbound adapter, not an app-hosted API. API keys stay in RAM.
 
 ```text
 DuolingoApp → AppViewModel → bundled catalogue + platform ProgressStore

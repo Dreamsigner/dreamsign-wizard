@@ -193,3 +193,15 @@ Pendant un exercice compatible, **Partager ce défi** ouvre un aperçu neutre : 
 La carte ne contient ni réponse correcte, ni sélection de l'élève, ni indice, ni explication, ni progression personnelle. Le partage reste disponible après vérification d'une réponse, sans emporter le corrigé. Les formats nécessitant un audio, un passage de lecture ou une autre interaction sont exclus, ainsi que les questions trop longues pour ce format. Le contenu éligible est conservé en entier; il n'est pas tronqué pour créer une carte.
 
 Sur une fenêtre étroite ou courte, faire défiler l'aperçu et vérifier que les commandes restent accessibles. L'image doit contenir tous les choix, y compris ceux hors de la zone visible de l'aperçu. Le partage ne crée pas de défi interactif sur Internet : l'image ou le texte est envoyé par l'utilisateur depuis son application de messagerie.
+
+## Atelier IA — première tranche du pivot
+
+L'application ouvre l'atelier au démarrage. Cours, Profil et Paramètres restent disponibles. Créer un objectif puis écrire ce que l'on sait déjà; la création de l'objectif seule ne déclenche pas de requête et ne génère pas de fausse réponse IA.
+
+Configurer le fournisseur depuis Paramètres → Connexion IA ou le raccourci de l'atelier. Fournir une URL compatible Chat Completions, le nom du modèle et une clé. La clé reste en mémoire jusqu'à la fermeture; les séances, l'URL et le modèle sont stockés dans `studio.json`, à côté de la progression existante. Un fournisseur HTTP loopback peut être utilisé sans clé. Une connexion distante doit utiliser HTTPS et une clé. Le contexte comprend l'objectif et jusqu'aux douze derniers messages, dans un budget de taille; l'historique local reste complet, et le reste du catalogue et des séances n'est pas envoyé.
+
+Tester création, changement de séance, redémarrage, erreur réseau, réessai sans message dupliqué et annulation. Une demande non répondue doit rester réessayable après redémarrage; un fournisseur distant demande à nouveau sa clé. Un fichier illisible ou une erreur de sauvegarde ne doit pas entraîner d'écrasement silencieux. Les tests automatisés utilisent des contrôleurs déterministes et un serveur local, sans clé réelle ni consommation de fournisseur.
+
+Les captures `studio-360.png` et `studio-1000.png` dans `composeApp/build/reports/ui-snapshots/` documentent la conversation aux formats compact et bureau. Les captures `studio-screen-360.png` et `studio-screen-1000.png` incluent également le contexte de l’atelier complet. Le contrôle `--self-check` du paquet vérifie aussi que le client Java HTTP peut être créé avec le runtime embarqué, sans envoi réseau. Les autres plateformes gardent une indication explicite d'indisponibilité de cette intégration.
+
+Le plan pédagogique reste conversationnel à cette étape. L'arbre structuré, le graphe de connaissances, la pratique adaptative et les outils spécialisés ne sont pas encore implémentés. Voir `docs/product/2026-10-26-learning-studio.md` et `tasks/todo.md`.

@@ -118,6 +118,7 @@ tasks.withType<org.gradle.api.tasks.testing.Test>().configureEach {
 val desktopTestTask = tasks.named<org.gradle.api.tasks.testing.Test>("desktopTest") {
     exclude("**/SourcePdfSmokeTest.class")
     exclude("**/NativeVideoSmokeTest.class")
+    jvmArgs("--add-modules=jdk.httpserver")
 }
 tasks.register<org.gradle.api.tasks.testing.Test>("sourcePdfSmokeTest") {
     description = "Opt-in network check of an official MIT PDF with the production desktop reader."
@@ -135,7 +136,8 @@ compose.desktop {
         nativeDistributions {
             // PDFBox 3 uses sun.misc.Unsafe.invokeCleaner via this module. The reduced
             // jlink runtime otherwise falls back to inaccessible Java 8 internals.
-            modules("jdk.unsupported", "jdk.httpserver")
+            // Atelier IA uses Java's HTTP client; keep it in the packaged runtime too.
+            modules("jdk.unsupported", "jdk.httpserver", "java.net.http")
             targetFormats(org.jetbrains.compose.desktop.application.dsl.TargetFormat.Msi, org.jetbrains.compose.desktop.application.dsl.TargetFormat.Exe)
             packageName = "DuolingoKmpApp"
             packageVersion = providers.gradleProperty("desktopPackageVersion").orElse("1.11.2").get()

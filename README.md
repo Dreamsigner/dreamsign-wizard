@@ -6,6 +6,16 @@
 
 Application d’apprentissage en français pour Windows, développée en Kotlin avec Compose Multiplatform. Elle réunit des cours de mathématiques et d’informatique ainsi que des ateliers de préparation au TCF Canada, avec exercices interactifs et suivi de progression.
 
+## Nouvelle direction : Atelier IA
+
+L'application évolue vers un apprentissage piloté par les objectifs personnels, inspiré du fonctionnement de [LearnHarness](https://github.com/amosblomqvist/learnharness). La première tranche ajoute un tuteur conversationnel en français et des séances persistantes, en conservant Kotlin/Compose et les cours existants.
+
+Dans **Atelier IA**, créer un objectif, décrire ses connaissances et son raisonnement, puis échanger avec le tuteur. Retrouver une séance permet de reprendre son historique. **Paramètres → Connexion IA**, ou le raccourci **Connexion IA** de l'atelier, configure l'URL de base compatible Chat Completions et le nom du modèle. La clé reste en mémoire jusqu'à la fermeture; elle n'est pas enregistrée avec les séances.
+
+Les échanges sont stockés localement dans le dossier de données Windows de l'application, séparément de la progression des cours. Lors d'un envoi, l'objectif et un contexte borné de la séance sont transmis au fournisseur configuré. Un serveur HTTP local peut fonctionner sans clé; les fournisseurs distants nécessitent HTTPS et une clé. Les tests utilisent un serveur local et des réponses déterministes, sans appeler un fournisseur payant.
+
+Cette tranche ne comprend pas encore de graphe de connaissances ni de plan pédagogique structuré et validé : le diagnostic et le plan sont conversationnels. La [conception du pivot](docs/product/2026-10-26-learning-studio.md) et le [plan de réalisation](tasks/plan.md) précisent les étapes suivantes. Le nouveau parcours nécessite une compilation de cette révision; ce changement ne publie pas d'installateur.
+
 [![Build Windows](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/workflows/build.yml)
 
 [Installation](#installation) · [Développement](#développement) · [Catalogue des cours](docs/courses/README.md) · [Documentation](#documentation)

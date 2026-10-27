@@ -23,3 +23,12 @@ Incremental update: 2026-10-24 — challenge sharing
 - Updated frontend codemap and user documentation. No new dependency, server, database or migration.
 - The original no-sharing observation above describes the initial 2026-10-23 baseline; local text/PNG sharing now exists. No web deep links, referral tracking or analytics pipeline were added.
 - Focused frontend update; no claim of a new exhaustive repository scan.
+
+Incremental update: 2026-10-27 — Atelier IA pivot
+- User chose evolution of existing Kotlin/Compose app over a LearnHarness fork.
+- New common StudioContracts/StudioScreen and desktop DesktopStudioController; two focused test files.
+- Navigation/default home and Settings changed; course records/identifiers/progress preserved.
+- Outbound configured Chat Completions with Java HTTP; session JSON separate from course progress; no persisted key.
+- java.net.http explicitly added to packaged runtime; jdk.httpserver enabled for deterministic local tests.
+- All five codemaps updated from a focused inspection; no full rescan/dependency delta fabricated.
+- Graph, structured-plan validation, adaptive practice and specialized tools remain roadmap work.

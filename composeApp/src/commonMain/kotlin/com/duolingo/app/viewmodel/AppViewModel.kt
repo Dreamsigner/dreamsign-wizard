@@ -14,12 +14,13 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-enum class AppScreen { LEARNING_PATH, LESSON_QUIZ, COURSE_READER, PROFILE, SETTINGS }
+enum class AppScreen { LEARNING_PATH, LESSON_QUIZ, COURSE_READER, PROFILE, SETTINGS, AI_STUDIO }
 
 class AppViewModel(
     private val progressStore: ProgressStore = createProgressStore(),
     private val today: () -> String = ::todayLocalDate,
-    catalogue: List<Subject> = SampleData.sampleSubjects
+    catalogue: List<Subject> = SampleData.sampleSubjects,
+    initialScreen: AppScreen = AppScreen.LEARNING_PATH,
 ) {
     private val json = Json { ignoreUnknownKeys = true; encodeDefaults = true }
     private var preserveUnreadableSave = false
@@ -41,7 +42,7 @@ class AppViewModel(
     val subjects: StateFlow<List<Subject>> = _subjects.asStateFlow()
     private val _selectedSubjectId = MutableStateFlow(initialStats.activeSubjectId)
     val selectedSubjectId: StateFlow<String> = _selectedSubjectId.asStateFlow()
-    private val _currentScreen = MutableStateFlow(AppScreen.LEARNING_PATH)
+    private val _currentScreen = MutableStateFlow(initialScreen)
     val currentScreen: StateFlow<AppScreen> = _currentScreen.asStateFlow()
     private val _activeLesson = MutableStateFlow<Lesson?>(null)
     val activeLesson: StateFlow<Lesson?> = _activeLesson.asStateFlow()

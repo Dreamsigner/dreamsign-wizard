@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.sp
 import com.duolingo.app.model.*
 import com.duolingo.app.viewmodel.AppScreen
 import com.duolingo.app.viewmodel.AppViewModel
+import com.duolingo.app.ui.studio.StudioScreen
 
 val BrandRed = Color(0xFFE3262E)
 val ActionRed = Color(0xFFC91E28)
@@ -102,7 +103,7 @@ fun LearningButton(text: String, onClick: () -> Unit, modifier: Modifier = Modif
 
 @Composable
 fun DuolingoApp(
-    viewModel: AppViewModel = remember { AppViewModel() },
+    viewModel: AppViewModel = remember { AppViewModel(initialScreen = AppScreen.AI_STUDIO) },
     settingsActionCount: Int = 0,
     settingsContent: @Composable () -> Unit = {},
 ) {
@@ -135,7 +136,7 @@ fun DuolingoApp(
             Row(Modifier.fillMaxSize()) {
                 if (rail) AppNavigation(screen, stats, sidebar, settingsActionCount, viewModel::navigateTo)
                 Scaffold(backgroundColor = Paper, modifier = Modifier.weight(1f),
-                    topBar = { if (subject != null && screen != AppScreen.SETTINGS) TopStatsHeader(stats, subjects, subject, viewModel::selectSubject) },
+                    topBar = { if (subject != null && screen != AppScreen.SETTINGS && screen != AppScreen.AI_STUDIO) TopStatsHeader(stats, subjects, subject, viewModel::selectSubject) },
                     bottomBar = { if (!rail) BottomNavigationBar(screen, viewModel::navigateTo, settingsActionCount) }) { padding ->
                     Box(Modifier.padding(padding).fillMaxSize()) {
                         AnimatedContent(targetState = screen, modifier = Modifier.fillMaxSize(), transitionSpec = {
@@ -148,6 +149,7 @@ fun DuolingoApp(
                                 else EmptyLearningState("Aucun cours disponible", "Les cours apparaîtront ici dès qu’ils seront disponibles.")
                             AppScreen.PROFILE -> ProfileScreen(stats, persistence)
                             AppScreen.SETTINGS -> SettingsScreen(persistence, settingsContent)
+                            AppScreen.AI_STUDIO -> StudioScreen()
                             AppScreen.LESSON_QUIZ, AppScreen.COURSE_READER -> Unit
                         } }
                     }
@@ -166,6 +168,7 @@ private fun AppNavigation(screen: AppScreen, stats: UserStats, expanded: Boolean
         Text(if (expanded) "Atelier\nd’apprentissage" else "Atelier", fontWeight = FontWeight.ExtraBold, fontSize = if (expanded) 20.sp else 16.sp)
         Spacer(Modifier.height(20.dp))
         NavigationChoice("Cours", Icons.Default.Home, screen == AppScreen.LEARNING_PATH, expanded) { navigate(AppScreen.LEARNING_PATH) }
+        NavigationChoice("Atelier IA", Icons.Default.Edit, screen == AppScreen.AI_STUDIO, expanded) { navigate(AppScreen.AI_STUDIO) }
         NavigationChoice("Profil", Icons.Default.Person, screen == AppScreen.PROFILE, expanded) { navigate(AppScreen.PROFILE) }
         NavigationChoice("Paramètres", Icons.Default.Settings, screen == AppScreen.SETTINGS, expanded, settingsActionCount) { navigate(AppScreen.SETTINGS) }
         Spacer(Modifier.height(32.dp))
@@ -259,6 +262,8 @@ fun BottomNavigationBar(currentScreen: AppScreen, onNavigate: (AppScreen) -> Uni
     BottomNavigation(backgroundColor = White, elevation = 0.dp) {
         BottomNavigationItem(currentScreen == AppScreen.LEARNING_PATH, { onNavigate(AppScreen.LEARNING_PATH) },
             icon = { Icon(Icons.Default.Home, null) }, label = { Text("Cours") }, selectedContentColor = ActionRed, unselectedContentColor = Graphite)
+        BottomNavigationItem(currentScreen == AppScreen.AI_STUDIO, { onNavigate(AppScreen.AI_STUDIO) },
+            icon = { Icon(Icons.Default.Edit, null) }, label = { Text("Atelier IA") }, selectedContentColor = ActionRed, unselectedContentColor = Graphite)
         BottomNavigationItem(currentScreen == AppScreen.PROFILE, { onNavigate(AppScreen.PROFILE) },
             icon = { Icon(Icons.Default.Person, null) }, label = { Text("Profil") }, selectedContentColor = ActionRed, unselectedContentColor = Graphite)
         BottomNavigationItem(currentScreen == AppScreen.SETTINGS, { onNavigate(AppScreen.SETTINGS) },

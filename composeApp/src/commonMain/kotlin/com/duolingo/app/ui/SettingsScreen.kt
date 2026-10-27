@@ -12,6 +12,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.duolingo.app.ui.studio.StudioConnectionSettings
 
 @Composable
 internal fun SettingsScreen(persistenceStatus: String, updateContent: @Composable () -> Unit) {
@@ -20,6 +21,9 @@ internal fun SettingsScreen(persistenceStatus: String, updateContent: @Composabl
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Text("Paramètres", fontSize = 28.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.semantics { heading() })
             Text("Les réglages de ton application, au même endroit.", color = Graphite)
+        }
+        Column(Modifier.widthIn(max = 840.dp).fillMaxWidth()) {
+            StudioConnectionSettings()
         }
         Column(Modifier.widthIn(max = 840.dp).fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Text("Mises à jour", fontSize = 20.sp, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
