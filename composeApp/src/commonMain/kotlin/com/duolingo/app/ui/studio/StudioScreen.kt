@@ -317,8 +317,6 @@ private fun StudioConnectionDialog(controller: StudioController, state: StudioSt
         text = {
             Column(Modifier.heightIn(max = 360.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Text("Abonnement ChatGPT", style = MaterialTheme.typography.subtitle1, fontWeight = FontWeight.SemiBold)
-                Text("Utilise les modèles disponibles dans ton forfait après ton accord dans le navigateur. Ton forfait et l’API à clé ont des accès distincts.", color = Graphite)
-                Text("La connexion et ses jetons sont enregistrés dans un fichier local protégé. Déconnecter ce compte efface les jetons locaux.", color = Graphite, fontSize = 13.sp)
                 if (state.chatGptConnected) {
                     Text("Connecté : ${state.chatGptEmail.orEmpty()}", color = Graphite)
                     Box {
@@ -337,6 +335,8 @@ private fun StudioConnectionDialog(controller: StudioController, state: StudioSt
                         Text(if (state.chatGptBusy) "Connexion en cours…" else "Continuer avec ChatGPT")
                     }
                 }
+                Text("Utilise les modèles disponibles dans ton forfait après ton accord dans le navigateur. Ton forfait et l’API à clé ont des accès distincts.", color = Graphite)
+                Text("La connexion et ses jetons sont enregistrés dans un fichier local protégé. Déconnecter ce compte efface les jetons locaux.", color = Graphite, fontSize = 13.sp)
                 if (!state.chatGptError.isNullOrBlank()) Text(state.chatGptError!!, color = ActionRed, fontSize = 13.sp)
                 Divider(color = Concrete)
                 Text("Autre fournisseur avec clé API", style = MaterialTheme.typography.subtitle1, fontWeight = FontWeight.SemiBold)

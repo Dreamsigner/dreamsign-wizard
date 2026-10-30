@@ -16,6 +16,23 @@ import kotlin.test.assertFalse
 
 class StudioUiTest {
     @Test
+    fun chatGptSignInIsVisibleInCompactConnectionDialog() = runDesktopComposeUiTest(width = 360, height = 480) {
+        val controller = MemoryStudioController()
+        setContent {
+            LearningAppTheme {
+                CompositionLocalProvider(LocalStudioController provides controller) { StudioScreen() }
+            }
+        }
+        onNodeWithText("Connexion IA").performClick()
+        onNodeWithText("Continuer avec ChatGPT").assertIsDisplayed()
+        val file = File("build/reports/ui-snapshots/studio-connection-360.png")
+        check(file.parentFile.isDirectory || file.parentFile.mkdirs())
+        Image.makeFromBitmap(onAllNodes(isRoot()).onLast().captureToImage().asSkiaBitmap()).use { image ->
+            image.encodeToData()!!.use { file.writeBytes(it.bytes) }
+        }
+    }
+
+    @Test
     fun compactEmptyWorkspaceCanScrollToAndCreateItsFirstGoal() = runDesktopComposeUiTest(width = 360, height = 480) {
         val controller = MemoryStudioController()
         setContent {
