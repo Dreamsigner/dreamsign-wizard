@@ -74,6 +74,7 @@ kotlin {
         val desktopMain by getting {
             dependencies {
                 implementation(compose.desktop.currentOs)
+                implementation("com.nimbusds:nimbus-jose-jwt:10.10")
                 implementation("org.apache.pdfbox:pdfbox:3.0.8")
                 implementation("ca.weblite:webview:1.0.10")
                 implementation("org.scilab.forge:jlatexmath:1.0.7") {

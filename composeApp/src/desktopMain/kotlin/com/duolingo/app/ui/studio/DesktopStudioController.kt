@@ -27,7 +27,7 @@ internal data class TutorRequest(
 )
 internal fun interface StudioTutor { suspend fun respond(request: TutorRequest): String }
 
-@Serializable private data class StudioDisk(val baseUrl: String = "", val model: String = "", val sessions: List<StudioSessionDisk> = emptyList(), val selectedId: String? = null)
+@Serializable private data class StudioDisk(val baseUrl: String = "", val model: String = "", val sessions: List<StudioSessionDisk> = emptyList(), val selectedId: String? = null, val providerMode: String = "api")
 @Serializable private data class StudioSessionDisk(val id: String, val goal: String, val messages: List<StudioMessageDisk>)
 @Serializable private data class StudioMessageDisk(val role: String, val text: String)
 
@@ -42,11 +42,20 @@ internal class DesktopStudioController(
     private var requestJob: Job? = null
     private var requestVersion = 0L
     private val pendingBySession = ConcurrentHashMap<String, String>()
-    override val state = MutableStateFlow(load())
+    private val chatGpt = ChatGptPlanClient(file.resolveSibling("chatgpt-plan.json"))
+    override val state = MutableStateFlow(load().copy(chatGptConnected = chatGpt.connected, chatGptEmail = chatGpt.accountEmail, chatGptError = chatGpt.storageError))
 
     init {
         state.value.sessions.forEach { session ->
             session.messages.lastOrNull()?.takeIf { it.role == "user" }?.let { pendingBySession[session.id] = it.text }
+        }
+        if (chatGpt.connected) scope.launch {
+            try {
+                val models = chatGpt.models().map { it.slug }
+                transient { copy(chatGptModels = models, chatGptError = if (models.isEmpty()) "Aucun modèle ChatGPT disponible pour ce compte." else null) }
+            } catch (_: Exception) {
+                transient { copy(chatGptError = "Impossible de charger les modèles ChatGPT. Vérifie la connexion puis réessaie.") }
+            }
         }
     }
 
@@ -63,7 +72,20 @@ internal class DesktopStudioController(
 
     override fun configure(baseUrl: String, model: String, apiKey: String): Boolean {
         if (state.value.storageError != null || state.value.busy) return false
-        val saved = mutate { copy(baseUrl = baseUrl.trim().trimEnd('/'), model = model.trim(), error = null) }
+        val normalizedUrl = baseUrl.trim().trimEnd('/')
+        val endpoint = try { validateEndpoint(normalizedUrl) } catch (_: Exception) {
+            transient { copy(connectionError = "Saisis une URL HTTPS valide, ou une adresse HTTP locale.") }
+            return false
+        }
+        if (model.isBlank()) {
+            transient { copy(connectionError = "Saisis le nom du modèle proposé par ton fournisseur.") }
+            return false
+        }
+        if (apiKey.isBlank() && !endpoint.isLoopback()) {
+            transient { copy(connectionError = "Saisis la clé API du fournisseur distant.") }
+            return false
+        }
+        val saved = mutate { copy(baseUrl = normalizedUrl, model = model.trim(), providerMode = "api", error = null, connectionError = null, hasApiKey = apiKey.isNotBlank()) }
         if (saved) synchronized(this.apiKey) { this.apiKey.setLength(0); this.apiKey.append(apiKey.trim()) }
         return saved
     }
@@ -73,9 +95,14 @@ internal class DesktopStudioController(
         if (snapshot.busy || snapshot.storageError != null || message.isBlank() || message.length > 4_000) return false
         val session = snapshot.sessions.firstOrNull { it.id == snapshot.selectedId } ?: return false
         if (pendingBySession.containsKey(session.id)) return false
-        val endpoint = try { validateEndpoint(snapshot.baseUrl) } catch (_: Exception) { null }
+        val endpoint = if (snapshot.providerMode == "chatgpt") null else try { validateEndpoint(snapshot.baseUrl) } catch (_: Exception) { null }
         val secret = synchronized(apiKey) { apiKey.toString() }
-        if (endpoint == null || snapshot.model.isBlank() || (secret.isBlank() && !endpoint.isLoopback())) {
+        if (snapshot.providerMode == "chatgpt") {
+            if (!chatGpt.connected || snapshot.model.isBlank()) {
+                transient { copy(error = "Connecte ton compte ChatGPT et choisis un modèle dans Connexion IA.") }
+                return false
+            }
+        } else if (endpoint == null || snapshot.model.isBlank() || (secret.isBlank() && !endpoint.isLoopback())) {
             transient { copy(error = "Configure une URL HTTPS, un modèle et une clé (sauf pour un service local).") }
             return false
         }
@@ -95,7 +122,15 @@ internal class DesktopStudioController(
         val id = current.selectedId ?: return
         if (pendingBySession[id].isNullOrBlank()) return
         val endpoint = try { validateEndpoint(current.baseUrl) } catch (_: Exception) { null }
-        if (endpoint == null) { transient { copy(error = "Configure une URL HTTPS valide pour reprendre cette séance.") }; return }
+        if (current.providerMode == "chatgpt") {
+            if (!chatGpt.connected || current.model.isBlank()) {
+                transient { copy(error = "Connecte ton compte ChatGPT et choisis un modèle pour reprendre cette séance.") }
+                return
+            }
+            startRequest(id, current, null, "")
+            return
+        }
+        if (endpoint == null || current.model.isBlank()) { transient { copy(error = "Configure une URL et un modèle valides pour reprendre cette séance.") }; return }
         val secret = synchronized(apiKey) { apiKey.toString() }
         if (secret.isBlank() && !endpoint.isLoopback()) {
             transient { copy(error = "Saisis à nouveau la clé du fournisseur pour reprendre cette séance.") }
@@ -114,11 +149,11 @@ internal class DesktopStudioController(
         }
     }
 
-    private fun startRequest(id: String, config: StudioState, endpoint: URI, secret: String) {
+    private fun startRequest(id: String, config: StudioState, endpoint: URI?, secret: String) {
         val session = config.sessions.firstOrNull { it.id == id } ?: return
         if (state.value.busy) return
         if (pendingBySession[id].isNullOrBlank()) return
-        val request = TutorRequest(endpoint, config.model, secret, session.goal, session.messages.takeLast(12))
+        val request = endpoint?.let { TutorRequest(it, config.model, secret, session.goal, session.messages.takeLast(12)) }
         val version = synchronized(lock) {
             requestVersion += 1
             state.value = state.value.copy(busy = true, error = null)
@@ -126,13 +161,16 @@ internal class DesktopStudioController(
         }
         val job = scope.launch(start = CoroutineStart.LAZY) {
             try {
-                val reply = withTimeout(45_000) { tutor.respond(request) }
+                val reply = withTimeout(90_000) {
+                    if (config.providerMode == "chatgpt") chatGpt.respond(config.model, session.goal, session.messages)
+                    else tutor.respond(requireNotNull(request))
+                }
                 persistReply(id, reply, version)
             } catch (cancelled: CancellationException) {
                 setFailure(version, "Requête interrompue. Ton message est conservé; tu peux réessayer.")
                 throw cancelled
-            } catch (_: Exception) {
-                setFailure(version, "Le fournisseur n’a pas répondu. Ton message est conservé; tu peux réessayer.")
+            } catch (failure: Exception) {
+                setFailure(version, providerFailureMessage(failure))
             } finally { synchronized(lock) { if (requestVersion == version) requestJob = null } }
         }
         synchronized(lock) {
@@ -167,6 +205,40 @@ internal class DesktopStudioController(
 
     private fun transient(transform: StudioState.() -> StudioState) = synchronized(lock) { state.value = state.value.transform() }
 
+    override fun connectChatGpt() {
+        if (state.value.chatGptBusy || state.value.busy || state.value.storageError != null) return
+        transient { copy(chatGptBusy = true, chatGptError = null) }
+        scope.launch {
+            try {
+                val email = chatGpt.signIn()
+                val models = chatGpt.models().map { it.slug }
+                if (models.isEmpty()) error("Aucun modèle ChatGPT disponible pour ce compte.")
+                val saved = mutate {
+                    copy(providerMode = "chatgpt", model = models.first(), chatGptConnected = true,
+                        chatGptEmail = email, chatGptModels = models, chatGptBusy = false, chatGptError = null)
+                }
+                if (!saved) transient { copy(chatGptBusy = false, chatGptError = "Connexion réussie, mais les préférences de l’atelier n’ont pas pu être enregistrées.") }
+            } catch (_: Exception) {
+                transient { copy(chatGptBusy = false, chatGptError = "Connexion ChatGPT impossible ou annulée. Vérifie le navigateur et réessaie.") }
+            }
+        }
+    }
+
+    override fun selectChatGptModel(model: String) {
+        if (state.value.providerMode != "chatgpt" || model !in state.value.chatGptModels || state.value.busy) return
+        mutate { copy(model = model) }
+    }
+
+    override fun disconnectChatGpt() {
+        if (state.value.busy || state.value.chatGptBusy) return
+        try {
+            chatGpt.disconnect()
+            mutate { copy(providerMode = "api", chatGptConnected = false, chatGptEmail = null, chatGptModels = emptyList(), model = "") }
+        } catch (_: Exception) {
+            transient { copy(chatGptError = "Impossible d’effacer la connexion ChatGPT locale.") }
+        }
+    }
+
     private fun load(): StudioState = try {
         if (!Files.exists(file)) StudioState() else fromDisk(json.decodeFromString<StudioDisk>(Files.readString(file)))
     } catch (_: Exception) {
@@ -175,7 +247,7 @@ internal class DesktopStudioController(
 
     private fun write(s: StudioState) {
         Files.createDirectories(file.parent)
-        val disk = StudioDisk(s.baseUrl, s.model, s.sessions.map { it.toDisk() }, s.selectedId)
+        val disk = StudioDisk(s.baseUrl, s.model, s.sessions.map { it.toDisk() }, s.selectedId, s.providerMode)
         val temp = Files.createTempFile(file.parent, "studio-", ".tmp")
         try {
             Files.writeString(temp, json.encodeToString(disk))
@@ -185,7 +257,7 @@ internal class DesktopStudioController(
     }
 
     override fun close() { cancel(); synchronized(apiKey) { apiKey.setLength(0) }; scope.cancel() }
-    private fun fromDisk(d: StudioDisk) = StudioState(baseUrl = d.baseUrl, model = d.model, sessions = d.sessions.map { it.fromDisk() }, selectedId = d.selectedId)
+    private fun fromDisk(d: StudioDisk) = StudioState(baseUrl = d.baseUrl, model = d.model, sessions = d.sessions.map { it.fromDisk() }, selectedId = d.selectedId, providerMode = d.providerMode)
     private fun StudioSession.toDisk() = StudioSessionDisk(id, goal, messages.map { StudioMessageDisk(it.role, it.text) })
     private fun StudioSessionDisk.fromDisk() = StudioSession(id, goal, messages.map { StudioMessage(it.role, it.text) })
 }
@@ -200,15 +272,29 @@ private class OpenAiCompatibleTutor : StudioTutor {
         val response = withTimeout(45_000) {
             client.sendAsync(builder.POST(HttpRequest.BodyPublishers.ofString(body)).build(), boundedBodyHandler(256 * 1024)).await()
         }
-        require(response.statusCode() in 200..299) { "provider returned an error" }
+        if (response.statusCode() !in 200..299) throw TutorHttpException(response.statusCode())
         val content = Json.parseToJsonElement(response.body().decodeToString()).jsonObject["choices"]!!.jsonArray.first().jsonObject["message"]!!.jsonObject["content"]!!.jsonPrimitive.contentOrNull.orEmpty()
         require(content.isNotBlank() && content.length <= 20_000) { "provider returned an empty reply" }
         return content
     }
 }
 
+private class TutorHttpException(val status: Int) : Exception()
+
+private fun providerFailureMessage(failure: Exception): String {
+    val status = (failure as? TutorHttpException)?.status
+    val detail = when (status) {
+        401, 403 -> "Clé API refusée par le fournisseur. Vérifie-la dans Connexion IA."
+        404 -> "Adresse ou modèle introuvable chez le fournisseur. Vérifie l’URL et le nom du modèle."
+        429 -> "Limite de requêtes ou de crédit atteinte chez le fournisseur."
+        else -> if (status != null && status in 500..599) "Le fournisseur est temporairement indisponible."
+            else "Impossible d’obtenir une réponse du fournisseur. Vérifie la connexion et sa configuration."
+    }
+    return "$detail Ton message est conservé; tu peux réessayer."
+}
+
 internal const val MAX_TUTOR_BODY_CHARS = 60_000
-private const val TUTOR_SYSTEM_PROMPT = "Tu es un tuteur francophone. Commence par diagnostiquer les connaissances et le raisonnement de l’apprenant. Après sa réponse, propose les prérequis et un plan concis, puis enseigne progressivement en vérifiant sa compréhension. Sois honnête sur les limites et ne prétends pas avoir évalué une compétence sans preuve."
+internal const val TUTOR_SYSTEM_PROMPT = "Tu es un tuteur francophone. Commence par diagnostiquer les connaissances et le raisonnement de l’apprenant. Après sa réponse, propose les prérequis et un plan concis, puis enseigne progressivement en vérifiant sa compréhension. Sois honnête sur les limites et ne prétends pas avoir évalué une compétence sans preuve."
 
 /** Keeps recent whole turns by their encoded size, always retaining the goal and latest learner turn. */
 internal fun buildTutorBody(model: String, goal: String, history: List<StudioMessage>): String {

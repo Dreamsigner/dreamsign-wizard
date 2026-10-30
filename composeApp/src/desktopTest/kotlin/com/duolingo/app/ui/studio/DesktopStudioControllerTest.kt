@@ -12,6 +12,60 @@ import java.nio.file.Files
 import kotlin.test.*
 
 class DesktopStudioControllerTest {
+    @Test fun chatGptPlanRequestUsesResponsesContractAndKeepsTheGoal() {
+        val body = buildChatGptBody("chosen-model", "Comprendre les intégrales", listOf(StudioMessage("user", "Je connais les dérivées")))
+        val root = Json.parseToJsonElement(body).jsonObject
+        assertEquals("chosen-model", root.getValue("model").jsonPrimitive.content)
+        assertFalse(root.getValue("store").jsonPrimitive.boolean)
+        assertTrue(root.getValue("stream").jsonPrimitive.boolean)
+        assertTrue(root.getValue("instructions").jsonPrimitive.content.contains("Comprendre les intégrales"))
+        assertEquals("user", root.getValue("input").jsonArray.single().jsonObject.getValue("role").jsonPrimitive.content)
+    }
+
+    @Test fun chatGptStreamRequiresCompletedEventBeforeAcceptingAnswer() {
+        val partial = "data: {\"type\":\"response.output_text.delta\",\"delta\":\"Bonjour\"}\n\n"
+        assertFailsWith<IllegalStateException> { parseChatGptStream(partial.byteInputStream()) }
+        val complete = partial + "data: {\"type\":\"response.completed\"}\n\n"
+        assertEquals("Bonjour", parseChatGptStream(complete.byteInputStream()))
+    }
+
+    @Test fun incompleteProviderConfigurationIsRejectedBeforeSaving() {
+        val file = Files.createTempDirectory("studio-config").resolve("studio.json")
+        val controller = DesktopStudioController(file)
+        try {
+            assertFalse(controller.configure("http://example.com", "model", "key"))
+            assertTrue(controller.state.value.connectionError!!.contains("HTTPS"))
+            assertFalse(Files.exists(file))
+            assertFalse(controller.configure("https://example.com/v1", "", "key"))
+            assertTrue(controller.state.value.connectionError!!.contains("modèle"))
+            assertFalse(controller.configure("https://example.com/v1", "model", ""))
+            assertTrue(controller.state.value.connectionError!!.contains("clé"))
+            assertTrue(controller.configure("http://localhost:1234/v1", "local", ""))
+            assertNull(controller.state.value.connectionError)
+        } finally { controller.close() }
+    }
+
+    @Test fun providerAuthenticationFailureExplainsHowToRecoverWithoutLeakingTheKey() = runBlocking {
+        val file = Files.createTempDirectory("studio-auth").resolve("studio.json")
+        val server = HttpServer.create(InetSocketAddress("127.0.0.1", 0), 0)
+        server.createContext("/v1/chat/completions") { exchange ->
+            exchange.requestBody.close()
+            exchange.sendResponseHeaders(401, -1)
+            exchange.close()
+        }
+        server.start()
+        val controller = DesktopStudioController(file)
+        try {
+            assertTrue(controller.create("Comprendre les limites"))
+            assertTrue(controller.configure("http://127.0.0.1:${server.address.port}/v1", "local", "SECRET_TEST_KEY"))
+            assertTrue(controller.send("Je pars de zéro"))
+            withTimeout(5_000) { while (controller.state.value.error == null) delay(10) }
+            assertTrue(controller.state.value.error!!.contains("Clé API refusée"))
+            assertFalse(controller.state.value.error!!.contains("SECRET_TEST_KEY"))
+            assertEquals(1, controller.state.value.sessions.single().messages.size)
+        } finally { controller.close(); server.stop(0) }
+    }
+
     @Test fun tutorRequestEvictsOldWholeTurnsAndKeepsGoalAndLatestLearnerTurn() {
         val history = (0..10).map { index -> StudioMessage("assistant", "OLD_TURN_$index " + "x".repeat(20_000)) } +
             StudioMessage("user", "LATEST_PENDING_QUESTION")

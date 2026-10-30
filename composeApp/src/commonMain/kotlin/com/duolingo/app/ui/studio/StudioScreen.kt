@@ -61,7 +61,10 @@ fun StudioScreen() {
                     modifier = Modifier.heightIn(min = 48.dp), shape = LearningShape,
                 ) { Text("Connexion IA", maxLines = 1) }
             }
-            if (state.available && state.baseUrl.isNotBlank() && state.model.isNotBlank()) {
+            if (state.providerMode == "chatgpt" && state.chatGptConnected) {
+                Text("ChatGPT · ${state.chatGptEmail.orEmpty()} · ${state.model}", Modifier.fillMaxWidth().padding(top = 4.dp),
+                    color = Graphite, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            } else if (state.available && state.baseUrl.isNotBlank() && state.model.isNotBlank()) {
                 Text(
                     "${state.baseUrl} · ${state.model}", Modifier.fillMaxWidth().padding(top = 4.dp),
                     color = Graphite, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis,
@@ -123,12 +126,15 @@ fun StudioConnectionSettings() {
 
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text("Connexion IA", style = MaterialTheme.typography.subtitle1, fontWeight = FontWeight.SemiBold, color = Ink)
-        Text(
-            "Choisis le fournisseur et le modèle utilisés par l’Atelier IA.",
-            color = Graphite, fontSize = 14.sp,
-        )
+        Text("Connecte ton abonnement ChatGPT ou configure un fournisseur avec une clé API.", color = Graphite, fontSize = 14.sp)
+        if (state.providerMode == "chatgpt" && state.chatGptConnected) {
+            Text("ChatGPT connecté : ${state.chatGptEmail.orEmpty()} · ${state.model}", color = Graphite, fontSize = 13.sp)
+        }
         if (state.baseUrl.isNotBlank() && state.model.isNotBlank()) {
             Text("${state.baseUrl} · ${state.model}", color = Graphite, fontSize = 13.sp)
+            if (!state.hasApiKey && state.baseUrl.startsWith("https://")) {
+                Text("La clé doit être ressaisie après chaque démarrage.", color = ActionRed, fontSize = 13.sp)
+            }
         } else {
             Text("Aucun fournisseur configuré.", color = Graphite, fontSize = 13.sp)
         }
@@ -296,12 +302,36 @@ private fun StudioConnectionDialog(controller: StudioController, state: StudioSt
     var baseUrl by remember(state.baseUrl) { mutableStateOf(state.baseUrl) }
     var model by remember(state.model) { mutableStateOf(state.model) }
     var apiKey by remember { mutableStateOf("") }
+    var showModels by remember { mutableStateOf(false) }
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text("Connexion IA") },
         text = {
             Column(Modifier.heightIn(max = 360.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                Text("Configure un fournisseur compatible avec l’API OpenAI. Seuls l’objectif et les messages de la séance active lui seront transmis.", color = Graphite)
+                Text("Abonnement ChatGPT", style = MaterialTheme.typography.subtitle1, fontWeight = FontWeight.SemiBold)
+                Text("Utilise les modèles disponibles dans ton forfait après ton accord dans le navigateur. Ton forfait et l’API à clé ont des accès distincts.", color = Graphite)
+                if (state.chatGptConnected) {
+                    Text("Connecté : ${state.chatGptEmail.orEmpty()}", color = Graphite)
+                    Box {
+                        OutlinedButton(onClick = { showModels = true }, enabled = state.chatGptModels.isNotEmpty() && !state.busy) {
+                            Text("Modèle : ${state.model.ifBlank { "Choisir" }}")
+                        }
+                        DropdownMenu(expanded = showModels, onDismissRequest = { showModels = false }) {
+                            state.chatGptModels.forEach { availableModel ->
+                                DropdownMenuItem(onClick = { controller.selectChatGptModel(availableModel); showModels = false }) { Text(availableModel) }
+                            }
+                        }
+                    }
+                    TextButton(onClick = controller::disconnectChatGpt, enabled = !state.busy) { Text("Déconnecter ce compte") }
+                } else {
+                    Button(onClick = controller::connectChatGpt, enabled = !state.chatGptBusy && !state.busy) {
+                        Text(if (state.chatGptBusy) "Connexion en cours…" else "Continuer avec ChatGPT")
+                    }
+                }
+                if (!state.chatGptError.isNullOrBlank()) Text(state.chatGptError!!, color = ActionRed, fontSize = 13.sp)
+                Divider(color = Concrete)
+                Text("Autre fournisseur avec clé API", style = MaterialTheme.typography.subtitle1, fontWeight = FontWeight.SemiBold)
+                Text("Seuls l’objectif et les messages de la séance active sont transmis au fournisseur choisi.", color = Graphite)
                 OutlinedTextField(
                     value = baseUrl, onValueChange = { baseUrl = it }, enabled = state.available && !state.busy,
                     modifier = Modifier.fillMaxWidth(), label = { Text("URL de base") },
@@ -321,6 +351,7 @@ private fun StudioConnectionDialog(controller: StudioController, state: StudioSt
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 )
                 Text("La clé n’est pas enregistrée sur le disque ; elle reste en mémoire jusqu’à la fermeture de l’application.", color = Graphite, fontSize = 13.sp)
+                if (!state.connectionError.isNullOrBlank()) Text(state.connectionError!!, color = ActionRed, fontSize = 13.sp)
             }
         },
         confirmButton = {

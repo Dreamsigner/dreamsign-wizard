@@ -10,6 +10,10 @@ data class StudioState(
     val sessions: List<StudioSession> = emptyList(), val selectedId: String? = null,
     val baseUrl: String = "", val model: String = "", val busy: Boolean = false,
     val error: String? = null, val storageError: String? = null, val available: Boolean = true,
+    val connectionError: String? = null, val hasApiKey: Boolean = false,
+    val providerMode: String = "api", val chatGptConnected: Boolean = false,
+    val chatGptEmail: String? = null, val chatGptModels: List<String> = emptyList(),
+    val chatGptBusy: Boolean = false, val chatGptError: String? = null,
 )
 
 interface StudioController {
@@ -20,6 +24,9 @@ interface StudioController {
     fun send(message: String): Boolean
     fun retry()
     fun cancel()
+    fun connectChatGpt() = Unit
+    fun selectChatGptModel(model: String) = Unit
+    fun disconnectChatGpt() = Unit
     fun close() = Unit
 }
 
