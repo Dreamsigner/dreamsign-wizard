@@ -74,6 +74,7 @@ kotlin {
         val desktopMain by getting {
             dependencies {
                 implementation(compose.desktop.currentOs)
+                implementation("com.nimbusds:nimbus-jose-jwt:10.10")
                 implementation("org.apache.pdfbox:pdfbox:3.0.8")
                 implementation("ca.weblite:webview:1.0.10")
                 implementation("org.scilab.forge:jlatexmath:1.0.7") {
@@ -132,7 +133,7 @@ tasks.register<org.gradle.api.tasks.testing.Test>("sourcePdfSmokeTest") {
 compose.desktop {
     application {
         mainClass = "MainKt"
-        jvmArgs("-Datelier.version=${providers.gradleProperty("desktopPackageVersion").orElse("1.12.0").get()}")
+        jvmArgs("-Datelier.version=${providers.gradleProperty("desktopPackageVersion").orElse("1.13.0").get()}")
         nativeDistributions {
             // PDFBox 3 uses sun.misc.Unsafe.invokeCleaner via this module. The reduced
             // jlink runtime otherwise falls back to inaccessible Java 8 internals.
@@ -140,16 +141,16 @@ compose.desktop {
             modules("jdk.unsupported", "jdk.httpserver", "java.net.http")
             targetFormats(org.jetbrains.compose.desktop.application.dsl.TargetFormat.Msi, org.jetbrains.compose.desktop.application.dsl.TargetFormat.Exe)
             packageName = "DuolingoKmpApp"
-            packageVersion = providers.gradleProperty("desktopPackageVersion").orElse("1.12.0").get()
+            packageVersion = providers.gradleProperty("desktopPackageVersion").orElse("1.13.0").get()
             appResourcesRootDir.set(layout.buildDirectory.dir("installer-resources"))
             vendor = "Dreamsigner"
-            description = "Atelier d’apprentissage — Mathématiques, informatique et TCF"
+            description = "Dreamsign Wizard — Mathématiques, informatique et TCF"
             windows {
                 // Stable identity for subsequent installer upgrades; never regenerate this UUID.
                 upgradeUuid = "a7739778-106b-4e27-8c53-857132e4d69f"
                 perUserInstall = true
                 menu = true
-                menuGroup = "Atelier d’apprentissage"
+                menuGroup = "Dreamsign Wizard"
                 shortcut = true
                 dirChooser = true
                 installationPath = "DuolingoKmpApp"

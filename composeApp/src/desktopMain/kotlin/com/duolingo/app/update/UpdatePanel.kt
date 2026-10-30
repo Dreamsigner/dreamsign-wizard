@@ -21,7 +21,7 @@ internal fun UpdatePanel(state: UpdateUiState, onCheck: () -> Unit, onAutomatic:
     Surface(color = White, shape = LearningShape) {
         Column(Modifier.fillMaxWidth().padding(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text("Atelier d’apprentissage", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                Text("Dreamsign Wizard", fontWeight = FontWeight.Bold, fontSize = 16.sp)
                 Text("Version ${state.version}", color = Graphite)
             }
             if (state.installed) {

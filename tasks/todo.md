@@ -13,7 +13,11 @@
 
 ## Étapes ultérieures
 
+- [ ] Examiner et prioriser les [pistes issues des PR LearnHarness](../docs/product/2026-10-30-learnharness-pr-features.md).
+
 - [ ] Plan structuré et validation des prérequis.
+  - [x] Édition, acceptation et sauvegarde locale d’un plan avec sources et preuves attendues ; plan accepté transmis au tuteur.
+  - [ ] Proposition structurée issue du diagnostic et validation effective des prérequis avant chaque étape.
 - [ ] Graphe de connaissances avec sources et mécanisme de correction.
 - [ ] Pratique adaptative basée sur les raisonnements observés.
 - [ ] Intégration documentée des cours et documents choisis.

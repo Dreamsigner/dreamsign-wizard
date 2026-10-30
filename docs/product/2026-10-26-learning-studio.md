@@ -39,6 +39,8 @@ Interface Atelier IA -> contrôleur de séances -> port de tutorat
 
 Les dépendances externes restent derrière des interfaces injectables. Les cours existants ne sont pas migrés dans un nouveau format. La configuration des appels IA ne se mélange pas à la sauvegarde de progression.
 
+Le produit porte désormais le nom **Dreamsign Wizard**. Voir aussi les [pistes issues des PR LearnHarness](2026-10-30-learnharness-pr-features.md).
+
 ## Suite du produit
 
 1. Plan structuré et vérifiable : objectifs, prérequis, étapes et preuves de compréhension.

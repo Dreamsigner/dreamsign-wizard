@@ -67,7 +67,7 @@ fun challengeShareCard(lesson: Lesson, exercise: Exercise): ChallengeShareCard? 
 }
 
 fun ChallengeShareCard.asShareText(): String = buildString {
-    appendLine("Atelier d’apprentissage · Défi")
+    appendLine("Dreamsign Wizard · Défi")
     appendLine(lessonTitle)
     appendLine()
     if (formula != null) appendLine(readableMath(formula))

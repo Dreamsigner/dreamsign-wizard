@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="320" viewBox="0 0 1280 320" role="img" aria-labelledby="title desc">
-  <title id="title">Atelier d’apprentissage</title>
+  <title id="title">Dreamsign Wizard</title>
   <desc id="desc">Des livres et des marches de blocs rouges accompagnent les parcours de mathématiques, informatique et français.</desc>
   <rect width="1280" height="320" fill="#F7F5F0"/>
   <g fill="#D9D7D2"><path d="M848 240h96v-48h96v-48h96V96h96v192H848z"/><rect x="816" y="272" width="416" height="16"/></g>
@@ -8,7 +8,7 @@
   <g fill="#F7F5F0"><rect x="872" y="152" width="16" height="8"/><rect x="928" y="120" width="32" height="8"/><rect x="1072" y="224" width="96" height="8"/></g>
   <g fill="#E3262E"><path d="M1112 64h16v-16h16v16h16v16h-16v16h-16V80h-16z"/><path d="M1016 64h8v-8h8v8h8v8h-8v8h-8v-8h-8z"/></g>
   <g font-family="Segoe UI,Arial,sans-serif" fill="#141414">
-    <text x="64" y="108" font-size="48" font-weight="700">Atelier d’apprentissage</text>
+    <text x="64" y="108" font-size="48" font-weight="700">Dreamsign Wizard</text>
     <text x="64" y="166" font-size="24">Mathématiques · Informatique · TCF Canada</text>
     <text x="64" y="228" font-size="20" fill="#4A4A4A">Comprendre. Pratiquer. Reprendre ses erreurs.</text>
     <text x="64" y="268" font-size="16" fill="#4A4A4A">Application native Windows · Kotlin &amp; Compose</text>

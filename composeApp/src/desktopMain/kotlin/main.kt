@@ -79,7 +79,7 @@ private fun desktopApplication() = application {
     DisposableEffect(updater) { onDispose { updater.close() } }
     Window(
         onCloseRequest = { closeSafely(false) },
-        title = "Atelier d’apprentissage — Tuteur IA et cours",
+        title = "Dreamsign Wizard — Tuteur IA et cours",
         state = rememberWindowState(width = 1280.dp, height = 840.dp)
     ) {
         window.minimumSize = Dimension(360, 480)

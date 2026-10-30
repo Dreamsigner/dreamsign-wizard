@@ -5,11 +5,17 @@ import kotlinx.coroutines.flow.StateFlow
 import androidx.compose.runtime.staticCompositionLocalOf
 
 data class StudioMessage(val role: String, val text: String)
-data class StudioSession(val id: String, val goal: String, val messages: List<StudioMessage>)
+data class StudioPlanStep(val title: String, val prerequisites: List<Int>, val evidence: String, val sources: List<Int>)
+data class StudioPlan(val steps: List<StudioPlanStep>, val decision: String = "proposed")
+data class StudioSession(val id: String, val goal: String, val messages: List<StudioMessage>, val plan: StudioPlan? = null)
 data class StudioState(
     val sessions: List<StudioSession> = emptyList(), val selectedId: String? = null,
     val baseUrl: String = "", val model: String = "", val busy: Boolean = false,
     val error: String? = null, val storageError: String? = null, val available: Boolean = true,
+    val connectionError: String? = null, val hasApiKey: Boolean = false,
+    val providerMode: String = "api", val chatGptConnected: Boolean = false,
+    val chatGptEmail: String? = null, val chatGptModels: List<String> = emptyList(),
+    val chatGptBusy: Boolean = false, val chatGptError: String? = null,
 )
 
 interface StudioController {
@@ -18,8 +24,13 @@ interface StudioController {
     fun create(goal: String): Boolean
     fun configure(baseUrl: String, model: String, apiKey: String): Boolean
     fun send(message: String): Boolean
+    fun savePlan(plan: StudioPlan): Boolean = false
     fun retry()
     fun cancel()
+    fun connectChatGpt() = Unit
+    fun selectChatGptModel(model: String) = Unit
+    fun disconnectChatGpt() = Unit
+    fun openChatGptUsage() = Unit
     fun close() = Unit
 }
 

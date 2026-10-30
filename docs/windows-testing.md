@@ -3,7 +3,7 @@
 ## Installer l’application
 
 1. Dans une exécution GitHub Actions réussie de `main`, télécharger **AtelierApprentissage-Windows-Setup**.
-2. Extraire l’archive, puis lancer `AtelierApprentissage-1.12.0-Setup.exe`.
+2. Extraire l’archive, puis lancer `AtelierApprentissage-1.13.0-Setup.exe`.
 3. Suivre l’assistant, puis utiliser le raccourci du Bureau ou du menu Démarrer.
 
 L’installation est propre à l’utilisateur courant, par défaut dans
@@ -120,7 +120,7 @@ réseau sont limitées à quatre secondes chacune. Aucune vidéo n’est téléc
 
 ## Mises à jour automatiques
 
-Installer une première fois la version 1.12.0 depuis la [release GitHub 1.12.0](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/tag/v1.12.0).
+Installer une première fois la version 1.13.0 depuis la [release GitHub 1.13.0](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/tag/v1.13.0).
 L’installation Windows standard `%LOCALAPPDATA%/DuolingoKmpApp` active les mises à jour automatiques.
 Les copies portables et chemins d’installation personnalisés affichent que la mise à jour manuelle reste nécessaire.
 
@@ -138,7 +138,7 @@ Le checksum vérifie l’intégrité du fichier diffusé par GitHub; il ne rempl
 
 ### Publier une version compatible (maintenance)
 
-Actualiser la version du paquet, les noms d’artefacts et la fixture de mise à niveau dans le workflow et son test, puis créer le tag `vMAJOR.MINOR.PATCH` correspondant. Le job de release vérifie que le tag stable et le commit source correspondent avant de publier l’EXE et `SHA256SUMS.txt`, après les contrôles Windows. Le paquet de fixture de version supérieure (actuellement 1.12.1) sert uniquement au test d’installation et n’est jamais publié. Les artefacts Actions seuls ne déclenchent aucune mise à jour.
+Actualiser la version du paquet, les noms d’artefacts et la fixture de mise à niveau dans le workflow et son test, puis créer le tag `vMAJOR.MINOR.PATCH` correspondant. Le job de release vérifie que le tag stable et le commit source correspondent avant de publier l’EXE et `SHA256SUMS.txt`, après les contrôles Windows. Le paquet de fixture de version supérieure (actuellement 1.13.1) sert uniquement au test d’installation et n’est jamais publié. Les artefacts Actions seuls ne déclenchent aucune mise à jour.
 
 ## Lecteur vidéo intégré (mathématiques)
 
@@ -178,7 +178,7 @@ Le sommaire reste en panneau latéral à partir de1000dp de largeur du lecteur, 
 
 Le test d’installation CI vérifie aussi la suppression de la copie d’installateur dans le cache et du payload, tout en conservant l’installateur externe d’origine. Les temporaires récents et les fichiers inconnus restent intacts; progression/préférences, dernier résultat et journal ne sont pas supprimés. Le cache système Windows Installer et les téléchargements manuels sont hors périmètre.
 
-Le commit `9bab6f3` a passé le 27 octobre les étapes CI du contrôle vidéo natif, de l’installation et de la mise à niveau. La publication de la release 1.12.0, qui introduit Atelier IA, est conditionnée au tag `v1.12.0` et à la réussite du workflow de release.
+Le commit `9bab6f3` a passé le 27 octobre les étapes CI du contrôle vidéo natif, de l’installation et de la mise à niveau. La release 1.12.0, qui introduit Atelier IA, a été publiée après le tag `v1.12.0` et la réussite du workflow de release.
 
 ## Unités physiques et fractions
 

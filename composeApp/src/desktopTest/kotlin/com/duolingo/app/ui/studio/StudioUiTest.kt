@@ -16,6 +16,45 @@ import kotlin.test.assertFalse
 
 class StudioUiTest {
     @Test
+    fun planEditorOpensAtCompactSize() = runDesktopComposeUiTest(width = 360, height = 480) {
+        val controller = MemoryStudioController(initialSession = true)
+        setContent {
+            LearningAppTheme {
+                CompositionLocalProvider(LocalStudioController provides controller) { StudioScreen() }
+            }
+        }
+        onNodeWithTag("studio-plan").performClick()
+        onNodeWithText("Mon plan pédagogique").assertIsDisplayed()
+        onNodeWithText("Préparer une demande de diagnostic").performScrollTo()
+        val file = File("build/reports/ui-snapshots/studio-plan-360.png")
+        check(file.parentFile.isDirectory || file.parentFile.mkdirs())
+        Image.makeFromBitmap(onAllNodes(isRoot()).onLast().captureToImage().asSkiaBitmap()).use { image ->
+            image.encodeToData()!!.use { file.writeBytes(it.bytes) }
+        }
+        onNodeWithText("Préparer une demande de diagnostic").assertIsDisplayed()
+        onNodeWithText("Préparer une demande de diagnostic").performClick()
+        assertEquals("Peux-tu approfondir le diagnostic de mes prérequis avant de poursuivre le plan ?",
+            onNodeWithTag("studio-draft").fetchSemanticsNode().config[SemanticsProperties.EditableText].text)
+    }
+
+    @Test
+    fun chatGptSignInIsVisibleInCompactConnectionDialog() = runDesktopComposeUiTest(width = 360, height = 480) {
+        val controller = MemoryStudioController()
+        setContent {
+            LearningAppTheme {
+                CompositionLocalProvider(LocalStudioController provides controller) { StudioScreen() }
+            }
+        }
+        onNodeWithText("Connexion IA").performClick()
+        onNodeWithText("Continuer avec ChatGPT").assertIsDisplayed()
+        val file = File("build/reports/ui-snapshots/studio-connection-360.png")
+        check(file.parentFile.isDirectory || file.parentFile.mkdirs())
+        Image.makeFromBitmap(onAllNodes(isRoot()).onLast().captureToImage().asSkiaBitmap()).use { image ->
+            image.encodeToData()!!.use { file.writeBytes(it.bytes) }
+        }
+    }
+
+    @Test
     fun compactEmptyWorkspaceCanScrollToAndCreateItsFirstGoal() = runDesktopComposeUiTest(width = 360, height = 480) {
         val controller = MemoryStudioController()
         setContent {
@@ -120,10 +159,11 @@ class StudioUiTest {
                 }
                 onNodeWithTag("studio-workspace").assertIsDisplayed()
                 onNodeWithTag("studio-conversation-messages")
-                    .performScrollToNode(hasText("On étudie la limite de ses sommes partielles."))
+                    .performScrollToIndex(1)
+                onNodeWithText("On étudie la limite de ses sommes partielles.").performScrollTo()
                 onNodeWithText("On étudie la limite de ses sommes partielles.").assertIsDisplayed()
                 onNodeWithTag("studio-conversation-messages")
-                    .performScrollToNode(hasText("Qu’est-ce qu’une série convergente ?"))
+                    .performScrollToIndex(0)
                 onNodeWithText("Qu’est-ce qu’une série convergente ?").assertIsDisplayed()
                 onNodeWithTag("studio-draft").assertIsDisplayed()
                 val file = File("build/reports/ui-snapshots/studio-$width.png")

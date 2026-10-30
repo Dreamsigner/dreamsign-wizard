@@ -1,20 +1,24 @@
 <p align="center">
-  <img src="docs/images/atelier-banner.svg" alt="Atelier d’apprentissage" width="100%">
+  <img src="docs/images/atelier-banner.svg" alt="Dreamsign Wizard" width="100%">
 </p>
 
-# Atelier d’apprentissage
+# Dreamsign Wizard
 
 Application d’apprentissage en français pour Windows, développée en Kotlin avec Compose Multiplatform. Elle réunit des cours de mathématiques et d’informatique ainsi que des ateliers de préparation au TCF Canada, avec exercices interactifs et suivi de progression.
+
+Le nom du produit est **Dreamsign Wizard**. Les anciens noms techniques des données et de la distribution sont conservés pour leur compatibilité ; les fichiers des releases existantes gardent leur nom historique.
 
 ## Nouvelle direction : Atelier IA
 
 L'application évolue vers un apprentissage piloté par les objectifs personnels, inspiré du fonctionnement de [LearnHarness](https://github.com/amosblomqvist/learnharness). La première tranche ajoute un tuteur conversationnel en français et des séances persistantes, en conservant Kotlin/Compose et les cours existants.
 
-Dans **Atelier IA**, créer un objectif, décrire ses connaissances et son raisonnement, puis échanger avec le tuteur. Retrouver une séance permet de reprendre son historique. **Paramètres → Connexion IA**, ou le raccourci **Connexion IA** de l'atelier, configure l'URL de base compatible Chat Completions et le nom du modèle. La clé reste en mémoire jusqu'à la fermeture; elle n'est pas enregistrée avec les séances.
+Dans **Atelier IA**, créer un objectif, décrire ses connaissances et son raisonnement, puis échanger avec le tuteur. Retrouver une séance permet de reprendre son historique. Le bouton **Plan** permet de saisir des étapes, leurs prérequis, des preuves attendues et les messages qui ont guidé le diagnostic. Un plan accepté est enregistré avec la séance et transmis au tuteur lors des prochains échanges ; il n'est pas généré automatiquement.
+
+**Paramètres → Connexion IA**, ou le raccourci **Connexion IA** de l'atelier, propose une connexion ChatGPT par navigateur ou une URL compatible Chat Completions avec un modèle et une clé API. La clé API reste en mémoire jusqu'à la fermeture ; les jetons de connexion ChatGPT sont conservés dans un fichier local protégé distinct des séances. La connexion ChatGPT n'a pas encore été validée avec un compte réel.
 
 Les échanges sont stockés localement dans le dossier de données Windows de l'application, séparément de la progression des cours. Lors d'un envoi, l'objectif et un contexte borné de la séance sont transmis au fournisseur configuré. Un serveur HTTP local peut fonctionner sans clé; les fournisseurs distants nécessitent HTTPS et une clé. Les tests utilisent un serveur local et des réponses déterministes, sans appeler un fournisseur payant.
 
-Cette tranche ne comprend pas encore de graphe de connaissances ni de plan pédagogique structuré et validé : le diagnostic et le plan sont conversationnels. La [conception du pivot](docs/product/2026-10-26-learning-studio.md) et le [plan de réalisation](tasks/plan.md) précisent les étapes suivantes. Le nouveau parcours nécessite une compilation de cette révision; ce changement ne publie pas d'installateur.
+Le diagnostic et la validation des prérequis restent conversationnels. Le graphe de connaissances et la pratique adaptative ne sont pas encore disponibles. La [trajectoire de parité](docs/product/2026-10-30-studio-parity.md), la [liste des pistes issues des PR LearnHarness](docs/product/2026-10-30-learnharness-pr-features.md) et le [plan de réalisation](tasks/plan.md) précisent les étapes suivantes.
 
 [![Build Windows](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/workflows/build.yml)
 
@@ -61,9 +65,9 @@ Consulter le [catalogue détaillé](docs/courses/README.md) et la [couverture p�
 
 ## Installation
 
-1. Ouvrir la [release Windows 1.12.0](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/tag/v1.12.0).
-2. Télécharger l’installateur **AtelierApprentissage-1.12.0-Setup.exe**.
-3. Lancer **AtelierApprentissage-1.12.0-Setup.exe** et suivre l’assistant. L’installation est propre à l’utilisateur Windows, avec raccourcis sur le Bureau et dans le menu Démarrer.
+1. Ouvrir la [release Windows 1.13.0](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/tag/v1.13.0).
+2. Télécharger l’installateur **AtelierApprentissage-1.13.0-Setup.exe**.
+3. Lancer **AtelierApprentissage-1.13.0-Setup.exe** et suivre l’assistant. L’installation est propre à l’utilisateur Windows, avec raccourcis sur le Bureau et dans le menu Démarrer.
 
 Java est inclus : aucun JDK ni Gradle n’est nécessaire. La désinstallation se fait depuis les applications installées des paramètres Windows. L’installateur n’est pas signé numériquement; Windows peut afficher un avertissement d’éditeur inconnu. `SHA256SUMS.txt` accompagne l’exécutable pour vérifier l’intégrité du téléchargement.
 
