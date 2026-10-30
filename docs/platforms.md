@@ -29,8 +29,8 @@ a réussi Windows, Android, les tests Kotlin/XCTest iOS et l'archive avec les ve
 gradle :composeApp:desktopTest :composeApp:createDistributable
 ```
 
-La CI produit `DuolingoKmpApp-Windows.zip`. Extraire tout le ZIP et lancer
-`DuolingoKmpApp.exe`. Le dossier inclut le runtime Java ; conserver ses fichiers.
+La CI produit `DreamsignWizard-Windows.zip`. Extraire tout le ZIP et lancer
+`DreamsignWizard.exe`. Le dossier inclut le runtime Java ; conserver ses fichiers.
 Ce ZIP est une application portable et ne contient pas d'installateur MSI/EXE.
 Les formats d'installateur restent configurés dans Gradle pour une distribution future.
 
@@ -63,7 +63,7 @@ gradle :composeApp:iosSimulatorArm64Test
 bash tools/smoke-ios.sh
 xcodebuild -project iosApp/iosApp.xcodeproj -scheme iosApp \
   -configuration Release -destination 'generic/platform=iOS' \
-  -archivePath build/ios/DuolingoKmpApp-unsigned.xcarchive \
+  -archivePath build/ios/DreamsignWizard-unsigned.xcarchive \
   CODE_SIGNING_ALLOWED=NO archive
 ```
 
@@ -91,12 +91,12 @@ puis signer/exporter dans Xcode. Aucune IPA installable n'est produite par ce wo
 
 ## Validation et distribution Apple
 
-La référence [c3439cc](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/runs/39379770520)
+La référence [c3439cc](https://github.com/Dreamsigner/dreamsign-wizard/actions/runs/39379770520)
 a réussi sur macos-14 / Xcode 15.3, y compris les deux XCTest et l'archive non signée.
 GitHub retire macos-14 le **2 novembre 2026** : la configuration nouvelle utilise macos-15.
 [Apple demande Xcode 26 et les SDK 26 depuis le 28 avril 2026](https://developer.apple.com/news/upcoming-requirements/).
 La migration a été compilée et testée sur les trois plateformes pour
-[`c3af563`, run 39416233195](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/runs/39416233195) :
+[`c3af563`, run 39416233195](https://github.com/Dreamsigner/dreamsign-wizard/actions/runs/39416233195) :
 les trois jobs sont terminés avec succès, état revérifié via l'API GitHub le
 20 octobre 2026. Cela ne valide pas les modifications ultérieures non comprises
 dans ce commit, ni la capture microphone physique ou une signature Apple.

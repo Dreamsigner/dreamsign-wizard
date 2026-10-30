@@ -1,4 +1,4 @@
-# Atelier IA — suivi
+# Studio IA — suivi
 
 ## Première tranche
 

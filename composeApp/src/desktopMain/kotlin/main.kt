@@ -3,24 +3,24 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import androidx.compose.ui.unit.dp
 import java.awt.Dimension
-import com.duolingo.app.App
-import com.duolingo.app.diagnostics.checkInstallation
-import com.duolingo.app.diagnostics.writeInstallationCheckReport
-import com.duolingo.app.diagnostics.checkDesktopDocumentEngines
+import com.dreamsigner.wizard.App
+import com.dreamsigner.wizard.diagnostics.checkInstallation
+import com.dreamsigner.wizard.diagnostics.writeInstallationCheckReport
+import com.dreamsigner.wizard.diagnostics.checkDesktopDocumentEngines
 import kotlinx.coroutines.runBlocking
 import java.nio.file.Path
 import kotlin.system.exitProcess
-import com.duolingo.app.ui.math.MathRenderingProvider
-import com.duolingo.app.ui.math.DesktopMathRenderer
-import com.duolingo.app.ui.pdf.PdfReaderProvider
-import com.duolingo.app.ui.pdf.DesktopPdfDocumentReader
+import com.dreamsigner.wizard.ui.math.MathRenderingProvider
+import com.dreamsigner.wizard.ui.math.DesktopMathRenderer
+import com.dreamsigner.wizard.ui.pdf.PdfReaderProvider
+import com.dreamsigner.wizard.ui.pdf.DesktopPdfDocumentReader
 import androidx.compose.runtime.*
-import com.duolingo.app.update.*
+import com.dreamsigner.wizard.update.*
 import kotlinx.coroutines.launch
-import com.duolingo.app.ui.share.LocalChallengeShareService
-import com.duolingo.app.ui.share.DesktopChallengeShareService
-import com.duolingo.app.ui.studio.DesktopStudioController
-import com.duolingo.app.ui.studio.LocalStudioController
+import com.dreamsigner.wizard.ui.share.LocalChallengeShareService
+import com.dreamsigner.wizard.ui.share.DesktopChallengeShareService
+import com.dreamsigner.wizard.ui.studio.DesktopStudioController
+import com.dreamsigner.wizard.ui.studio.LocalStudioController
 
 fun main(args: Array<String>) {
     if (args.firstOrNull() == "--self-check-updater") {
@@ -42,10 +42,10 @@ fun main(args: Array<String>) {
             runBlocking {
                 val report = checkInstallation()
                 checkDesktopDocumentEngines()
-                // Verify Atelier IA's HTTP module in the reduced packaged runtime, without a request.
+                // Verify Studio IA's HTTP module in the reduced packaged runtime, without a request.
                 java.net.http.HttpClient.newHttpClient()
                 writeInstallationCheckReport(Path.of(args[2]), report.copy(mathRenderingVerified = true, pdfRenderingVerified = true,
-                    updaterInstalledEdition = installedApplicationPath() != null, updaterVersion = System.getProperty("atelier.version", "")))
+                    updaterInstalledEdition = installedApplicationPath() != null, updaterVersion = System.getProperty("wizard.version", "")))
             }
             0
         } catch (failure: Exception) {
@@ -60,18 +60,18 @@ fun main(args: Array<String>) {
 private fun desktopApplication() = application {
     val updater = remember {
         WindowsUpdateController(
-            Path.of(System.getenv("LOCALAPPDATA") ?: System.getProperty("user.home"), "AtelierApprentissage", "updates"),
-            installedApplicationPath(), AppVersion.parse(System.getProperty("atelier.version", "")),
+            Path.of(System.getenv("LOCALAPPDATA") ?: System.getProperty("user.home"), "DreamsignWizard", "updates"),
+            installedApplicationPath(), AppVersion.parse(System.getProperty("wizard.version", "")),
         )
     }
     val updateState by updater.ui.collectAsState()
     val scope = rememberCoroutineScope()
     var unsavedVideoCloseRequest by remember { mutableStateOf<Boolean?>(null) }
     val closeSafely: (Boolean) -> Unit = { restart -> scope.launch {
-        val flushed = com.duolingo.app.ui.video.flushVideoPlaybackPositions()
+        val flushed = com.dreamsigner.wizard.ui.video.flushVideoPlaybackPositions()
         if (flushed.failedPlayers > 0) unsavedVideoCloseRequest = restart
         else if (updater.beforeClose(restart)) {
-            com.duolingo.app.ui.video.closeVideoPlayersBeforeExit()
+            com.dreamsigner.wizard.ui.video.closeVideoPlayersBeforeExit()
             exitApplication()
         }
     }; Unit }
@@ -91,7 +91,7 @@ private fun desktopApplication() = application {
                 confirmButton = { androidx.compose.material.TextButton(onClick = {
                     unsavedVideoCloseRequest = null
                     scope.launch { if (updater.beforeClose(restart)) {
-                        com.duolingo.app.ui.video.closeVideoPlayersBeforeExit()
+                        com.dreamsigner.wizard.ui.video.closeVideoPlayersBeforeExit()
                         exitApplication()
                     } }
                 }) { androidx.compose.material.Text("Quitter quand même") } },
@@ -106,9 +106,9 @@ private fun desktopApplication() = application {
                 adapter = androidx.compose.foundation.rememberScrollbarAdapter(state), modifier = modifier,
             ) },
         ) {
-            com.duolingo.app.ui.VideoThumbnailProvider(androidx.compose.runtime.remember { com.duolingo.app.ui.DesktopVideoThumbnailLoader() }) {
-                com.duolingo.app.ui.VideoPlaybackProvider(com.duolingo.app.ui.video.DesktopVideoPlayer) {
-                    com.duolingo.app.ui.VideoDownloadProvider(remember { com.duolingo.app.ui.download.defaultFrenchVideoDownloader() }) {
+            com.dreamsigner.wizard.ui.VideoThumbnailProvider(androidx.compose.runtime.remember { com.dreamsigner.wizard.ui.DesktopVideoThumbnailLoader() }) {
+                com.dreamsigner.wizard.ui.VideoPlaybackProvider(com.dreamsigner.wizard.ui.video.DesktopVideoPlayer) {
+                    com.dreamsigner.wizard.ui.VideoDownloadProvider(remember { com.dreamsigner.wizard.ui.download.defaultFrenchVideoDownloader() }) {
                         MathRenderingProvider(DesktopMathRenderer) {
                             CompositionLocalProvider(LocalChallengeShareService provides remember { DesktopChallengeShareService() }) {
                                 val studio = remember { DesktopStudioController() }

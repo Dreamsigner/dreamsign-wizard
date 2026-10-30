@@ -4,18 +4,18 @@ Recherche du 20 octobre 2026, sources officielles consultées en direct. **Migra
 
 ## Référence exécutée avant migration
 
-Le [run `c0c82e9`, 39353730474](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/runs/39353730474) a terminé en échec le 20 octobre. Windows, Android et les tests Kotlin `iosX64Test` réussissaient. Sur Xcode 15.3, les deux lancements XCTest échouaient chacun sur les assertions `Cours` et `Profil`. L'archive appareil était sautée. L'artefact de diagnostic `iOS-checks` porte l'identifiant `12235255237`.
+Le [run `c0c82e9`, 39353730474](https://github.com/Dreamsigner/dreamsign-wizard/actions/runs/39353730474) a terminé en échec le 20 octobre. Windows, Android et les tests Kotlin `iosX64Test` réussissaient. Sur Xcode 15.3, les deux lancements XCTest échouaient chacun sur les assertions `Cours` et `Profil`. L'archive appareil était sautée. L'artefact de diagnostic `iOS-checks` porte l'identifiant `12235255237`.
 
 Le diff vérifié entre `c0c82e99674b9f9fdbd81c04814823164f2432ea` et `c3439cca75d23b430a41b0c5bd2c19bfa1349135` ajoute dans `LaunchTests.swift` l'environnement `COMPOSE_UI_TESTING=1` **avant** `app.launch()`, ainsi que la conservation/affichage de la hiérarchie et de la capture en fin de test. L'ancienne implémentation `MainViewController` ne forçait `AccessibilitySyncOptions.Always` que lorsque cette variable était présente. Elle ne l'était donc pas dans le test commité précédent.
 
-Le [run corrigé `c3439cc`, 39379770520](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/runs/39379770520) est **entièrement réussi**, terminé à **06:38:43 UTC** :
+Le [run corrigé `c3439cc`, 39379770520](https://github.com/Dreamsigner/dreamsign-wizard/actions/runs/39379770520) est **entièrement réussi**, terminé à **06:38:43 UTC** :
 
 - Jobs Windows et shared/Android : réussite.
 - Job iOS `118485965528`, runner `macos-14` ; journal : **Xcode 15.3, build 15E204a**, Gradle 8.2.1.
 - Tests Kotlin `iosX64Test` : réussite.
 - Script historique : iPhone 15 puis iPad (10e génération), runtime configuré iOS 17.4. XCTest : **1 test, 0 échec** pour chaque appareil, en 8,315 s puis 11,330 s. Deux `TEST SUCCEEDED` dans le journal.
 - Archive Release appareil : `ARCHIVE SUCCEEDED` à 06:38:29 UTC. Elle reste non signée.
-- Artefacts publiés : `iOS-checks` **12245990512** (1 224 552 octets), `DuolingoKmpApp-iOS-builds` **12245776238** (26 039 985 octets), APK Android **12244901504**, Windows **12244797881**, Windows-checks **12244693336**, Android-checks **12244652526**. Rétention CI : 14 jours ; les identifiants ne garantissent pas une disponibilité permanente.
+- Artefacts publiés : `iOS-checks` **12245990512** (1 224 552 octets), `DreamsignWizard-iOS-builds` **12245776238** (26 039 985 octets), APK Android **12244901504**, Windows **12244797881**, Windows-checks **12244693336**, Android-checks **12244652526**. Rétention CI : 14 jours ; les identifiants ne garantissent pas une disponibilité permanente.
 
 Ces faits proviennent des métadonnées REST et du journal du job iOS lus directement. Les journaux ont été traités en mémoire ; aucun secret ni URL signée de redirection n'est archivé. Les PNG et `.xcresult` n'ont pas été inspectés visuellement dans ce lot. Le correctif isolé rétablit les assertions de lancement sur l'ancienne chaîne ; cela confirme le diagnostic d'un faux négatif d'accessibilité, sans prouver toutes les interactions de l'application.
 

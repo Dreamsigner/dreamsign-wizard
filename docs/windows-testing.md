@@ -2,15 +2,15 @@
 
 ## Installer l’application
 
-1. Dans une exécution GitHub Actions réussie de `main`, télécharger **AtelierApprentissage-Windows-Setup**.
-2. Extraire l’archive, puis lancer `AtelierApprentissage-1.13.0-Setup.exe`.
+1. Dans une exécution GitHub Actions réussie de `main`, télécharger **DreamsignWizard-Windows-Setup**.
+2. Extraire l’archive, puis lancer `DreamsignWizard-2.0.0-Setup.exe`.
 3. Suivre l’assistant, puis utiliser le raccourci du Bureau ou du menu Démarrer.
 
 L’installation est propre à l’utilisateur courant, par défaut dans
-`%LOCALAPPDATA%/DuolingoKmpApp`. Les données de progression restent séparées,
-dans `%LOCALAPPDATA%/AtelierApprentissage`. La version portable existante et
+`%LOCALAPPDATA%/DreamsignWizardApp`. Les données de progression restent séparées,
+dans `%LOCALAPPDATA%/DreamsignWizard`. La version portable existante et
 la version installée utilisent cette même sauvegarde : fermer l’une avant
-d’utiliser l’autre. Aucun déplacement de données n’est nécessaire.
+d’utiliser l’autre. Les sauvegardes créées avant la version 2.0.0 restent à leur emplacement précédent et ne sont pas reprises automatiquement.
 
 Pour désinstaller, utiliser les applications installées dans les paramètres
 Windows. La progression n’est pas supprimée. Un installateur de version
@@ -23,8 +23,8 @@ le téléchargement avec `Get-FileHash -Algorithm SHA256`.
 
 ## Utilisation portable
 
-L’artefact **DuolingoKmpApp-Windows** reste un ZIP portable. Extraire aussi le
-ZIP intérieur s’il est présent, puis lancer `DuolingoKmpApp.exe` en conservant
+L’artefact **DreamsignWizard-Windows** reste un ZIP portable. Extraire aussi le
+ZIP intérieur s’il est présent, puis lancer `DreamsignWizard.exe` en conservant
 les dossiers `app` et `runtime`. Ne pas lancer l’exécutable dans l’archive.
 
 Les deux distributions contiennent Java. Gradle et un JDK séparé ne sont pas
@@ -54,7 +54,7 @@ partielle : voir [AUTHORED-COVERAGE.md](curriculum/AUTHORED-COVERAGE.md).
 ## Données conservées
 
 Sur Windows, la progression se trouve dans
-`%LOCALAPPDATA%/AtelierApprentissage/progress.json`. Remplacer le dossier du
+`%LOCALAPPDATA%/DreamsignWizard/progress.json`. Remplacer le dossier du
 paquet ne nécessite pas de supprimer cette sauvegarde. Une sauvegarde illisible
 est préservée et l'application signale l'erreur. Il n'y a pas de synchronisation
 entre appareils.
@@ -62,7 +62,7 @@ entre appareils.
 ## Reprise vidéo et téléchargement avec audio français
 
 Les positions YouTube et MP4 sont enregistrées séparément dans
-`%LOCALAPPDATA%/AtelierApprentissage/video-playback.json`. Ce fichier ne modifie
+`%LOCALAPPDATA%/DreamsignWizard/video-playback.json`. Ce fichier ne modifie
 pas `progress.json`. Un fichier illisible est conservé et un message signale
 que sa position ne peut pas être enregistrée. La reprise ne remplace pas une
 synchronisation entre appareils. Les vidéos terminées repartent du début.
@@ -78,8 +78,8 @@ Le poste doit disposer de `yt-dlp.exe`, `ffmpeg.exe`, `ffprobe.exe` et d’un mo
 JavaScript pris en charge par yt-dlp (Deno est utilisé sur le poste de validation).
 Ces dépendances ne sont pas embarquées et ne sont pas installées automatiquement.
 Les trois exécutables sont recherchés dans `PATH`. Pour un emplacement personnalisé,
-les variables d’environnement `ATELIER_YT_DLP_PATH`, `ATELIER_FFMPEG_PATH` et
-`ATELIER_FFPROBE_PATH` acceptent le chemin complet correspondant, avant lancement
+les variables d’environnement `WIZARD_YT_DLP_PATH`, `WIZARD_FFMPEG_PATH` et
+`WIZARD_FFPROBE_PATH` acceptent le chemin complet correspondant, avant lancement
 de l’application. Un outil manquant est signalé dans le dialogue.
 
 Vérification utilisateur : arrêter une vidéo à un instant identifiable, fermer
@@ -94,7 +94,7 @@ Depuis PowerShell, dans le dossier extrait, choisir un nouveau nom de rapport :
 
 ```powershell
 $rapport = Join-Path $PWD ('diagnostic-' + [guid]::NewGuid().ToString('N') + '.json')
-$processus = Start-Process -FilePath '.\DuolingoKmpApp.exe' -ArgumentList @('--self-check', '--report', ('"{0}"' -f $rapport)) -PassThru -Wait -WindowStyle Hidden
+$processus = Start-Process -FilePath '.\DreamsignWizard.exe' -ArgumentList @('--self-check', '--report', ('"{0}"' -f $rapport)) -PassThru -Wait -WindowStyle Hidden
 $processus.ExitCode
 Get-Content -LiteralPath $rapport
 ```
@@ -120,8 +120,8 @@ réseau sont limitées à quatre secondes chacune. Aucune vidéo n’est téléc
 
 ## Mises à jour automatiques
 
-Installer une première fois la version 1.13.0 depuis la [release GitHub 1.13.0](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/tag/v1.13.0).
-L’installation Windows standard `%LOCALAPPDATA%/DuolingoKmpApp` active les mises à jour automatiques.
+Installer une première fois la version 1.13.0 depuis la [release GitHub 1.13.0](https://github.com/Dreamsigner/dreamsign-wizard/releases/tag/v1.13.0).
+L’installation Windows standard `%LOCALAPPDATA%/DreamsignWizardApp` active les mises à jour automatiques.
 Les copies portables et chemins d’installation personnalisés affichent que la mise à jour manuelle reste nécessaire.
 
 - Vérification cinq secondes après le démarrage puis toutes les six heures. Le bouton de vérification permet de relancer la recherche.
@@ -130,7 +130,7 @@ Les copies portables et chemins d’installation personnalisés affichent que la
 - **Installer et redémarrer** ferme l’app, attend sa sauvegarde finale et relance l’app après installation. La case Auto désactivée empêche toute application automatique, y compris pour une version déjà téléchargée.
 - Sans réseau, en cas de téléchargement incomplet, de checksum incorrect ou d’erreur GitHub, les cours restent accessibles et aucune nouvelle version n’est exécutée.
 
-Les fichiers de travail et préférences restent dans `%LOCALAPPDATA%/AtelierApprentissage/updates`.
+Les fichiers de travail et préférences restent dans `%LOCALAPPDATA%/DreamsignWizard/updates`.
 `last-result.json` et `updater.log` servent au diagnostic d’une installation échouée.
 `progress.json` reste séparé et n’est pas remplacé par les paquets.
 L’installateur reste non signé : les restrictions de sécurité de Windows ou d’un poste administré peuvent empêcher son exécution. Aucun réglage système n’est modifié par le programme de mise à jour.
@@ -138,7 +138,7 @@ Le checksum vérifie l’intégrité du fichier diffusé par GitHub; il ne rempl
 
 ### Publier une version compatible (maintenance)
 
-Actualiser la version du paquet, les noms d’artefacts et la fixture de mise à niveau dans le workflow et son test, puis créer le tag `vMAJOR.MINOR.PATCH` correspondant. Le job de release vérifie que le tag stable et le commit source correspondent avant de publier l’EXE et `SHA256SUMS.txt`, après les contrôles Windows. Le paquet de fixture de version supérieure (actuellement 1.13.1) sert uniquement au test d’installation et n’est jamais publié. Les artefacts Actions seuls ne déclenchent aucune mise à jour.
+Actualiser la version du paquet, les noms d’artefacts et la fixture de mise à niveau dans le workflow et son test, puis créer le tag `vMAJOR.MINOR.PATCH` correspondant. Le job de release vérifie que le tag stable et le commit source correspondent avant de publier l’EXE et `SHA256SUMS.txt`, après les contrôles Windows. Le paquet de fixture de version supérieure (actuellement 2.0.1) sert uniquement au test d’installation et n’est jamais publié. Les artefacts Actions seuls ne déclenchent aucune mise à jour.
 
 ## Lecteur vidéo intégré (mathématiques)
 
@@ -178,7 +178,7 @@ Le sommaire reste en panneau latéral à partir de1000dp de largeur du lecteur, 
 
 Le test d’installation CI vérifie aussi la suppression de la copie d’installateur dans le cache et du payload, tout en conservant l’installateur externe d’origine. Les temporaires récents et les fichiers inconnus restent intacts; progression/préférences, dernier résultat et journal ne sont pas supprimés. Le cache système Windows Installer et les téléchargements manuels sont hors périmètre.
 
-Le commit `9bab6f3` a passé le 27 octobre les étapes CI du contrôle vidéo natif, de l’installation et de la mise à niveau. La release 1.12.0, qui introduit Atelier IA, a été publiée après le tag `v1.12.0` et la réussite du workflow de release.
+Le commit `9bab6f3` a passé le 27 octobre les étapes CI du contrôle vidéo natif, de l’installation et de la mise à niveau. La release 1.12.0, qui introduit Studio IA, a été publiée après le tag `v1.12.0` et la réussite du workflow de release.
 
 ## Unités physiques et fractions
 
@@ -194,7 +194,7 @@ La carte ne contient ni réponse correcte, ni sélection de l'élève, ni indice
 
 Sur une fenêtre étroite ou courte, faire défiler l'aperçu et vérifier que les commandes restent accessibles. L'image doit contenir tous les choix, y compris ceux hors de la zone visible de l'aperçu. Le partage ne crée pas de défi interactif sur Internet : l'image ou le texte est envoyé par l'utilisateur depuis son application de messagerie.
 
-## Atelier IA — première tranche du pivot
+## Studio IA — première tranche du pivot
 
 L'application ouvre l'atelier au démarrage. Cours, Profil et Paramètres restent disponibles. Créer un objectif puis écrire ce que l'on sait déjà; la création de l'objectif seule ne déclenche pas de requête et ne génère pas de fausse réponse IA.
 

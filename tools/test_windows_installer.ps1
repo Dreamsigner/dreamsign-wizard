@@ -26,8 +26,8 @@ foreach ($candidate in @($Installer, $UpgradeInstaller)) {
 }
 $reportDir = Join-Path $workspace 'composeApp/build/reports/installer'
 New-Item -ItemType Directory -Path $reportDir -Force | Out-Null
-$appDir = Join-Path $env:LOCALAPPDATA 'DuolingoKmpApp'
-$dataDir = Join-Path $env:LOCALAPPDATA 'AtelierApprentissage'
+$appDir = Join-Path $env:LOCALAPPDATA 'DreamsignWizardApp'
+$dataDir = Join-Path $env:LOCALAPPDATA 'DreamsignWizard'
 $progress = Join-Path $dataDir 'progress.json'
 if ((Test-Path -LiteralPath $appDir) -or (Test-Path -LiteralPath $dataDir)) {
     throw 'The runner is not clean; existing application or learner data must not be overwritten.'
@@ -87,15 +87,15 @@ function Read-InstalledEntry([string]$Version, [string]$SetupPath) {
 }
 function Assert-InstalledApp([string]$Version, [string]$Phase, [string]$SetupPath) {
     $entry = Read-InstalledEntry $Version $SetupPath
-    $launcher = Join-Path $appDir 'DuolingoKmpApp.exe'
+    $launcher = Join-Path $appDir 'DreamsignWizard.exe'
     if (!(Test-Path -LiteralPath $launcher)) { throw 'Installed application launcher is missing.' }
     foreach ($notice in @('THIRD-PARTY-NOTICES.txt', 'LISEZ-MOI.md')) {
         if (!(Get-ChildItem -LiteralPath $appDir -Recurse -File -Filter $notice)) { throw "Missing installed document: $notice" }
     }
     $startMenu = [Environment]::GetFolderPath('Programs')
     $desktop = [Environment]::GetFolderPath('DesktopDirectory')
-    if (!(Get-ChildItem -LiteralPath $startMenu -Filter 'DuolingoKmpApp.lnk' -File -Recurse)) { throw 'Start menu shortcut is missing.' }
-    if (!(Test-Path -LiteralPath (Join-Path $desktop 'DuolingoKmpApp.lnk'))) { throw 'Desktop shortcut is missing.' }
+    if (!(Get-ChildItem -LiteralPath $startMenu -Filter 'DreamsignWizard.lnk' -File -Recurse)) { throw 'Start menu shortcut is missing.' }
+    if (!(Test-Path -LiteralPath (Join-Path $desktop 'DreamsignWizard.lnk'))) { throw 'Desktop shortcut is missing.' }
     $diagnostic = Join-Path $reportDir "$Phase-diagnostic.json"
     Invoke-CheckedProcess $launcher @('--self-check', '--report', ('"{0}"' -f $diagnostic))
     $checks = Get-Content -Raw -LiteralPath $diagnostic | ConvertFrom-Json
@@ -108,10 +108,10 @@ function Assert-InstalledApp([string]$Version, [string]$Phase, [string]$SetupPat
 Invoke-CheckedProcess (Resolve-Path -LiteralPath $Installer).Path @('/quiet', '/norestart', '/L*v', ('"{0}"' -f (Join-Path $reportDir 'install.log')))
 $first = Assert-InstalledApp $ExpectedVersion 'installed' $Installer
 # Exercise the production native updater launcher and its Windows PowerShell helper.
-$launcher = Join-Path $appDir 'DuolingoKmpApp.exe'
+$launcher = Join-Path $appDir 'DreamsignWizard.exe'
 $result = Join-Path $reportDir 'last-result.json'
 $upgradeSource = (Resolve-Path -LiteralPath $UpgradeInstaller).Path
-$upgradeCacheCopy = Join-Path $reportDir "AtelierApprentissage-$ExpectedUpgradeVersion-Setup.exe"
+$upgradeCacheCopy = Join-Path $reportDir "DreamsignWizard-$ExpectedUpgradeVersion-Setup.exe"
 Copy-Item -LiteralPath $upgradeSource -Destination $upgradeCacheCopy
 $upgradeSourceHash = (Get-FileHash -LiteralPath $upgradeSource -Algorithm SHA256).Hash
 Invoke-CheckedProcess $launcher @('--self-check-updater', '--installer', ('"{0}"' -f $upgradeCacheCopy), '--report-dir', ('"{0}"' -f $reportDir))
@@ -136,7 +136,7 @@ if ($first.ProductCode -eq $updated.ProductCode -or $msiEngine.ProductState($fir
 if ($updated.ProductCode -notmatch '^\{[0-9A-Fa-f-]{36}\}$') { throw 'Invalid uninstall product code.' }
 Invoke-CheckedProcess 'msiexec.exe' @('/x', $updated.ProductCode, '/quiet', '/norestart', '/L*v', ('"{0}"' -f (Join-Path $reportDir 'uninstall.log')))
 Assert-Progress
-if (Test-Path -LiteralPath (Join-Path $appDir 'DuolingoKmpApp.exe')) { throw 'The app launcher remains after uninstall.' }
+if (Test-Path -LiteralPath (Join-Path $appDir 'DreamsignWizard.exe')) { throw 'The app launcher remains after uninstall.' }
 if ($msiEngine.ProductState($updated.ProductCode) -ne -1 -or $msiEngine.ProductState($first.ProductCode) -ne -1) { throw 'An MSI product remains registered after uninstall.' }
 [ordered]@{
     installedVersion = $ExpectedVersion; upgradedVersion = $ExpectedUpgradeVersion; installedAppDiagnostic = $true

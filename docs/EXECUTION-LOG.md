@@ -212,7 +212,7 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
 ## Reprise manuelle sur D: — 20 octobre 2026
 
 - Instructions Home/RTK relues ; CODEX_HOME effectif `D:\Coding\_Codex\Home`.
-  Dépôt vérifié : `D:\Coding\_Codex\Chats-hors-projet\2026-10-19\c\duolingo-kmp-learning-app`,
+  Dépôt vérifié : `D:\Coding\_Codex\Chats-hors-projet\2026-10-19\c\dreamsign-wizard`,
   branche `codex/windows-test-package`, base `c3af563`. Aucun basculement vers
   l'autre copie, aucune migration, aucune configuration globale modifiée.
   L'automatisation reste suspendue. Computer Use interdit pour cette reprise.
@@ -313,7 +313,7 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   nouveau test RED sur les drapeaux absents, corrigé avec encodeDefaults=true.
 - Dernière suite/package : BUILD SUCCESSFUL, 64 tests, zéro échec/erreur/ignoré.
   Journal hors Git ../work/installation-final-suite-package.log. Le véritable
-  DuolingoKmpApp.exe a terminé son contrôle local avec exit 0 : 15 cours,
+  DreamsignWizard.exe a terminé son contrôle local avec exit 0 : 15 cours,
   391 leçons/ateliers, 1190 exercices, trois SHA-256 audio exacts, drapeaux
   uiStarted=false et userDataAccessed=false dans le JSON. Aucun Computer Use.
 - Rapport local conservé hors Git :
@@ -332,7 +332,7 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
 ## Preuve CI Windows — commit 86e0f59
 
 - Run 39503525124, unique job package-windows 118906653381 : SUCCESS.
-  https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/runs/39503525124
+  https://github.com/Dreamsigner/dreamsign-wizard/actions/runs/39503525124
 - Le contrôle des sources et la génération déterministe ont réussi sur Windows,
   puis desktopTest et createDistributable. Le rapport HTML téléchargé dans
   Windows-checks confirme 64 tests, zéro échec et zéro ignoré.
@@ -460,7 +460,7 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   et le rendu d'un vrai support MIT, indépendamment de la suite hors réseau.
 - PR #2 intégrée dans main : merge 8aabafe8123c2e073a32e83e83c5926683fec27b.
   Artefact Windows testé par la CI : 12308001751, run 39515363231.
-  https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/runs/39515363231
+  https://github.com/Dreamsigner/dreamsign-wizard/actions/runs/39515363231
 - Cette preuve concerne le code 9b86816 et son merge sans modification de
   contenu. Elle ne constitue pas une validation de l'intégralité OSSU/TCF,
   du microphone physique ou d'un lecteur d'écran; les limites précédentes
@@ -587,8 +587,8 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
 - Lot autorisé : distribution Windows classique, sans modification pédagogique.
   Version installateur 1.1.0, UUID de mise à niveau stable, installation par
   utilisateur, choix du dossier, raccourcis Bureau/menu Démarrer. Les données
-  `%LOCALAPPDATA%/AtelierApprentissage` restent séparées de l’application
-  `%LOCALAPPDATA%/DuolingoKmpApp`. Aucun déplacement de sauvegarde.
+  `%LOCALAPPDATA%/DreamsignWizard` restent séparées de l’application
+  `%LOCALAPPDATA%/DreamsignWizard`. Aucun déplacement de sauvegarde.
 - Construction native via Compose/jpackage et WiX déjà disponibles. Les notices
   et le guide sont générés comme ressources communes pour chaque distribution.
   Le premier essai combiné a détecté une dépendance Gradle implicite entre la
@@ -830,7 +830,7 @@ Ce registre décrit le travail réel ; les tâches non cochées restent à termi
   et un test vidéo natif, zéro échec/erreur/ignoré. Installation 1.7.2,
   mise à niveau réelle via le lanceur vers la fixture 1.7.3, désinstallation
   et progression préservée; diagnostic, raccourcis et notices validés.
-- Release stable publiée avec AtelierApprentissage-1.7.2-Setup.exe
+- Release stable publiée avec DreamsignWizard-1.7.2-Setup.exe
   (63 885 312 octets) et SHA256SUMS.txt. Le transport de mise à jour de
   production, exécuté depuis les JAR de la distribution locale, détecte
   effectivement 1.6.0 → 1.7.2 et valide le checksum SHA-256 de 64 caractères.

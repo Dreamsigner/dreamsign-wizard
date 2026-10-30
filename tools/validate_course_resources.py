@@ -18,7 +18,7 @@ from urllib.request import Request, urlopen
 ROOT = Path(__file__).resolve().parents[1]
 COURSE_DIR = ROOT / "curriculum/courses"
 CATALOG = ROOT / "curriculum/course-resources.json"
-KOTLIN = ROOT / "composeApp/src/commonMain/kotlin/com/duolingo/app/data/CourseResources.kt"
+KOTLIN = ROOT / "composeApp/src/commonMain/kotlin/com/dreamsigner/wizard/data/CourseResources.kt"
 MIT_LICENSE = "https://ocw.mit.edu/pages/privacy-and-terms-of-use/"
 FORALLX_LICENSE = "https://creativecommons.org/licenses/by/4.0/"
 MISSING_LICENSE = "https://missing.csail.mit.edu/license/"
@@ -464,7 +464,7 @@ def render_kotlin(data):
     )
     out = [
         "// Generated from curriculum/course-resources.json by tools/validate_course_resources.py.",
-        "package com.duolingo.app.data", "", "data class CourseResource(",
+        "package com.dreamsigner.wizard.data", "", "data class CourseResource(",
         "    val id: String,", "    val title: String,", "    val url: String,",
         "    val kind: String,", "    val coverage: String,", "    val language: String,",
         "    val licenseStatus: String,", "    val sourceUrl: String,",

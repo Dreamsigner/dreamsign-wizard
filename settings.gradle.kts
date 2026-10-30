@@ -27,5 +27,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "duolingo-kmp-learning-app"
+rootProject.name = "dreamsign-wizard"
 include(":composeApp")

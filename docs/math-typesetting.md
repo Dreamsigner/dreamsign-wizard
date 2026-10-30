@@ -1,7 +1,7 @@
 # Math typesetting
 
 The shared UI exposes `LearningFormula` and `LearningText` from
-`com.duolingo.app.ui.math`. A desktop root can enable rendered LaTeX by wrapping
+`com.dreamsigner.wizard.ui.math`. A desktop root can enable rendered LaTeX by wrapping
 its content in the provider:
 
 ```kotlin

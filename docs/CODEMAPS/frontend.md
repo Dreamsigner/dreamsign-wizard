@@ -3,14 +3,14 @@
 # Frontend and state
 
 ```text
-Desktop main.kt → App.kt / theme → DuolingoApp
+Desktop main.kt → App.kt / theme → DreamsignWizardApp
                                   ├─ Cours → catalogue/search/filters → CourseReaderScreen
                                   ├─ lesson → quiz/practice → AppViewModel
                                   ├─ Profil
                                   └─ Paramètres → injected Windows updater panel
 ```
 
-`composeApp/src/commonMain/kotlin/com/duolingo/app/ui/AppUI.kt` owns the main navigation and screen composition. `CourseReaderScreen.kt` renders lesson notes, references, PDFs/videos and math rendering through platform providers. Quiz, listening, writing and speaking screens send user actions to `AppViewModel`; its `StateFlow`s expose answer, review, completion and progress state to Compose. Most short-lived view state is remembered by its screen; durable learner state is serialized in `UserStats` through `ProgressStore`.
+`composeApp/src/commonMain/kotlin/com/dreamsigner/wizard/ui/AppUI.kt` owns the main navigation and screen composition. `CourseReaderScreen.kt` renders lesson notes, references, PDFs/videos and math rendering through platform providers. Quiz, listening, writing and speaking screens send user actions to `AppViewModel`; its `StateFlow`s expose answer, review, completion and progress state to Compose. Most short-lived view state is remembered by its screen; durable learner state is serialized in `UserStats` through `ProgressStore`.
 
 `desktopMain/kotlin/main.kt` is the actual desktop entry point and supplies PDF, video, math and update implementations. Android and iOS have native entry points, but Windows is the documented maintained distribution.
 

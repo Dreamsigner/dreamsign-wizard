@@ -48,7 +48,7 @@ try {
         try {
             $installerPath = [IO.Path]::GetFullPath([string]$config.installer)
             $installerParent = [IO.Path]::GetDirectoryName($installerPath)
-            $strictName = '^AtelierApprentissage-(0|[1-9]\d{0,3})\.(0|[1-9]\d{0,3})\.(0|[1-9]\d{0,3})-Setup\.exe$'
+            $strictName = '^DreamsignWizard-(0|[1-9]\d{0,3})\.(0|[1-9]\d{0,3})\.(0|[1-9]\d{0,3})-Setup\.exe$'
             if ([string]::Equals($installerParent, $payloadDirectory, [StringComparison]::OrdinalIgnoreCase) -and
                 [IO.Path]::GetFileName($installerPath) -match $strictName) {
                 $candidate = Get-Item -LiteralPath $installerPath -Force -ErrorAction Stop

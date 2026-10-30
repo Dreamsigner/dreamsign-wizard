@@ -56,7 +56,7 @@ chaîne. La couverture complète des sources reste obligatoire et non atteinte.
 
 ## Task 2: Authored content contract and completeness check
 
-**Files:** new `tools/validate_curriculum.py`, new `curriculum/courses/*.json`; extend `composeApp/src/commonMain/kotlin/com/duolingo/app/model/Models.kt` only after the contract is fixed.
+**Files:** new `tools/validate_curriculum.py`, new `curriculum/courses/*.json`; extend `composeApp/src/commonMain/kotlin/com/dreamsigner/wizard/model/Models.kt` only after the contract is fixed.
 
 **Consumes:** Source manifests from Task 1.
 **Produces:** Authored course content with stable `courseId`, edition, category, source-session key, title, objective, notes, exercises, hint, correction and resource URLs.

@@ -1,4 +1,4 @@
-# Atelier IA : trajectoire vers LearnHarness
+# Studio IA : trajectoire vers LearnHarness
 
 État examiné le 30 octobre 2026. La release Windows 1.12.0 fournit des objectifs, des séances persistantes et un dialogue avec une API compatible Chat Completions. Elle ne fournit pas la connexion par abonnement ChatGPT, le plan pédagogique structuré, la pratique adaptative ni le graphe de connaissances. Cette liste est un suivi de livraison, pas une déclaration de parité.
 

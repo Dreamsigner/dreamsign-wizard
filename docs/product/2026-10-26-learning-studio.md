@@ -1,4 +1,4 @@
-# Nouvelle direction : un atelier d'apprentissage personnel
+# Nouvelle direction : un Dreamsign Wizard personnel
 
 Décision utilisateur du 26 octobre 2026 : faire évoluer l'application actuelle, en conservant Kotlin Multiplatform / Compose. Référence produit : [LearnHarness](https://github.com/amosblomqvist/learnharness), consultée le 26 octobre 2026.
 
@@ -10,7 +10,7 @@ LearnHarness décrit une séquence diagnostic, plan, enseignement, pratique, et 
 
 ## Première version utilisable
 
-- Entrée **Atelier IA** : créer un objectif libre, ouvrir une séance, retrouver ses séances.
+- Entrée **Studio IA** : créer un objectif libre, ouvrir une séance, retrouver ses séances.
 - Conversation avec un modèle réellement configuré par l'utilisateur; aucune réponse simulée présentée comme une réponse IA.
 - Instructions de tutorat en français : diagnostic préalable, raisonnement explicite, prérequis et plan, puis explications et vérifications progressives. La première version exprime ce plan dans la conversation; il n'est pas encore un arbre de dépendances validé.
 - Connexion compatible Chat Completions : URL de base, nom du modèle, clé facultative pour un serveur local sans authentification. Choix du fournisseur explicite, pas de modèle imposé.
@@ -28,7 +28,7 @@ Le protocole est testé avec un serveur local déterministe. Sans identifiants e
 ## Organisation cible
 
 ```text
-Interface Atelier IA -> contrôleur de séances -> port de tutorat
+Interface Studio IA -> contrôleur de séances -> port de tutorat
                               |                      |
                               v                      v
                      stockage local séparé    adaptateur HTTP Windows

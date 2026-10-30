@@ -89,11 +89,11 @@ kotlin {
 }
 
 android {
-    namespace = "com.duolingo.app"
+    namespace = "com.dreamsigner.wizard"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.duolingo.app"
+        applicationId = "com.dreamsigner.wizard"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -127,21 +127,21 @@ tasks.register<org.gradle.api.tasks.testing.Test>("sourcePdfSmokeTest") {
     dependsOn("desktopTestClasses")
     testClassesDirs = desktopTestTask.get().testClassesDirs
     classpath = desktopTestTask.get().classpath
-    filter.includeTestsMatching("com.duolingo.app.ui.pdf.SourcePdfSmokeTest")
+    filter.includeTestsMatching("com.dreamsigner.wizard.ui.pdf.SourcePdfSmokeTest")
 }
 
 compose.desktop {
     application {
         mainClass = "MainKt"
-        jvmArgs("-Datelier.version=${providers.gradleProperty("desktopPackageVersion").orElse("1.13.0").get()}")
+        jvmArgs("-Dwizard.version=${providers.gradleProperty("desktopPackageVersion").orElse("2.0.0").get()}")
         nativeDistributions {
             // PDFBox 3 uses sun.misc.Unsafe.invokeCleaner via this module. The reduced
             // jlink runtime otherwise falls back to inaccessible Java 8 internals.
-            // Atelier IA uses Java's HTTP client; keep it in the packaged runtime too.
+            // Studio IA uses Java's HTTP client; keep it in the packaged runtime too.
             modules("jdk.unsupported", "jdk.httpserver", "java.net.http")
             targetFormats(org.jetbrains.compose.desktop.application.dsl.TargetFormat.Msi, org.jetbrains.compose.desktop.application.dsl.TargetFormat.Exe)
-            packageName = "DuolingoKmpApp"
-            packageVersion = providers.gradleProperty("desktopPackageVersion").orElse("1.13.0").get()
+            packageName = "DreamsignWizard"
+            packageVersion = providers.gradleProperty("desktopPackageVersion").orElse("2.0.0").get()
             appResourcesRootDir.set(layout.buildDirectory.dir("installer-resources"))
             vendor = "Dreamsigner"
             description = "Dreamsign Wizard — Mathématiques, informatique et TCF"
@@ -153,7 +153,7 @@ compose.desktop {
                 menuGroup = "Dreamsign Wizard"
                 shortcut = true
                 dirChooser = true
-                installationPath = "DuolingoKmpApp"
+                installationPath = "DreamsignWizardApp"
             }
         }
     }
@@ -179,9 +179,9 @@ val desktopVideoNativeTest by tasks.registering(Test::class) {
     dependsOn("desktopTestClasses")
     testClassesDirs = desktopTestTask.get().testClassesDirs
     classpath = desktopTestTask.get().classpath
-    filter.includeTestsMatching("com.duolingo.app.ui.video.NativeVideoSmokeTest")
-    systemProperty("atelier.native.video.test", "true")
-    systemProperty("atelier.native.video.local.optin", providers.gradleProperty("nativeVideoLocalOptIn").orElse("false").get())
+    filter.includeTestsMatching("com.dreamsigner.wizard.ui.video.NativeVideoSmokeTest")
+    systemProperty("wizard.native.video.test", "true")
+    systemProperty("wizard.native.video.local.optin", providers.gradleProperty("nativeVideoLocalOptIn").orElse("false").get())
     systemProperty("java.awt.headless", "false")
     jvmArgs("--add-modules=jdk.httpserver")
 }

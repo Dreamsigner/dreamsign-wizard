@@ -1,18 +1,18 @@
 <p align="center">
-  <img src="docs/images/atelier-banner.svg" alt="Dreamsign Wizard" width="100%">
+  <img src="docs/images/dreamsign-wizard-banner.svg" alt="Dreamsign Wizard" width="100%">
 </p>
 
 # Dreamsign Wizard
 
 Application d’apprentissage en français pour Windows, développée en Kotlin avec Compose Multiplatform. Elle réunit des cours de mathématiques et d’informatique ainsi que des ateliers de préparation au TCF Canada, avec exercices interactifs et suivi de progression.
 
-Le nom du produit est **Dreamsign Wizard**. Les anciens noms techniques des données et de la distribution sont conservés pour leur compatibilité ; les fichiers des releases existantes gardent leur nom historique.
+**Dreamsign Wizard 2.0.0** change les identifiants mobiles, le nom du dépôt, l’exécutable Windows et les chemins de données. Les anciennes sauvegardes Windows restent sur le disque à leur emplacement précédent et ne sont pas importées automatiquement. Sur Android et iOS, cette version est reconnue comme une nouvelle application.
 
-## Nouvelle direction : Atelier IA
+## Nouvelle direction : Studio IA
 
 L'application évolue vers un apprentissage piloté par les objectifs personnels, inspiré du fonctionnement de [LearnHarness](https://github.com/amosblomqvist/learnharness). La première tranche ajoute un tuteur conversationnel en français et des séances persistantes, en conservant Kotlin/Compose et les cours existants.
 
-Dans **Atelier IA**, créer un objectif, décrire ses connaissances et son raisonnement, puis échanger avec le tuteur. Retrouver une séance permet de reprendre son historique. Le bouton **Plan** permet de saisir des étapes, leurs prérequis, des preuves attendues et les messages qui ont guidé le diagnostic. Un plan accepté est enregistré avec la séance et transmis au tuteur lors des prochains échanges ; il n'est pas généré automatiquement.
+Dans **Studio IA**, créer un objectif, décrire ses connaissances et son raisonnement, puis échanger avec le tuteur. Retrouver une séance permet de reprendre son historique. Le bouton **Plan** permet de saisir des étapes, leurs prérequis, des preuves attendues et les messages qui ont guidé le diagnostic. Un plan accepté est enregistré avec la séance et transmis au tuteur lors des prochains échanges ; il n'est pas généré automatiquement.
 
 **Paramètres → Connexion IA**, ou le raccourci **Connexion IA** de l'atelier, propose une connexion ChatGPT par navigateur ou une URL compatible Chat Completions avec un modèle et une clé API. La clé API reste en mémoire jusqu'à la fermeture ; les jetons de connexion ChatGPT sont conservés dans un fichier local protégé distinct des séances. La connexion ChatGPT n'a pas encore été validée avec un compte réel.
 
@@ -20,7 +20,7 @@ Les échanges sont stockés localement dans le dossier de données Windows de l'
 
 Le diagnostic et la validation des prérequis restent conversationnels. Le graphe de connaissances et la pratique adaptative ne sont pas encore disponibles. La [trajectoire de parité](docs/product/2026-10-30-studio-parity.md), la [liste des pistes issues des PR LearnHarness](docs/product/2026-10-30-learnharness-pr-features.md) et le [plan de réalisation](tasks/plan.md) précisent les étapes suivantes.
 
-[![Build Windows](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/Dreamsigner/duolingo-kmp-learning-app/actions/workflows/build.yml)
+[![Build Windows](https://github.com/Dreamsigner/dreamsign-wizard/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/Dreamsigner/dreamsign-wizard/actions/workflows/build.yml)
 
 [Installation](#installation) · [Développement](#développement) · [Catalogue des cours](docs/courses/README.md) · [Documentation](#documentation)
 
@@ -65,13 +65,13 @@ Consulter le [catalogue détaillé](docs/courses/README.md) et la [couverture p�
 
 ## Installation
 
-1. Ouvrir la [release Windows 1.13.0](https://github.com/Dreamsigner/duolingo-kmp-learning-app/releases/tag/v1.13.0).
-2. Télécharger l’installateur **AtelierApprentissage-1.13.0-Setup.exe**.
-3. Lancer **AtelierApprentissage-1.13.0-Setup.exe** et suivre l’assistant. L’installation est propre à l’utilisateur Windows, avec raccourcis sur le Bureau et dans le menu Démarrer.
+1. Ouvrir la [release Windows 2.0.0](https://github.com/Dreamsigner/dreamsign-wizard/releases/tag/v2.0.0).
+2. Télécharger l’installateur **DreamsignWizard-2.0.0-Setup.exe**.
+3. Lancer **DreamsignWizard-2.0.0-Setup.exe** et suivre l’assistant. L’installation est propre à l’utilisateur Windows, avec raccourcis sur le Bureau et dans le menu Démarrer.
 
 Java est inclus : aucun JDK ni Gradle n’est nécessaire. La désinstallation se fait depuis les applications installées des paramètres Windows. L’installateur n’est pas signé numériquement; Windows peut afficher un avertissement d’éditeur inconnu. `SHA256SUMS.txt` accompagne l’exécutable pour vérifier l’intégrité du téléchargement.
 
-L’artefact **DuolingoKmpApp-Windows** reste disponible pour une utilisation portable : extraire le ZIP et lancer `DuolingoKmpApp.exe`, avec les dossiers `app` et `runtime` à ses côtés.
+L’artefact **DreamsignWizard-Windows** reste disponible pour une utilisation portable : extraire le ZIP et lancer `DreamsignWizard.exe`, avec les dossiers `app` et `runtime` à ses côtés.
 
 Dans **Cours**, le panneau du cours réunit sa progression et l’action **Continuer**. La loupe ouvre une recherche par titre ou objectif. Les filtres **Toutes**, **Disponibles** et **Terminées** permettent de retrouver une séance, sans modifier son ordre ni ses prérequis. **Réinitialiser** efface les filtres; changer de cours réinitialise la recherche.
 
@@ -95,9 +95,9 @@ La section **Paramètres**, sous **Cours** et **Profil** dans la navigation, reg
 
 La version installée à l’emplacement Windows standard vérifie automatiquement les releases GitHub stables. Les mises à jour sont téléchargées et vérifiées, puis appliquées à la fermeture de l’application. Dans **Paramètres**, le réglage **Mises à jour auto** permet de désactiver ce comportement; **Installer et redémarrer** applique immédiatement une version déjà prête. Les versions portables et installations dans un autre dossier conservent une mise à jour manuelle.
 
-Une mise à niveau remplace la version installée et préserve les données personnelles. Le cache de mise à jour nettoie les anciens installateurs devenus inutiles et les fichiers temporaires abandonnés depuis plus de 24 heures. L’installateur vérifié en attente reste disponible pour réessayer un échec; après réussite, sa copie en cache et le fichier de lancement temporaire sont supprimés. Les préférences et le dernier diagnostic sont conservés. Les installateurs téléchargés manuellement et le cache de maintenance géré par Windows restent distincts de ce nettoyage.
+Les mises à niveau de la série 2.x préservent les données enregistrées dans le nouveau dossier. Le cache de mise à jour nettoie les installateurs devenus inutiles et les fichiers temporaires abandonnés depuis plus de 24 heures. L’installateur vérifié en attente reste disponible pour réessayer un échec; après réussite, sa copie en cache et le fichier de lancement temporaire sont supprimés. Les préférences et le dernier diagnostic sont conservés. Les installateurs téléchargés manuellement et le cache de maintenance géré par Windows restent distincts de ce nettoyage.
 
-La progression est enregistrée dans `%LOCALAPPDATA%/AtelierApprentissage/progress.json`. Elle n’est pas synchronisée entre appareils.
+La progression est enregistrée dans `%LOCALAPPDATA%/DreamsignWizard/progress.json`. Elle n’est pas synchronisée entre appareils.
 
 Voir le [guide Windows](docs/windows-testing.md) pour le diagnostic et la gestion des données locales.
 
@@ -126,7 +126,7 @@ Versions du projet : Kotlin **2.2.21** et Compose Multiplatform **1.9.3**. Les d
 | `python tools/validate_course_resources.py` | Vérifier l’index des supports pédagogiques |
 | `python tools/export_course_notes.py --check` | Vérifier les exports Markdown des cours |
 
-Après construction, le lanceur se trouve dans `composeApp/build/compose/binaries/main/app/DuolingoKmpApp/`.
+Après construction, le lanceur se trouve dans `composeApp/build/compose/binaries/main/app/DreamsignWizard/`.
 
 ### Structure du projet
 

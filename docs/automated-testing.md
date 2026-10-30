@@ -64,7 +64,7 @@ exécutés par le workflow `Build`. Aucun succès iOS n'est déduit de leur pré
 Le lanceur accepte un mode de diagnostic séparé de l'interface :
 
 ```powershell
-.\DuolingoKmpApp.exe --self-check --report "D:\chemin\nouveau-rapport.json"
+.\DreamsignWizard.exe --self-check --report "D:\chemin\nouveau-rapport.json"
 ```
 
 Le fichier de sortie doit être nouveau et son dossier doit exister. Un fichier

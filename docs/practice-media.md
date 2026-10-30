@@ -10,7 +10,7 @@ Tests provide a concrete fake before composing either practice screen or the roo
 
 ```kotlin
 CompositionLocalProvider(LocalPracticeMedia provides fakeMedia) {
-    DuolingoApp(viewModel = modelWithIsolatedProgressStore)
+    DreamsignWizardApp(viewModel = modelWithIsolatedProgressStore)
 }
 ```
 

@@ -12,7 +12,7 @@ Architecture observations
 - Growth capability gaps verified in the app/dependency scan: no app-level lesson sharing/deep links or referral flow; no analytics SDK/event pipeline. Course source links and YouTube links are present but do not provide app-level sharing or acquisition measurement.
 
 Warnings
-- README installation instructions name AtelierApprentissage-1.11.0-Setup.exe; Gradle default package version and CI release workflow use 1.11.2. This is the documented distinction between published stable and an unpublished candidate blocked by native video checks; verify live release status before promotion.
+- README installation instructions name DreamsignWizard-1.11.0-Setup.exe; Gradle default package version and CI release workflow use 1.11.2. This is the documented distinction between published stable and an unpublished candidate blocked by native video checks; verify live release status before promotion.
 - Other documentation staleness cannot be determined reliably from a missing codemap baseline or filesystem timestamps.
 
 Validation: focused read of README, Gradle settings/build/version catalog, Windows workflow, app entry/state/persistence/resource sources; no application files changed and no tests run (documentation-only update).
@@ -24,7 +24,7 @@ Incremental update: 2026-10-24 — challenge sharing
 - The original no-sharing observation above describes the initial 2026-10-23 baseline; local text/PNG sharing now exists. No web deep links, referral tracking or analytics pipeline were added.
 - Focused frontend update; no claim of a new exhaustive repository scan.
 
-Incremental update: 2026-10-27 — Atelier IA pivot
+Incremental update: 2026-10-27 — Studio IA pivot
 - User chose evolution of existing Kotlin/Compose app over a LearnHarness fork.
 - New common StudioContracts/StudioScreen and desktop DesktopStudioController; two focused test files.
 - Navigation/default home and Settings changed; course records/identifiers/progress preserved.

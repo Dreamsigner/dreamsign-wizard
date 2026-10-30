@@ -2,7 +2,7 @@
 set -euo pipefail
 mkdir -p build/ios
 project=iosApp/iosApp.xcodeproj
-app=build/ios/DerivedData/Build/Products/Debug-iphonesimulator/DuolingoKmpApp.app
+app=build/ios/DerivedData/Build/Products/Debug-iphonesimulator/DreamsignWizard.app
 # Inventory the actual runner; SDK names alone do not prove installed runtimes.
 xcrun simctl list runtimes -j > build/ios/simulator-runtimes.json
 xcrun simctl list devicetypes -j > build/ios/simulator-device-types.json
@@ -55,7 +55,7 @@ while IFS=$'\t' read -r label udid state; do
     CODE_SIGNING_ALLOWED=NO test || test_status=$?
   if [[ -d "$app" ]]; then
     python3 tools/verify_bundled_audio.py --ios-app "$app" || tests_failed=1
-    if xcrun simctl install "$udid" "$app" && xcrun simctl launch "$udid" com.duolingo.app; then
+    if xcrun simctl install "$udid" "$app" && xcrun simctl launch "$udid" com.dreamsigner.wizard; then
       sleep 5
     else
       tests_failed=1
@@ -69,6 +69,6 @@ while IFS=$'\t' read -r label udid state; do
   if [[ "$test_status" != 0 ]]; then tests_failed=1; fi
 done < build/ios/selected-devices.tsv
 if [[ -d "$app" ]]; then
-  ditto -c -k --sequesterRsrc --keepParent "$app" build/ios/DuolingoKmpApp-simulator.zip
+  ditto -c -k --sequesterRsrc --keepParent "$app" build/ios/DreamsignWizard-simulator.zip
 fi
 exit "$tests_failed"
