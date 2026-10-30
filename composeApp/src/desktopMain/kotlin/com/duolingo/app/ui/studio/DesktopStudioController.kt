@@ -170,7 +170,10 @@ internal class DesktopStudioController(
                 setFailure(version, "Requête interrompue. Ton message est conservé; tu peux réessayer.")
                 throw cancelled
             } catch (failure: Exception) {
-                setFailure(version, providerFailureMessage(failure))
+                val message = if (config.providerMode == "chatgpt") {
+                    "${(failure as? ChatGptPlanException)?.safeMessage ?: "Impossible d’obtenir une réponse ChatGPT."} Ton message est conservé; tu peux réessayer."
+                } else providerFailureMessage(failure)
+                setFailure(version, message)
             } finally { synchronized(lock) { if (requestVersion == version) requestJob = null } }
         }
         synchronized(lock) {
@@ -231,12 +234,21 @@ internal class DesktopStudioController(
 
     override fun disconnectChatGpt() {
         if (state.value.busy || state.value.chatGptBusy) return
-        try {
-            chatGpt.disconnect()
-            mutate { copy(providerMode = "api", chatGptConnected = false, chatGptEmail = null, chatGptModels = emptyList(), model = "") }
-        } catch (_: Exception) {
-            transient { copy(chatGptError = "Impossible d’effacer la connexion ChatGPT locale.") }
+        transient { copy(chatGptBusy = true) }
+        scope.launch {
+            try {
+                val revoked = chatGpt.disconnect()
+                mutate { copy(providerMode = "api", chatGptConnected = false, chatGptEmail = null, chatGptModels = emptyList(), model = "", chatGptBusy = false,
+                    chatGptError = if (revoked) null else "Jetons locaux effacés. La révocation distante n’a pas été confirmée ; vérifie les connexions dans ChatGPT.") }
+            } catch (_: Exception) {
+                transient { copy(chatGptBusy = false, chatGptError = "Impossible d’effacer la connexion ChatGPT locale.") }
+            }
         }
+    }
+
+    override fun openChatGptUsage() {
+        try { java.awt.Desktop.getDesktop().browse(URI("https://chatgpt.com/settings/usage")) }
+        catch (_: Exception) { transient { copy(chatGptError = "Impossible d’ouvrir les paramètres d’usage ChatGPT.") } }
     }
 
     private fun load(): StudioState = try {

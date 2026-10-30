@@ -1,0 +1,13 @@
+Nimbus JOSE+JWT third-party notice
+===================================
+
+The Windows/Desktop ChatGPT sign-in implementation includes
+com.nimbusds:nimbus-jose-jwt:10.10 to verify OpenID Connect signatures.
+
+Copyright Connect2id Ltd. and contributors.
+Licensed under the Apache License, Version 2.0. The full license text is
+included in APACHE-LICENSE-2.0.txt beside this notice.
+
+Project and artifact:
+https://bitbucket.org/connect2id/nimbus-jose-jwt
+https://central.sonatype.com/artifact/com.nimbusds/nimbus-jose-jwt/10.10

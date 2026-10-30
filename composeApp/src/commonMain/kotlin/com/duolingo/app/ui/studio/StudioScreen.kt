@@ -130,7 +130,9 @@ fun StudioConnectionSettings() {
         if (state.providerMode == "chatgpt" && state.chatGptConnected) {
             Text("ChatGPT connecté : ${state.chatGptEmail.orEmpty()} · ${state.model}", color = Graphite, fontSize = 13.sp)
         }
-        if (state.baseUrl.isNotBlank() && state.model.isNotBlank()) {
+        if (state.providerMode == "chatgpt" && state.chatGptConnected) {
+            Text("Les fournisseurs à clé API restent disponibles dans Connexion IA.", color = Graphite, fontSize = 13.sp)
+        } else if (state.baseUrl.isNotBlank() && state.model.isNotBlank()) {
             Text("${state.baseUrl} · ${state.model}", color = Graphite, fontSize = 13.sp)
             if (!state.hasApiKey && state.baseUrl.startsWith("https://")) {
                 Text("La clé doit être ressaisie après chaque démarrage.", color = ActionRed, fontSize = 13.sp)
@@ -245,6 +247,12 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
     Column(Modifier.fillMaxSize().padding(horizontal = 20.dp, vertical = 16.dp)) {
         Text(session.goal, Modifier.testTag("studio-current-goal"), style = MaterialTheme.typography.h5, color = Ink, maxLines = 2, overflow = TextOverflow.Ellipsis)
         Text("Objectif de cette séance", color = Graphite, fontSize = 13.sp, modifier = Modifier.padding(top = 3.dp))
+        if (state.providerMode == "chatgpt" && state.chatGptConnected) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text("Utilise ton forfait ChatGPT", color = Graphite, fontSize = 13.sp)
+                TextButton(onClick = controller::openChatGptUsage) { Text("Gérer l’usage") }
+            }
+        }
         Divider(Modifier.padding(top = 12.dp), color = Concrete)
         if (session.messages.isEmpty()) {
             Column(Modifier.weight(1f).fillMaxWidth(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
@@ -310,6 +318,7 @@ private fun StudioConnectionDialog(controller: StudioController, state: StudioSt
             Column(Modifier.heightIn(max = 360.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Text("Abonnement ChatGPT", style = MaterialTheme.typography.subtitle1, fontWeight = FontWeight.SemiBold)
                 Text("Utilise les modèles disponibles dans ton forfait après ton accord dans le navigateur. Ton forfait et l’API à clé ont des accès distincts.", color = Graphite)
+                Text("La connexion et ses jetons sont enregistrés dans un fichier local protégé. Déconnecter ce compte efface les jetons locaux.", color = Graphite, fontSize = 13.sp)
                 if (state.chatGptConnected) {
                     Text("Connecté : ${state.chatGptEmail.orEmpty()}", color = Graphite)
                     Box {

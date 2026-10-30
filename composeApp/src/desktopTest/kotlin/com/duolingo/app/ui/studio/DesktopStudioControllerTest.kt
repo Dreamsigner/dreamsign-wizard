@@ -12,6 +12,15 @@ import java.nio.file.Files
 import kotlin.test.*
 
 class DesktopStudioControllerTest {
+    @Test fun unreadableChatGptCredentialsArePreservedWithoutOpeningSignIn() {
+        val file = Files.createTempDirectory("studio-chatgpt-corrupt").resolve("chatgpt-plan.json")
+        Files.writeString(file, "{broken")
+        val client = ChatGptPlanClient(file)
+        assertNotNull(client.storageError)
+        assertFailsWith<IllegalStateException> { client.signIn() }
+        assertEquals("{broken", Files.readString(file))
+    }
+
     @Test fun chatGptPlanRequestUsesResponsesContractAndKeepsTheGoal() {
         val body = buildChatGptBody("chosen-model", "Comprendre les intégrales", listOf(StudioMessage("user", "Je connais les dérivées")))
         val root = Json.parseToJsonElement(body).jsonObject
@@ -27,6 +36,8 @@ class DesktopStudioControllerTest {
         assertFailsWith<IllegalStateException> { parseChatGptStream(partial.byteInputStream()) }
         val complete = partial + "data: {\"type\":\"response.completed\"}\n\n"
         assertEquals("Bonjour", parseChatGptStream(complete.byteInputStream()))
+        val failed = partial + "data: {\"type\":\"response.failed\",\"response\":{\"error\":{\"code\":\"subscription_sharing_usage_limit_exceeded\"}}}\n\n"
+        assertTrue(assertFailsWith<ChatGptPlanException> { parseChatGptStream(failed.byteInputStream()) }.safeMessage.contains("limite d’usage"))
     }
 
     @Test fun incompleteProviderConfigurationIsRejectedBeforeSaving() {

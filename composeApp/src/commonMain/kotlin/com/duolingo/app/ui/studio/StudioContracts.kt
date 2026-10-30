@@ -27,6 +27,7 @@ interface StudioController {
     fun connectChatGpt() = Unit
     fun selectChatGptModel(model: String) = Unit
     fun disconnectChatGpt() = Unit
+    fun openChatGptUsage() = Unit
     fun close() = Unit
 }
 

@@ -33,6 +33,7 @@ import java.util.EnumSet
 import java.util.UUID
 
 internal data class ChatGptModel(val slug: String, val name: String)
+internal class ChatGptPlanException(val safeMessage: String) : Exception()
 
 @Serializable
 internal data class ChatGptCredentials(
@@ -103,7 +104,7 @@ internal class ChatGptPlanClient(private val file: Path) {
             check(callback["state"] == state) { "La connexion a échoué : état de sécurité incorrect." }
             check(callback["error"] == null) { "La connexion ChatGPT a été annulée ou refusée." }
             val code = callback["code"]?.takeIf { it.isNotBlank() } ?: error("Code de connexion manquant.")
-            val issuedClientId = if (initial) callback["client_id"]?.takeIf { it.startsWith("oaiapp_") }
+            val issuedClientId = if (initial) callback["client_id"]?.takeIf { it.isNotBlank() && it != "dynamic_agent_client" }
                 ?: error("Enregistrement ChatGPT incomplet.")
             else prior!!.clientId.also { check(callback["client_id"] == null || callback["client_id"] == it) { "Compte ChatGPT inattendu." } }
             val token = postToken(mapOf(
@@ -144,10 +145,23 @@ internal class ChatGptPlanClient(private val file: Path) {
         return parseChatGptStream(stream)
     }
 
-    fun disconnect() {
+    /** Clears the local token even if remote revocation cannot be confirmed. */
+    fun disconnect(): Boolean {
         synchronized(lock) {
-            val existing = credentials ?: return
+            val existing = credentials ?: return true
+            val revoked = if (existing.refreshToken.isBlank()) true else runCatching {
+                val discovery = requestPublicDocument("$AUTH_BASE/.well-known/openid-configuration")
+                val endpoint = json.parseToJsonElement(discovery).jsonObject.getValue("revocation_endpoint").jsonPrimitive.content
+                require(URI(endpoint).host == "auth.openai.com")
+                val request = HttpRequest.newBuilder(URI(endpoint)).timeout(Duration.ofSeconds(20))
+                    .header("Content-Type", "application/x-www-form-urlencoded")
+                    .POST(HttpRequest.BodyPublishers.ofString(form(mapOf(
+                        "token" to existing.refreshToken, "token_type_hint" to "refresh_token", "client_id" to existing.clientId,
+                    )))).build()
+                http.send(request, HttpResponse.BodyHandlers.discarding()).statusCode() == 200
+            }.getOrDefault(false)
             save(existing.copy(idToken = "", accessToken = "", refreshToken = "", scope = "", expiresAt = 0))
+            return revoked
         }
     }
 
@@ -168,7 +182,12 @@ internal class ChatGptPlanClient(private val file: Path) {
         val response = http.send(request, HttpResponse.BodyHandlers.ofInputStream())
         if (response.statusCode() !in 200..299) {
             response.body().close()
-            error("Le service ChatGPT a refusé la requête (${response.statusCode()}).")
+            val message = when (response.statusCode()) {
+                401, 403 -> "La connexion ChatGPT a expiré ou n’autorise pas ce modèle. Reconnecte le compte."
+                429 -> "La limite d’usage ChatGPT est atteinte. Vérifie ton forfait et la limite de cette application."
+                else -> "Le service ChatGPT a refusé la requête (${response.statusCode()})."
+            }
+            throw ChatGptPlanException(message)
         }
         return response.body()
     }
@@ -216,9 +235,13 @@ internal class ChatGptPlanClient(private val file: Path) {
     }
 
     private fun requestPublicKeys(): String {
-        val response = http.send(HttpRequest.newBuilder(URI("$AUTH_BASE/.well-known/jwks.json"))
+        return requestPublicDocument("$AUTH_BASE/.well-known/jwks.json")
+    }
+
+    private fun requestPublicDocument(url: String): String {
+        val response = http.send(HttpRequest.newBuilder(URI(url))
             .timeout(Duration.ofSeconds(20)).GET().build(), HttpResponse.BodyHandlers.ofString())
-        check(response.statusCode() == 200) { "Impossible de vérifier l’identité ChatGPT." }
+        check(response.statusCode() == 200) { "Impossible d’obtenir les métadonnées ChatGPT." }
         return response.body()
     }
 
@@ -322,7 +345,13 @@ internal fun parseChatGptStream(stream: java.io.InputStream): String = stream.us
             when (event["type"]?.jsonPrimitive?.contentOrNull) {
                 "response.output_text.delta" -> answer.append(event["delta"]?.jsonPrimitive?.contentOrNull.orEmpty())
                 "response.completed" -> completed = true
-                "response.failed", "response.incomplete", "error" -> error("La réponse ChatGPT a échoué ou a été interrompue.")
+                "response.failed" -> {
+                    val code = (((event["response"] as? JsonObject)?.get("error") as? JsonObject)?.get("code") as? JsonPrimitive)?.contentOrNull
+                    throw ChatGptPlanException(if (code == "subscription_sharing_usage_limit_exceeded")
+                        "La limite d’usage ChatGPT est atteinte. Vérifie ton forfait et la limite de cette application."
+                        else "La réponse ChatGPT a échoué. Réessaie ou vérifie ta connexion.")
+                }
+                "response.incomplete", "error" -> throw ChatGptPlanException("La réponse ChatGPT a été interrompue. Réessaie.")
             }
             check(answer.length <= 20_000) { "Réponse trop longue." }
         }
