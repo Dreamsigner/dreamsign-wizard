@@ -23,12 +23,12 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 
 internal data class TutorRequest(
     val endpoint: URI, val model: String, val apiKey: String, val goal: String,
-    val history: List<StudioMessage>, val acceptedPlan: StudioPlan? = null,
+    val history: List<StudioMessage>, val acceptedPlan: StudioPlan? = null, val reasoningEffort: ReasoningEffort = ReasoningEffort.AUTOMATIC,
 )
 internal fun interface StudioTutor { suspend fun respond(request: TutorRequest): String }
 
-@Serializable private data class StudioDisk(val baseUrl: String = "", val model: String = "", val sessions: List<StudioSessionDisk> = emptyList(), val selectedId: String? = null, val providerMode: String = "api")
-@Serializable private data class StudioSessionDisk(val id: String, val goal: String, val messages: List<StudioMessageDisk>, val plan: StudioPlanDisk? = null)
+@Serializable private data class StudioDisk(val baseUrl: String = "", val model: String = "", val sessions: List<StudioSessionDisk> = emptyList(), val selectedId: String? = null, val providerMode: String = "api", val reasoningEffort: String = "AUTOMATIC")
+@Serializable private data class StudioSessionDisk(val id: String, val goal: String, val messages: List<StudioMessageDisk>, val plan: StudioPlanDisk? = null, val reasoningEffort: String? = null)
 @Serializable private data class StudioPlanDisk(val steps: List<StudioPlanStepDisk>, val decision: String = "proposed")
 @Serializable private data class StudioPlanStepDisk(val title: String, val prerequisites: List<Int>, val evidence: String, val sources: List<Int>)
 @Serializable private data class StudioMessageDisk(val role: String, val text: String)
@@ -70,6 +70,17 @@ internal class DesktopStudioController(
         if (state.value.storageError != null || state.value.busy || goal.isBlank() || goal.length > 500) return false
         val session = StudioSession(UUID.randomUUID().toString(), goal.trim(), emptyList())
         return mutate { copy(sessions = listOf(session) + sessions, selectedId = session.id, error = null) }
+    }
+
+    override fun setReasoningEffort(effort: ReasoningEffort) {
+        if (!state.value.busy && state.value.storageError == null) mutate { copy(reasoningEffort = effort) }
+    }
+
+    override fun setSessionReasoningEffort(effort: ReasoningEffort?) {
+        val current = state.value
+        val id = current.selectedId ?: return
+        if (current.busy || current.storageError != null) return
+        mutate { copy(sessions = sessions.map { if (it.id == id) it.copy(reasoningEffort = effort) else it }) }
     }
 
     override fun configure(baseUrl: String, model: String, apiKey: String): Boolean {
@@ -163,7 +174,8 @@ internal class DesktopStudioController(
         if (state.value.busy) return
         if (pendingBySession[id].isNullOrBlank()) return
         val acceptedPlan = session.plan?.takeIf { it.decision == "accepted" && validPlan(it, session.messages.size) }
-        val request = endpoint?.let { TutorRequest(it, config.model, secret, session.goal, session.messages.takeLast(12), acceptedPlan) }
+        val effort = session.reasoningEffort ?: config.reasoningEffort
+        val request = endpoint?.let { TutorRequest(it, config.model, secret, session.goal, session.messages.takeLast(12), acceptedPlan, effort) }
         val version = synchronized(lock) {
             requestVersion += 1
             state.value = state.value.copy(busy = true, error = null)
@@ -172,7 +184,7 @@ internal class DesktopStudioController(
         val job = scope.launch(start = CoroutineStart.LAZY) {
             try {
                 val reply = withTimeout(90_000) {
-                    if (config.providerMode == "chatgpt") chatGpt.respond(config.model, session.goal, session.messages, acceptedPlan)
+                    if (config.providerMode == "chatgpt") chatGpt.respond(config.model, session.goal, session.messages, acceptedPlan, effort)
                     else tutor.respond(requireNotNull(request))
                 }
                 persistReply(id, reply, version)
@@ -269,7 +281,7 @@ internal class DesktopStudioController(
 
     private fun write(s: StudioState) {
         Files.createDirectories(file.parent)
-        val disk = StudioDisk(s.baseUrl, s.model, s.sessions.map { it.toDisk() }, s.selectedId, s.providerMode)
+        val disk = StudioDisk(s.baseUrl, s.model, s.sessions.map { it.toDisk() }, s.selectedId, s.providerMode, s.reasoningEffort.name)
         val temp = Files.createTempFile(file.parent, "studio-", ".tmp")
         try {
             Files.writeString(temp, json.encodeToString(disk))
@@ -279,33 +291,34 @@ internal class DesktopStudioController(
     }
 
     override fun close() { cancel(); synchronized(apiKey) { apiKey.setLength(0) }; scope.cancel() }
-    private fun fromDisk(d: StudioDisk) = StudioState(baseUrl = d.baseUrl, model = d.model, sessions = d.sessions.map { it.fromDisk() }, selectedId = d.selectedId, providerMode = d.providerMode)
-    private fun StudioSession.toDisk() = StudioSessionDisk(id, goal, messages.map { StudioMessageDisk(it.role, it.text) }, plan?.let { StudioPlanDisk(it.steps.map { step -> StudioPlanStepDisk(step.title, step.prerequisites, step.evidence, step.sources) }, it.decision) })
-    private fun StudioSessionDisk.fromDisk() = StudioSession(id, goal, messages.map { StudioMessage(it.role, it.text) }, plan?.let { StudioPlan(it.steps.map { step -> StudioPlanStep(step.title, step.prerequisites, step.evidence, step.sources) }, it.decision) })
+    private fun fromDisk(d: StudioDisk) = StudioState(baseUrl = d.baseUrl, model = d.model, sessions = d.sessions.map { it.fromDisk() }, selectedId = d.selectedId, providerMode = d.providerMode, reasoningEffort = ReasoningEffort.entries.firstOrNull { it.name == d.reasoningEffort } ?: ReasoningEffort.AUTOMATIC)
+    private fun StudioSession.toDisk() = StudioSessionDisk(id, goal, messages.map { StudioMessageDisk(it.role, it.text) }, plan?.let { StudioPlanDisk(it.steps.map { step -> StudioPlanStepDisk(step.title, step.prerequisites, step.evidence, step.sources) }, it.decision) }, reasoningEffort?.name)
+    private fun StudioSessionDisk.fromDisk() = StudioSession(id, goal, messages.map { StudioMessage(it.role, it.text) }, plan?.let { StudioPlan(it.steps.map { step -> StudioPlanStep(step.title, step.prerequisites, step.evidence, step.sources) }, it.decision) }, reasoningEffort?.let { saved -> ReasoningEffort.entries.firstOrNull { it.name == saved } })
 }
 
 private class OpenAiCompatibleTutor : StudioTutor {
     private val client = HttpClient.newBuilder().connectTimeout(java.time.Duration.ofSeconds(10)).followRedirects(HttpClient.Redirect.NEVER).build()
 
     override suspend fun respond(request: TutorRequest): String {
-        val body = buildTutorBody(request.model, request.goal, request.history, request.acceptedPlan)
+        val body = buildTutorBody(request.model, request.goal, request.history, request.acceptedPlan, request.reasoningEffort)
         val builder = HttpRequest.newBuilder(request.endpoint).timeout(java.time.Duration.ofSeconds(45)).header("Content-Type", "application/json")
         if (request.apiKey.isNotBlank()) builder.header("Authorization", "Bearer ${request.apiKey}")
         val response = withTimeout(45_000) {
             client.sendAsync(builder.POST(HttpRequest.BodyPublishers.ofString(body)).build(), boundedBodyHandler(256 * 1024)).await()
         }
-        if (response.statusCode() !in 200..299) throw TutorHttpException(response.statusCode())
+        if (response.statusCode() !in 200..299) throw TutorHttpException(response.statusCode(), request.reasoningEffort)
         val content = Json.parseToJsonElement(response.body().decodeToString()).jsonObject["choices"]!!.jsonArray.first().jsonObject["message"]!!.jsonObject["content"]!!.jsonPrimitive.contentOrNull.orEmpty()
         require(content.isNotBlank() && content.length <= 20_000) { "provider returned an empty reply" }
         return content
     }
 }
 
-private class TutorHttpException(val status: Int) : Exception()
+private class TutorHttpException(val status: Int, val effort: ReasoningEffort) : Exception()
 
 private fun providerFailureMessage(failure: Exception): String {
     val status = (failure as? TutorHttpException)?.status
     val detail = when (status) {
+        400 -> if ((failure as TutorHttpException).effort != ReasoningEffort.AUTOMATIC) "Requête refusée (400). Le modèle ou fournisseur peut ne pas prendre en charge ce niveau de réflexion ; choisis Automatique ou un niveau pris en charge." else "Requête refusée par le fournisseur (400). Vérifie sa configuration."
         401, 403 -> "Clé API refusée par le fournisseur. Vérifie-la dans Connexion IA."
         404 -> "Adresse ou modèle introuvable chez le fournisseur. Vérifie l’URL et le nom du modèle."
         429 -> "Limite de requêtes ou de crédit atteinte chez le fournisseur."
@@ -326,7 +339,7 @@ internal fun acceptedPlanContext(plan: StudioPlan?): String = if (plan?.decision
     }
 }
 
-internal fun buildTutorBody(model: String, goal: String, history: List<StudioMessage>, acceptedPlan: StudioPlan? = null): String {
+internal fun buildTutorBody(model: String, goal: String, history: List<StudioMessage>, acceptedPlan: StudioPlan? = null, reasoningEffort: ReasoningEffort = ReasoningEffort.AUTOMATIC): String {
     val fixed = listOf(
         buildJsonObject { put("role", "system"); put("content", TUTOR_SYSTEM_PROMPT + acceptedPlanContext(acceptedPlan)) },
         buildJsonObject { put("role", "user"); put("content", "Objectif d’apprentissage : $goal") },
@@ -335,6 +348,7 @@ internal fun buildTutorBody(model: String, goal: String, history: List<StudioMes
     val retained = mutableListOf<JsonObject>()
     fun encode(): String = buildJsonObject {
         put("model", model)
+        reasoningEffort.wireValue?.let { put("reasoning_effort", it) }
         put("messages", buildJsonArray { (fixed + retained.asReversed()).forEach(::add) })
     }.toString()
     fun encodedTurn(turn: StudioMessage) = buildJsonObject {

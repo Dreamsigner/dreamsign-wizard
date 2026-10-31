@@ -99,21 +99,21 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Installer build failed.' }
           $setupDir = Join-Path $env:RUNNER_TEMP 'windows-setup'
           New-Item -ItemType Directory -Path $setupDir -Force | Out-Null
-          $source = 'composeApp/build/compose/binaries/main/exe/DreamsignWizard-2.0.0.exe'
-          $setup = Join-Path $setupDir 'DreamsignWizard-2.0.0-Setup.exe'
+          $source = 'composeApp/build/compose/binaries/main/exe/DreamsignWizard-2.1.0.exe'
+          $setup = Join-Path $setupDir 'DreamsignWizard-2.1.0-Setup.exe'
           Copy-Item -LiteralPath $source -Destination $setup
           New-Item -ItemType Directory -Path 'composeApp/build/installer-fixtures' -Force | Out-Null
-          Copy-Item -LiteralPath $source -Destination 'composeApp/build/installer-fixtures/2.0.0.exe'
+          Copy-Item -LiteralPath $source -Destination 'composeApp/build/installer-fixtures/2.1.0.exe'
           $hash = (Get-FileHash -LiteralPath $setup -Algorithm SHA256).Hash.ToLowerInvariant()
-          "$hash  DreamsignWizard-2.0.0-Setup.exe" | Set-Content -LiteralPath (Join-Path $setupDir 'SHA256SUMS.txt') -Encoding ascii
+          "$hash  DreamsignWizard-2.1.0-Setup.exe" | Set-Content -LiteralPath (Join-Path $setupDir 'SHA256SUMS.txt') -Encoding ascii
       - name: Verify installation, upgrade and uninstall on disposable runner
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
           # Build an unpublished, newer package solely to test the stable upgrade identity.
-          gradle :composeApp:packageExe '-PdesktopPackageVersion=2.0.1' --stacktrace
+          gradle :composeApp:packageExe '-PdesktopPackageVersion=2.1.1' --stacktrace
           if ($LASTEXITCODE -ne 0) { throw 'Upgrade fixture build failed.' }
-          ./tools/test_windows_installer.ps1 -Installer 'composeApp/build/installer-fixtures/2.0.0.exe' -UpgradeInstaller 'composeApp/build/compose/binaries/main/exe/DreamsignWizard-2.0.1.exe' -ExpectedVersion '2.0.0' -ExpectedUpgradeVersion '2.0.1'
+          ./tools/test_windows_installer.ps1 -Installer 'composeApp/build/installer-fixtures/2.1.0.exe' -UpgradeInstaller 'composeApp/build/compose/binaries/main/exe/DreamsignWizard-2.1.1.exe' -ExpectedVersion '2.1.0' -ExpectedUpgradeVersion '2.1.1'
       - uses: actions/upload-artifact@v7
         with:
           name: DreamsignWizard-Windows-Setup
@@ -143,7 +143,7 @@ jobs:
 
 
   publish-windows-release:
-    if: github.event_name == 'push' && github.ref == 'refs/tags/v2.0.0' && needs.package-windows.result == 'success'
+    if: github.event_name == 'push' && github.ref == 'refs/tags/v2.1.0' && needs.package-windows.result == 'success'
     needs: package-windows
     runs-on: ubuntu-latest
     permissions:
@@ -157,7 +157,7 @@ jobs:
         shell: bash
         env:
           TAG_NAME: ${{ github.ref_name }}
-          EXPECTED_VERSION: 2.0.0
+          EXPECTED_VERSION: 2.1.0
           EXPECTED_COMMIT: ${{ github.sha }}
         run: |
           set -euo pipefail
@@ -179,7 +179,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           TAG_NAME: ${{ github.ref_name }}
-          VERSION: 2.0.0
+          VERSION: 2.1.0
           ASSET_DIR: ${{ runner.temp }}/windows-setup
         shell: bash
         run: |
@@ -195,13 +195,13 @@ jobs:
           (cd "$ASSET_DIR" && sha256sum --check SHA256SUMS.txt)
           notes_file="$RUNNER_TEMP/release-notes.md"
           cat > "$notes_file" <<'NOTES'
-          ## Dreamsign Wizard 2.0.0
+          ## Dreamsign Wizard 2.1.0
 
-          Dreamsign Wizard now uses its own repository name, mobile identifiers, Windows executable, installer, and local data paths. This is a breaking identity change: existing Windows learner data is left untouched in its previous location and is not imported automatically. Mobile platforms treat this as a new app installation.
+          Choose the tutor's default reasoning level in Connexion IA, then optionally override it for each Studio IA session. Automatic, Low, Medium, and High are available; nonautomatic levels depend on the selected model and provider. Settings persist locally. ChatGPT uses the Responses API and API key providers use Chat Completions. Browser sign-in and inference have not been verified with a real ChatGPT account.
 
-          The tutor has an editable learning plan and supports ChatGPT sign-in alongside a Chat Completions-compatible provider. Browser sign-in and inference have not been verified with a real ChatGPT account. A knowledge graph, adaptive practice, document attachments, and full LearnHarness parity are not included.
+          A knowledge graph, adaptive practice, document attachments, and full LearnHarness parity are not included.
 
-          Download `DreamsignWizard-2.0.0-Setup.exe` and run it to install the application.
+          Download `DreamsignWizard-2.1.0-Setup.exe` and run it to install the application.
 
           `SHA256SUMS.txt` contains the SHA-256 checksum for the installer.
           NOTES

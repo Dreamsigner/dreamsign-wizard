@@ -133,7 +133,7 @@ tasks.register<org.gradle.api.tasks.testing.Test>("sourcePdfSmokeTest") {
 compose.desktop {
     application {
         mainClass = "MainKt"
-        jvmArgs("-Dwizard.version=${providers.gradleProperty("desktopPackageVersion").orElse("2.0.0").get()}")
+        jvmArgs("-Dwizard.version=${providers.gradleProperty("desktopPackageVersion").orElse("2.1.0").get()}")
         nativeDistributions {
             // PDFBox 3 uses sun.misc.Unsafe.invokeCleaner via this module. The reduced
             // jlink runtime otherwise falls back to inaccessible Java 8 internals.
@@ -141,7 +141,7 @@ compose.desktop {
             modules("jdk.unsupported", "jdk.httpserver", "java.net.http")
             targetFormats(org.jetbrains.compose.desktop.application.dsl.TargetFormat.Msi, org.jetbrains.compose.desktop.application.dsl.TargetFormat.Exe)
             packageName = "DreamsignWizard"
-            packageVersion = providers.gradleProperty("desktopPackageVersion").orElse("2.0.0").get()
+            packageVersion = providers.gradleProperty("desktopPackageVersion").orElse("2.1.0").get()
             appResourcesRootDir.set(layout.buildDirectory.dir("installer-resources"))
             vendor = "Dreamsigner"
             description = "Dreamsign Wizard — Mathématiques, informatique et TCF"

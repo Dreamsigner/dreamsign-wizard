@@ -16,6 +16,8 @@ Dans **Studio IA**, créer un objectif, décrire ses connaissances et son raison
 
 **Paramètres → Connexion IA**, ou le raccourci **Connexion IA** de l'atelier, propose une connexion ChatGPT par navigateur ou une URL compatible Chat Completions avec un modèle et une clé API. La clé API reste en mémoire jusqu'à la fermeture ; les jetons de connexion ChatGPT sont conservés dans un fichier local protégé distinct des séances. La connexion ChatGPT n'a pas encore été validée avec un compte réel.
 
+Dans **Connexion IA**, le niveau de réflexion du tuteur peut être réglé sur **Automatique**, **Faible**, **Moyen** ou **Élevé**. Chaque séance peut garder ce réglage ou choisir son propre niveau dans le menu **Réflexion**. Les choix sont enregistrés localement. Les niveaux disponibles dépendent du modèle et du fournisseur ; **Automatique** laisse ce dernier utiliser sa valeur par défaut.
+
 Les échanges sont stockés localement dans le dossier de données Windows de l'application, séparément de la progression des cours. Lors d'un envoi, l'objectif et un contexte borné de la séance sont transmis au fournisseur configuré. Un serveur HTTP local peut fonctionner sans clé; les fournisseurs distants nécessitent HTTPS et une clé. Les tests utilisent un serveur local et des réponses déterministes, sans appeler un fournisseur payant.
 
 Le diagnostic et la validation des prérequis restent conversationnels. Le graphe de connaissances et la pratique adaptative ne sont pas encore disponibles. La [trajectoire de parité](docs/product/2026-10-30-studio-parity.md), la [liste des pistes issues des PR LearnHarness](docs/product/2026-10-30-learnharness-pr-features.md) et le [plan de réalisation](tasks/plan.md) précisent les étapes suivantes.
@@ -65,9 +67,9 @@ Consulter le [catalogue détaillé](docs/courses/README.md) et la [couverture p�
 
 ## Installation
 
-1. Ouvrir la [release Windows 2.0.0](https://github.com/Dreamsigner/dreamsign-wizard/releases/tag/v2.0.0).
-2. Télécharger l’installateur **DreamsignWizard-2.0.0-Setup.exe**.
-3. Lancer **DreamsignWizard-2.0.0-Setup.exe** et suivre l’assistant. L’installation est propre à l’utilisateur Windows, avec raccourcis sur le Bureau et dans le menu Démarrer.
+1. Ouvrir la [release Windows 2.1.0](https://github.com/Dreamsigner/dreamsign-wizard/releases/tag/v2.1.0).
+2. Télécharger l’installateur **DreamsignWizard-2.1.0-Setup.exe**.
+3. Lancer **DreamsignWizard-2.1.0-Setup.exe** et suivre l’assistant. L’installation est propre à l’utilisateur Windows, avec raccourcis sur le Bureau et dans le menu Démarrer.
 
 Java est inclus : aucun JDK ni Gradle n’est nécessaire. La désinstallation se fait depuis les applications installées des paramètres Windows. L’installateur n’est pas signé numériquement; Windows peut afficher un avertissement d’éditeur inconnu. `SHA256SUMS.txt` accompagne l’exécutable pour vérifier l’intégrité du téléchargement.
 

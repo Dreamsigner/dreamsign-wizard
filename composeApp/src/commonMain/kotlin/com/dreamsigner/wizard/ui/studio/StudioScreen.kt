@@ -249,9 +249,24 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
     LaunchedEffect(session.id, session.messages.size) {
         if (session.messages.isNotEmpty()) messagesState.animateScrollToItem(session.messages.lastIndex)
     }
-    Column(Modifier.fillMaxSize().padding(horizontal = 20.dp, vertical = 16.dp)) {
+    Column(Modifier.fillMaxSize().padding(horizontal = 20.dp, vertical = 8.dp)) {
+        var showSessionEffort by remember(session.id) { mutableStateOf(false) }
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Text(session.goal, Modifier.weight(1f).testTag("studio-current-goal"), style = MaterialTheme.typography.h5, color = Ink, maxLines = 2, overflow = TextOverflow.Ellipsis)
+            Box {
+                TextButton(onClick = { showSessionEffort = true }, enabled = !state.busy && state.storageError == null,
+                    modifier = Modifier.testTag("studio-session-effort")) { Text("Réflexion") }
+                DropdownMenu(expanded = showSessionEffort, onDismissRequest = { showSessionEffort = false }) {
+                    DropdownMenuItem(onClick = { controller.setSessionReasoningEffort(null); showSessionEffort = false }) {
+                        Text("Défaut du tuteur (${state.reasoningEffort.label})${if (session.reasoningEffort == null) " ✓" else ""}")
+                    }
+                    ReasoningEffort.entries.forEach { effort ->
+                        DropdownMenuItem(onClick = { controller.setSessionReasoningEffort(effort); showSessionEffort = false }) {
+                            Text(effort.label + if (session.reasoningEffort == effort) " ✓" else "")
+                        }
+                    }
+                }
+            }
             TextButton(onClick = { showPlan = true }, enabled = !state.busy && state.storageError == null,
                 modifier = Modifier.testTag("studio-plan")) { Text("Plan") }
         }
@@ -261,7 +276,7 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
                 TextButton(onClick = controller::openChatGptUsage) { Text("Gérer l’usage") }
             }
         }
-        Divider(Modifier.padding(top = 12.dp), color = Concrete)
+        Divider(Modifier.padding(top = 4.dp), color = Concrete)
         if (session.messages.isEmpty()) {
             Column(Modifier.weight(1f).fillMaxWidth(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
                 Text("À toi de jouer", style = MaterialTheme.typography.h6, color = Ink)
@@ -269,7 +284,7 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
             }
         } else {
             LazyColumn(
-                state = messagesState, modifier = Modifier.weight(1f).fillMaxWidth().padding(vertical = 12.dp).testTag("studio-conversation-messages"),
+                state = messagesState, modifier = Modifier.weight(1f).fillMaxWidth().padding(vertical = 4.dp).testTag("studio-conversation-messages"),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
                 items(session.messages.size, key = { index -> "${session.id}-$index" }) { index ->
@@ -319,11 +334,25 @@ private fun StudioConnectionDialog(controller: StudioController, state: StudioSt
     var model by remember(state.model) { mutableStateOf(state.model) }
     var apiKey by remember { mutableStateOf("") }
     var showModels by remember { mutableStateOf(false) }
+    var showEfforts by remember { mutableStateOf(false) }
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text("Connexion IA") },
         text = {
             Column(Modifier.heightIn(max = 360.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                Text("Niveau de réflexion du tuteur", style = MaterialTheme.typography.subtitle1, fontWeight = FontWeight.SemiBold)
+                Box {
+                    OutlinedButton(onClick = { showEfforts = true }, enabled = state.available && !state.busy) {
+                        Text("Niveau de réflexion du tuteur : ${state.reasoningEffort.label}")
+                    }
+                    DropdownMenu(expanded = showEfforts, onDismissRequest = { showEfforts = false }) {
+                        ReasoningEffort.entries.forEach { effort ->
+                            DropdownMenuItem(onClick = { controller.setReasoningEffort(effort); showEfforts = false }) { Text(effort.label) }
+                        }
+                    }
+                }
+                Text("Automatique laisse le fournisseur décider. Les autres niveaux dépendent du modèle et du fournisseur.", color = Graphite, fontSize = 13.sp)
+                Divider(color = Concrete)
                 Text("Abonnement ChatGPT", style = MaterialTheme.typography.subtitle1, fontWeight = FontWeight.SemiBold)
                 if (state.chatGptConnected) {
                     Text("Connecté : ${state.chatGptEmail.orEmpty()}", color = Graphite)

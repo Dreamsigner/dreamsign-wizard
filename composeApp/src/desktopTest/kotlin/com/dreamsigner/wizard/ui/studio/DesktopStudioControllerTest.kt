@@ -12,6 +12,88 @@ import java.nio.file.Files
 import kotlin.test.*
 
 class DesktopStudioControllerTest {
+    @Test fun sessionEffortPersistsAndOverridesDefaultIncludingAutomatic() = runBlocking {
+        val file = Files.createTempDirectory("studio-session-effort").resolve("studio.json")
+        val requests = mutableListOf<TutorRequest>()
+        val tutor = StudioTutor { request -> synchronized(requests) { requests.add(request) }; "Réponse" }
+        var controller = DesktopStudioController(file, tutor)
+        try {
+            assertTrue(controller.create("But"))
+            assertTrue(controller.configure("http://localhost:1234/v1", "model", ""))
+            controller.setReasoningEffort(ReasoningEffort.HIGH)
+            assertTrue(controller.send("Première question"))
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            controller.setSessionReasoningEffort(ReasoningEffort.AUTOMATIC)
+        } finally { controller.close() }
+        controller = DesktopStudioController(file, tutor)
+        try {
+            assertEquals(ReasoningEffort.AUTOMATIC, controller.state.value.sessions.single().reasoningEffort)
+            assertTrue(controller.send("Deuxième question"))
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            controller.setSessionReasoningEffort(null)
+            assertTrue(controller.send("Troisième question"))
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            assertEquals(listOf(ReasoningEffort.HIGH, ReasoningEffort.AUTOMATIC, ReasoningEffort.HIGH), synchronized(requests) { requests.map { it.reasoningEffort } })
+        } finally { controller.close() }
+        val reopened = DesktopStudioController(file)
+        try { assertNull(reopened.state.value.sessions.single().reasoningEffort) } finally { reopened.close() }
+    }
+
+    @Test fun reasoningPreferencePersistsAndOldSessionsRemainReadable() {
+        val file = Files.createTempDirectory("studio-effort").resolve("studio.json")
+        Files.writeString(file, """{"sessions":[{"id":"s","goal":"But","messages":[{"role":"user","text":"Bonjour"}]}],"selectedId":"s"}""")
+        val controller = DesktopStudioController(file)
+        try {
+            assertEquals(ReasoningEffort.AUTOMATIC, controller.state.value.reasoningEffort)
+            controller.setReasoningEffort(ReasoningEffort.HIGH)
+        } finally { controller.close() }
+        val reopened = DesktopStudioController(file)
+        try {
+            assertEquals(ReasoningEffort.HIGH, reopened.state.value.reasoningEffort)
+            assertEquals("Bonjour", reopened.state.value.sessions.single().messages.single().text)
+            assertFalse(Files.readString(file).contains("apiKey"))
+        } finally { reopened.close() }
+    }
+
+    @Test fun reasoningFieldsMatchBothProviderContracts() {
+        for (effort in ReasoningEffort.entries) {
+            val api = Json.parseToJsonElement(buildTutorBody("model", "goal", emptyList(), reasoningEffort = effort)).jsonObject
+            val responses = Json.parseToJsonElement(buildChatGptBody("model", "goal", emptyList(), reasoningEffort = effort)).jsonObject
+            if (effort == ReasoningEffort.AUTOMATIC) {
+                assertFalse("reasoning_effort" in api)
+                assertFalse("reasoning" in responses)
+            } else {
+                assertEquals(effort.wireValue, api.getValue("reasoning_effort").jsonPrimitive.content)
+                assertEquals(effort.wireValue, responses.getValue("reasoning").jsonObject.getValue("effort").jsonPrimitive.content)
+            }
+        }
+    }
+
+    @Test fun rejectedReasoningIsReportedWithoutRetry() = runBlocking {
+        val file = Files.createTempDirectory("studio-effort-400").resolve("studio.json")
+        val server = HttpServer.create(InetSocketAddress("127.0.0.1", 0), 0)
+        var calls = 0
+        var body = ""
+        server.createContext("/v1/chat/completions") { exchange ->
+            calls++
+            body = exchange.requestBody.bufferedReader().readText()
+            exchange.sendResponseHeaders(400, -1)
+            exchange.close()
+        }
+        server.start()
+        val controller = DesktopStudioController(file)
+        try {
+            assertTrue(controller.create("But"))
+            assertTrue(controller.configure("http://127.0.0.1:${server.address.port}/v1", "model", ""))
+            controller.setReasoningEffort(ReasoningEffort.LOW)
+            assertTrue(controller.send("Question"))
+            withTimeout(5_000) { while (controller.state.value.error == null) delay(10) }
+            assertTrue(controller.state.value.error!!.contains("Automatique"))
+            assertEquals("low", Json.parseToJsonElement(body).jsonObject.getValue("reasoning_effort").jsonPrimitive.content)
+            assertEquals(1, calls)
+        } finally { controller.close(); server.stop(0) }
+    }
+
     @Test fun onlyAcceptedPlanGuidesBothProviderRequests() {
         val plan = StudioPlan(listOf(StudioPlanStep("Comprendre les fractions", emptyList(), "Expliquer 1/2 avec un dessin", listOf(0))))
         val history = listOf(StudioMessage("user", "Je connais les moitiés"))

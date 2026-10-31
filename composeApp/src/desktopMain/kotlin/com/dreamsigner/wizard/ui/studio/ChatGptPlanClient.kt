@@ -138,10 +138,10 @@ internal class ChatGptPlanClient(private val file: Path) {
         }
     }
 
-    fun respond(model: String, goal: String, history: List<StudioMessage>, acceptedPlan: StudioPlan? = null): String {
-        val body = buildChatGptBody(model, goal, history, acceptedPlan)
+    fun respond(model: String, goal: String, history: List<StudioMessage>, acceptedPlan: StudioPlan? = null, reasoningEffort: ReasoningEffort = ReasoningEffort.AUTOMATIC): String {
+        val body = buildChatGptBody(model, goal, history, acceptedPlan, reasoningEffort)
         check(body.length <= MAX_TUTOR_BODY_CHARS) { "La séance dépasse la limite de contexte." }
-        val stream = requestStream("$RESOURCE/responses", body)
+        val stream = requestStream("$RESOURCE/responses", body, reasoningEffort)
         return parseChatGptStream(stream)
     }
 
@@ -174,7 +174,7 @@ internal class ChatGptPlanClient(private val file: Path) {
         return response.body()
     }
 
-    private fun requestStream(url: String, body: String): java.io.InputStream {
+    private fun requestStream(url: String, body: String, effort: ReasoningEffort): java.io.InputStream {
         val token = validAccessToken()
         val request = HttpRequest.newBuilder(URI(url)).timeout(Duration.ofSeconds(90))
             .header("Authorization", "Bearer $token").header("Content-Type", "application/json")
@@ -183,6 +183,7 @@ internal class ChatGptPlanClient(private val file: Path) {
         if (response.statusCode() !in 200..299) {
             response.body().close()
             val message = when (response.statusCode()) {
+                400 -> if (effort != ReasoningEffort.AUTOMATIC) "Requête ChatGPT refusée (400). Ce modèle peut ne pas prendre en charge ce niveau de réflexion ; choisis Automatique ou un niveau pris en charge." else "Requête ChatGPT refusée (400). Vérifie le modèle et la configuration."
                 401, 403 -> "La connexion ChatGPT a expiré ou n’autorise pas ce modèle. Reconnecte le compte."
                 429 -> "La limite d’usage ChatGPT est atteinte. Vérifie ton forfait et la limite de cette application."
                 else -> "Le service ChatGPT a refusé la requête (${response.statusCode()})."
@@ -315,7 +316,7 @@ internal class ChatGptPlanClient(private val file: Path) {
     }
 }
 
-internal fun buildChatGptBody(model: String, goal: String, history: List<StudioMessage>, acceptedPlan: StudioPlan? = null): String {
+internal fun buildChatGptBody(model: String, goal: String, history: List<StudioMessage>, acceptedPlan: StudioPlan? = null, reasoningEffort: ReasoningEffort = ReasoningEffort.AUTOMATIC): String {
     val input = buildJsonArray {
         history.takeLast(12).forEach { turn ->
             add(buildJsonObject {
@@ -326,6 +327,7 @@ internal fun buildChatGptBody(model: String, goal: String, history: List<StudioM
     }
     return buildJsonObject {
         put("model", model)
+        reasoningEffort.wireValue?.let { effort -> put("reasoning", buildJsonObject { put("effort", effort) }) }
         put("instructions", "$TUTOR_SYSTEM_PROMPT${acceptedPlanContext(acceptedPlan)}\nObjectif d’apprentissage : $goal")
         put("input", input)
         put("store", false)
