@@ -50,7 +50,39 @@ internal fun StudioPlanDialog(session: StudioSession, controller: StudioControll
                             strand.misconception?.takeIf { it.isNotBlank() }?.let { Text("Confusion observée : $it") }
                         }
                     }
-                    if (session.plan?.decision == "accepted") Text("Ton plan accepté reste actif jusqu’à l’acceptation d’un nouveau plan.")
+                    if (session.plan?.decision == "accepted") {
+                        Text("Plan accepté : vérifie chaque preuve avant de la valider. Une validation est ton appréciation, pas une mesure automatique de maîtrise.")
+                        session.plan.steps.forEachIndexed { index, step ->
+                            var showEvidence by remember(session.id, index) { mutableStateOf(false) }
+                            val evidence = session.stepEvidence.firstOrNull { it.stepIndex == index }
+                            val ready = session.stepReady(index)
+                            Text("Étape ${index + 1} : ${step.title} · " + when {
+                                evidence != null -> "preuve validée (message ${evidence.messageIndex + 1})"
+                                ready -> "prête à valider"
+                                else -> "bloquée par les prérequis : ${step.prerequisites.joinToString(", ") { (it + 1).toString() }}"
+                            }, style = MaterialTheme.typography.subtitle1)
+                            Text("Preuve attendue : ${step.evidence}")
+                            val candidates = session.messages.indices.filter(session::evidenceSource)
+                            if (ready && candidates.isNotEmpty()) TextButton(onClick = { showEvidence = !showEvidence }) {
+                                Text(if (showEvidence) "Masquer les réponses à examiner" else "Examiner les réponses (${candidates.size})")
+                            }
+                            if (showEvidence && ready) candidates.forEach { sourceIndex ->
+                                    val message = session.messages[sourceIndex]
+                                    val description = if (message.quiz != null) {
+                                        val answer = message.quizAnswer!!
+                                        "QCM : ${message.quiz.question} — réponse : ${answer.selectedIds.joinToString { id -> message.quiz.options.firstOrNull { it.id == id }?.label ?: id }} — ${if (answer.correct) "correcte" else "incorrecte"}. ${answer.thinking}"
+                                    } else {
+                                        val problem = message.problem!!
+                                        "Pratique : ${problem.statement} — réponse : ${problem.attempt!!.answer} — résultat : ${problem.result!!.outcome} — ${problem.result.verdict}"
+                                    }
+                                    Text("Message ${sourceIndex + 1} : $description")
+                                    TextButton(onClick = {
+                                        if (!controller.acceptStepEvidence(index, sourceIndex)) error = "Validation impossible : vérifie les prérequis et la source."
+                                        else error = null
+                                    }, enabled = ready && !state.busy && state.storageError == null) { Text("Valider cette preuve pour l’étape ${index + 1}") }
+                            }
+                        }
+                    }
                     TextButton(onClick = {
                         if (!controller.requestGeneratedPlan()) error = "Impossible de proposer un plan pour le moment. Poursuis le diagnostic et termine la question en cours."
                         else error = null

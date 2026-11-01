@@ -16,6 +16,27 @@ import kotlin.test.assertFalse
 
 class StudioUiTest {
     @Test
+    fun acceptedPlanShowsEvidenceToReviewAtCompactSize() = runDesktopComposeUiTest(width = 360, height = 480) {
+        val controller = MemoryStudioController(initialSession = true)
+        val quiz = StudioQuiz("Combien font une moitié et une moitié ?", listOf(StudioQuizOption("a", "Un"), StudioQuizOption("b", "Deux")), correctIds = listOf("a"), explanation = "Un entier.")
+        val answer = StudioQuizAnswer(listOf("a"), false, "Deux moitiés forment un entier", 80, true, 1)
+        val original = controller.state.value.sessions.single()
+        controller.state.value = controller.state.value.copy(sessions = listOf(original.copy(
+            messages = listOf(StudioMessage("assistant", "", quiz, answer)),
+            plan = StudioPlan(listOf(StudioPlanStep("Fractions", emptyList(), "Expliquer les moitiés", listOf(0))), "accepted"),
+        )))
+        setContent { LearningAppTheme { CompositionLocalProvider(LocalStudioController provides controller) { StudioScreen() } } }
+        onNodeWithTag("studio-plan").performClick()
+        onNodeWithText("Examiner les réponses (1)").performScrollTo().performClick()
+        onNodeWithText("Valider cette preuve pour l’étape 1").performScrollTo().assertIsDisplayed()
+        val file = File("build/reports/ui-snapshots/studio-plan-evidence-360.png")
+        check(file.parentFile.isDirectory || file.parentFile.mkdirs())
+        Image.makeFromBitmap(onAllNodes(isRoot()).onLast().captureToImage().asSkiaBitmap()).use { image ->
+            image.encodeToData()!!.use { file.writeBytes(it.bytes) }
+        }
+    }
+
+    @Test
     fun knowledgeGraphShowsSavedPropositionAndSourceAtCompactSize() = runDesktopComposeUiTest(width = 360, height = 480) {
         val controller = MemoryStudioController(initialSession = true)
         val sessionId = controller.state.value.sessions.single().id

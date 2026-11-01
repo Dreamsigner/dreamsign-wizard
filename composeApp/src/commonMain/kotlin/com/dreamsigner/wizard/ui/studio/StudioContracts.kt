@@ -1,5 +1,6 @@
 package com.dreamsigner.wizard.ui.studio
 
+import kotlinx.serialization.Serializable
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -14,7 +15,24 @@ data class StudioPlan(val steps: List<StudioPlanStep>, val decision: String = "p
 data class StudioDiagnosisObservation(val observation: String, val sources: List<Int>)
 data class StudioPlanProposal(val diagnosis: List<StudioDiagnosisObservation>, val plan: StudioPlan)
 data class StudioModelChoice(val providerMode: String, val baseUrl: String, val model: String)
-data class StudioSession(val id: String, val goal: String, val messages: List<StudioMessage>, val plan: StudioPlan? = null, val reasoningEffort: ReasoningEffort? = null, val modelChoice: StudioModelChoice? = null, val planProposal: StudioPlanProposal? = null, val assessment: StudioDiagnosticAssessment? = null)
+@Serializable
+data class StudioStepEvidence(val stepIndex: Int, val messageIndex: Int)
+
+fun StudioSession.evidenceSource(index: Int): Boolean {
+    val message = messages.getOrNull(index) ?: return false
+    return (message.quiz != null && message.quizAnswer?.correct == true && message.quizAnswer.thinking.isNotBlank()) ||
+        (message.problem?.attempt?.thinking?.isNotBlank() == true && message.problem.result?.outcome?.let { it == "solved" || it == "solvedWithHints" } == true)
+}
+
+fun StudioSession.stepReady(index: Int): Boolean {
+    val accepted = plan?.takeIf { it.decision == "accepted" } ?: return false
+    val step = accepted.steps.getOrNull(index) ?: return false
+    return step.prerequisites.all { prerequisite ->
+        prerequisite in 0 until index && stepEvidence.any { it.stepIndex == prerequisite && evidenceSource(it.messageIndex) }
+    }
+}
+
+data class StudioSession(val id: String, val goal: String, val messages: List<StudioMessage>, val plan: StudioPlan? = null, val reasoningEffort: ReasoningEffort? = null, val modelChoice: StudioModelChoice? = null, val planProposal: StudioPlanProposal? = null, val assessment: StudioDiagnosticAssessment? = null, val stepEvidence: List<StudioStepEvidence> = emptyList())
 data class StudioState(
     val sessions: List<StudioSession> = emptyList(), val selectedId: String? = null,
     val baseUrl: String = "", val model: String = "", val reasoningEffort: ReasoningEffort = ReasoningEffort.AUTOMATIC, val busy: Boolean = false,
@@ -59,6 +77,7 @@ interface StudioController {
     fun requestGeneratedPlan(): Boolean = false
     fun discardPlanProposal(): Boolean = false
     fun savePlan(plan: StudioPlan): Boolean = false
+    fun acceptStepEvidence(stepIndex: Int, messageIndex: Int): Boolean = false
     fun retry()
     fun cancel()
     fun connectChatGpt() = Unit

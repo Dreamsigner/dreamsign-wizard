@@ -12,6 +12,36 @@ import java.nio.file.Files
 import kotlin.test.*
 
 class DesktopStudioControllerTest {
+    @Test fun acceptedStepEvidenceEnforcesPrerequisitesAndPersists() = runBlocking {
+        val file = Files.createTempDirectory("studio-evidence").resolve("studio.json")
+        val fence = 0x60.toChar().toString().repeat(3)
+        val quiz = """{"question":"Combien ?","options":[{"id":"a","label":"Deux"},{"id":"b","label":"Trois"}],"correctIds":["a"],"explanation":"Deux."}"""
+        val tutor = StudioTutor { request -> if (request.history.last().text in STUDIO_QUIZ_REQUESTS) fence + "studio-quiz\n" + quiz + "\n" + fence else "Continue." }
+        var controller = DesktopStudioController(file, tutor)
+        val plan = StudioPlan(listOf(StudioPlanStep("Base", emptyList(), "Répondre", listOf(0)), StudioPlanStep("Suite", listOf(0), "Appliquer", listOf(0))), "accepted")
+        try {
+            assertTrue(controller.configure("http://localhost:1234/v1", "model", ""))
+            assertTrue(controller.create("Calcul"))
+            assertTrue(controller.requestQuiz())
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            assertTrue(controller.savePlan(plan))
+            assertFalse(controller.acceptStepEvidence(0, 1))
+            assertTrue(controller.submitQuiz(1, listOf("a"), false, "Deux", 80))
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            assertFalse(controller.acceptStepEvidence(1, 1))
+            assertFalse(controller.acceptStepEvidence(0, 0))
+            assertFalse(controller.acceptStepEvidence(9, 1))
+            assertTrue(controller.acceptStepEvidence(0, 1))
+            assertTrue(controller.acceptStepEvidence(1, 1))
+        } finally { controller.close() }
+        controller = DesktopStudioController(file, tutor)
+        try {
+            assertEquals(listOf(StudioStepEvidence(0, 1), StudioStepEvidence(1, 1)), controller.state.value.sessions.single().stepEvidence)
+            assertTrue(controller.savePlan(plan.copy(steps = plan.steps.mapIndexed { i, step -> if (i == 0) step.copy(evidence = "Nouvelle preuve") else step })))
+            assertTrue(controller.state.value.sessions.single().stepEvidence.isEmpty())
+        } finally { controller.close() }
+    }
+
     @Test fun graphProposalRequiresAcceptanceAndCorrectionsPersist() = runBlocking {
         val file = Files.createTempDirectory("studio-graph").resolve("studio.json")
         val extraction = """{"propositions":[{"id":"p1","statement":"Une moitié est une part de deux parts égales.","messageIndices":[1]}],"reasonings":[]}"""
