@@ -28,7 +28,7 @@ Validation du 1er novembre 2026 : 231 tests Desktop réussis, compilation Kotlin
   - [x] Édition, acceptation et sauvegarde locale d’un plan avec sources et preuves attendues ; plan accepté transmis au tuteur.
   - [x] Proposition structurée issue du diagnostic, sourcée et soumise à l'acceptation de l'apprenant.
   - [ ] Validation effective des prérequis avant chaque étape.
-- [ ] Graphe de connaissances avec sources et mécanisme de correction.
+- [x] Graphe de connaissances avec sources, acceptation explicite et mécanisme de correction.
 - [ ] Pratique adaptative basée sur les raisonnements observés.
   - [x] Problème autonome à solution engagée avant présentation, indices gradués, réponse et raisonnement enregistrés, verdict et reprise.
   - [ ] Choix du problème suivant et des reprises fondé sur des preuves de maîtrise vérifiées.

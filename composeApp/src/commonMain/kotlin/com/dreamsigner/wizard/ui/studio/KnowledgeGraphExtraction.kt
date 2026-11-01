@@ -9,7 +9,9 @@ import kotlinx.serialization.json.Json
 @Serializable internal data class KnowledgeExtraction(val propositions: List<ExtractedProposition>, val reasonings: List<ExtractedReasoning>)
 
 /** The base must still be current when the user accepts this proposal. */
-internal data class KnowledgeGraphProposal(val base: KnowledgeGraph, val graph: KnowledgeGraph)
+@Serializable data class KnowledgeGraphProposal(val base: KnowledgeGraph, val graph: KnowledgeGraph)
+
+internal const val STUDIO_GRAPH_REQUEST = "Extrais uniquement des propositions factuelles et des liens de raisonnement explicitement présents dans tes explications de cette séance. Réponds exclusivement avec un objet JSON {\"propositions\":[{\"id\":\"a\",\"statement\":\"énoncé autonome et précis\",\"messageIndices\":[0]}],\"reasonings\":[{\"id\":\"r\",\"premises\":[\"a\"],\"conclusion\":\"b\",\"messageIndices\":[1]}]}. Les identifiants sont locaux à cette extraction. messageIndices sont les indices de messages numérotés, à partir de 0, et doivent citer seulement tes explications, pas les questions, les réponses de l'apprenant, les quiz, les verdicts ni les appréciations de maîtrise. Si rien de certain n'est extrait, renvoie deux tableaux vides."
 
 internal object KnowledgeGraphExtraction {
     private val json = Json { ignoreUnknownKeys = false; isLenient = false }

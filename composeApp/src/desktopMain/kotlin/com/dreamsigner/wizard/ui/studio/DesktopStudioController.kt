@@ -27,7 +27,7 @@ internal data class TutorRequest(
 )
 internal fun interface StudioTutor { suspend fun respond(request: TutorRequest): String }
 
-@Serializable private data class StudioDisk(val baseUrl: String = "", val model: String = "", val sessions: List<StudioSessionDisk> = emptyList(), val selectedId: String? = null, val providerMode: String = "api", val reasoningEffort: String = "AUTOMATIC", val apiModel: String? = null, val chatGptModel: String? = null)
+@Serializable private data class StudioDisk(val baseUrl: String = "", val model: String = "", val sessions: List<StudioSessionDisk> = emptyList(), val selectedId: String? = null, val providerMode: String = "api", val reasoningEffort: String = "AUTOMATIC", val apiModel: String? = null, val chatGptModel: String? = null, val graphProposal: KnowledgeGraphProposal? = null)
 @Serializable private data class StudioSessionDisk(val id: String, val goal: String, val messages: List<StudioMessageDisk>, val plan: StudioPlanDisk? = null, val reasoningEffort: String? = null, val modelChoice: StudioModelChoiceDisk? = null, val planProposal: StudioPlanProposalDisk? = null, val assessment: StudioDiagnosticAssessment? = null)
 @Serializable private data class StudioModelChoiceDisk(val providerMode: String, val baseUrl: String, val model: String)
 @Serializable private data class StudioPlanDisk(val steps: List<StudioPlanStepDisk>, val decision: String = "proposed")
@@ -50,7 +50,12 @@ internal class DesktopStudioController(
     private var catalogJob: Job? = null
     private val pendingBySession = ConcurrentHashMap<String, String>()
     private val chatGpt = ChatGptPlanClient(file.resolveSibling("chatgpt-plan.json"))
-    override val state = MutableStateFlow(load().copy(chatGptConnected = chatGpt.connected, chatGptEmail = chatGpt.accountEmail, chatGptError = chatGpt.storageError))
+    private val graphStore = DesktopKnowledgeGraphStore(file.resolveSibling("knowledge-graph.json"))
+    override val state = MutableStateFlow(load().let { saved ->
+        val graph = runCatching { graphStore.load() }
+        saved.copy(chatGptConnected = chatGpt.connected, chatGptEmail = chatGpt.accountEmail, chatGptError = chatGpt.storageError,
+            knowledgeGraph = graph.getOrDefault(KnowledgeGraph()), graphError = if (graph.isFailure) "Le graphe de connaissances est illisible. Son fichier est conservé ; corrige-le avant d'enregistrer des changements." else null)
+    })
 
     init {
         state.value.sessions.forEach { session ->
@@ -201,6 +206,87 @@ internal class DesktopStudioController(
         else sendTurnLocked(STUDIO_DIAGNOSIS_REQUEST, null, null)
     }
 
+    override fun requestGraphExtraction(): Boolean = synchronized(lock) {
+        val snapshot = state.value
+        val session = snapshot.sessions.firstOrNull { it.id == snapshot.selectedId }
+        if (session == null || snapshot.graphError != null || snapshot.graphProposal != null ||
+            graphSourceIndices(session.messages + StudioMessage("user", STUDIO_GRAPH_REQUEST)).isEmpty() ||
+            session.messages.any { (it.quiz != null && it.quizAnswer == null) || (it.problem != null && it.problem.result == null) }) false
+        else sendTurnLocked(STUDIO_GRAPH_REQUEST, null, null)
+    }
+
+    override fun discardGraphProposal(): Boolean {
+        if (state.value.busy || state.value.storageError != null) return false
+        return mutate { copy(graphProposal = null) }
+    }
+
+    override fun refreshKnowledgeGraph(): Boolean = synchronized(lock) {
+        val graph = try { graphStore.load() } catch (_: Exception) {
+            state.value = state.value.copy(graphError = "Le graphe est encore illisible. Son fichier est conservé.")
+            return false
+        }
+        state.value = state.value.copy(knowledgeGraph = graph, graphError = null)
+        true
+    }
+
+    override fun acceptGraphProposal(): Boolean = synchronized(lock) {
+        val snapshot = state.value
+        val proposal = snapshot.graphProposal ?: return false
+        if (snapshot.busy || snapshot.storageError != null || snapshot.graphError != null) return false
+        val live = try { graphStore.load() } catch (_: Exception) {
+            state.value = snapshot.copy(graphError = "Le graphe est illisible. Aucun changement n'a été enregistré.")
+            return false
+        }
+        if (live != proposal.base && live != proposal.graph) {
+            state.value = snapshot.copy(knowledgeGraph = live, graphError = "Le graphe a changé depuis cette proposition. Retire-la puis relance l'extraction.")
+            return false
+        }
+        try {
+            if (live != proposal.graph) graphStore.save(proposal.graph)
+            state.value = snapshot.copy(knowledgeGraph = proposal.graph, graphError = null)
+        } catch (_: Exception) {
+            state.value = snapshot.copy(graphError = "Impossible d'enregistrer le graphe. La proposition est conservée.")
+            return false
+        }
+        mutate { copy(graphProposal = null) }
+    }
+
+    override fun updateGraphProposition(id: String, statement: String): Boolean = changeGraph { graph ->
+        val old = graph.propositions.firstOrNull { it.id == id } ?: return@changeGraph null
+        statement.trim().takeIf { it.isNotEmpty() && it.length <= 2_000 }?.let { graph.putProposition(old.copy(statement = it)) }
+    }
+
+    override fun deleteGraphProposition(id: String): Boolean = changeGraph { graph ->
+        if (graph.propositions.none { it.id == id }) null else graph.deleteProposition(id)
+    }
+
+    override fun deleteGraphReasoning(id: String): Boolean = changeGraph { graph ->
+        if (graph.reasonings.none { it.id == id }) null else graph.deleteReasoning(id)
+    }
+
+    private fun changeGraph(transform: (KnowledgeGraph) -> KnowledgeGraph?): Boolean = synchronized(lock) {
+        val snapshot = state.value
+        if (snapshot.busy || snapshot.storageError != null || snapshot.graphError != null || snapshot.graphProposal != null) return false
+        val live = try { graphStore.load() } catch (_: Exception) {
+            state.value = snapshot.copy(graphError = "Le graphe est illisible. Aucun changement n'a été enregistré.")
+            return false
+        }
+        if (live != snapshot.knowledgeGraph) {
+            state.value = snapshot.copy(knowledgeGraph = live, graphError = "Le graphe a changé ailleurs. Vérifie-le avant de modifier une proposition.")
+            return false
+        }
+        val next = try { transform(live)?.validate() } catch (_: Exception) { null } ?: return false
+        try { graphStore.save(next); state.value = snapshot.copy(knowledgeGraph = next, graphError = null); true }
+        catch (_: Exception) { state.value = snapshot.copy(graphError = "Impossible d'enregistrer le graphe. Le fichier précédent est conservé."); false }
+    }
+
+    private fun graphSourceIndices(messages: List<StudioMessage>): Set<Int> = messages.indices.filterTo(mutableSetOf()) { index ->
+        val message = messages[index]
+        index >= (messages.size - 12).coerceAtLeast(0) && message.role == "assistant" && message.quiz == null && message.problem == null &&
+            message.text.isNotBlank() && !message.text.startsWith("Diagnostic conclu :") && message.text != "Plan proposé. Ouvre Mon plan pédagogique pour examiner, corriger et accepter les étapes." &&
+            message.text != "Retour de pratique disponible."
+    }
+
     override fun revealPracticeHint(messageIndex: Int): Boolean {
         val snapshot = state.value
         val session = snapshot.sessions.firstOrNull { it.id == snapshot.selectedId } ?: return false
@@ -240,7 +326,7 @@ internal class DesktopStudioController(
 
     override fun requestGeneratedPlan(): Boolean = synchronized(lock) {
         val session = state.value.sessions.firstOrNull { it.id == state.value.selectedId }
-        if (session == null || session.messages.none { it.role == "user" && it.text !in setOf(STUDIO_QUIZ_REQUEST, STUDIO_PROBLEM_REQUEST, STUDIO_PLAN_REQUEST, STUDIO_DIAGNOSIS_REQUEST) && !it.text.startsWith(STUDIO_PRACTICE_ATTEMPT_PREFIX) } ||
+        if (session == null || session.messages.none { it.role == "user" && it.text !in setOf(STUDIO_QUIZ_REQUEST, STUDIO_PROBLEM_REQUEST, STUDIO_PLAN_REQUEST, STUDIO_DIAGNOSIS_REQUEST, STUDIO_GRAPH_REQUEST) && !it.text.startsWith(STUDIO_PRACTICE_ATTEMPT_PREFIX) } ||
             session.messages.any { (it.quiz != null && it.quizAnswer == null) || (it.problem != null && it.problem.result == null) }) false
         else sendTurnLocked(STUDIO_PLAN_REQUEST, null, null)
     }
@@ -370,7 +456,7 @@ internal class DesktopStudioController(
         if (pendingBySession[id].isNullOrBlank()) return
         val acceptedPlan = session.plan?.takeIf { it.decision == "accepted" && validPlan(it, session.messages.size) }
         val effort = session.reasoningEffort ?: config.reasoningEffort
-        val numberedContext = session.messages.lastOrNull()?.text in setOf(STUDIO_PLAN_REQUEST, STUDIO_DIAGNOSIS_REQUEST)
+        val numberedContext = session.messages.lastOrNull()?.text in setOf(STUDIO_PLAN_REQUEST, STUDIO_DIAGNOSIS_REQUEST, STUDIO_GRAPH_REQUEST)
         val history = session.messages.takeLast(12).mapIndexed { offset, message ->
             if (!numberedContext) message else message.copy(
                 text = "[message ${session.messages.size - minOf(12, session.messages.size) + offset}]\n${studioMessageForTutor(message)}",
@@ -436,6 +522,22 @@ internal class DesktopStudioController(
             catch (_: Exception) { state.value = before.copy(busy = false, storageError = "Impossible d’enregistrer le diagnostic. Vérifie l’accès au dossier DreamsignWizard; les données précédentes sont conservées.") }
             return@synchronized
         }
+        if (current.messages.lastOrNull()?.text == STUDIO_GRAPH_REQUEST) {
+            val allowed = graphSourceIndices(current.messages)
+            val proposal = runCatching {
+                val extraction = KnowledgeGraphExtraction.parse(reply, allowed)
+                KnowledgeGraphExtraction.propose(before.knowledgeGraph, extraction, id, allowed)
+            }.getOrNull()
+            if (proposal == null) {
+                state.value = before.copy(busy = false, error = "Le fournisseur n'a pas produit d'extraction sourcée utilisable. Ta demande est conservée ; réessaie ou reformule le cours.")
+                return@synchronized
+            }
+            val updated = current.copy(messages = current.messages + StudioMessage("assistant", "Extraction proposée. Ouvre le graphe de connaissances pour examiner et accepter les éléments."))
+            val next = before.copy(sessions = before.sessions.map { if (it.id == id) updated else it }, graphProposal = proposal, busy = false, error = null)
+            try { write(next); state.value = next; pendingBySession.remove(id) }
+            catch (_: Exception) { state.value = before.copy(busy = false, storageError = "Impossible d'enregistrer la proposition de graphe. Les données précédentes sont conservées.") }
+            return@synchronized
+        }
         if (current.messages.lastOrNull()?.text?.startsWith(STUDIO_PRACTICE_ATTEMPT_PREFIX) == true) {
             val problemIndex = current.messages.indexOfLast { it.problem?.attempt != null && it.problem.result == null }
             val problem = current.messages.getOrNull(problemIndex)?.problem
@@ -453,7 +555,7 @@ internal class DesktopStudioController(
             return@synchronized
         }
         val parsed = parseStudioTutorReply(reply)
-        if ("```studio-problem" in reply || "```studio-verdict" in reply || "```studio-diagnosis" in reply) {
+        if ("```studio-problem" in reply || "```studio-verdict" in reply || "```studio-diagnosis" in reply || "\"propositions\"" in reply && "\"reasonings\"" in reply) {
             state.value = before.copy(busy = false, error = "Le fournisseur a renvoyé une structure de pratique hors séquence. Ton message est conservé ; réessaie.")
             return@synchronized
         }
@@ -557,7 +659,7 @@ internal class DesktopStudioController(
 
     private fun write(s: StudioState) {
         Files.createDirectories(file.parent)
-        val disk = StudioDisk(s.baseUrl, s.model, s.sessions.map { it.toDisk() }, s.selectedId, s.providerMode, s.reasoningEffort.name, s.apiModel, s.chatGptModel)
+        val disk = StudioDisk(s.baseUrl, s.model, s.sessions.map { it.toDisk() }, s.selectedId, s.providerMode, s.reasoningEffort.name, s.apiModel, s.chatGptModel, s.graphProposal)
         val temp = Files.createTempFile(file.parent, "studio-", ".tmp")
         try {
             Files.writeString(temp, json.encodeToString(disk))
@@ -567,7 +669,7 @@ internal class DesktopStudioController(
     }
 
     override fun close() { cancel(); synchronized(apiKey) { apiKey.setLength(0) }; scope.cancel() }
-    private fun fromDisk(d: StudioDisk) = StudioState(baseUrl = d.baseUrl, model = d.model, sessions = d.sessions.map { it.fromDisk() }, selectedId = d.selectedId, providerMode = d.providerMode, reasoningEffort = ReasoningEffort.entries.firstOrNull { it.name == d.reasoningEffort } ?: ReasoningEffort.AUTOMATIC, apiModel = d.apiModel ?: if (d.providerMode == "api") d.model else "", chatGptModel = d.chatGptModel ?: if (d.providerMode == "chatgpt") d.model else "")
+    private fun fromDisk(d: StudioDisk) = StudioState(baseUrl = d.baseUrl, model = d.model, sessions = d.sessions.map { it.fromDisk() }, selectedId = d.selectedId, providerMode = d.providerMode, reasoningEffort = ReasoningEffort.entries.firstOrNull { it.name == d.reasoningEffort } ?: ReasoningEffort.AUTOMATIC, apiModel = d.apiModel ?: if (d.providerMode == "api") d.model else "", chatGptModel = d.chatGptModel ?: if (d.providerMode == "chatgpt") d.model else "", graphProposal = d.graphProposal?.also { it.base.validate(); it.graph.validate() })
     private fun StudioPlan.toDisk() = StudioPlanDisk(steps.map { step -> StudioPlanStepDisk(step.title, step.prerequisites, step.evidence, step.sources) }, decision)
     private fun StudioPlanDisk.fromDisk() = StudioPlan(steps.map { step -> StudioPlanStep(step.title, step.prerequisites, step.evidence, step.sources) }, decision)
     private fun StudioSession.toDisk() = StudioSessionDisk(id, goal, messages.map { StudioMessageDisk(it.role, it.text, it.quiz, it.quizAnswer, it.problem) }, plan?.toDisk(), reasoningEffort?.name, modelChoice?.let { StudioModelChoiceDisk(it.providerMode, it.baseUrl, it.model) }, planProposal?.let { StudioPlanProposalDisk(it.diagnosis.map { observation -> StudioDiagnosisDisk(observation.observation, observation.sources) }, it.plan.toDisk()) }, assessment)
@@ -620,7 +722,8 @@ internal const val TUTOR_SYSTEM_PROMPT = "Tu es un tuteur francophone. Commence 
     "Le JSON doit contenir question (énoncé complet autonome), options (tableau de 2 à 8 objets avec id unique court et label), multiSelect (booléen), correctIds (tableau non vide des id corrects) et explanation (explication complète). " +
     "Pour un seul choix correct, multiSelect vaut false et correctIds contient un seul id. Les labels ne contiennent pas la solution ni de raisonnement. " +
     "L'apprenant peut choisir, dire qu'il ne sait pas, indiquer sa confiance et expliquer librement son raisonnement. Après sa réponse, examine ce raisonnement et corrige les confusions avant de poursuivre. " +
-    "Exception : si la dernière demande porte sur un problème de pratique ou son verdict, suis exclusivement le format studio-problem ou studio-verdict demandé, sans QCM. La solution du problème est préengagée avant sa présentation et doit rester cachée jusqu'à la conclusion de la tentative."
+    "Exception : si la dernière demande porte sur un problème de pratique ou son verdict, suis exclusivement le format studio-problem ou studio-verdict demandé, sans QCM. La solution du problème est préengagée avant sa présentation et doit rester cachée jusqu'à la conclusion de la tentative. " +
+    "Si la dernière demande porte sur l'extraction du graphe, renvoie uniquement le JSON demandé, sans commentaire ni QCM ; ne présente jamais un résultat de quiz ou une maîtrise de l'apprenant comme une proposition factuelle."
 
 /** Keeps recent whole turns by their encoded size, always retaining the goal and latest learner turn. */
 internal fun acceptedPlanContext(plan: StudioPlan?): String = if (plan?.decision != "accepted") "" else buildString {

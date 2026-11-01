@@ -23,6 +23,8 @@ LearnHarness décrit une séquence diagnostic, plan, enseignement, pratique, et 
 
 Un tuteur conversationnel guidé par des instructions n'est pas encore un moteur agentique complet. Le graphe de connaissances, l'extraction auditée des propositions, les exercices adaptatifs structurés, la recherche documentaire et les démonstrations interactives sont des étapes suivantes. Aucune note de maîtrise ou connaissance acquise n'est inventée à partir d'un simple échange.
 
+État au 1er novembre 2026 : le graphe persistant, l'extraction sourcée soumise à acceptation et la correction manuelle sont disponibles sur Windows. La validation des prérequis et l'adaptation des exercices à une maîtrise vérifiée restent à construire.
+
 Le protocole est testé avec un serveur local déterministe. Sans identifiants et choix de modèle fournis pour un essai réel, les tests ne prouvent ni la compatibilité de tous les fournisseurs, ni la qualité pédagogique de leurs réponses. Les changements de modèle, clés et endpoint de cette app sont distincts de la configuration des agents de développement Codex.
 
 ## Organisation cible

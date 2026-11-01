@@ -33,8 +33,10 @@ fun StudioScreen() {
     var showConnection by remember { mutableStateOf(false) }
     var showSessions by remember { mutableStateOf(false) }
     var showGoal by remember { mutableStateOf(false) }
+    var showGraph by remember { mutableStateOf(false) }
 
     if (showConnection) StudioConnectionDialog(controller, state, onDismiss = { showConnection = false })
+    if (showGraph) StudioKnowledgeGraphDialog(state, controller, onDismiss = { showGraph = false })
     if (showSessions) SessionPickerDialog(
         state = state,
         onSelect = { controller.select(it); showSessions = false },
@@ -50,22 +52,22 @@ fun StudioScreen() {
     BoxWithConstraints(Modifier.fillMaxSize().background(Paper)) {
         val wide = maxWidth >= 800.dp
         val session = state.sessions.firstOrNull { it.id == state.selectedId }
-        val exerciseActive = session?.messages?.any { (it.quiz != null && it.quizAnswer == null) || (it.problem != null && it.problem.result == null) } == true
         Column(Modifier.fillMaxSize().padding(horizontal = if (wide) 28.dp else 16.dp, vertical = if (wide) 22.dp else 14.dp)) {
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
-                    Text("Studio IA", style = if (exerciseActive && !wide) MaterialTheme.typography.h5 else MaterialTheme.typography.h4, color = Ink)
-                    if (!exerciseActive || wide) Text("Un tuteur qui part de ce que tu sais déjà.", color = Graphite, fontSize = 14.sp)
+                    Text("Studio IA", style = if (wide) MaterialTheme.typography.h4 else MaterialTheme.typography.h5, color = Ink)
+                    if (wide) Text("Un tuteur qui part de ce que tu sais déjà.", color = Graphite, fontSize = 14.sp)
                 }
+                TextButton(onClick = { showGraph = true }, enabled = state.available, modifier = Modifier.testTag("studio-graph")) { Text("Graphe") }
                 OutlinedButton(
                     onClick = { showConnection = true }, enabled = state.available && !state.busy,
                     modifier = Modifier.heightIn(min = 48.dp), shape = LearningShape,
                 ) { Text("Connexion IA", maxLines = 1) }
             }
-            if ((!exerciseActive || wide) && state.providerMode == "chatgpt" && state.chatGptConnected) {
+            if (state.providerMode == "chatgpt" && state.chatGptConnected) {
                 Text("ChatGPT · ${state.chatGptEmail.orEmpty()} · ${state.model}", Modifier.fillMaxWidth().padding(top = 4.dp),
                     color = Graphite, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            } else if ((!exerciseActive || wide) && state.available && state.baseUrl.isNotBlank() && state.model.isNotBlank()) {
+            } else if (state.available && state.baseUrl.isNotBlank() && state.model.isNotBlank()) {
                 Text(
                     "${state.baseUrl} · ${state.model}", Modifier.fillMaxWidth().padding(top = 4.dp),
                     color = Graphite, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis,
@@ -338,6 +340,7 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
                                     STUDIO_PLAN_REQUEST -> "Plan pédagogique demandé"
                                     STUDIO_PROBLEM_REQUEST -> "Problème de pratique demandé"
                                     STUDIO_DIAGNOSIS_REQUEST -> "Conclusion du diagnostic demandée"
+                                    STUDIO_GRAPH_REQUEST -> "Extraction de connaissances demandée"
                                     else -> message.text
                                 }.let { if (it.startsWith(STUDIO_PRACTICE_ATTEMPT_PREFIX)) "Tentative envoyée" else it }
                                 if (displayText.isNotBlank()) LessonDocument(displayText, typesetMath = true)

@@ -72,6 +72,7 @@ internal fun StudioPlanDialog(session: StudioSession, controller: StudioControll
                             STUDIO_PLAN_REQUEST -> "Plan pédagogique demandé"
                             STUDIO_PROBLEM_REQUEST -> "Problème de pratique demandé"
                             STUDIO_DIAGNOSIS_REQUEST -> "Conclusion du diagnostic demandée"
+                            STUDIO_GRAPH_REQUEST -> "Extraction de connaissances demandée"
                             else -> if (message.text.startsWith(STUDIO_PRACTICE_ATTEMPT_PREFIX)) "Tentative envoyée"
                                 else message.text.ifBlank { message.quiz?.question ?: message.problem?.statement ?: "Question du tuteur" }
                         }

@@ -25,6 +25,7 @@ data class StudioState(
     val chatGptBusy: Boolean = false, val chatGptError: String? = null,
     val apiModels: List<String> = emptyList(), val apiModelsUrl: String = "",
     val apiModelsBusy: Boolean = false, val apiModelsError: String? = null,
+    val knowledgeGraph: KnowledgeGraph = KnowledgeGraph(), val graphProposal: KnowledgeGraphProposal? = null, val graphError: String? = null,
 )
 
 interface StudioController {
@@ -45,6 +46,13 @@ interface StudioController {
     fun submitPracticeAttempt(messageIndex: Int, answer: String, thinking: String): Boolean = false
     fun surrenderPracticeProblem(messageIndex: Int): Boolean = false
     fun requestDiagnosisConclusion(): Boolean = false
+    fun requestGraphExtraction(): Boolean = false
+    fun acceptGraphProposal(): Boolean = false
+    fun discardGraphProposal(): Boolean = false
+    fun updateGraphProposition(id: String, statement: String): Boolean = false
+    fun deleteGraphProposition(id: String): Boolean = false
+    fun deleteGraphReasoning(id: String): Boolean = false
+    fun refreshKnowledgeGraph(): Boolean = false
     fun requestGeneratedPlan(): Boolean = false
     fun discardPlanProposal(): Boolean = false
     fun savePlan(plan: StudioPlan): Boolean = false

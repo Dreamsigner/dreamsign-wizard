@@ -12,6 +12,45 @@ import java.nio.file.Files
 import kotlin.test.*
 
 class DesktopStudioControllerTest {
+    @Test fun graphProposalRequiresAcceptanceAndCorrectionsPersist() = runBlocking {
+        val file = Files.createTempDirectory("studio-graph").resolve("studio.json")
+        val extraction = """{"propositions":[{"id":"p1","statement":"Une moitié est une part de deux parts égales.","messageIndices":[1]}],"reasonings":[]}"""
+        val tutor = StudioTutor { request ->
+            if (request.history.last().text.contains(STUDIO_GRAPH_REQUEST)) extraction
+            else "Une moitié est une part de deux parts égales. Pour obtenir un quart, partage encore chaque moitié en deux."
+        }
+        var controller = DesktopStudioController(file, tutor)
+        try {
+            assertTrue(controller.configure("http://localhost:1234/v1", "model", ""))
+            assertTrue(controller.create("Fractions"))
+            assertFalse(controller.requestGraphExtraction())
+            assertTrue(controller.send("Explique une moitié et un quart."))
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            assertTrue(controller.requestGraphExtraction())
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            assertEquals(0, controller.state.value.knowledgeGraph.propositions.size)
+            assertEquals(1, controller.state.value.graphProposal?.graph?.propositions?.size)
+            assertFalse(controller.requestGraphExtraction())
+        } finally { controller.close() }
+        controller = DesktopStudioController(file, tutor)
+        try {
+            assertEquals(1, controller.state.value.graphProposal?.graph?.propositions?.size)
+            assertTrue(controller.acceptGraphProposal())
+            assertNull(controller.state.value.graphProposal)
+            val item = controller.state.value.knowledgeGraph.propositions.single()
+            assertEquals(listOf(KnowledgeSource(controller.state.value.sessions.single().id, 1)), item.sources)
+            assertTrue(controller.updateGraphProposition(item.id, "Une moitié vaut 1/2."))
+            assertEquals("Une moitié vaut 1/2.", controller.state.value.knowledgeGraph.propositions.single().statement)
+        } finally { controller.close() }
+        controller = DesktopStudioController(file, tutor)
+        try {
+            val item = controller.state.value.knowledgeGraph.propositions.single()
+            assertEquals("Une moitié vaut 1/2.", item.statement)
+            assertTrue(controller.deleteGraphProposition(item.id))
+            assertTrue(controller.state.value.knowledgeGraph.propositions.isEmpty())
+        } finally { controller.close() }
+    }
+
     @Test fun diagnosticConclusionRequiresTwoAnsweredQuizzesAndPersists() = runBlocking {
         val file = Files.createTempDirectory("studio-diagnostic").resolve("studio.json")
         val fence = 0x60.toChar().toString().repeat(3)

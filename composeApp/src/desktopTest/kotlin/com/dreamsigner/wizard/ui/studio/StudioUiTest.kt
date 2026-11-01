@@ -16,6 +16,24 @@ import kotlin.test.assertFalse
 
 class StudioUiTest {
     @Test
+    fun knowledgeGraphShowsSavedPropositionAndSourceAtCompactSize() = runDesktopComposeUiTest(width = 360, height = 480) {
+        val controller = MemoryStudioController(initialSession = true)
+        val sessionId = controller.state.value.sessions.single().id
+        controller.state.value = controller.state.value.copy(knowledgeGraph = KnowledgeGraph(propositions = listOf(
+            KnowledgeProposition("p1", "Une moitié vaut 1/2.", listOf(KnowledgeSource(sessionId, 0))),
+        )))
+        setContent { LearningAppTheme { CompositionLocalProvider(LocalStudioController provides controller) { StudioScreen() } } }
+        onNodeWithTag("studio-graph").performClick()
+        onNodeWithText("Graphe de connaissances").assertIsDisplayed()
+        onNodeWithText("Une moitié vaut 1/2.").assertIsDisplayed()
+        val file = File("build/reports/ui-snapshots/studio-graph-360.png")
+        check(file.parentFile.isDirectory || file.parentFile.mkdirs())
+        Image.makeFromBitmap(onAllNodes(isRoot()).onLast().captureToImage().asSkiaBitmap()).use { image ->
+            image.encodeToData()!!.use { file.writeBytes(it.bytes) }
+        }
+    }
+
+    @Test
     fun reviewedDiagnosticIsVisibleInPlanDialog() = runDesktopComposeUiTest(width = 360, height = 480) {
         val controller = MemoryStudioController(initialSession = true).apply { installAssessment() }
         setContent { LearningAppTheme { CompositionLocalProvider(LocalStudioController provides controller) { StudioScreen() } } }
@@ -175,7 +193,7 @@ class StudioUiTest {
                 onNodeWithTag("studio-workspace").assertIsDisplayed()
                 onNodeWithTag("studio-conversation-messages")
                     .performScrollToIndex(1)
-                onNodeWithText("On étudie la limite de ses sommes partielles.").performScrollTo()
+                if (width == 360) onNodeWithTag("studio-conversation-messages").performTouchInput { swipeUp() }
                 onNodeWithText("On étudie la limite de ses sommes partielles.").assertIsDisplayed()
                 onNodeWithTag("studio-conversation-messages")
                     .performScrollToIndex(0)
