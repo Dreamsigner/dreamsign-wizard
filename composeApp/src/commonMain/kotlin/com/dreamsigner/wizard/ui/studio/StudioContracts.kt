@@ -8,11 +8,13 @@ enum class ReasoningEffort(val label: String, val wireValue: String?) {
     AUTOMATIC("Automatique", null), LOW("Faible", "low"), MEDIUM("Moyen", "medium"), HIGH("Élevé", "high")
 }
 
-data class StudioMessage(val role: String, val text: String)
+data class StudioMessage(val role: String, val text: String, val quiz: StudioQuiz? = null, val quizAnswer: StudioQuizAnswer? = null)
 data class StudioPlanStep(val title: String, val prerequisites: List<Int>, val evidence: String, val sources: List<Int>)
 data class StudioPlan(val steps: List<StudioPlanStep>, val decision: String = "proposed")
+data class StudioDiagnosisObservation(val observation: String, val sources: List<Int>)
+data class StudioPlanProposal(val diagnosis: List<StudioDiagnosisObservation>, val plan: StudioPlan)
 data class StudioModelChoice(val providerMode: String, val baseUrl: String, val model: String)
-data class StudioSession(val id: String, val goal: String, val messages: List<StudioMessage>, val plan: StudioPlan? = null, val reasoningEffort: ReasoningEffort? = null, val modelChoice: StudioModelChoice? = null)
+data class StudioSession(val id: String, val goal: String, val messages: List<StudioMessage>, val plan: StudioPlan? = null, val reasoningEffort: ReasoningEffort? = null, val modelChoice: StudioModelChoice? = null, val planProposal: StudioPlanProposal? = null)
 data class StudioState(
     val sessions: List<StudioSession> = emptyList(), val selectedId: String? = null,
     val baseUrl: String = "", val model: String = "", val reasoningEffort: ReasoningEffort = ReasoningEffort.AUTOMATIC, val busy: Boolean = false,
@@ -36,6 +38,10 @@ interface StudioController {
     fun setReasoningEffort(effort: ReasoningEffort) = Unit
     fun setSessionReasoningEffort(effort: ReasoningEffort?) = Unit
     fun send(message: String): Boolean
+    fun requestQuiz(): Boolean = false
+    fun submitQuiz(messageIndex: Int, selectedIds: List<String>, dontKnow: Boolean, thinking: String, confidence: Int?): Boolean = false
+    fun requestGeneratedPlan(): Boolean = false
+    fun discardPlanProposal(): Boolean = false
     fun savePlan(plan: StudioPlan): Boolean = false
     fun retry()
     fun cancel()

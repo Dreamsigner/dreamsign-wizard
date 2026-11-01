@@ -12,6 +12,183 @@ import java.nio.file.Files
 import kotlin.test.*
 
 class DesktopStudioControllerTest {
+    @Test fun invalidGeneratedPlanKeepsRequestForRetry() = runBlocking {
+        val file = Files.createTempDirectory("studio-invalid-plan").resolve("studio.json")
+        val calls = java.util.concurrent.atomic.AtomicInteger()
+        val fence = 0x60.toChar().toString().repeat(3)
+        val valid = """{"version":1,"diagnosis":[{"observation":"Départ","sources":[0]}],"steps":[{"title":"Étape","prerequisites":[],"evidence":"Preuve","sources":[0]}]}"""
+        val tutor = StudioTutor { request ->
+            if (!request.history.last().text.contains(STUDIO_PLAN_REQUEST)) "Question de diagnostic" else if (calls.incrementAndGet() == 1) "plan libre non structuré" else fence + "studio-plan\n" + valid + "\n" + fence
+        }
+        val controller = DesktopStudioController(file, tutor)
+        try {
+            assertTrue(controller.configure("http://localhost:1234/v1", "model", ""))
+            assertTrue(controller.create("Apprendre"))
+            assertTrue(controller.send("Je pars de zéro"))
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            assertTrue(controller.requestGeneratedPlan())
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            assertNotNull(controller.state.value.error)
+            assertNull(controller.state.value.sessions.single().planProposal)
+            assertEquals(STUDIO_PLAN_REQUEST, controller.state.value.sessions.single().messages.last().text)
+            controller.retry()
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            assertNull(controller.state.value.error)
+            assertEquals("Étape", controller.state.value.sessions.single().planProposal?.plan?.steps?.single()?.title)
+            assertEquals(2, calls.get())
+        } finally { controller.close() }
+    }
+
+    @Test fun generatedPlanRequiresReviewAndSurvivesRestart() = runBlocking {
+        val file = Files.createTempDirectory("studio-generated-plan").resolve("studio.json")
+        val fence = 0x60.toChar().toString().repeat(3)
+        val proposal = """{"version":1,"diagnosis":[{"observation":"Connaît les fractions simples","sources":[0]}],"steps":[{"title":"Comparer","prerequisites":[],"evidence":"Expliquer une comparaison","sources":[0]}]}"""
+        val tutor = StudioTutor { request ->
+            if (request.history.last().text.contains(STUDIO_PLAN_REQUEST)) fence + "studio-plan\n" + proposal + "\n" + fence else "Quelles fractions connais-tu déjà ?"
+        }
+        var controller = DesktopStudioController(file, tutor)
+        try {
+            assertTrue(controller.configure("http://localhost:1234/v1", "model", ""))
+            assertTrue(controller.create("Comprendre les fractions"))
+            assertFalse(controller.requestGeneratedPlan())
+            assertTrue(controller.send("Je sais ce qu'est une moitié."))
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            val accepted = StudioPlan(listOf(StudioPlanStep("Ancien objectif", emptyList(), "Expliquer", listOf(0))), "accepted")
+            assertTrue(controller.savePlan(accepted))
+            assertTrue(controller.requestGeneratedPlan())
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            val session = controller.state.value.sessions.single()
+            assertEquals(accepted, session.plan)
+            assertEquals("Comparer", session.planProposal?.plan?.steps?.single()?.title)
+            assertEquals(listOf(0), session.planProposal?.diagnosis?.single()?.sources)
+        } finally { controller.close() }
+        controller = DesktopStudioController(file, tutor)
+        try {
+            val session = controller.state.value.sessions.single()
+            assertEquals("Ancien objectif", session.plan?.steps?.single()?.title)
+            assertEquals("Comparer", session.planProposal?.plan?.steps?.single()?.title)
+            assertTrue(controller.savePlan(session.planProposal!!.plan.copy(decision = "accepted")))
+            assertNull(controller.state.value.sessions.single().planProposal)
+            assertEquals("Comparer", controller.state.value.sessions.single().plan?.steps?.single()?.title)
+        } finally { controller.close() }
+    }
+
+    @Test fun clarificationCannotReplaceAnUnansweredQuizWithAnother() = runBlocking {
+        val file = Files.createTempDirectory("studio-one-open-quiz").resolve("studio.json")
+        val fence = 0x60.toChar().toString().repeat(3)
+        val quiz = """{"question":"Première question ?","options":[{"id":"a","label":"Oui"},{"id":"b","label":"Non"}],"correctIds":["a"],"explanation":"Explication."}"""
+        val tutor = StudioTutor { fence + "studio-quiz\n" + quiz + "\n" + fence }
+        val controller = DesktopStudioController(file, tutor)
+        try {
+            assertTrue(controller.configure("http://localhost:1234/v1", "model", ""))
+            assertTrue(controller.create("Comprendre"))
+            assertTrue(controller.requestQuiz())
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            assertFalse(controller.requestQuiz())
+            assertTrue(controller.send("Peux-tu préciser la question ?"))
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            val messages = controller.state.value.sessions.single().messages
+            assertEquals(1, messages.count { it.quiz != null && it.quizAnswer == null })
+            assertEquals("Première question ?", messages[1].quiz?.question)
+            assertTrue(messages.last().text.contains("QCM encore ouvert"))
+        } finally { controller.close() }
+    }
+
+    @Test fun bothProvidersReceiveQuizContractAndQuestionHistory() {
+        val question = StudioQuiz("Quelle valeur ?", listOf(StudioQuizOption("a", "Un"), StudioQuizOption("b", "Deux")), false, listOf("b"), "Deux.")
+        val history = listOf(StudioMessage("assistant", "", quiz = question), StudioMessage("user", "Deux : mon raisonnement."))
+        val api = buildTutorBody("model", "Calcul", history)
+        val chatGpt = buildChatGptBody("model", "Calcul", history)
+        for (body in listOf(api, chatGpt)) {
+            assertTrue(body.contains("studio-quiz"))
+            assertTrue(body.contains("Quelle valeur ?"))
+            assertTrue(body.contains("mon raisonnement"))
+            assertTrue(body.contains("correctIds"))
+        }
+    }
+
+    @Test fun quizAndReasoningSurviveFailureRestartAndRetry() = runBlocking {
+        val file = Files.createTempDirectory("studio-quiz").resolve("studio.json")
+        val server = HttpServer.create(InetSocketAddress("127.0.0.1", 0), 0)
+        val requests = java.util.Collections.synchronizedList(mutableListOf<String>())
+        val calls = java.util.concurrent.atomic.AtomicInteger()
+        val fence = 0x60.toChar().toString().repeat(3)
+        val quiz = """{"question":"Combien font 2 + 2 ?","options":[{"id":"a","label":"3"},{"id":"b","label":"4"}],"multiSelect":false,"correctIds":["b"],"explanation":"2 + 2 = 4."}"""
+        server.createContext("/v1/chat/completions") { exchange ->
+            requests.add(exchange.requestBody.bufferedReader().readText())
+            val call = calls.incrementAndGet()
+            if (call == 2) {
+                exchange.sendResponseHeaders(503, -1)
+                exchange.close()
+            } else {
+                val content = if (call == 1) fence + "studio-quiz\n" + quiz + "\n" + fence else "Reprenons ton raisonnement."
+                val body = buildJsonObject {
+                    put("choices", buildJsonArray { add(buildJsonObject { put("message", buildJsonObject { put("content", content) }) }) })
+                }.toString().toByteArray()
+                exchange.sendResponseHeaders(200, body.size.toLong())
+                exchange.responseBody.use { it.write(body) }
+            }
+        }
+        server.start()
+        var controller = DesktopStudioController(file)
+        try {
+            assertTrue(controller.configure("http://127.0.0.1:${server.address.port}/v1", "model", ""))
+            assertTrue(controller.create("Additionner"))
+            assertTrue(controller.requestQuiz())
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            val question = controller.state.value.sessions.single().messages[1]
+            assertEquals("Combien font 2 + 2 ?", question.quiz?.question)
+            assertNull(question.quizAnswer)
+            assertFalse("2 + 2 = 4" in question.text)
+            assertFalse(controller.submitQuiz(1, listOf("missing"), false, "Raison", 70))
+            assertFalse(controller.submitQuiz(1, emptyList(), false, "Raison", 70))
+            assertTrue(controller.submitQuiz(1, listOf("b"), false, "Deux paires font quatre", 70))
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            assertNotNull(controller.state.value.error)
+            assertEquals(true, controller.state.value.sessions.single().messages[1].quizAnswer?.correct)
+            assertTrue(requests[1].contains("Deux paires font quatre"))
+            assertTrue(requests[1].contains("Confiance"))
+            assertTrue(requests[1].contains("Combien font 2 + 2 ?"))
+        } finally { controller.close() }
+        controller = DesktopStudioController(file)
+        try {
+            val saved = controller.state.value.sessions.single()
+            assertEquals(listOf("b"), saved.messages[1].quizAnswer?.selectedIds)
+            assertEquals("Deux paires font quatre", saved.messages[1].quizAnswer?.thinking)
+            assertEquals(70, saved.messages[1].quizAnswer?.confidence)
+            controller.retry()
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            assertNull(controller.state.value.error)
+            assertEquals(4, controller.state.value.sessions.single().messages.size)
+            assertEquals(3, calls.get())
+        } finally { controller.close(); server.stop(0) }
+    }
+
+    @Test fun explicitQuizRequestRejectsInvalidProviderReplyAndCanRetry() = runBlocking {
+        val file = Files.createTempDirectory("studio-quiz-invalid").resolve("studio.json")
+        val server = HttpServer.create(InetSocketAddress("127.0.0.1", 0), 0)
+        val fence = 0x60.toChar().toString().repeat(3)
+        server.createContext("/v1/chat/completions") { exchange ->
+            val content = fence + "studio-quiz\n" + """{"correctIds":["secret"]}""" + "\n" + fence
+            val bytes = buildJsonObject {
+                put("choices", buildJsonArray { add(buildJsonObject { put("message", buildJsonObject { put("content", content) }) }) })
+            }.toString().toByteArray()
+            exchange.sendResponseHeaders(200, bytes.size.toLong())
+            exchange.responseBody.use { it.write(bytes) }
+        }
+        server.start()
+        val controller = DesktopStudioController(file)
+        try {
+            assertTrue(controller.configure("http://127.0.0.1:${server.address.port}/v1", "model", ""))
+            assertTrue(controller.create("Calcul"))
+            assertTrue(controller.requestQuiz())
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            assertTrue(controller.state.value.error.orEmpty().contains("QCM"))
+            assertEquals(1, controller.state.value.sessions.single().messages.size)
+            assertFalse(Files.readString(file).contains("secret"))
+        } finally { controller.close(); server.stop(0) }
+    }
+
     @Test fun modelDiscoveryUsesConfiguredEndpointAndNeverPersistsKey() = runBlocking {
         val file = Files.createTempDirectory("studio-model-list").resolve("studio.json")
         val server = HttpServer.create(InetSocketAddress("127.0.0.1", 0), 0)

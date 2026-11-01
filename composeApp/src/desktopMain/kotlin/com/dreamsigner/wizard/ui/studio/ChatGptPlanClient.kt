@@ -321,7 +321,7 @@ internal fun buildChatGptBody(model: String, goal: String, history: List<StudioM
         history.takeLast(12).forEach { turn ->
             add(buildJsonObject {
                 put("role", if (turn.role == "assistant") "assistant" else "user")
-                put("content", turn.text)
+                put("content", studioMessageForTutor(turn))
             })
         }
     }

@@ -28,11 +28,13 @@ internal data class TutorRequest(
 internal fun interface StudioTutor { suspend fun respond(request: TutorRequest): String }
 
 @Serializable private data class StudioDisk(val baseUrl: String = "", val model: String = "", val sessions: List<StudioSessionDisk> = emptyList(), val selectedId: String? = null, val providerMode: String = "api", val reasoningEffort: String = "AUTOMATIC", val apiModel: String? = null, val chatGptModel: String? = null)
-@Serializable private data class StudioSessionDisk(val id: String, val goal: String, val messages: List<StudioMessageDisk>, val plan: StudioPlanDisk? = null, val reasoningEffort: String? = null, val modelChoice: StudioModelChoiceDisk? = null)
+@Serializable private data class StudioSessionDisk(val id: String, val goal: String, val messages: List<StudioMessageDisk>, val plan: StudioPlanDisk? = null, val reasoningEffort: String? = null, val modelChoice: StudioModelChoiceDisk? = null, val planProposal: StudioPlanProposalDisk? = null)
 @Serializable private data class StudioModelChoiceDisk(val providerMode: String, val baseUrl: String, val model: String)
 @Serializable private data class StudioPlanDisk(val steps: List<StudioPlanStepDisk>, val decision: String = "proposed")
 @Serializable private data class StudioPlanStepDisk(val title: String, val prerequisites: List<Int>, val evidence: String, val sources: List<Int>)
-@Serializable private data class StudioMessageDisk(val role: String, val text: String)
+@Serializable private data class StudioDiagnosisDisk(val observation: String, val sources: List<Int>)
+@Serializable private data class StudioPlanProposalDisk(val diagnosis: List<StudioDiagnosisDisk>, val plan: StudioPlanDisk)
+@Serializable private data class StudioMessageDisk(val role: String, val text: String, val quiz: StudioQuiz? = null, val quizAnswer: StudioQuizAnswer? = null)
 
 internal class DesktopStudioController(
     private val file: Path = defaultStudioFile(),
@@ -176,9 +178,54 @@ internal class DesktopStudioController(
         return saved
     }
 
-    override fun send(message: String): Boolean {
+    private data class QuizSubmission(val sessionId: String, val index: Int, val quiz: StudioQuiz, val answer: StudioQuizAnswer)
+
+    override fun send(message: String): Boolean = sendTurn(message, null)
+    override fun requestQuiz(): Boolean = synchronized(lock) {
+        val session = state.value.sessions.firstOrNull { it.id == state.value.selectedId }
+        if (session == null || session.messages.any { it.quiz != null && it.quizAnswer == null }) false
+        else sendTurnLocked(STUDIO_QUIZ_REQUEST, null)
+    }
+
+    override fun requestGeneratedPlan(): Boolean = synchronized(lock) {
+        val session = state.value.sessions.firstOrNull { it.id == state.value.selectedId }
+        if (session == null || session.messages.none { it.role == "user" && it.text != STUDIO_QUIZ_REQUEST } ||
+            session.messages.any { it.quiz != null && it.quizAnswer == null }) false
+        else sendTurnLocked(STUDIO_PLAN_REQUEST, null)
+    }
+
+    override fun discardPlanProposal(): Boolean {
         val snapshot = state.value
-        if (snapshot.busy || snapshot.storageError != null || message.isBlank() || message.length > 4_000) return false
+        val id = snapshot.selectedId ?: return false
+        if (snapshot.busy || snapshot.storageError != null) return false
+        return mutate { copy(sessions = sessions.map { if (it.id == id) it.copy(planProposal = null) else it }) }
+    }
+
+    override fun submitQuiz(messageIndex: Int, selectedIds: List<String>, dontKnow: Boolean, thinking: String, confidence: Int?): Boolean {
+        val snapshot = state.value
+        val session = snapshot.sessions.firstOrNull { it.id == snapshot.selectedId } ?: return false
+        val message = session.messages.getOrNull(messageIndex) ?: return false
+        val quiz = message.quiz ?: return false
+        if (message.role != "assistant" || message.quizAnswer != null || !validStudioQuiz(quiz) || thinking.length > 3_000 ||
+            (confidence != null && confidence !in 0..100)) return false
+        val ids = selectedIds.distinct()
+        if (ids.size != selectedIds.size || ids.any { id -> quiz.options.none { it.id == id } } ||
+            (dontKnow && ids.isNotEmpty()) || (!dontKnow && ids.isEmpty()) || (!quiz.multiSelect && ids.size > 1)) return false
+        val answer = StudioQuizAnswer(ids, dontKnow, thinking.trim(), confidence, !dontKnow && ids.toSet() == quiz.correctIds.toSet(), System.currentTimeMillis())
+        val selected = if (dontKnow) "Je ne sais pas" else quiz.options.filter { it.id in ids }.joinToString(" ; ") { "${it.label} (${it.id})" }
+        val learnerMessage = buildString {
+            append("Réponse à la question : ").append(selected)
+            if (answer.thinking.isNotBlank()) append("\nMon raisonnement : ").append(answer.thinking)
+            confidence?.let { append("\nConfiance : ").append(it).append(" %") }
+        }
+        return sendTurn(learnerMessage, QuizSubmission(session.id, messageIndex, quiz, answer))
+    }
+
+    private fun sendTurn(message: String, submission: QuizSubmission?): Boolean = synchronized(lock) { sendTurnLocked(message, submission) }
+
+    private fun sendTurnLocked(message: String, submission: QuizSubmission?): Boolean {
+        val snapshot = state.value
+        if (snapshot.busy || snapshot.storageError != null || message.isBlank() || message.length > (if (submission == null) 4_000 else 14_000)) return false
         val session = snapshot.sessions.firstOrNull { it.id == snapshot.selectedId } ?: return false
         if (pendingBySession.containsKey(session.id)) return false
         val sessionConfig = effectiveSessionConfig(snapshot, session) ?: run {
@@ -197,8 +244,17 @@ internal class DesktopStudioController(
             return false
         }
         val learnerMessage = message.trim()
+        if (submission != null && (submission.sessionId != session.id || session.messages.getOrNull(submission.index)?.quiz != submission.quiz ||
+                session.messages.getOrNull(submission.index)?.quizAnswer != null)) return false
         val saved = mutate {
-            copy(sessions = sessions.map { if (it.id == session.id) it.copy(messages = it.messages + StudioMessage("user", learnerMessage)) else it }, error = null)
+            copy(sessions = sessions.map { current ->
+                if (current.id != session.id) current else {
+                    val updatedMessages = if (submission == null) current.messages else current.messages.mapIndexed { index, item ->
+                        if (index == submission.index) item.copy(quizAnswer = submission.answer) else item
+                    }
+                    current.copy(messages = updatedMessages + StudioMessage("user", learnerMessage))
+                }
+            }, error = null)
         }
         if (!saved) return false
         pendingBySession[session.id] = learnerMessage
@@ -210,7 +266,7 @@ internal class DesktopStudioController(
         val snapshot = state.value
         val session = snapshot.sessions.firstOrNull { it.id == snapshot.selectedId } ?: return false
         if (snapshot.busy || snapshot.storageError != null || !validPlan(plan, session.messages.size)) return false
-        return mutate { copy(sessions = sessions.map { if (it.id == session.id) it.copy(plan = plan) else it }) }
+        return mutate { copy(sessions = sessions.map { if (it.id == session.id) it.copy(plan = plan, planProposal = null) else it }) }
     }
 
     override fun retry() {
@@ -257,7 +313,14 @@ internal class DesktopStudioController(
         if (pendingBySession[id].isNullOrBlank()) return
         val acceptedPlan = session.plan?.takeIf { it.decision == "accepted" && validPlan(it, session.messages.size) }
         val effort = session.reasoningEffort ?: config.reasoningEffort
-        val request = endpoint?.let { TutorRequest(it, config.model, secret, session.goal, session.messages.takeLast(12), acceptedPlan, effort) }
+        val planRequest = session.messages.lastOrNull()?.text == STUDIO_PLAN_REQUEST
+        val history = session.messages.takeLast(12).mapIndexed { offset, message ->
+            if (!planRequest) message else message.copy(
+                text = "[message ${session.messages.size - minOf(12, session.messages.size) + offset}]\n${studioMessageForTutor(message)}",
+                quiz = null,
+            )
+        }
+        val request = endpoint?.let { TutorRequest(it, config.model, secret, session.goal, history, acceptedPlan, effort) }
         val version = synchronized(lock) {
             requestVersion += 1
             state.value = state.value.copy(busy = true, error = null)
@@ -266,7 +329,7 @@ internal class DesktopStudioController(
         val job = scope.launch(start = CoroutineStart.LAZY) {
             try {
                 val reply = withTimeout(90_000) {
-                    if (config.providerMode == "chatgpt") chatGpt.respond(config.model, session.goal, session.messages, acceptedPlan, effort)
+                    if (config.providerMode == "chatgpt") chatGpt.respond(config.model, session.goal, history, acceptedPlan, effort)
                     else tutor.respond(requireNotNull(request))
                 }
                 persistReply(id, reply, version)
@@ -290,7 +353,35 @@ internal class DesktopStudioController(
         val before = state.value
         val current = before.sessions.firstOrNull { it.id == id }
         if (current == null) { state.value = before.copy(busy = false, error = "La séance n’existe plus."); return@synchronized }
-        val updated = current.copy(messages = current.messages + StudioMessage("assistant", reply))
+        val parsed = parseStudioTutorReply(reply)
+        if (current.messages.lastOrNull()?.text == STUDIO_PLAN_REQUEST) {
+            val allowedSources = current.messages.indices.filterTo(mutableSetOf()) { index ->
+                index < current.messages.lastIndex && current.messages[index].text != STUDIO_PLAN_REQUEST
+            }
+            val generated = parseGeneratedPlan(reply, allowedSources)
+            if (generated == null) {
+                state.value = before.copy(busy = false, error = "Le fournisseur n’a pas produit de plan structuré utilisable. Ta demande est conservée ; réessaie ou choisis un autre modèle.")
+                return@synchronized
+            }
+            val proposal = StudioPlanProposal(
+                generated.diagnosis.map { StudioDiagnosisObservation(it.observation, it.sources) },
+                StudioPlan(generated.steps.map { StudioPlanStep(it.title, it.prerequisites, it.evidence, it.sources) })
+            )
+            val updated = current.copy(planProposal = proposal, messages = current.messages + StudioMessage("assistant", "Plan proposé. Ouvre Mon plan pédagogique pour examiner, corriger et accepter les étapes."))
+            val next = before.copy(sessions = before.sessions.map { if (it.id == id) updated else it }, busy = false, error = null)
+            try { write(next); state.value = next; pendingBySession.remove(id) }
+            catch (_: Exception) { state.value = before.copy(busy = false, storageError = "Impossible d’enregistrer le plan proposé. Vérifie l’accès au dossier DreamsignWizard; les données précédentes sont conservées.") }
+            return@synchronized
+        }
+        if (current.messages.lastOrNull()?.text == STUDIO_QUIZ_REQUEST && parsed.quiz == null) {
+            state.value = before.copy(busy = false, error = "Le fournisseur n’a pas produit de QCM utilisable. Ton message est conservé ; réessaie ou choisis un autre modèle.")
+            return@synchronized
+        }
+        val otherQuizOpen = current.messages.any { it.quiz != null && it.quizAnswer == null }
+        val displayedReply = if (otherQuizOpen && parsed.quiz != null) {
+            ParsedStudioReply("Le tuteur a proposé une autre question. Réponds d’abord au QCM encore ouvert.", null)
+        } else parsed
+        val updated = current.copy(messages = current.messages + StudioMessage("assistant", displayedReply.text, quiz = displayedReply.quiz))
         val next = before.copy(sessions = before.sessions.map { if (it.id == id) updated else it }, busy = false, error = null)
         try { write(next); state.value = next; pendingBySession.remove(id) }
         catch (_: Exception) { state.value = before.copy(busy = false, storageError = "Impossible d’enregistrer la réponse. Vérifie l’accès au dossier DreamsignWizard; les données précédentes sont conservées.") }
@@ -374,8 +465,15 @@ internal class DesktopStudioController(
 
     override fun close() { cancel(); synchronized(apiKey) { apiKey.setLength(0) }; scope.cancel() }
     private fun fromDisk(d: StudioDisk) = StudioState(baseUrl = d.baseUrl, model = d.model, sessions = d.sessions.map { it.fromDisk() }, selectedId = d.selectedId, providerMode = d.providerMode, reasoningEffort = ReasoningEffort.entries.firstOrNull { it.name == d.reasoningEffort } ?: ReasoningEffort.AUTOMATIC, apiModel = d.apiModel ?: if (d.providerMode == "api") d.model else "", chatGptModel = d.chatGptModel ?: if (d.providerMode == "chatgpt") d.model else "")
-    private fun StudioSession.toDisk() = StudioSessionDisk(id, goal, messages.map { StudioMessageDisk(it.role, it.text) }, plan?.let { StudioPlanDisk(it.steps.map { step -> StudioPlanStepDisk(step.title, step.prerequisites, step.evidence, step.sources) }, it.decision) }, reasoningEffort?.name, modelChoice?.let { StudioModelChoiceDisk(it.providerMode, it.baseUrl, it.model) })
-    private fun StudioSessionDisk.fromDisk() = StudioSession(id, goal, messages.map { StudioMessage(it.role, it.text) }, plan?.let { StudioPlan(it.steps.map { step -> StudioPlanStep(step.title, step.prerequisites, step.evidence, step.sources) }, it.decision) }, reasoningEffort?.let { saved -> ReasoningEffort.entries.firstOrNull { it.name == saved } }, modelChoice?.let { StudioModelChoice(it.providerMode, it.baseUrl, it.model) })
+    private fun StudioPlan.toDisk() = StudioPlanDisk(steps.map { step -> StudioPlanStepDisk(step.title, step.prerequisites, step.evidence, step.sources) }, decision)
+    private fun StudioPlanDisk.fromDisk() = StudioPlan(steps.map { step -> StudioPlanStep(step.title, step.prerequisites, step.evidence, step.sources) }, decision)
+    private fun StudioSession.toDisk() = StudioSessionDisk(id, goal, messages.map { StudioMessageDisk(it.role, it.text, it.quiz, it.quizAnswer) }, plan?.toDisk(), reasoningEffort?.name, modelChoice?.let { StudioModelChoiceDisk(it.providerMode, it.baseUrl, it.model) }, planProposal?.let { StudioPlanProposalDisk(it.diagnosis.map { observation -> StudioDiagnosisDisk(observation.observation, observation.sources) }, it.plan.toDisk()) })
+    private fun StudioSessionDisk.fromDisk() = StudioSession(id, goal, messages.map { message ->
+        require(message.quiz == null || validStudioQuiz(message.quiz))
+        require(message.quiz == null || message.role == "assistant")
+        require(message.quizAnswer == null || (message.quiz != null && validStudioQuizAnswer(message.quiz, message.quizAnswer)))
+        StudioMessage(message.role, message.text, message.quiz, message.quizAnswer)
+    }, plan?.fromDisk(), reasoningEffort?.let { saved -> ReasoningEffort.entries.firstOrNull { it.name == saved } }, modelChoice?.let { StudioModelChoice(it.providerMode, it.baseUrl, it.model) }, planProposal?.let { StudioPlanProposal(it.diagnosis.map { observation -> StudioDiagnosisObservation(observation.observation, observation.sources) }, it.plan.fromDisk()) })
 }
 
 private class OpenAiCompatibleTutor : StudioTutor {
@@ -411,7 +509,11 @@ private fun providerFailureMessage(failure: Exception): String {
 }
 
 internal const val MAX_TUTOR_BODY_CHARS = 60_000
-internal const val TUTOR_SYSTEM_PROMPT = "Tu es un tuteur francophone. Commence par diagnostiquer les connaissances et le raisonnement de l’apprenant. Après sa réponse, propose les prérequis et un plan concis, puis enseigne progressivement en vérifiant sa compréhension. Sois honnête sur les limites et ne prétends pas avoir évalué une compétence sans preuve."
+internal const val TUTOR_SYSTEM_PROMPT = "Tu es un tuteur francophone. Commence par diagnostiquer les connaissances et le raisonnement de l’apprenant. Après sa réponse, propose les prérequis et un plan concis, puis enseigne progressivement en vérifiant sa compréhension. Sois honnête sur les limites et ne prétends pas avoir évalué une compétence sans preuve.\n" +
+    "Pour chaque question de diagnostic ou de pratique, propose un QCM et réponds uniquement par un bloc structuré ```studio-quiz suivi d'un objet JSON puis ``` ; ne dévoile jamais la solution ou l'explication hors de ce bloc avant la réponse. " +
+    "Le JSON doit contenir question (énoncé complet autonome), options (tableau de 2 à 8 objets avec id unique court et label), multiSelect (booléen), correctIds (tableau non vide des id corrects) et explanation (explication complète). " +
+    "Pour un seul choix correct, multiSelect vaut false et correctIds contient un seul id. Les labels ne contiennent pas la solution ni de raisonnement. " +
+    "L'apprenant peut choisir, dire qu'il ne sait pas, indiquer sa confiance et expliquer librement son raisonnement. Après sa réponse, examine ce raisonnement et corrige les confusions avant de poursuivre."
 
 /** Keeps recent whole turns by their encoded size, always retaining the goal and latest learner turn. */
 internal fun acceptedPlanContext(plan: StudioPlan?): String = if (plan?.decision != "accepted") "" else buildString {
@@ -435,7 +537,7 @@ internal fun buildTutorBody(model: String, goal: String, history: List<StudioMes
     }.toString()
     fun encodedTurn(turn: StudioMessage) = buildJsonObject {
         put("role", if (turn.role == "assistant") "assistant" else "user")
-        put("content", turn.text)
+        put("content", studioMessageForTutor(turn))
     }
     newestFirst.firstOrNull()?.let { latest ->
         retained.add(encodedTurn(latest))

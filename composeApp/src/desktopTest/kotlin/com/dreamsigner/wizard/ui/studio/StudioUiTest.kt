@@ -180,6 +180,93 @@ class StudioUiTest {
     }
 
     @Test
+    fun quizRequiresAChoiceKeepsThinkingOnFailureAndRevealsTheCorrectionAfterSubmission() = runDesktopComposeUiTest(width = 1000, height = 800) {
+        val controller = MemoryStudioController(initialSession = true)
+        controller.installQuiz()
+        setContent {
+            LearningAppTheme {
+                CompositionLocalProvider(LocalStudioController provides controller) { StudioScreen() }
+            }
+        }
+
+        onNodeWithTag("studio-request-quiz").assertDoesNotExist()
+        onNodeWithTag("studio-quiz-submit").performScrollTo().assertIsNotEnabled()
+        onNodeWithTag("studio-quiz-explanation").assertDoesNotExist()
+        onNodeWithTag("studio-quiz-option-b").performScrollTo().performClick().assertIsSelected()
+        onNodeWithTag("studio-quiz-thinking").performScrollTo().performTextInput("Je divise le tout en deux parts égales.")
+        onNodeWithTag("studio-quiz-clarification").performClick()
+        onNodeWithTag("studio-draft").performTextInput("Pourquoi deux parts ?")
+        onNodeWithTag("studio-quiz-clarification").performClick()
+        onNodeWithTag("studio-quiz-option-b").performScrollTo().assertIsSelected()
+        assertEquals("Je divise le tout en deux parts égales.", onNodeWithTag("studio-quiz-thinking").performScrollTo()
+            .fetchSemanticsNode().config[SemanticsProperties.EditableText].text)
+        onNodeWithTag("studio-quiz-confidence").performScrollTo().performClick()
+        onNodeWithText("75 %").performClick()
+        onNodeWithTag("studio-quiz-submit").performScrollTo().performClick()
+        onNodeWithTag("studio-quiz-option-b").performScrollTo().assertIsSelected()
+        assertEquals("Je divise le tout en deux parts égales.", onNodeWithTag("studio-quiz-thinking").performScrollTo()
+            .fetchSemanticsNode().config[SemanticsProperties.EditableText].text)
+        runOnIdle {
+            assertEquals(listOf("b"), controller.quizSelection)
+            assertEquals("Je divise le tout en deux parts égales.", controller.quizThinking)
+            assertEquals(75, controller.quizConfidence)
+            controller.acceptQuiz = true
+        }
+        onNodeWithTag("studio-quiz-submit").performScrollTo().performClick()
+        onNodeWithTag("studio-quiz-result").performScrollTo().assertIsDisplayed()
+        onNodeWithText("Bonne réponse").assertIsDisplayed()
+        onNodeWithTag("studio-quiz-explanation").performScrollTo().assertIsDisplayed()
+        onNodeWithText("Une moitié correspond à une des deux parts égales.").assertIsDisplayed()
+    }
+
+    @Test
+    fun learnerCanRequestAQuizFromTheConversation() = runDesktopComposeUiTest(width = 1000, height = 800) {
+        val controller = MemoryStudioController(initialSession = true)
+        setContent {
+            LearningAppTheme {
+                CompositionLocalProvider(LocalStudioController provides controller) { StudioScreen() }
+            }
+        }
+        onNodeWithTag("studio-request-quiz").assertIsEnabled().performClick()
+        runOnIdle { assertEquals(1, controller.quizRequests) }
+    }
+
+    @Test
+    fun quizSupportsDontKnowAndRendersAtPhoneAndDesktopSizes() {
+        listOf(360 to 480, 1000 to 800).forEach { (width, height) ->
+            runDesktopComposeUiTest(width = width, height = height) {
+                val controller = MemoryStudioController(initialSession = true).apply { installQuiz(); acceptQuiz = true }
+                setContent {
+                    LearningAppTheme {
+                        CompositionLocalProvider(LocalStudioController provides controller) { StudioScreen() }
+                    }
+                }
+                val initialFile = File("build/reports/ui-snapshots/studio-quiz-$width-initial.png")
+                check(initialFile.parentFile.isDirectory || initialFile.parentFile.mkdirs())
+                Image.makeFromBitmap(onRoot().captureToImage().asSkiaBitmap()).use { image ->
+                    image.encodeToData()!!.use { initialFile.writeBytes(it.bytes) }
+                }
+                onNodeWithTag("studio-quiz-option-a").performScrollTo().assertIsDisplayed()
+                val file = File("build/reports/ui-snapshots/studio-quiz-$width.png")
+                check(file.parentFile.isDirectory || file.parentFile.mkdirs())
+                Image.makeFromBitmap(onRoot().captureToImage().asSkiaBitmap()).use { image ->
+                    image.encodeToData()!!.use { file.writeBytes(it.bytes) }
+                }
+                onNodeWithTag("studio-quiz-dont-know").performScrollTo().performClick().assertIsSelected()
+                onNodeWithTag("studio-quiz-thinking").performScrollTo().assertIsDisplayed()
+                val reasoningFile = File("build/reports/ui-snapshots/studio-quiz-$width-reasoning.png")
+                Image.makeFromBitmap(onRoot().captureToImage().asSkiaBitmap()).use { image ->
+                    image.encodeToData()!!.use { reasoningFile.writeBytes(it.bytes) }
+                }
+                onNodeWithTag("studio-quiz-submit").performScrollTo().assertIsEnabled().performClick()
+                runOnIdle { assertEquals(true, controller.quizDontKnow); assertEquals(emptyList(), controller.quizSelection) }
+                onNodeWithTag("studio-quiz-result").performScrollTo().assertIsDisplayed()
+                onNodeWithText("Réponse à découvrir").assertIsDisplayed()
+            }
+        }
+    }
+
+    @Test
     fun unsupportedPlatformExplainsAndDisablesProviderAndGoalActions() = runDesktopComposeUiTest(width = 360, height = 480) {
         val controller = MemoryStudioController().apply {
             state.value = state.value.copy(available = false, error = "Le tuteur IA est disponible uniquement dans l’application Windows.")
@@ -218,6 +305,18 @@ class StudioUiTest {
         var lastMessage: String? = null
         var configuredKey: String? = null
         var cancelCount = 0
+        var acceptQuiz = false
+        var quizRequests = 0
+        var quizSelection: List<String>? = null
+        var quizDontKnow: Boolean? = null
+        var quizThinking: String? = null
+        var quizConfidence: Int? = null
+        fun installQuiz() {
+            val session = state.value.sessions.single()
+            val quiz = StudioQuiz("Quelle fraction représente une moitié ?", listOf(StudioQuizOption("a", "Un tiers"), StudioQuizOption("b", "Une moitié")),
+                correctIds = listOf("b"), explanation = "Une moitié correspond à une des deux parts égales.")
+            state.value = state.value.copy(sessions = listOf(session.copy(messages = listOf(StudioMessage("assistant", "À toi de répondre.", quiz = quiz)))))
+        }
         override fun select(id: String) { state.value = state.value.copy(selectedId = id, error = null) }
         override fun create(goal: String): Boolean {
             if (goal.isBlank() || !state.value.available) return false
@@ -239,6 +338,23 @@ class StudioUiTest {
             }
             val session = state.value.sessions.firstOrNull { it.id == state.value.selectedId } ?: return false
             val updated = session.copy(messages = session.messages + StudioMessage("user", message) + StudioMessage("assistant", "Partons de ton raisonnement."))
+            state.value = state.value.copy(sessions = state.value.sessions.map { if (it.id == updated.id) updated else it }, error = null)
+            return true
+        }
+        override fun requestQuiz(): Boolean { quizRequests++; return true }
+        override fun submitQuiz(messageIndex: Int, selectedIds: List<String>, dontKnow: Boolean, thinking: String, confidence: Int?): Boolean {
+            quizSelection = selectedIds
+            quizDontKnow = dontKnow
+            quizThinking = thinking
+            quizConfidence = confidence
+            if (!acceptQuiz) {
+                state.value = state.value.copy(error = "La réponse n’a pas pu être enregistrée.")
+                return false
+            }
+            val session = state.value.sessions.firstOrNull { it.id == state.value.selectedId } ?: return false
+            val message = session.messages[messageIndex]
+            val answer = StudioQuizAnswer(selectedIds, dontKnow, thinking, confidence, !dontKnow && selectedIds == message.quiz?.correctIds, 1L)
+            val updated = session.copy(messages = session.messages.mapIndexed { index, item -> if (index == messageIndex) item.copy(quizAnswer = answer) else item })
             state.value = state.value.copy(sessions = state.value.sessions.map { if (it.id == updated.id) updated else it }, error = null)
             return true
         }

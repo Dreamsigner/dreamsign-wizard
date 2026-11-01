@@ -50,21 +50,22 @@ fun StudioScreen() {
     BoxWithConstraints(Modifier.fillMaxSize().background(Paper)) {
         val wide = maxWidth >= 800.dp
         val session = state.sessions.firstOrNull { it.id == state.selectedId }
+        val quizActive = session?.messages?.any { it.quiz != null && it.quizAnswer == null } == true
         Column(Modifier.fillMaxSize().padding(horizontal = if (wide) 28.dp else 16.dp, vertical = if (wide) 22.dp else 14.dp)) {
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
-                    Text("Studio IA", style = MaterialTheme.typography.h4, color = Ink)
-                    Text("Un tuteur qui part de ce que tu sais déjà.", color = Graphite, fontSize = 14.sp)
+                    Text("Studio IA", style = if (quizActive && !wide) MaterialTheme.typography.h5 else MaterialTheme.typography.h4, color = Ink)
+                    if (!quizActive || wide) Text("Un tuteur qui part de ce que tu sais déjà.", color = Graphite, fontSize = 14.sp)
                 }
                 OutlinedButton(
                     onClick = { showConnection = true }, enabled = state.available && !state.busy,
                     modifier = Modifier.heightIn(min = 48.dp), shape = LearningShape,
                 ) { Text("Connexion IA", maxLines = 1) }
             }
-            if (state.providerMode == "chatgpt" && state.chatGptConnected) {
+            if ((!quizActive || wide) && state.providerMode == "chatgpt" && state.chatGptConnected) {
                 Text("ChatGPT · ${state.chatGptEmail.orEmpty()} · ${state.model}", Modifier.fillMaxWidth().padding(top = 4.dp),
                     color = Graphite, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            } else if (state.available && state.baseUrl.isNotBlank() && state.model.isNotBlank()) {
+            } else if ((!quizActive || wide) && state.available && state.baseUrl.isNotBlank() && state.model.isNotBlank()) {
                 Text(
                     "${state.baseUrl} · ${state.model}", Modifier.fillMaxWidth().padding(top = 4.dp),
                     color = Graphite, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis,
@@ -240,6 +241,11 @@ private fun StudioWorkspace(
 @Composable
 private fun Conversation(state: StudioState, session: StudioSession, controller: StudioController) {
     var draft by remember(session.id) { mutableStateOf("") }
+    val quizDrafts = remember(session.id) { mutableStateMapOf<Int, StudioQuizDraft>() }
+    var showClarification by remember(session.id) { mutableStateOf(false) }
+    val activeQuizIndex = session.messages.indexOfLast { it.quiz != null && it.quizAnswer == null }
+    val hasOpenQuiz = activeQuizIndex >= 0
+    LaunchedEffect(session.id, activeQuizIndex) { showClarification = false }
     var showPlan by remember(session.id) { mutableStateOf(false) }
     if (showPlan) StudioPlanDialog(session, controller, onDismiss = { showPlan = false }, onDiagnosis = {
         draft = "Peux-tu approfondir le diagnostic de mes prérequis avant de poursuivre le plan ?"
@@ -252,7 +258,7 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
     Column(Modifier.fillMaxSize().padding(horizontal = 20.dp, vertical = 8.dp)) {
         var showSessionEffort by remember(session.id) { mutableStateOf(false) }
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Text(session.goal, Modifier.weight(1f).testTag("studio-current-goal"), style = MaterialTheme.typography.h5, color = Ink, maxLines = 2, overflow = TextOverflow.Ellipsis)
+            Text(session.goal, Modifier.weight(1f).testTag("studio-current-goal"), style = if (hasOpenQuiz) MaterialTheme.typography.h6 else MaterialTheme.typography.h5, color = Ink, maxLines = if (hasOpenQuiz) 1 else 2, overflow = TextOverflow.Ellipsis)
             Box {
                 TextButton(onClick = { showSessionEffort = true }, enabled = !state.busy && state.storageError == null,
                     modifier = Modifier.testTag("studio-session-effort")) { Text("Réflexion") }
@@ -272,7 +278,8 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
         }
         var showSessionModels by remember(session.id) { mutableStateOf(false) }
         val sessionModels = if (state.providerMode == "chatgpt") state.chatGptModels else if (state.apiModelsUrl == state.baseUrl) state.apiModels else emptyList()
-        Box {
+        if (!hasOpenQuiz) Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+          Box(Modifier.weight(1f)) {
             TextButton(onClick = { showSessionModels = true }, enabled = !state.busy && state.storageError == null,
                 modifier = Modifier.testTag("studio-session-model")) {
                 Text("Modèle : ${session.modelChoice?.model ?: state.model.ifBlank { "non configuré" }}", maxLines = 1, overflow = TextOverflow.Ellipsis)
@@ -287,8 +294,12 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
                     }
                 }
             }
+          }
+          TextButton(onClick = { controller.requestQuiz() },
+              enabled = state.available && !state.busy && state.storageError == null && !hasOpenQuiz,
+              modifier = Modifier.testTag("studio-request-quiz")) { Text("Demander un QCM", maxLines = 1) }
         }
-        if (state.providerMode == "chatgpt" && state.chatGptConnected) {
+        if (!hasOpenQuiz && state.providerMode == "chatgpt" && state.chatGptConnected) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text("Utilise ton forfait ChatGPT", color = Graphite, fontSize = 13.sp)
                 TextButton(onClick = controller::openChatGptUsage) { Text("Gérer l’usage") }
@@ -314,7 +325,25 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
                             color = if (learner) ColorStudioLearner else Paper,
                             shape = RoundedCornerShape(14.dp),
                         ) {
-                            LessonDocument(message.text, typesetMath = true, modifier = Modifier.padding(14.dp))
+                            Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                                val displayText = when (message.text) {
+                                    STUDIO_QUIZ_REQUEST -> "QCM demandé"
+                                    STUDIO_PLAN_REQUEST -> "Plan pédagogique demandé"
+                                    else -> message.text
+                                }
+                                if (displayText.isNotBlank()) LessonDocument(displayText, typesetMath = true)
+                                message.quiz?.let { quiz ->
+                                    val quizDraft = quizDrafts[index] ?: StudioQuizDraft()
+                                    StudioQuizCard(
+                                        quiz = quiz, answer = message.quizAnswer, draft = quizDraft,
+                                        onDraftChange = { quizDrafts[index] = it },
+                                        onSubmit = {
+                                            controller.submitQuiz(index, quizDraft.selectedIds, quizDraft.dontKnow, quizDraft.thinking, quizDraft.confidence)
+                                        },
+                                        enabled = state.available && !state.busy && state.storageError == null,
+                                    )
+                                }
+                            }
                         }
                     }
                 }
@@ -328,7 +357,21 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
                 }
             }
         }
-        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        if (hasOpenQuiz) {
+            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
+                TextButton(onClick = { showClarification = !showClarification }, enabled = !state.busy,
+                    modifier = Modifier.testTag("studio-quiz-clarification")) {
+                    Text(if (showClarification) "Retour au QCM" else "Clarifier")
+                }
+                if (!showClarification) {
+                    val answerDraft = quizDrafts[activeQuizIndex] ?: StudioQuizDraft()
+                    Button(onClick = { controller.submitQuiz(activeQuizIndex, answerDraft.selectedIds, answerDraft.dontKnow, answerDraft.thinking, answerDraft.confidence) },
+                        enabled = !state.busy && state.storageError == null && (answerDraft.dontKnow || answerDraft.selectedIds.isNotEmpty()) && answerDraft.thinking.length <= 3_000,
+                        modifier = Modifier.heightIn(min = 48.dp).testTag("studio-quiz-submit-dock")) { Text("Valider") }
+                }
+            }
+        }
+        if (!hasOpenQuiz || showClarification) Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = draft, onValueChange = { draft = it }, enabled = !state.busy && state.available,
                 modifier = Modifier.weight(1f).testTag("studio-draft"), label = { Text("Ton raisonnement ou ta question") },
@@ -343,6 +386,7 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
             ) { Text(if (state.busy) "Réponse…" else "Envoyer") }
             if (state.busy) TextButton(onClick = controller::cancel, modifier = Modifier.heightIn(min = 48.dp)) { Text("Annuler") }
         }
+        else if (state.busy) TextButton(onClick = controller::cancel, modifier = Modifier.heightIn(min = 48.dp)) { Text("Annuler") }
     }
 }
 
