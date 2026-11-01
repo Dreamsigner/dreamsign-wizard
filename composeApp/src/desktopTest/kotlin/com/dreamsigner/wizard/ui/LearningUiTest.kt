@@ -15,6 +15,7 @@ import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.semantics.SemanticsActions
+import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.UriHandler
 import androidx.compose.ui.test.*
@@ -155,7 +156,7 @@ class LearningUiTest {
     fun keyboardEnterActivatesTheFocusedNavigationControl() = runDesktopComposeUiTest(width = 1400, height = 900, testTimeout = 60.seconds) {
         val fixture = Fixture(listOf(quizLesson()))
         setContent { FixtureTheme { DreamsignWizardApp(fixture.model) } }
-        val profile = onNodeWithText("Profil")
+        val profile = onNode(hasText("Profil") or hasContentDescription("Profil"))
         profile.performSemanticsAction(SemanticsActions.RequestFocus) { it() }
         profile.assertIsFocused()
         // The event is delivered to the Compose scene, never the operating system.
@@ -164,7 +165,7 @@ class LearningUiTest {
         profile.performKeyPress(KeyEvent(Key.Enter, KeyEventType.KeyDown))
         profile.performKeyPress(KeyEvent(Key.Enter, KeyEventType.KeyUp))
         onNodeWithText("Mon parcours").assertIsDisplayed()
-        onNodeWithText("Profil").assertIsSelected()
+        onNode(hasText("Profil") or hasContentDescription("Profil")).assertIsSelected()
     }
 
     @Test
@@ -210,13 +211,13 @@ class LearningUiTest {
         setContent { FixtureTheme { DreamsignWizardApp(fixture.model) } }
 
         onNodeWithText("Mes cours").assertIsDisplayed()
-        onNodeWithText("Profil").performClick()
+        onNode(hasText("Profil") or hasContentDescription("Profil")).performClick()
         onNodeWithText("Mon parcours").assertIsDisplayed()
         onNodeWithText("XP accumulés").assertExists()
-        onNodeWithText("Profil").assertIsSelected()
-        onNodeWithText("Cours").performClick()
+        onNode(hasText("Profil") or hasContentDescription("Profil")).assertIsSelected()
+        onNode(hasText("Cours") or hasContentDescription("Cours")).performClick()
         onNodeWithText("Mes cours").assertIsDisplayed()
-        onNodeWithText("Cours").assertIsSelected()
+        onNode(hasText("Cours") or hasContentDescription("Cours")).assertIsSelected()
     }
 
     @Test
@@ -268,14 +269,14 @@ class LearningUiTest {
             model = fixture.newModel()
         }
         onNodeWithText("Mes cours").assertIsDisplayed()
-        onNodeWithText("Profil").performClick()
+        onNode(hasText("Profil") or hasContentDescription("Profil")).performClick()
         onNodeWithText("Mon parcours").assertIsDisplayed()
         runOnIdle {
             assertEquals(20, model.userStats.value.xp)
             assertEquals(4, model.userStats.value.hearts)
             assertEquals(setOf(lesson.id), model.userStats.value.completedLessonIds)
         }
-        onNodeWithText("Cours").performClick()
+        onNode(hasText("Cours") or hasContentDescription("Cours")).performClick()
         onNode(hasText(lesson.title) and hasClickAction()).performScrollTo().performClick()
         onNodeWithText("Passer aux exercices").performClick()
         onNodeWithText("Quatre").performScrollTo().performClick()
@@ -385,8 +386,8 @@ class LearningUiTest {
     fun compactLayoutKeepsNavigationBelowContent() = runDesktopComposeUiTest(width = 400, height = 900, testTimeout = 60.seconds) {
         val fixture = Fixture(listOf(quizLesson()))
         setContent { FixtureTheme { DreamsignWizardApp(fixture.model) } }
-        val courses = onNodeWithText("Cours").assertIsDisplayed().fetchSemanticsNode().boundsInRoot
-        val profile = onNodeWithText("Profil").assertIsDisplayed().fetchSemanticsNode().boundsInRoot
+        val courses = onNode(hasText("Cours") or hasContentDescription("Cours")).assertIsDisplayed().fetchSemanticsNode().boundsInRoot
+        val profile = onNode(hasText("Profil") or hasContentDescription("Profil")).assertIsDisplayed().fetchSemanticsNode().boundsInRoot
         val picker = onNode(hasText(COURSE) and hasClickAction()).assertIsDisplayed().fetchSemanticsNode().boundsInRoot
         val next = onNodeWithText("Continuer · ${quizLesson().title}").performScrollTo().fetchSemanticsNode().boundsInRoot
         assertTrue(abs(courses.center.y - profile.center.y) < 2f, "Compact navigation should be horizontal")
@@ -394,16 +395,35 @@ class LearningUiTest {
         assertTrue(courses.top >= next.bottom, "Bottom navigation should follow content")
         assertTrue(picker.left < 40f && picker.right <= 400f, "Course picker should fit the compact content column")
         saveSnapshot("learning-compact")
-        onNodeWithText("Profil").performClick()
+        onNode(hasText("Profil") or hasContentDescription("Profil")).performClick()
         onNodeWithText("Mon parcours").assertIsDisplayed()
+    }
+
+    @Test
+    fun desktopNavigationStartsAsIconRailAndCollapsesAfterSelection() = runDesktopComposeUiTest(width = 1400, height = 900, testTimeout = 60.seconds) {
+        val fixture = Fixture(listOf(quizLesson()))
+        setContent { FixtureTheme { DreamsignWizardApp(fixture.model, settingsActionCount = 2) } }
+        onNodeWithText("Profil").assertDoesNotExist()
+        onNodeWithContentDescription("Paramètres").assert(
+            SemanticsMatcher.expectValue(SemanticsProperties.StateDescription, "2 actions requises"))
+        onNodeWithContentDescription("Ouvrir le menu de navigation").performClick()
+        onNodeWithText("Profil").assertIsDisplayed()
+        onNodeWithContentDescription("Fermer le menu de navigation").assertIsDisplayed()
+        saveSnapshot("navigation-expanded")
+        onNode(hasText("Profil") and hasClickAction()).performClick()
+        onNodeWithText("Mon parcours").assertIsDisplayed()
+        onNodeWithText("Profil").assertDoesNotExist()
+        onNodeWithContentDescription("Profil").assertIsSelected()
+        onNodeWithContentDescription("Ouvrir le menu de navigation").assertIsDisplayed()
+        saveSnapshot("navigation-collapsed")
     }
 
     @Test
     fun wideLayoutPlacesNavigationAndCoursesInSeparateColumns() = runDesktopComposeUiTest(width = 1400, height = 900, testTimeout = 60.seconds) {
         val fixture = Fixture(listOf(quizLesson()))
         setContent { FixtureTheme { DreamsignWizardApp(fixture.model) } }
-        val courses = onNodeWithText("Cours").assertIsDisplayed().fetchSemanticsNode().boundsInRoot
-        val profile = onNodeWithText("Profil").assertIsDisplayed().fetchSemanticsNode().boundsInRoot
+        val courses = onNode(hasText("Cours") or hasContentDescription("Cours")).assertIsDisplayed().fetchSemanticsNode().boundsInRoot
+        val profile = onNode(hasText("Profil") or hasContentDescription("Profil")).assertIsDisplayed().fetchSemanticsNode().boundsInRoot
         val course = onNode(hasText(COURSE) and hasClickAction()).assertIsDisplayed().fetchSemanticsNode().boundsInRoot
         val next = onNodeWithText("Continuer · ${quizLesson().title}").assertIsDisplayed().fetchSemanticsNode().boundsInRoot
         assertTrue(profile.top >= courses.bottom, "Wide navigation should be vertical")
@@ -411,7 +431,7 @@ class LearningUiTest {
         assertTrue(course.left > courses.right, "Course column should follow navigation")
         assertTrue(next.left > course.right, "Lesson workspace should follow the course column")
         saveSnapshot("learning-wide")
-        onNodeWithText("Profil").performClick()
+        onNode(hasText("Profil") or hasContentDescription("Profil")).performClick()
         onNodeWithText("Mon parcours").assertIsDisplayed()
     }
 

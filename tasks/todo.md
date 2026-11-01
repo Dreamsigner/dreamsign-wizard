@@ -21,7 +21,8 @@
 - [ ] Ajouter des métadonnées de capacités, contexte et coût uniquement depuis des sources fiables par fournisseur ; filtrer les niveaux de réflexion pris en charge.
 - [x] Ajouter les QCM sélectionnables du Studio IA, le raisonnement et la confiance avant validation, avec correction révélée ensuite.
 - [x] Distinguer les QCM de prédiction et de vérification de compréhension, en conservant les anciens QCM.
-- [ ] Revoir l'ergonomie et la direction visuelle du Studio IA après stabilisation des réglages et du rendu.
+- [x] Réorganiser le Studio IA : navigation compacte, panneau de séances, réglages dans Paramètres et création de séances Apprendre/Pratique.
+- [ ] Poursuivre la direction visuelle et l'orchestration pédagogique de LearnHarness après vérification de la nouvelle interface.
 
 Validation du 1er novembre 2026 : 231 tests Desktop réussis, compilation Kotlin Desktop réussie, captures de réponse scientifique à 360 et 1000 pixels inspectées. La distribution locale n'a pas été créée : WiX et la dépendance de vérification du runtime manquent dans le cache Gradle hors ligne.
 

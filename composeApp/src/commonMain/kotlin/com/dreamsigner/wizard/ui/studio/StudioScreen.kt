@@ -30,24 +30,31 @@ import com.dreamsigner.wizard.ui.*
 fun StudioScreen() {
     val controller = LocalStudioController.current
     val state by controller.state.collectAsState()
-    var showConnection by remember { mutableStateOf(false) }
+    var paneOpen by remember { mutableStateOf(true) }
+    var showPlan by remember { mutableStateOf(false) }
+    var diagnosisDraft by remember { mutableStateOf(false) }
     var showSessions by remember { mutableStateOf(false) }
     var showGoal by remember { mutableStateOf(false) }
+    var newKind by remember { mutableStateOf(StudioSessionKind.TEACHING) }
     var showGraph by remember { mutableStateOf(false) }
 
-    if (showConnection) StudioConnectionDialog(controller, state, onDismiss = { showConnection = false })
     if (showGraph) StudioKnowledgeGraphDialog(state, controller, onDismiss = { showGraph = false })
     if (showSessions) SessionPickerDialog(
         state = state,
         onSelect = { controller.select(it); showSessions = false },
-        onNewGoal = { showSessions = false; showGoal = true },
+        onNewGoal = { kind -> newKind = kind; showSessions = false; showGoal = true },
+        onPlan = { showSessions = false; showPlan = true },
         onDismiss = { showSessions = false },
     )
     if (showGoal) NewGoalDialog(
         enabled = state.available && !state.busy,
-        onCreate = { if (controller.create(it)) { showGoal = false; true } else false },
+        kind = newKind,
+        onCreate = { goal, kind -> if (controller.create(goal, kind)) { showGoal = false; true } else false },
         onDismiss = { showGoal = false },
     )
+
+    val selectedSession = state.sessions.firstOrNull { it.id == state.selectedId }
+    if (showPlan && selectedSession != null) StudioPlanDialog(selectedSession, controller, onDismiss = { showPlan = false }, onDiagnosis = { diagnosisDraft = true; showPlan = false })
 
     BoxWithConstraints(Modifier.fillMaxSize().background(Paper)) {
         val wide = maxWidth >= 800.dp
@@ -59,19 +66,6 @@ fun StudioScreen() {
                     if (wide) Text("Un tuteur qui part de ce que tu sais déjà.", color = Graphite, fontSize = 14.sp)
                 }
                 TextButton(onClick = { showGraph = true }, enabled = state.available, modifier = Modifier.testTag("studio-graph")) { Text("Graphe") }
-                OutlinedButton(
-                    onClick = { showConnection = true }, enabled = state.available && !state.busy,
-                    modifier = Modifier.heightIn(min = 48.dp), shape = LearningShape,
-                ) { Text("Connexion IA", maxLines = 1) }
-            }
-            if (state.providerMode == "chatgpt" && state.chatGptConnected) {
-                Text("ChatGPT · ${state.chatGptEmail.orEmpty()} · ${state.model}", Modifier.fillMaxWidth().padding(top = 4.dp),
-                    color = Graphite, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            } else if (state.available && state.baseUrl.isNotBlank() && state.model.isNotBlank()) {
-                Text(
-                    "${state.baseUrl} · ${state.model}", Modifier.fillMaxWidth().padding(top = 4.dp),
-                    color = Graphite, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis,
-                )
             }
             if (state.storageError != null) StatusNote(state.storageError!!, warning = true, Modifier.padding(top = 10.dp))
             if (!state.available && !state.error.isNullOrBlank()) {
@@ -80,39 +74,24 @@ fun StudioScreen() {
 
             if (wide) {
                 Row(Modifier.weight(1f).fillMaxWidth().padding(top = 18.dp), horizontalArrangement = Arrangement.spacedBy(18.dp)) {
-                    SessionSidebar(
+                    if (paneOpen) SessionSidebar(
                         state = state,
                         modifier = Modifier.width(270.dp).fillMaxHeight(),
                         onSelect = controller::select,
-                        onCreate = controller::create,
+                        onCreate = { kind -> newKind = kind; showGoal = true },
+                        onPlan = { showPlan = true },
                     )
                     StudioWorkspace(
                         state = state, session = session, controller = controller,
                         modifier = Modifier.weight(1f).fillMaxHeight(),
+                        onSessions = { paneOpen = !paneOpen }, diagnosisDraft = diagnosisDraft, onDiagnosisConsumed = { diagnosisDraft = false },
                     )
                 }
             } else {
-                if (state.sessions.isNotEmpty()) {
-                    Row(Modifier.fillMaxWidth().padding(top = 14.dp), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-                        OutlinedButton(
-                            onClick = { showSessions = true }, enabled = !state.busy,
-                            modifier = Modifier.weight(1f).heightIn(min = 48.dp), shape = LearningShape,
-                        ) {
-                            Text(
-                                session?.goal ?: "Choisir une séance",
-                                maxLines = 1, overflow = TextOverflow.Ellipsis,
-                            )
-                        }
-                        OutlinedButton(
-                            onClick = { showGoal = true }, enabled = state.available && !state.busy,
-                            modifier = Modifier.heightIn(min = 48.dp), shape = LearningShape,
-                        ) { Text("Nouvel objectif") }
-                    }
-                }
                 StudioWorkspace(
                     state = state, session = session, controller = controller,
                     modifier = Modifier.weight(1f).fillMaxWidth().padding(top = 14.dp),
-                    compactGoal = state.sessions.isEmpty(),
+                    compactGoal = state.sessions.isEmpty(), onSessions = { showSessions = true }, diagnosisDraft = diagnosisDraft, onDiagnosisConsumed = { diagnosisDraft = false },
                 )
             }
         }
@@ -147,6 +126,38 @@ fun StudioConnectionSettings() {
             onClick = { showConnection = true }, enabled = state.available && !state.busy,
             modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp), shape = LearningShape,
         ) { Text("Configurer le fournisseur") }
+        val session = state.sessions.firstOrNull { it.id == state.selectedId }
+        if (session != null) {
+            Text("Réglages de la séance : ${session.goal}", fontWeight = FontWeight.SemiBold, color = Ink)
+            var showModels by remember(session.id) { mutableStateOf(false) }
+            var showEfforts by remember(session.id) { mutableStateOf(false) }
+            val models = if (state.providerMode == "chatgpt") state.chatGptModels else if (state.apiModelsUrl == state.baseUrl) state.apiModels else emptyList()
+            Box {
+                OutlinedButton(onClick = { showModels = true }, enabled = !state.busy && state.storageError == null, modifier = Modifier.testTag("studio-session-model")) {
+                    Text("Modèle : ${session.modelChoice?.model ?: state.model.ifBlank { "non configuré" }}")
+                }
+                DropdownMenu(expanded = showModels, onDismissRequest = { showModels = false }) {
+                    DropdownMenuItem(onClick = { controller.setSessionModel(null); showModels = false }) { Text("Suivre le modèle par défaut") }
+                    (models + listOfNotNull(state.model.takeIf { it.isNotBlank() })).distinct().forEach { candidate ->
+                        DropdownMenuItem(onClick = { controller.setSessionModel(candidate); showModels = false }) { Text(candidate) }
+                    }
+                }
+            }
+            Box {
+                OutlinedButton(onClick = { showEfforts = true }, enabled = !state.busy && state.storageError == null, modifier = Modifier.testTag("studio-session-effort")) {
+                    Text("Réflexion : ${session.reasoningEffort?.label ?: "Défaut du tuteur (${state.reasoningEffort.label})"}")
+                }
+                DropdownMenu(expanded = showEfforts, onDismissRequest = { showEfforts = false }) {
+                    DropdownMenuItem(onClick = { controller.setSessionReasoningEffort(null); showEfforts = false }) { Text("Défaut du tuteur (${state.reasoningEffort.label})") }
+                    ReasoningEffort.entries.forEach { effort -> DropdownMenuItem(onClick = { controller.setSessionReasoningEffort(effort); showEfforts = false }) { Text(effort.label) } }
+                }
+            }
+        }
+        if (state.providerMode == "chatgpt" && state.chatGptConnected) {
+            Text("Utilise ton forfait ChatGPT", color = Graphite, fontSize = 13.sp)
+            TextButton(onClick = controller::openChatGptUsage) { Text("Gérer l’usage") }
+        }
+
     }
 }
 
@@ -155,19 +166,31 @@ private fun SessionSidebar(
     state: StudioState,
     modifier: Modifier,
     onSelect: (String) -> Unit,
-    onCreate: (String) -> Boolean,
+    onCreate: (StudioSessionKind) -> Unit,
+    onPlan: () -> Unit,
 ) {
     Surface(modifier, shape = LearningShape, color = White, elevation = 1.dp) {
         Column(Modifier.fillMaxSize().padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            Text("Un nouvel objectif", style = MaterialTheme.typography.h6, color = Ink)
-            GoalForm(enabled = state.available && !state.busy, onCreate = onCreate)
+            Text("Nouvelle séance", style = MaterialTheme.typography.h6, color = Ink)
+            Row {
+                TextButton(onClick = { onCreate(StudioSessionKind.TEACHING) }, enabled = state.available && !state.busy) { Text("+ Apprendre") }
+                TextButton(onClick = { onCreate(StudioSessionKind.PRACTICE) }, enabled = state.available && !state.busy) { Text("+ Pratique") }
+            }
+            if (state.selectedId != null) TextButton(onClick = onPlan, enabled = !state.busy && state.storageError == null, modifier = Modifier.testTag("studio-plan")) { Text("Plan de la séance") }
             Divider(color = Concrete)
             Text("Séances enregistrées", style = MaterialTheme.typography.subtitle1, color = Ink)
-            if (state.sessions.isEmpty()) {
+            var filter by remember { mutableStateOf<StudioSessionKind?>(null) }
+            Row {
+                listOf(null to "Toutes", StudioSessionKind.TEACHING to "Cours", StudioSessionKind.PRACTICE to "Pratique").forEach { (kind, label) ->
+                    TextButton(onClick = { filter = kind }, contentPadding = PaddingValues(horizontal = 4.dp)) { Text(label, color = if (filter == kind) ActionRed else Graphite, fontSize = 12.sp) }
+                }
+            }
+            val visibleSessions = state.sessions.filter { filter == null || it.kind == filter }
+            if (visibleSessions.isEmpty()) {
                 Text("Tes échanges réapparaîtront ici.", color = Graphite, fontSize = 14.sp)
             } else {
                 LazyColumn(Modifier.weight(1f).fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    items(state.sessions, key = { it.id }) { item ->
+                    items(visibleSessions, key = { it.id }) { item ->
                         val selected = item.id == state.selectedId
                         TextButton(
                             onClick = { onSelect(item.id) }, enabled = !state.busy,
@@ -187,9 +210,14 @@ private fun SessionSidebar(
 }
 
 @Composable
-private fun GoalForm(enabled: Boolean, onCreate: (String) -> Boolean) {
+private fun GoalForm(enabled: Boolean, onCreate: (String, StudioSessionKind) -> Boolean) {
+    var kind by remember { mutableStateOf(StudioSessionKind.TEACHING) }
     var goal by remember { mutableStateOf("") }
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Row {
+            TextButton(onClick = { kind = StudioSessionKind.TEACHING }) { Text("Apprendre", color = if (kind == StudioSessionKind.TEACHING) ActionRed else Graphite) }
+            TextButton(onClick = { kind = StudioSessionKind.PRACTICE }) { Text("Pratique", color = if (kind == StudioSessionKind.PRACTICE) ActionRed else Graphite) }
+        }
         OutlinedTextField(
             value = goal, onValueChange = { goal = it }, enabled = enabled,
             modifier = Modifier.fillMaxWidth(), label = { Text("Qu’aimerais-tu apprendre ?") },
@@ -197,7 +225,7 @@ private fun GoalForm(enabled: Boolean, onCreate: (String) -> Boolean) {
             minLines = 2, maxLines = 4, shape = LearningShape,
         )
         Button(
-            onClick = { if (onCreate(goal.trim())) goal = "" }, enabled = enabled && goal.isNotBlank(),
+            onClick = { if (onCreate(goal.trim(), kind)) goal = "" }, enabled = enabled && goal.isNotBlank(),
             modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp), shape = LearningShape,
             colors = ButtonDefaults.buttonColors(backgroundColor = ActionRed, contentColor = White),
         ) { Text("Commencer") }
@@ -212,6 +240,7 @@ private fun StudioWorkspace(
     controller: StudioController,
     modifier: Modifier,
     compactGoal: Boolean = false,
+    onSessions: () -> Unit, diagnosisDraft: Boolean, onDiagnosisConsumed: () -> Unit,
 ) {
     Surface(modifier.testTag("studio-workspace"), shape = LearningShape, color = White, elevation = 1.dp) {
         if (session == null) {
@@ -222,11 +251,12 @@ private fun StudioWorkspace(
                 ) {
                     Text("Commence par une question précise", style = MaterialTheme.typography.h5, color = Ink)
                     Text("L’IA répondra à partir de cet objectif et de cette séance.", color = Graphite)
-                    GoalForm(enabled = state.available && !state.busy, onCreate = controller::create)
+                    GoalForm(enabled = state.available && !state.busy, onCreate = { goal, kind -> controller.create(goal, kind) })
                     if (state.available) Text("Tes autres cours ne sont pas envoyés au fournisseur.", color = Graphite, fontSize = 13.sp)
                 }
             } else {
                 Column(Modifier.fillMaxSize().padding(32.dp), verticalArrangement = Arrangement.Center) {
+                    TextButton(onClick = onSessions, modifier = Modifier.testTag("studio-sessions-toggle")) { Text("Séances") }
                     Text("Commence par un objectif précis", style = MaterialTheme.typography.h5, color = Ink)
                     Text("Par exemple : comprendre les valeurs propres, apprendre les bases de Python ou préparer une tâche du TCF Canada.",
                         Modifier.padding(top = 10.dp), color = Graphite, fontSize = 16.sp, lineHeight = 24.sp)
@@ -235,13 +265,13 @@ private fun StudioWorkspace(
                 }
             }
         } else {
-            Conversation(state, session, controller)
+            Conversation(state, session, controller, onSessions, diagnosisDraft, onDiagnosisConsumed)
         }
     }
 }
 
 @Composable
-private fun Conversation(state: StudioState, session: StudioSession, controller: StudioController) {
+private fun Conversation(state: StudioState, session: StudioSession, controller: StudioController, onSessions: () -> Unit, diagnosisDraft: Boolean, onDiagnosisConsumed: () -> Unit) {
     var draft by remember(session.id) { mutableStateOf("") }
     val quizDrafts = remember(session.id) { mutableStateMapOf<Int, StudioQuizDraft>() }
     val problemDrafts = remember(session.id) { mutableStateMapOf<Int, StudioProblemDraft>() }
@@ -252,74 +282,15 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
     val hasOpenProblem = activeProblemIndex >= 0
     val hasOpenExercise = hasOpenQuiz || hasOpenProblem
     LaunchedEffect(session.id, activeQuizIndex) { showClarification = false }
-    var showPlan by remember(session.id) { mutableStateOf(false) }
-    if (showPlan) StudioPlanDialog(session, controller, onDismiss = { showPlan = false }, onDiagnosis = {
-        draft = "Peux-tu approfondir le diagnostic de mes prérequis avant de poursuivre le plan ?"
-        showPlan = false
-    })
+    LaunchedEffect(diagnosisDraft) { if (diagnosisDraft) { draft = "Peux-tu approfondir le diagnostic de mes prérequis avant de poursuivre le plan ?"; onDiagnosisConsumed() } }
     val messagesState = rememberLazyListState()
     LaunchedEffect(session.id, session.messages.size) {
         if (session.messages.isNotEmpty()) messagesState.animateScrollToItem(session.messages.lastIndex)
     }
     Column(Modifier.fillMaxSize().padding(horizontal = 20.dp, vertical = 8.dp)) {
-        var showSessionEffort by remember(session.id) { mutableStateOf(false) }
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Text(session.goal, Modifier.weight(1f).testTag("studio-current-goal"), style = if (hasOpenExercise) MaterialTheme.typography.h6 else MaterialTheme.typography.h5, color = Ink, maxLines = if (hasOpenExercise) 1 else 2, overflow = TextOverflow.Ellipsis)
-            Box {
-                TextButton(onClick = { showSessionEffort = true }, enabled = !state.busy && state.storageError == null,
-                    modifier = Modifier.testTag("studio-session-effort")) { Text("Réflexion") }
-                DropdownMenu(expanded = showSessionEffort, onDismissRequest = { showSessionEffort = false }) {
-                    DropdownMenuItem(onClick = { controller.setSessionReasoningEffort(null); showSessionEffort = false }) {
-                        Text("Défaut du tuteur (${state.reasoningEffort.label})${if (session.reasoningEffort == null) " ✓" else ""}")
-                    }
-                    ReasoningEffort.entries.forEach { effort ->
-                        DropdownMenuItem(onClick = { controller.setSessionReasoningEffort(effort); showSessionEffort = false }) {
-                            Text(effort.label + if (session.reasoningEffort == effort) " ✓" else "")
-                        }
-                    }
-                }
-            }
-            TextButton(onClick = { showPlan = true }, enabled = !state.busy && state.storageError == null,
-                modifier = Modifier.testTag("studio-plan")) { Text("Plan") }
-        }
-        var showSessionModels by remember(session.id) { mutableStateOf(false) }
-        var showQuizTypes by remember(session.id) { mutableStateOf(false) }
-        val sessionModels = if (state.providerMode == "chatgpt") state.chatGptModels else if (state.apiModelsUrl == state.baseUrl) state.apiModels else emptyList()
-        if (!hasOpenExercise) Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-          Box(Modifier.weight(1f)) {
-            TextButton(onClick = { showSessionModels = true }, enabled = !state.busy && state.storageError == null,
-                modifier = Modifier.testTag("studio-session-model")) {
-                Text("Modèle : ${session.modelChoice?.model ?: state.model.ifBlank { "non configuré" }}", maxLines = 1, overflow = TextOverflow.Ellipsis)
-            }
-            DropdownMenu(expanded = showSessionModels, onDismissRequest = { showSessionModels = false }) {
-                DropdownMenuItem(onClick = { controller.setSessionModel(null); showSessionModels = false }) {
-                    Text("Suivre le modèle par défaut (${state.model.ifBlank { "non configuré" }})")
-                }
-                (sessionModels + listOfNotNull(state.model.takeIf { it.isNotBlank() })).distinct().forEach { candidate ->
-                    DropdownMenuItem(onClick = { controller.setSessionModel(candidate); showSessionModels = false }) {
-                        Text(candidate + if (session.modelChoice?.model == candidate && session.modelChoice.providerMode == state.providerMode) " ✓" else "")
-                    }
-                }
-            }
-          }
-          Box {
-            TextButton(onClick = { showQuizTypes = true },
-                enabled = state.available && !state.busy && state.storageError == null,
-                modifier = Modifier.testTag("studio-request-quiz")) { Text("Demander un QCM", maxLines = 1) }
-            DropdownMenu(expanded = showQuizTypes, onDismissRequest = { showQuizTypes = false }) {
-                DropdownMenuItem(onClick = { showQuizTypes = false; controller.requestQuiz(StudioQuizType.PREDICT) }, modifier = Modifier.testTag("studio-request-predict")) { Text("Prédiction") }
-                DropdownMenuItem(onClick = { showQuizTypes = false; controller.requestQuiz(StudioQuizType.CHECK) }, modifier = Modifier.testTag("studio-request-check")) { Text("Vérification de compréhension") }
-            }
-          }
-          TextButton(onClick = { controller.requestPracticeProblem() },
-              enabled = state.available && !state.busy && state.storageError == null,
-              modifier = Modifier.testTag("studio-request-problem")) { Text("Pratiquer", maxLines = 1) }
-        }
-        if (!hasOpenExercise && state.providerMode == "chatgpt" && state.chatGptConnected) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("Utilise ton forfait ChatGPT", color = Graphite, fontSize = 13.sp)
-                TextButton(onClick = controller::openChatGptUsage) { Text("Gérer l’usage") }
-            }
+            TextButton(onClick = onSessions, modifier = Modifier.testTag("studio-sessions-toggle")) { Text("Séances") }
+            Text(session.goal, Modifier.weight(1f).testTag("studio-current-goal"), style = MaterialTheme.typography.h6, color = Ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
         Divider(Modifier.padding(top = 4.dp), color = Concrete)
         if (session.messages.isEmpty()) {
@@ -569,32 +540,44 @@ private fun StudioRoutingEditor(label: String, setting: StudioModelSetting?, sta
 private fun SessionPickerDialog(
     state: StudioState,
     onSelect: (String) -> Unit,
-    onNewGoal: () -> Unit,
+    onNewGoal: (StudioSessionKind) -> Unit,
+    onPlan: () -> Unit,
     onDismiss: () -> Unit,
 ) {
+    var filter by remember { mutableStateOf<StudioSessionKind?>(null) }
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text("Choisir une séance") },
         text = {
-            LazyColumn(Modifier.heightIn(max = 360.dp)) {
-                items(state.sessions, key = { it.id }) { session ->
+            Column {
+                Row {
+                    listOf(null to "Toutes", StudioSessionKind.TEACHING to "Cours", StudioSessionKind.PRACTICE to "Pratique").forEach { (kind, label) ->
+                        TextButton(onClick = { filter = kind }, contentPadding = PaddingValues(horizontal = 4.dp)) { Text(label, color = if (filter == kind) ActionRed else Graphite) }
+                    }
+                }
+                LazyColumn(Modifier.heightIn(max = 300.dp)) {
+                items(state.sessions.filter { filter == null || it.kind == filter }, key = { it.id }) { session ->
                     TextButton(onClick = { onSelect(session.id) }, enabled = !state.busy, modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)) {
                         Text(session.goal, modifier = Modifier.fillMaxWidth(), maxLines = 2, overflow = TextOverflow.Ellipsis)
                     }
                 }
+                }
             }
         },
-        confirmButton = { TextButton(onClick = onNewGoal, enabled = state.available && !state.busy) { Text("Nouvel objectif") } },
-        dismissButton = { TextButton(onClick = onDismiss) { Text("Fermer") } },
+        confirmButton = { Row {
+            TextButton(onClick = { onNewGoal(StudioSessionKind.TEACHING) }, enabled = state.available && !state.busy) { Text("+ Apprendre") }
+            TextButton(onClick = { onNewGoal(StudioSessionKind.PRACTICE) }, enabled = state.available && !state.busy) { Text("+ Pratique") }
+        } },
+        dismissButton = { Row { if (state.selectedId != null) TextButton(onClick = onPlan, enabled = !state.busy, modifier = Modifier.testTag("studio-plan")) { Text("Plan") }; TextButton(onClick = onDismiss) { Text("Fermer") } } },
     )
 }
 
 @Composable
-private fun NewGoalDialog(enabled: Boolean, onCreate: (String) -> Boolean, onDismiss: () -> Unit) {
+private fun NewGoalDialog(enabled: Boolean, kind: StudioSessionKind, onCreate: (String, StudioSessionKind) -> Boolean, onDismiss: () -> Unit) {
     var goal by remember { mutableStateOf("") }
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Nouvel objectif") },
+        title = { Text(if (kind == StudioSessionKind.TEACHING) "Nouvelle séance d’apprentissage" else "Nouvelle séance de pratique") },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text("Une question précise aide ton tuteur à partir de ton niveau.", color = Graphite)
@@ -607,7 +590,7 @@ private fun NewGoalDialog(enabled: Boolean, onCreate: (String) -> Boolean, onDis
             }
         },
         confirmButton = {
-            Button(onClick = { if (onCreate(goal.trim())) onDismiss() }, enabled = enabled && goal.isNotBlank(), modifier = Modifier.heightIn(min = 48.dp), shape = LearningShape) { Text("Commencer") }
+            Button(onClick = { if (onCreate(goal.trim(), kind)) onDismiss() }, enabled = enabled && goal.isNotBlank(), modifier = Modifier.heightIn(min = 48.dp), shape = LearningShape) { Text("Commencer") }
         },
         dismissButton = { TextButton(onClick = onDismiss) { Text("Annuler") } },
     )

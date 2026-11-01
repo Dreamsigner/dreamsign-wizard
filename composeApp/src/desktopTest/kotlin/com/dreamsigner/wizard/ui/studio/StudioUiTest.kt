@@ -26,6 +26,7 @@ class StudioUiTest {
             plan = StudioPlan(listOf(StudioPlanStep("Fractions", emptyList(), "Expliquer les moitiés", listOf(0))), "accepted"),
         )))
         setContent { LearningAppTheme { CompositionLocalProvider(LocalStudioController provides controller) { StudioScreen() } } }
+        onNodeWithTag("studio-sessions-toggle").performClick()
         onNodeWithTag("studio-plan").performClick()
         onNodeWithText("Examiner les réponses (1)").performScrollTo().performClick()
         onNodeWithText("Valider cette preuve pour l’étape 1").performScrollTo().assertIsDisplayed()
@@ -58,6 +59,7 @@ class StudioUiTest {
     fun reviewedDiagnosticIsVisibleInPlanDialog() = runDesktopComposeUiTest(width = 360, height = 480) {
         val controller = MemoryStudioController(initialSession = true).apply { installAssessment() }
         setContent { LearningAppTheme { CompositionLocalProvider(LocalStudioController provides controller) { StudioScreen() } } }
+        onNodeWithTag("studio-sessions-toggle").performClick()
         onNodeWithTag("studio-plan").performClick()
         onNodeWithText("Diagnostic de la séance").assertIsDisplayed()
         onNodeWithText("Les moitiés sont comprises.").assertIsDisplayed()
@@ -77,6 +79,7 @@ class StudioUiTest {
                 CompositionLocalProvider(LocalStudioController provides controller) { StudioScreen() }
             }
         }
+        onNodeWithTag("studio-sessions-toggle").performClick()
         onNodeWithTag("studio-plan").performClick()
         onNodeWithText("Mon plan pédagogique").assertIsDisplayed()
         onNodeWithText("Préparer une demande de diagnostic").performScrollTo()
@@ -96,10 +99,10 @@ class StudioUiTest {
         val controller = MemoryStudioController()
         setContent {
             LearningAppTheme {
-                CompositionLocalProvider(LocalStudioController provides controller) { StudioScreen() }
+                CompositionLocalProvider(LocalStudioController provides controller) { StudioConnectionSettings() }
             }
         }
-        onNodeWithText("Connexion IA").performClick()
+        onNodeWithText("Configurer le fournisseur").performClick()
         onNodeWithText("Continuer avec ChatGPT").assertIsDisplayed()
         val file = File("build/reports/ui-snapshots/studio-connection-360.png")
         check(file.parentFile.isDirectory || file.parentFile.mkdirs())
@@ -132,6 +135,7 @@ class StudioUiTest {
             }
         }
 
+        onNodeWithText("+ Apprendre").performClick()
         onNodeWithText("Qu’aimerais-tu apprendre ?").performTextInput("Comprendre les séries")
         onNodeWithText("Commencer").performClick()
         onNodeWithTag("studio-current-goal").assertTextEquals("Comprendre les séries")
@@ -146,6 +150,7 @@ class StudioUiTest {
         onNodeWithText("Partons de ton raisonnement.").assertIsDisplayed()
         assertEquals("", onNodeWithTag("studio-draft").fetchSemanticsNode().config[SemanticsProperties.EditableText].text)
 
+        onNodeWithText("+ Apprendre").performClick()
         onNodeWithText("Qu’aimerais-tu apprendre ?").performTextInput("Bases de Python")
         onNodeWithText("Commencer").performClick()
         onAllNodesWithText("Bases de Python").assertCountEquals(2)
@@ -158,11 +163,11 @@ class StudioUiTest {
         val controller = MemoryStudioController()
         setContent {
             LearningAppTheme {
-                CompositionLocalProvider(LocalStudioController provides controller) { StudioScreen() }
+                CompositionLocalProvider(LocalStudioController provides controller) { StudioConnectionSettings() }
             }
         }
 
-        onNodeWithText("Connexion IA").performClick()
+        onNodeWithText("Configurer le fournisseur").performClick()
         onNodeWithText("URL de base").performTextInput("https://provider.example/v1")
         onNodeWithText("Modèle").performTextInput("local-model")
         onNodeWithTag("studio-api-key").performTextInput("SECRET_UI_KEY")
@@ -179,7 +184,7 @@ class StudioUiTest {
             assertEquals("local-model", controller.state.value.model)
         }
         onNodeWithText("https://provider.example/v1 · local-model").assertIsDisplayed()
-        onNodeWithText("Connexion IA").performClick()
+        onNodeWithText("Configurer le fournisseur").performClick()
         assertEquals("", onNodeWithTag("studio-api-key").fetchSemanticsNode().config[SemanticsProperties.EditableText].text)
         onNodeWithText("Fermer").performClick()
     }
@@ -194,7 +199,6 @@ class StudioUiTest {
             }
         }
 
-        onNodeWithText("Connexion IA").assertIsNotEnabled()
         onNodeWithTag("studio-draft").assertIsNotEnabled()
         onNodeWithTag("studio-send").assertIsNotEnabled()
         onNodeWithText("Annuler").performClick()
@@ -274,19 +278,18 @@ class StudioUiTest {
     }
 
     @Test
-    fun learnerCanRequestAQuizFromTheConversation() = runDesktopComposeUiTest(width = 1000, height = 800) {
+    fun newSessionKindAndFiltersAreIndependentOfSelectedSession() = runDesktopComposeUiTest(width = 1000, height = 800) {
         val controller = MemoryStudioController(initialSession = true)
-        setContent {
-            LearningAppTheme {
-                CompositionLocalProvider(LocalStudioController provides controller) { StudioScreen() }
-            }
-        }
-        onNodeWithTag("studio-request-quiz").assertIsEnabled().performClick()
-        onNodeWithTag("studio-request-predict").performClick()
-        runOnIdle { assertEquals(1, controller.quizRequests); assertEquals(StudioQuizType.PREDICT, controller.lastQuizType) }
-        onNodeWithTag("studio-request-quiz").performClick()
-        onNodeWithTag("studio-request-check").performClick()
-        runOnIdle { assertEquals(2, controller.quizRequests); assertEquals(StudioQuizType.CHECK, controller.lastQuizType) }
+        setContent { LearningAppTheme { CompositionLocalProvider(LocalStudioController provides controller) { StudioScreen() } } }
+        onNodeWithText("+ Pratique").performClick()
+        onNodeWithText("Qu’aimerais-tu apprendre ?").performTextInput("Exercices de calcul")
+        onNodeWithText("Commencer").performClick()
+        runOnIdle { assertEquals(StudioSessionKind.PRACTICE, controller.state.value.sessions.first().kind) }
+        onNodeWithText("Comprendre les séries").performClick()
+        onNodeWithText("Cours").performClick()
+        onNodeWithText("Exercices de calcul").assertDoesNotExist()
+        onNodeWithText("Toutes").performClick()
+        onNodeWithText("Exercices de calcul").assertIsDisplayed()
     }
 
     @Test
@@ -354,7 +357,6 @@ class StudioUiTest {
             }
         }
         onNodeWithTag("studio-unavailable").assertIsDisplayed()
-        onNodeWithText("Connexion IA").assertIsNotEnabled()
         onNodeWithText("Commencer").assertIsNotEnabled()
     }
 
@@ -411,6 +413,11 @@ class StudioUiTest {
             if (goal.isBlank() || !state.value.available) return false
             val session = StudioSession("session-${nextId++}", goal, emptyList())
             state.value = state.value.copy(sessions = listOf(session) + state.value.sessions, selectedId = session.id, error = null)
+            return true
+        }
+        override fun create(goal: String, kind: StudioSessionKind): Boolean {
+            if (!create(goal)) return false
+            state.value = state.value.copy(sessions = state.value.sessions.map { if (it.id == state.value.selectedId) it.copy(kind = kind) else it })
             return true
         }
         override fun configure(baseUrl: String, model: String, apiKey: String): Boolean {

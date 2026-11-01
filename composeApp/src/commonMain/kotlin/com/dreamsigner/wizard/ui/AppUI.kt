@@ -121,8 +121,8 @@ fun DreamsignWizardApp(
             } }?.id ?: current.units.firstOrNull()?.id
     }
     BoxWithConstraints(Modifier.fillMaxSize().background(Paper).windowInsetsPadding(WindowInsets.safeDrawing)) {
-        val sidebar = maxWidth >= 1000.dp
         val rail = maxWidth >= 700.dp
+        var navigationExpanded by remember { mutableStateOf(false) }
         if (screen == AppScreen.COURSE_READER && subject != null && selectedUnitId != null) {
             val unit = subject.units.first { it.id == selectedUnitId }
             CourseReaderScreen(unit, { subject.isLessonUnlocked(it, stats.completedLessonIds) }, viewModel::startLesson,
@@ -134,7 +134,9 @@ fun DreamsignWizardApp(
             LessonQuizScreen(viewModel)
         } else {
             Row(Modifier.fillMaxSize()) {
-                if (rail) AppNavigation(screen, stats, sidebar, settingsActionCount, viewModel::navigateTo)
+                if (rail) AppNavigation(screen, navigationExpanded, settingsActionCount,
+                    onExpandedChange = { navigationExpanded = it },
+                    navigate = { destination -> navigationExpanded = false; viewModel.navigateTo(destination) })
                 Scaffold(backgroundColor = Paper, modifier = Modifier.weight(1f),
                     topBar = { if (subject != null && screen != AppScreen.SETTINGS && screen != AppScreen.AI_STUDIO) TopStatsHeader(stats, subjects, subject, viewModel::selectSubject) },
                     bottomBar = { if (!rail) BottomNavigationBar(screen, viewModel::navigateTo, settingsActionCount) }) { padding ->
@@ -160,24 +162,27 @@ fun DreamsignWizardApp(
 }
 
 @Composable
-private fun AppNavigation(screen: AppScreen, stats: UserStats, expanded: Boolean, settingsActionCount: Int, navigate: (AppScreen) -> Unit) {
-    Column(Modifier.width(if (expanded) 224.dp else 104.dp).fillMaxHeight().verticalScroll(rememberScrollState())
-        .padding(horizontal = if (expanded) 16.dp else 4.dp, vertical = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        PixelIcon(LearningSymbol.BOOK, Modifier.size(40.dp))
-        Text(if (expanded) "Atelier\nd’apprentissage" else "Atelier", fontWeight = FontWeight.ExtraBold, fontSize = if (expanded) 20.sp else 16.sp)
-        Spacer(Modifier.height(20.dp))
+private fun AppNavigation(screen: AppScreen, expanded: Boolean, settingsActionCount: Int, onExpandedChange: (Boolean) -> Unit, navigate: (AppScreen) -> Unit) {
+    Column(Modifier.width(if (expanded) 224.dp else 72.dp).fillMaxHeight().verticalScroll(rememberScrollState())
+        .padding(horizontal = if (expanded) 16.dp else 8.dp, vertical = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        val interaction = remember { MutableInteractionSource() }
+        TextButton(onClick = { onExpandedChange(!expanded) },
+            modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp).learningFocus(interaction).semantics {
+                contentDescription = if (expanded) "Fermer le menu de navigation" else "Ouvrir le menu de navigation"
+            }, interactionSource = interaction, shape = LearningShape,
+            contentPadding = PaddingValues(0.dp), colors = ButtonDefaults.textButtonColors(contentColor = Ink)) {
+            if (expanded) Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                PixelIcon(LearningSymbol.BOOK, Modifier.size(32.dp))
+                Spacer(Modifier.width(12.dp))
+                Text("Atelier\nd’apprentissage", fontWeight = FontWeight.ExtraBold, fontSize = 16.sp, lineHeight = 20.sp)
+            } else PixelIcon(LearningSymbol.BOOK, Modifier.size(32.dp))
+        }
+        Spacer(Modifier.height(12.dp))
         NavigationChoice("Cours", Icons.Default.Home, screen == AppScreen.LEARNING_PATH, expanded) { navigate(AppScreen.LEARNING_PATH) }
         NavigationChoice("Studio IA", Icons.Default.Edit, screen == AppScreen.AI_STUDIO, expanded) { navigate(AppScreen.AI_STUDIO) }
         NavigationChoice("Profil", Icons.Default.Person, screen == AppScreen.PROFILE, expanded) { navigate(AppScreen.PROFILE) }
         NavigationChoice("Paramètres", Icons.Default.Settings, screen == AppScreen.SETTINGS, expanded, settingsActionCount) { navigate(AppScreen.SETTINGS) }
-        Spacer(Modifier.height(32.dp))
-        if (expanded) {
-            Text("À petits pas,\nchaque jour.", fontSize = 20.sp, fontWeight = FontWeight.SemiBold, letterSpacing = 0.sp)
-            SymbolValue(LearningSymbol.COMPLETED, "${stats.completedLessonIds.size} leçons terminées")
-            SymbolValue(LearningSymbol.XP, "${stats.xp} XP accumulés")
-            VoxelBookshelf()
-        }
     }
 }
 
@@ -191,13 +196,14 @@ private fun NavigationChoice(label: String, icon: ImageVector, selected: Boolean
     TextButton(onClick, Modifier.fillMaxWidth().heightIn(min = 56.dp).graphicsLayer { scaleX = scale; scaleY = scale }
         .learningFocus(interaction).semantics {
         this.selected = selected
+        if (!expanded) contentDescription = label
         if (actionCount > 0) stateDescription = settingsActionDescription(actionCount)
     },
         interactionSource = interaction, shape = LearningShape,
         colors = ButtonDefaults.textButtonColors(backgroundColor = background, contentColor = Ink)) {
         if (expanded) Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             NavigationIcon(icon, actionCount); Spacer(Modifier.width(12.dp)); Text(label, style = MaterialTheme.typography.button.copy(letterSpacing = 0.sp, fontWeight = FontWeight.SemiBold))
-        } else Column(horizontalAlignment = Alignment.CenterHorizontally) { NavigationIcon(icon, actionCount); Text(label, fontSize = 12.sp, letterSpacing = 0.sp) }
+        } else NavigationIcon(icon, actionCount)
     }
 }
 

@@ -12,6 +12,24 @@ import java.nio.file.Files
 import kotlin.test.*
 
 class DesktopStudioControllerTest {
+    @Test fun newKindsStartTheCorrectRequestAndPersist() = runBlocking {
+        val file = Files.createTempDirectory("studio-kinds").resolve("studio.json")
+        val requests = mutableListOf<String>()
+        val tutor = StudioTutor { request -> synchronized(requests) { requests.add(request.history.last().text) }; "Réponse" }
+        var controller = DesktopStudioController(file, tutor)
+        try {
+            assertTrue(controller.configure("http://localhost:1234/v1", "model", ""))
+            assertTrue(controller.create("Fractions", StudioSessionKind.TEACHING))
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            assertTrue(controller.create("Calcul", StudioSessionKind.PRACTICE))
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            assertEquals(listOf(STUDIO_PREDICT_REQUEST, STUDIO_PROBLEM_REQUEST), requests)
+        } finally { controller.close() }
+        controller = DesktopStudioController(file, tutor)
+        try { assertEquals(listOf(StudioSessionKind.PRACTICE, StudioSessionKind.TEACHING), controller.state.value.sessions.map { it.kind }) }
+        finally { controller.close() }
+    }
+
     @Test fun acceptedStepEvidenceEnforcesPrerequisitesAndPersists() = runBlocking {
         val file = Files.createTempDirectory("studio-evidence").resolve("studio.json")
         val fence = 0x60.toChar().toString().repeat(3)

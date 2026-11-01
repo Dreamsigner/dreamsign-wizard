@@ -32,7 +32,9 @@ fun StudioSession.stepReady(index: Int): Boolean {
     }
 }
 
-data class StudioSession(val id: String, val goal: String, val messages: List<StudioMessage>, val plan: StudioPlan? = null, val reasoningEffort: ReasoningEffort? = null, val modelChoice: StudioModelChoice? = null, val planProposal: StudioPlanProposal? = null, val assessment: StudioDiagnosticAssessment? = null, val stepEvidence: List<StudioStepEvidence> = emptyList())
+enum class StudioSessionKind { TEACHING, PRACTICE }
+
+data class StudioSession(val id: String, val goal: String, val messages: List<StudioMessage>, val plan: StudioPlan? = null, val reasoningEffort: ReasoningEffort? = null, val modelChoice: StudioModelChoice? = null, val planProposal: StudioPlanProposal? = null, val assessment: StudioDiagnosticAssessment? = null, val stepEvidence: List<StudioStepEvidence> = emptyList(), val kind: StudioSessionKind = StudioSessionKind.TEACHING)
 data class StudioState(
     val sessions: List<StudioSession> = emptyList(), val selectedId: String? = null,
     val baseUrl: String = "", val model: String = "", val reasoningEffort: ReasoningEffort = ReasoningEffort.AUTOMATIC, val busy: Boolean = false,
@@ -51,6 +53,7 @@ interface StudioController {
     val state: StateFlow<StudioState>
     fun select(id: String)
     fun create(goal: String): Boolean
+    fun create(goal: String, kind: StudioSessionKind): Boolean = create(goal)
     fun configure(baseUrl: String, model: String, apiKey: String): Boolean
     fun discoverApiModels(baseUrl: String, apiKey: String) = Unit
     fun cancelApiModelDiscovery() = Unit

@@ -32,7 +32,7 @@ class SettingsUiTest {
                     UpdatePanel(update, { checks++ }, { update = update.copy(automatic = it) }, { installs++ })
                 }
             } }
-            val settings = hasText("Paramètres") and hasClickAction()
+            val settings = (hasText("Paramètres") or hasContentDescription("Paramètres")) and hasClickAction()
             val attention = SemanticsMatcher.expectValue(SemanticsProperties.StateDescription, "1 action requise")
             onNodeWithText("Version 1.6.0").assertDoesNotExist()
             onNode(settings and attention).assertIsDisplayed()
@@ -48,7 +48,7 @@ class SettingsUiTest {
             Image.makeFromBitmap(onRoot().captureToImage().asSkiaBitmap()).use { image ->
                 image.encodeToData()!!.use { file.writeBytes(it.bytes) }
             }
-            onNodeWithText("Cours").performClick()
+            onNode(hasText("Cours") or hasContentDescription("Cours")).performClick()
             onNodeWithText("Version 1.6.0").assertDoesNotExist()
             onNode(settings and attention).assertExists()
             runOnIdle { update = update.copy(ready = false, statusMessage = "Application à jour") }

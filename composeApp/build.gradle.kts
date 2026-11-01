@@ -130,7 +130,7 @@ tasks.register<org.gradle.api.tasks.testing.Test>("sourcePdfSmokeTest") {
     filter.includeTestsMatching("com.dreamsigner.wizard.ui.pdf.SourcePdfSmokeTest")
 }
 
-val desktopReleaseVersion = "2.9.0"
+val desktopReleaseVersion = "2.10.0"
 
 compose.desktop {
     application {
