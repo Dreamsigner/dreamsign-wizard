@@ -1,6 +1,9 @@
 package com.dreamsigner.wizard.ui.studio
 
 import kotlin.test.*
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 
 class StudioPracticeTest {
     private val fence = 0x60.toChar().toString().repeat(3)
@@ -12,6 +15,20 @@ class StudioPracticeTest {
         assertEquals("Combien font 2 + 2 ?", result.quiz?.question)
         assertEquals(listOf("b"), result.quiz?.correctIds)
         assertEquals("2 + 2 = 4.", result.quiz?.explanation)
+    }
+
+    @Test fun quizTypesRoundTripAndLegacyDefaultsToCheck() {
+        val legacy = """{"question":"Q ?","options":[{"id":"a","label":"Oui"},{"id":"b","label":"Non"}],"correctIds":["a"],"explanation":"Explication"}"""
+        val old = Json.decodeFromString<StudioQuiz>(legacy)
+        assertEquals(StudioQuizType.CHECK, old.type)
+        for (type in StudioQuizType.entries) {
+            val quiz = old.copy(type = type)
+            assertEquals(type, Json.decodeFromString<StudioQuiz>(Json.encodeToString(quiz)).type)
+            val result = parseStudioTutorReply(fence + "studio-quiz\n" + Json.encodeToString(quiz) + "\n" + fence)
+            assertEquals(type, result.quiz?.type)
+            assertEquals("", result.text)
+        }
+        assertNull(parseStudioTutorReply(fence + "studio-quiz\n" + legacy.dropLast(1) + ",\"type\":\"unknown\"}" + "\n" + fence).quiz)
     }
 
     @Test fun malformedAndDuplicateQuestionsNeverExposeStructuredKey() {

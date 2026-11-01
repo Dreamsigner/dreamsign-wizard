@@ -40,7 +40,8 @@ internal fun StudioQuizCard(
     val selected = answer?.selectedIds ?: draft.selectedIds
     val dontKnow = answer?.dontKnow ?: draft.dontKnow
     Column(modifier.fillMaxWidth().testTag("studio-quiz"), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        Text("Question", color = Graphite, style = MaterialTheme.typography.overline)
+        Text(if (quiz.type == StudioQuizType.PREDICT) "Prédiction" else "Vérification de compréhension", color = Graphite, style = MaterialTheme.typography.overline, modifier = Modifier.testTag("studio-quiz-type"))
+        Text(if (quiz.type == StudioQuizType.PREDICT) "Prévois le résultat avant de découvrir l’explication." else "Vérifie ce que tu as compris.", color = Graphite, fontSize = 14.sp)
         LessonDocument(quiz.question, typesetMath = true)
         Text(if (quiz.multiSelect) "Choisis une ou plusieurs réponses." else "Choisis une réponse.", color = Graphite, fontSize = 14.sp)
         Column(Modifier.selectableGroup(), verticalArrangement = Arrangement.spacedBy(8.dp)) {

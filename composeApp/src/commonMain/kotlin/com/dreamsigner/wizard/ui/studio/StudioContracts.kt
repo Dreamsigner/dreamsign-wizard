@@ -42,7 +42,7 @@ interface StudioController {
     fun setReasoningEffort(effort: ReasoningEffort) = Unit
     fun setSessionReasoningEffort(effort: ReasoningEffort?) = Unit
     fun send(message: String): Boolean
-    fun requestQuiz(): Boolean = false
+    fun requestQuiz(type: StudioQuizType = StudioQuizType.CHECK): Boolean = false
     fun submitQuiz(messageIndex: Int, selectedIds: List<String>, dontKnow: Boolean, thinking: String, confidence: Int?): Boolean = false
     fun requestPracticeProblem(): Boolean = false
     fun revealPracticeHint(messageIndex: Int): Boolean = false

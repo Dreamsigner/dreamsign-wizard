@@ -215,10 +215,10 @@ internal class DesktopStudioController(
     private data class ProblemSubmission(val sessionId: String, val index: Int, val problem: StudioProblem, val attempt: StudioProblemAttempt)
 
     override fun send(message: String): Boolean = sendTurn(message, null, null)
-    override fun requestQuiz(): Boolean = synchronized(lock) {
+    override fun requestQuiz(type: StudioQuizType): Boolean = synchronized(lock) {
         val session = state.value.sessions.firstOrNull { it.id == state.value.selectedId }
         if (session == null || session.messages.any { (it.quiz != null && it.quizAnswer == null) || (it.problem != null && it.problem.result == null) }) false
-        else sendTurnLocked(STUDIO_QUIZ_REQUEST, null, null)
+        else sendTurnLocked(if (type == StudioQuizType.PREDICT) STUDIO_PREDICT_REQUEST else STUDIO_CHECK_REQUEST, null, null)
     }
 
     override fun requestPracticeProblem(): Boolean = synchronized(lock) {
@@ -354,7 +354,7 @@ internal class DesktopStudioController(
 
     override fun requestGeneratedPlan(): Boolean = synchronized(lock) {
         val session = state.value.sessions.firstOrNull { it.id == state.value.selectedId }
-        if (session == null || session.messages.none { it.role == "user" && it.text !in setOf(STUDIO_QUIZ_REQUEST, STUDIO_PROBLEM_REQUEST, STUDIO_PLAN_REQUEST, STUDIO_DIAGNOSIS_REQUEST, STUDIO_GRAPH_REQUEST) && !it.text.startsWith(STUDIO_PRACTICE_ATTEMPT_PREFIX) } ||
+        if (session == null || session.messages.none { it.role == "user" && it.text !in (STUDIO_QUIZ_REQUESTS + setOf(STUDIO_PROBLEM_REQUEST, STUDIO_PLAN_REQUEST, STUDIO_DIAGNOSIS_REQUEST, STUDIO_GRAPH_REQUEST)) && !it.text.startsWith(STUDIO_PRACTICE_ATTEMPT_PREFIX) } ||
             session.messages.any { (it.quiz != null && it.quizAnswer == null) || (it.problem != null && it.problem.result == null) }) false
         else sendTurnLocked(STUDIO_PLAN_REQUEST, null, null)
     }
@@ -606,7 +606,9 @@ internal class DesktopStudioController(
             catch (_: Exception) { state.value = before.copy(busy = false, storageError = "Impossible d’enregistrer le plan proposé. Vérifie l’accès au dossier DreamsignWizard; les données précédentes sont conservées.") }
             return@synchronized
         }
-        if (current.messages.lastOrNull()?.text == STUDIO_QUIZ_REQUEST && parsed.quiz == null) {
+        if (current.messages.lastOrNull()?.text in STUDIO_QUIZ_REQUESTS && (parsed.quiz == null ||
+            current.messages.lastOrNull()?.text == STUDIO_PREDICT_REQUEST && parsed.quiz.type != StudioQuizType.PREDICT ||
+            current.messages.lastOrNull()?.text == STUDIO_CHECK_REQUEST && parsed.quiz.type != StudioQuizType.CHECK)) {
             state.value = before.copy(busy = false, error = "Le fournisseur n’a pas produit de QCM utilisable. Ton message est conservé ; réessaie ou choisis un autre modèle.")
             return@synchronized
         }
@@ -749,7 +751,7 @@ private fun providerFailureMessage(failure: Exception): String {
 internal const val MAX_TUTOR_BODY_CHARS = 60_000
 internal const val TUTOR_SYSTEM_PROMPT = "Tu es un tuteur francophone. Commence par diagnostiquer les connaissances et le raisonnement de l’apprenant. Après sa réponse, propose les prérequis et un plan concis, puis enseigne progressivement en vérifiant sa compréhension. Sois honnête sur les limites et ne prétends pas avoir évalué une compétence sans preuve.\n" +
     "Pour chaque question de diagnostic ou de pratique, propose un QCM et réponds uniquement par un bloc structuré ```studio-quiz suivi d'un objet JSON puis ``` ; ne dévoile jamais la solution ou l'explication hors de ce bloc avant la réponse. " +
-    "Le JSON doit contenir question (énoncé complet autonome), options (tableau de 2 à 8 objets avec id unique court et label), multiSelect (booléen), correctIds (tableau non vide des id corrects) et explanation (explication complète). " +
+    "Le JSON doit contenir type (predict pour prédire un résultat avant explication, check pour vérifier la compréhension), question (énoncé complet autonome), options (tableau de 2 à 8 objets avec id unique court et label), multiSelect (booléen), correctIds (tableau non vide des id corrects) et explanation (explication complète). " +
     "Pour un seul choix correct, multiSelect vaut false et correctIds contient un seul id. Les labels ne contiennent pas la solution ni de raisonnement. " +
     "L'apprenant peut choisir, dire qu'il ne sait pas, indiquer sa confiance et expliquer librement son raisonnement. Après sa réponse, examine ce raisonnement et corrige les confusions avant de poursuivre. " +
     "Exception : si la dernière demande porte sur un problème de pratique ou son verdict, suis exclusivement le format studio-problem ou studio-verdict demandé, sans QCM. La solution du problème est préengagée avant sa présentation et doit rester cachée jusqu'à la conclusion de la tentative. " +

@@ -261,7 +261,11 @@ class StudioUiTest {
             }
         }
         onNodeWithTag("studio-request-quiz").assertIsEnabled().performClick()
-        runOnIdle { assertEquals(1, controller.quizRequests) }
+        onNodeWithTag("studio-request-predict").performClick()
+        runOnIdle { assertEquals(1, controller.quizRequests); assertEquals(StudioQuizType.PREDICT, controller.lastQuizType) }
+        onNodeWithTag("studio-request-quiz").performClick()
+        onNodeWithTag("studio-request-check").performClick()
+        runOnIdle { assertEquals(2, controller.quizRequests); assertEquals(StudioQuizType.CHECK, controller.lastQuizType) }
     }
 
     @Test
@@ -359,6 +363,7 @@ class StudioUiTest {
         var cancelCount = 0
         var acceptQuiz = false
         var quizRequests = 0
+        var lastQuizType: StudioQuizType? = null
         var quizSelection: List<String>? = null
         var quizDontKnow: Boolean? = null
         var quizThinking: String? = null
@@ -404,7 +409,7 @@ class StudioUiTest {
             state.value = state.value.copy(sessions = state.value.sessions.map { if (it.id == updated.id) updated else it }, error = null)
             return true
         }
-        override fun requestQuiz(): Boolean { quizRequests++; return true }
+        override fun requestQuiz(type: StudioQuizType): Boolean { quizRequests++; lastQuizType = type; return true }
         override fun revealPracticeHint(messageIndex: Int): Boolean {
             val session = state.value.sessions.single()
             val updated = session.copy(messages = session.messages.mapIndexed { index, message ->

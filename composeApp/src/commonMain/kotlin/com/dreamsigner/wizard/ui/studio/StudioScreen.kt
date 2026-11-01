@@ -283,6 +283,7 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
                 modifier = Modifier.testTag("studio-plan")) { Text("Plan") }
         }
         var showSessionModels by remember(session.id) { mutableStateOf(false) }
+        var showQuizTypes by remember(session.id) { mutableStateOf(false) }
         val sessionModels = if (state.providerMode == "chatgpt") state.chatGptModels else if (state.apiModelsUrl == state.baseUrl) state.apiModels else emptyList()
         if (!hasOpenExercise) Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
           Box(Modifier.weight(1f)) {
@@ -301,9 +302,15 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
                 }
             }
           }
-          TextButton(onClick = { controller.requestQuiz() },
-              enabled = state.available && !state.busy && state.storageError == null,
-              modifier = Modifier.testTag("studio-request-quiz")) { Text("Demander un QCM", maxLines = 1) }
+          Box {
+            TextButton(onClick = { showQuizTypes = true },
+                enabled = state.available && !state.busy && state.storageError == null,
+                modifier = Modifier.testTag("studio-request-quiz")) { Text("Demander un QCM", maxLines = 1) }
+            DropdownMenu(expanded = showQuizTypes, onDismissRequest = { showQuizTypes = false }) {
+                DropdownMenuItem(onClick = { showQuizTypes = false; controller.requestQuiz(StudioQuizType.PREDICT) }, modifier = Modifier.testTag("studio-request-predict")) { Text("Prédiction") }
+                DropdownMenuItem(onClick = { showQuizTypes = false; controller.requestQuiz(StudioQuizType.CHECK) }, modifier = Modifier.testTag("studio-request-check")) { Text("Vérification de compréhension") }
+            }
+          }
           TextButton(onClick = { controller.requestPracticeProblem() },
               enabled = state.available && !state.busy && state.storageError == null,
               modifier = Modifier.testTag("studio-request-problem")) { Text("Pratiquer", maxLines = 1) }
@@ -337,6 +344,8 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
                             Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                                 val displayText = when (message.text) {
                                     STUDIO_QUIZ_REQUEST -> "QCM demandé"
+                                    STUDIO_PREDICT_REQUEST -> "Prédiction demandée"
+                                    STUDIO_CHECK_REQUEST -> "Vérification de compréhension demandée"
                                     STUDIO_PLAN_REQUEST -> "Plan pédagogique demandé"
                                     STUDIO_PROBLEM_REQUEST -> "Problème de pratique demandé"
                                     STUDIO_DIAGNOSIS_REQUEST -> "Conclusion du diagnostic demandée"

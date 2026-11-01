@@ -58,7 +58,7 @@ class DesktopStudioControllerTest {
         val diagnosis = """{"version":1,"strands":[{"strand":"Fractions","floor":"Reconnaît une moitié dans deux réponses","ceiling":"Les tiers restent à vérifier","misconception":null,"sources":[1,5]}],"summary":"Les moitiés sont comprises ; poursuivre les tiers."}"""
         val tutor = StudioTutor { request ->
             when {
-                request.history.last().text == STUDIO_QUIZ_REQUEST -> fence + "studio-quiz\n" + quiz + "\n" + fence
+                request.history.last().text in STUDIO_QUIZ_REQUESTS -> fence + "studio-quiz\n" + quiz + "\n" + fence
                 request.history.last().text.contains(STUDIO_DIAGNOSIS_REQUEST) -> fence + "studio-diagnosis\n" + diagnosis + "\n" + fence
                 else -> "Explique ton choix."
             }

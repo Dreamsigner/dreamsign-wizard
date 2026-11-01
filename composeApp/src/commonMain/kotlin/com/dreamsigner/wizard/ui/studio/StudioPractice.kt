@@ -1,11 +1,22 @@
 package com.dreamsigner.wizard.ui.studio
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 internal const val STUDIO_QUIZ_REQUEST = "Propose-moi une question de diagnostic ou de pratique sous forme de QCM structuré, adaptée à mon objectif et à mes réponses précédentes."
 internal const val STUDIO_PLAN_REQUEST = "À partir de notre diagnostic, propose un plan pédagogique sous forme d'un unique bloc ```studio-plan suivi d'un objet JSON puis ``` sans autre texte. L'objet a exactement les champs version (entier 1), diagnosis (1 à 20 objets {observation, sources}), steps (1 à 20 objets {title, prerequisites, evidence, sources}). Les sources sont les indices de messages affichés, en commençant à 0, en excluant cette demande ; les prerequisites sont les indices d'étapes précédentes, en commençant à 0. Chaque source doit correspondre à une preuve présente dans la conversation. Ne déduis aucun acquis sans preuve."
+
+internal const val STUDIO_PREDICT_REQUEST = "Propose-moi un QCM de prédiction : demande-moi de prévoir le résultat d’une situation avant de l’expliquer. Le champ type doit valoir predict."
+internal const val STUDIO_CHECK_REQUEST = "Propose-moi un QCM de vérification de compréhension sur ce que nous avons étudié. Le champ type doit valoir check."
+internal val STUDIO_QUIZ_REQUESTS = setOf(STUDIO_QUIZ_REQUEST, STUDIO_PREDICT_REQUEST, STUDIO_CHECK_REQUEST)
+
+@Serializable
+enum class StudioQuizType {
+    @SerialName("predict") PREDICT,
+    @SerialName("check") CHECK,
+}
 
 @Serializable
 data class StudioQuizOption(val id: String, val label: String)
@@ -17,6 +28,7 @@ data class StudioQuiz(
     val multiSelect: Boolean = false,
     val correctIds: List<String>,
     val explanation: String,
+    val type: StudioQuizType = StudioQuizType.CHECK,
 )
 
 @Serializable

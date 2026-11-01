@@ -69,6 +69,8 @@ internal fun StudioPlanDialog(session: StudioSession, controller: StudioControll
                     session.messages.forEachIndexed { index, message ->
                         val visible = when (message.text) {
                             STUDIO_QUIZ_REQUEST -> "QCM demandé"
+                            STUDIO_PREDICT_REQUEST -> "Prédiction demandée"
+                            STUDIO_CHECK_REQUEST -> "Vérification de compréhension demandée"
                             STUDIO_PLAN_REQUEST -> "Plan pédagogique demandé"
                             STUDIO_PROBLEM_REQUEST -> "Problème de pratique demandé"
                             STUDIO_DIAGNOSIS_REQUEST -> "Conclusion du diagnostic demandée"
