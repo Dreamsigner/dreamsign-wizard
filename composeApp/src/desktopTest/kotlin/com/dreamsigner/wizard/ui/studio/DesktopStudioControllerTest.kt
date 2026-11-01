@@ -12,6 +12,44 @@ import java.nio.file.Files
 import kotlin.test.*
 
 class DesktopStudioControllerTest {
+    @Test fun diagnosticConclusionRequiresTwoAnsweredQuizzesAndPersists() = runBlocking {
+        val file = Files.createTempDirectory("studio-diagnostic").resolve("studio.json")
+        val fence = 0x60.toChar().toString().repeat(3)
+        val quiz = """{"question":"Quelle fraction vaut 1/2 ?","options":[{"id":"a","label":"Une moitié"},{"id":"b","label":"Un tiers"}],"multiSelect":false,"correctIds":["a"],"explanation":"Une moitié vaut 1/2."}"""
+        val diagnosis = """{"version":1,"strands":[{"strand":"Fractions","floor":"Reconnaît une moitié dans deux réponses","ceiling":"Les tiers restent à vérifier","misconception":null,"sources":[1,5]}],"summary":"Les moitiés sont comprises ; poursuivre les tiers."}"""
+        val tutor = StudioTutor { request ->
+            when {
+                request.history.last().text == STUDIO_QUIZ_REQUEST -> fence + "studio-quiz\n" + quiz + "\n" + fence
+                request.history.last().text.contains(STUDIO_DIAGNOSIS_REQUEST) -> fence + "studio-diagnosis\n" + diagnosis + "\n" + fence
+                else -> "Explique ton choix."
+            }
+        }
+        var controller = DesktopStudioController(file, tutor)
+        try {
+            assertTrue(controller.configure("http://localhost:1234/v1", "model", ""))
+            assertTrue(controller.create("Fractions"))
+            assertFalse(controller.requestDiagnosisConclusion())
+            assertTrue(controller.requestQuiz())
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            assertTrue(controller.submitQuiz(1, listOf("a"), false, "Deux parts égales", 75))
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            assertFalse(controller.requestDiagnosisConclusion())
+            assertTrue(controller.requestQuiz())
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            assertTrue(controller.submitQuiz(5, listOf("a"), false, "Une des deux parts", 80))
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            assertTrue(controller.requestDiagnosisConclusion())
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            val assessment = controller.state.value.sessions.single().assessment!!
+            assertEquals(listOf(1, 5), assessment.strands.single().sources)
+            assertTrue(controller.state.value.sessions.single().messages.last().text.contains("Les moitiés sont comprises"))
+        } finally { controller.close() }
+        controller = DesktopStudioController(file, tutor)
+        try {
+            assertEquals("Fractions", controller.state.value.sessions.single().assessment?.strands?.single()?.strand)
+        } finally { controller.close() }
+    }
+
     @Test fun practiceKeepsSolutionHiddenUntilVerdictAndPersistsReasoning() = runBlocking {
         val file = Files.createTempDirectory("studio-practice").resolve("studio.json")
         val fence = 0x60.toChar().toString().repeat(3)

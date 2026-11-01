@@ -38,6 +38,18 @@ internal fun StudioPlanDialog(session: StudioSession, controller: StudioControll
                 Spacer(Modifier.height(12.dp))
                 Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text("Construis ou corrige le plan à partir du diagnostic. Le plan accepté guidera les prochaines réponses du tuteur ; aucun acquis n’est déduit automatiquement.")
+                    TextButton(onClick = {
+                        if (!controller.requestDiagnosisConclusion()) error = "Réponds d'abord à au moins deux QCM de diagnostic et termine la question en cours."
+                        else error = null
+                    }, enabled = !state.busy && state.storageError == null) { Text("Conclure le diagnostic") }
+                    session.assessment?.let { assessment ->
+                        Text("Diagnostic de la séance", style = MaterialTheme.typography.subtitle1)
+                        Text(assessment.summary)
+                        assessment.strands.forEach { strand ->
+                            Text("${strand.strand} · acquis observé : ${strand.floor} · limite : ${strand.ceiling} · sources : ${strand.sources.joinToString(", ") { (it + 1).toString() }}")
+                            strand.misconception?.takeIf { it.isNotBlank() }?.let { Text("Confusion observée : $it") }
+                        }
+                    }
                     if (session.plan?.decision == "accepted") Text("Ton plan accepté reste actif jusqu’à l’acceptation d’un nouveau plan.")
                     TextButton(onClick = {
                         if (!controller.requestGeneratedPlan()) error = "Impossible de proposer un plan pour le moment. Poursuis le diagnostic et termine la question en cours."
@@ -59,6 +71,7 @@ internal fun StudioPlanDialog(session: StudioSession, controller: StudioControll
                             STUDIO_QUIZ_REQUEST -> "QCM demandé"
                             STUDIO_PLAN_REQUEST -> "Plan pédagogique demandé"
                             STUDIO_PROBLEM_REQUEST -> "Problème de pratique demandé"
+                            STUDIO_DIAGNOSIS_REQUEST -> "Conclusion du diagnostic demandée"
                             else -> if (message.text.startsWith(STUDIO_PRACTICE_ATTEMPT_PREFIX)) "Tentative envoyée"
                                 else message.text.ifBlank { message.quiz?.question ?: message.problem?.statement ?: "Question du tuteur" }
                         }

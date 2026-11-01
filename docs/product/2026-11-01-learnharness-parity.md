@@ -20,4 +20,8 @@ Ordre d'intégration : questions structurées ; diagnostic et plan ; cycle d'ens
 
 État prévu pour 2.4.0 : un problème de pratique autonome peut être demandé après un tour de séance ; sa solution est engagée avant la présentation et cachée jusqu'au verdict ou à l'abandon. L'apprenant dispose d'indices gradués, d'une réponse et d'un champ de raisonnement distincts. La tentative, le verdict et la demande en échec survivent au redémarrage ; le problème suivant est demandé explicitement. La sélection des prochaines tâches selon une maîtrise vérifiée reste ouverte.
 
+État prévu pour 2.5.0 : la conclusion du diagnostic est un objet structuré et persistant, fondé sur au moins deux QCM répondus dans le contexte récent. Chaque prérequis distingue un acquis observé, une limite, une confusion éventuelle et les messages sources ; la conclusion est consultable dans le plan. Le passage automatique à l'enseignement et la validation de chaque prérequis avant progression restent ouverts.
+
+Le parseur d'extraction du graphe peut préparer une proposition sourcée et la fusionner en mémoire sans écriture. Il ne déclenche aucune extraction depuis l'interface et ne valide pas la vérité des propositions ; l'examen et l'acceptation par l'apprenant restent à intégrer.
+
 Références de code LearnHarness : `src/core/question-core.ts`, `components/question-dock.tsx`, `src/agent/tools/probe.ts`, `src/agent/tools/plan.ts`, `src/core/plan-tree.ts`, `src/agent/tools/practice.ts`, `src/core/contracts/graph.ts`, `components/notes-import.tsx`, `src/core/contracts/models.ts`. Les composants et contrats servent de référence de comportement ; leur code n'est pas incorporé tel quel.

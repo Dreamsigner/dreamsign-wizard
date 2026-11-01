@@ -24,6 +24,7 @@
 Validation du 1er novembre 2026 : 231 tests Desktop réussis, compilation Kotlin Desktop réussie, captures de réponse scientifique à 360 et 1000 pixels inspectées. La distribution locale n'a pas été créée : WiX et la dépendance de vérification du runtime manquent dans le cache Gradle hors ligne.
 
 - [ ] Plan structuré et validation des prérequis.
+  - [x] Conclusion de diagnostic structurée avec acquis, limites, confusions et sources de QCM répondus.
   - [x] Édition, acceptation et sauvegarde locale d’un plan avec sources et preuves attendues ; plan accepté transmis au tuteur.
   - [x] Proposition structurée issue du diagnostic, sourcée et soumise à l'acceptation de l'apprenant.
   - [ ] Validation effective des prérequis avant chaque étape.

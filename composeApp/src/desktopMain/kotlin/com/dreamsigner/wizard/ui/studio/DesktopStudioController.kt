@@ -28,7 +28,7 @@ internal data class TutorRequest(
 internal fun interface StudioTutor { suspend fun respond(request: TutorRequest): String }
 
 @Serializable private data class StudioDisk(val baseUrl: String = "", val model: String = "", val sessions: List<StudioSessionDisk> = emptyList(), val selectedId: String? = null, val providerMode: String = "api", val reasoningEffort: String = "AUTOMATIC", val apiModel: String? = null, val chatGptModel: String? = null)
-@Serializable private data class StudioSessionDisk(val id: String, val goal: String, val messages: List<StudioMessageDisk>, val plan: StudioPlanDisk? = null, val reasoningEffort: String? = null, val modelChoice: StudioModelChoiceDisk? = null, val planProposal: StudioPlanProposalDisk? = null)
+@Serializable private data class StudioSessionDisk(val id: String, val goal: String, val messages: List<StudioMessageDisk>, val plan: StudioPlanDisk? = null, val reasoningEffort: String? = null, val modelChoice: StudioModelChoiceDisk? = null, val planProposal: StudioPlanProposalDisk? = null, val assessment: StudioDiagnosticAssessment? = null)
 @Serializable private data class StudioModelChoiceDisk(val providerMode: String, val baseUrl: String, val model: String)
 @Serializable private data class StudioPlanDisk(val steps: List<StudioPlanStepDisk>, val decision: String = "proposed")
 @Serializable private data class StudioPlanStepDisk(val title: String, val prerequisites: List<Int>, val evidence: String, val sources: List<Int>)
@@ -194,6 +194,13 @@ internal class DesktopStudioController(
         else sendTurnLocked(STUDIO_PROBLEM_REQUEST, null, null)
     }
 
+    override fun requestDiagnosisConclusion(): Boolean = synchronized(lock) {
+        val session = state.value.sessions.firstOrNull { it.id == state.value.selectedId }
+        val answered = session?.messages?.takeLast(12)?.count { it.quizAnswer != null } ?: 0
+        if (session == null || answered < 2 || session.messages.any { (it.quiz != null && it.quizAnswer == null) || (it.problem != null && it.problem.result == null) }) false
+        else sendTurnLocked(STUDIO_DIAGNOSIS_REQUEST, null, null)
+    }
+
     override fun revealPracticeHint(messageIndex: Int): Boolean {
         val snapshot = state.value
         val session = snapshot.sessions.firstOrNull { it.id == snapshot.selectedId } ?: return false
@@ -233,7 +240,7 @@ internal class DesktopStudioController(
 
     override fun requestGeneratedPlan(): Boolean = synchronized(lock) {
         val session = state.value.sessions.firstOrNull { it.id == state.value.selectedId }
-        if (session == null || session.messages.none { it.role == "user" && it.text !in setOf(STUDIO_QUIZ_REQUEST, STUDIO_PROBLEM_REQUEST, STUDIO_PLAN_REQUEST) && !it.text.startsWith(STUDIO_PRACTICE_ATTEMPT_PREFIX) } ||
+        if (session == null || session.messages.none { it.role == "user" && it.text !in setOf(STUDIO_QUIZ_REQUEST, STUDIO_PROBLEM_REQUEST, STUDIO_PLAN_REQUEST, STUDIO_DIAGNOSIS_REQUEST) && !it.text.startsWith(STUDIO_PRACTICE_ATTEMPT_PREFIX) } ||
             session.messages.any { (it.quiz != null && it.quizAnswer == null) || (it.problem != null && it.problem.result == null) }) false
         else sendTurnLocked(STUDIO_PLAN_REQUEST, null, null)
     }
@@ -363,9 +370,9 @@ internal class DesktopStudioController(
         if (pendingBySession[id].isNullOrBlank()) return
         val acceptedPlan = session.plan?.takeIf { it.decision == "accepted" && validPlan(it, session.messages.size) }
         val effort = session.reasoningEffort ?: config.reasoningEffort
-        val planRequest = session.messages.lastOrNull()?.text == STUDIO_PLAN_REQUEST
+        val numberedContext = session.messages.lastOrNull()?.text in setOf(STUDIO_PLAN_REQUEST, STUDIO_DIAGNOSIS_REQUEST)
         val history = session.messages.takeLast(12).mapIndexed { offset, message ->
-            if (!planRequest) message else message.copy(
+            if (!numberedContext) message else message.copy(
                 text = "[message ${session.messages.size - minOf(12, session.messages.size) + offset}]\n${studioMessageForTutor(message)}",
                 quiz = null,
             )
@@ -415,6 +422,20 @@ internal class DesktopStudioController(
             catch (_: Exception) { state.value = before.copy(busy = false, storageError = "Impossible d’enregistrer le problème. Vérifie l’accès au dossier DreamsignWizard; les données précédentes sont conservées.") }
             return@synchronized
         }
+        if (current.messages.lastOrNull()?.text == STUDIO_DIAGNOSIS_REQUEST) {
+            val firstVisible = (current.messages.size - 12).coerceAtLeast(0)
+            val answered = current.messages.indices.filterTo(mutableSetOf()) { index -> index >= firstVisible && current.messages[index].quizAnswer != null }
+            val assessment = parseStudioDiagnostic(reply, answered)
+            if (assessment == null) {
+                state.value = before.copy(busy = false, error = "Le fournisseur n’a pas produit de diagnostic structuré utilisable. Ta demande est conservée ; réessaie ou pose d’autres questions de diagnostic.")
+                return@synchronized
+            }
+            val updated = current.copy(assessment = assessment, messages = current.messages + StudioMessage("assistant", "Diagnostic conclu : ${assessment.summary}"))
+            val next = before.copy(sessions = before.sessions.map { if (it.id == id) updated else it }, busy = false, error = null)
+            try { write(next); state.value = next; pendingBySession.remove(id) }
+            catch (_: Exception) { state.value = before.copy(busy = false, storageError = "Impossible d’enregistrer le diagnostic. Vérifie l’accès au dossier DreamsignWizard; les données précédentes sont conservées.") }
+            return@synchronized
+        }
         if (current.messages.lastOrNull()?.text?.startsWith(STUDIO_PRACTICE_ATTEMPT_PREFIX) == true) {
             val problemIndex = current.messages.indexOfLast { it.problem?.attempt != null && it.problem.result == null }
             val problem = current.messages.getOrNull(problemIndex)?.problem
@@ -432,7 +453,7 @@ internal class DesktopStudioController(
             return@synchronized
         }
         val parsed = parseStudioTutorReply(reply)
-        if ("```studio-problem" in reply || "```studio-verdict" in reply) {
+        if ("```studio-problem" in reply || "```studio-verdict" in reply || "```studio-diagnosis" in reply) {
             state.value = before.copy(busy = false, error = "Le fournisseur a renvoyé une structure de pratique hors séquence. Ton message est conservé ; réessaie.")
             return@synchronized
         }
@@ -549,14 +570,16 @@ internal class DesktopStudioController(
     private fun fromDisk(d: StudioDisk) = StudioState(baseUrl = d.baseUrl, model = d.model, sessions = d.sessions.map { it.fromDisk() }, selectedId = d.selectedId, providerMode = d.providerMode, reasoningEffort = ReasoningEffort.entries.firstOrNull { it.name == d.reasoningEffort } ?: ReasoningEffort.AUTOMATIC, apiModel = d.apiModel ?: if (d.providerMode == "api") d.model else "", chatGptModel = d.chatGptModel ?: if (d.providerMode == "chatgpt") d.model else "")
     private fun StudioPlan.toDisk() = StudioPlanDisk(steps.map { step -> StudioPlanStepDisk(step.title, step.prerequisites, step.evidence, step.sources) }, decision)
     private fun StudioPlanDisk.fromDisk() = StudioPlan(steps.map { step -> StudioPlanStep(step.title, step.prerequisites, step.evidence, step.sources) }, decision)
-    private fun StudioSession.toDisk() = StudioSessionDisk(id, goal, messages.map { StudioMessageDisk(it.role, it.text, it.quiz, it.quizAnswer, it.problem) }, plan?.toDisk(), reasoningEffort?.name, modelChoice?.let { StudioModelChoiceDisk(it.providerMode, it.baseUrl, it.model) }, planProposal?.let { StudioPlanProposalDisk(it.diagnosis.map { observation -> StudioDiagnosisDisk(observation.observation, observation.sources) }, it.plan.toDisk()) })
+    private fun StudioSession.toDisk() = StudioSessionDisk(id, goal, messages.map { StudioMessageDisk(it.role, it.text, it.quiz, it.quizAnswer, it.problem) }, plan?.toDisk(), reasoningEffort?.name, modelChoice?.let { StudioModelChoiceDisk(it.providerMode, it.baseUrl, it.model) }, planProposal?.let { StudioPlanProposalDisk(it.diagnosis.map { observation -> StudioDiagnosisDisk(observation.observation, observation.sources) }, it.plan.toDisk()) }, assessment)
     private fun StudioSessionDisk.fromDisk() = StudioSession(id, goal, messages.map { message ->
         require(message.quiz == null || validStudioQuiz(message.quiz))
         require(message.quiz == null || message.role == "assistant")
         require(message.quizAnswer == null || (message.quiz != null && validStudioQuizAnswer(message.quiz, message.quizAnswer)))
         require(message.problem == null || (message.role == "assistant" && message.quiz == null && validStudioProblem(message.problem)))
         StudioMessage(message.role, message.text, message.quiz, message.quizAnswer, message.problem)
-    }, plan?.fromDisk(), reasoningEffort?.let { saved -> ReasoningEffort.entries.firstOrNull { it.name == saved } }, modelChoice?.let { StudioModelChoice(it.providerMode, it.baseUrl, it.model) }, planProposal?.let { StudioPlanProposal(it.diagnosis.map { observation -> StudioDiagnosisObservation(observation.observation, observation.sources) }, it.plan.fromDisk()) })
+    }, plan?.fromDisk(), reasoningEffort?.let { saved -> ReasoningEffort.entries.firstOrNull { it.name == saved } }, modelChoice?.let { StudioModelChoice(it.providerMode, it.baseUrl, it.model) }, planProposal?.let { StudioPlanProposal(it.diagnosis.map { observation -> StudioDiagnosisObservation(observation.observation, observation.sources) }, it.plan.fromDisk()) }, assessment?.also {
+        require(validStudioDiagnostic(it, messages.indices.filterTo(mutableSetOf()) { index -> messages[index].quizAnswer != null }))
+    })
 }
 
 private class OpenAiCompatibleTutor : StudioTutor {

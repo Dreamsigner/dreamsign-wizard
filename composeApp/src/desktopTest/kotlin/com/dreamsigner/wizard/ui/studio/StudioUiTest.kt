@@ -16,6 +16,21 @@ import kotlin.test.assertFalse
 
 class StudioUiTest {
     @Test
+    fun reviewedDiagnosticIsVisibleInPlanDialog() = runDesktopComposeUiTest(width = 360, height = 480) {
+        val controller = MemoryStudioController(initialSession = true).apply { installAssessment() }
+        setContent { LearningAppTheme { CompositionLocalProvider(LocalStudioController provides controller) { StudioScreen() } } }
+        onNodeWithTag("studio-plan").performClick()
+        onNodeWithText("Diagnostic de la séance").assertIsDisplayed()
+        onNodeWithText("Les moitiés sont comprises.").assertIsDisplayed()
+        onNodeWithText("Conclure le diagnostic").assertIsDisplayed()
+        val file = File("build/reports/ui-snapshots/studio-diagnostic-360.png")
+        check(file.parentFile.isDirectory || file.parentFile.mkdirs())
+        Image.makeFromBitmap(onAllNodes(isRoot()).onLast().captureToImage().asSkiaBitmap()).use { image ->
+            image.encodeToData()!!.use { file.writeBytes(it.bytes) }
+        }
+    }
+
+    @Test
     fun planEditorOpensAtCompactSize() = runDesktopComposeUiTest(width = 360, height = 480) {
         val controller = MemoryStudioController(initialSession = true)
         setContent {
@@ -341,6 +356,11 @@ class StudioUiTest {
             val session = state.value.sessions.single()
             val problem = StudioProblem("Combien font 2 + 2 ?", "recall", "On réunit deux paires : 4.", listOf("Pense aux paires."))
             state.value = state.value.copy(sessions = listOf(session.copy(messages = listOf(StudioMessage("assistant", "", problem = problem)))))
+        }
+        fun installAssessment() {
+            val session = state.value.sessions.single()
+            val assessment = StudioDiagnosticAssessment(1, listOf(StudioDiagnosticStrand("Fractions", "Une moitié", "Les tiers", sources = listOf(0))), "Les moitiés sont comprises.")
+            state.value = state.value.copy(sessions = listOf(session.copy(messages = listOf(StudioMessage("user", "Une moitié")), assessment = assessment)))
         }
         override fun select(id: String) { state.value = state.value.copy(selectedId = id, error = null) }
         override fun create(goal: String): Boolean {
