@@ -7,6 +7,29 @@ import kotlin.test.assertTrue
 
 class MathTextParserTest {
     @Test
+    fun parsesModelMathDelimitersAndKeepsCodeLiteral() {
+        val source = "Vitesse \\(v=12\\,\\mathrm{m/s}\\) puis \\[F=ma\\]. Code `\\(x\\)` et *important*."
+        assertEquals(listOf(
+            LearningTextSegment.Text("Vitesse "),
+            LearningTextSegment.Math("v=12\\,\\mathrm{m/s}", false),
+            LearningTextSegment.Text(" puis "),
+            LearningTextSegment.Math("F=ma", true),
+            LearningTextSegment.Text(". Code "),
+            LearningTextSegment.Code("\\(x\\)"),
+            LearningTextSegment.Text(" et "),
+            LearningTextSegment.Emphasis("important"),
+            LearningTextSegment.Text("."),
+        ), parseLearningText(source))
+    }
+
+    @Test
+    fun unmatchedAndEscapedDelimitersStayVisible() {
+        assertEquals(listOf(LearningTextSegment.Text("Écrire \\\\(x\\) et \\[sans fin")),
+            parseLearningText("Écrire \\\\(x\\) et \\[sans fin"))
+        assertEquals(listOf(LearningTextSegment.Math("a * b * c", false)), parseLearningText("\\(a * b * c\\)"))
+    }
+
+    @Test
     fun parsesInlineAndDisplayMathWithoutLosingSurroundingCopy() {
         assertEquals(
             listOf(

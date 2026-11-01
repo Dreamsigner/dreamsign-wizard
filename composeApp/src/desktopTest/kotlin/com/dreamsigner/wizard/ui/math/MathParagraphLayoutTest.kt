@@ -25,6 +25,23 @@ import kotlin.test.assertTrue
 
 class MathParagraphLayoutTest {
     @Test
+    fun studioStyleAnswerWithMathAndCodeIsLaidOutAtTwoWidths() {
+        val answer = "# Loi de Newton\n\n1. La force \\(F=ma\\) dépend de la masse.\n\n\\[F=2\\,\\mathrm{kg}\\times 3\\,\\mathrm{m/s^2}=6\\,\\mathrm{N}\\]\n\n```python\nforce = mass * acceleration\n```"
+        listOf(360, 1000).forEach { width ->
+            runDesktopComposeUiTest(width = width, height = 600) {
+                setContent { MaterialTheme { Surface {
+                    MathRenderingProvider(DesktopMathRenderer) {
+                        com.dreamsigner.wizard.ui.LessonDocument(answer, typesetMath = true, modifier = Modifier.padding(12.dp))
+                    }
+                } } }
+                onNodeWithText("Loi de Newton").assertIsDisplayed()
+                onNodeWithText("force = mass * acceleration").assertIsDisplayed()
+                save("studio-scientific-answer-$width")
+            }
+        }
+    }
+
+    @Test
     fun answerFractionsAndUnitsRemainReadableWithoutOverlappingRows() {
         val digits = requireNotNull(renderMathBitmap("1234", 18f, Color.Black, false))
         val fraction = requireNotNull(renderMathBitmap("\\frac{12}{34}", 18f, Color.Black, false))

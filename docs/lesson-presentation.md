@@ -26,9 +26,9 @@ cours, les notes de séance et l'aide; les corrections et indices emploient
 
 `learningNotes` reste un champ texte compatible avec les données existantes.
 Son sous-ensemble Markdown comprend les paragraphes séparés par une ligne vide,
-les titres `##` et `###`, les listes `-`, les encadrés `>`, le gras `**...**`,
+les titres `#` à `######`, les listes `-`, `+`, `*` et numérotées, les encadrés `>`, le gras `**...**`, l'italique `*...*`,
 le code entre accents graves et les blocs de code délimités par trois accents
-graves. Les formules utilisent `$...$` et `$$...$$`.
+graves. Les formules utilisent `$...$`, `$$...$$`, `\(...\)` ou `\[...\]`.
 
 Le lecteur n'exécute pas de HTML et ne charge pas d'images distantes à partir
 des notes. Un bloc de code n'est ni normalisé comme une formule ni exécuté.

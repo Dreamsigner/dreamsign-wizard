@@ -11,15 +11,18 @@ enum class ReasoningEffort(val label: String, val wireValue: String?) {
 data class StudioMessage(val role: String, val text: String)
 data class StudioPlanStep(val title: String, val prerequisites: List<Int>, val evidence: String, val sources: List<Int>)
 data class StudioPlan(val steps: List<StudioPlanStep>, val decision: String = "proposed")
-data class StudioSession(val id: String, val goal: String, val messages: List<StudioMessage>, val plan: StudioPlan? = null, val reasoningEffort: ReasoningEffort? = null)
+data class StudioModelChoice(val providerMode: String, val baseUrl: String, val model: String)
+data class StudioSession(val id: String, val goal: String, val messages: List<StudioMessage>, val plan: StudioPlan? = null, val reasoningEffort: ReasoningEffort? = null, val modelChoice: StudioModelChoice? = null)
 data class StudioState(
     val sessions: List<StudioSession> = emptyList(), val selectedId: String? = null,
     val baseUrl: String = "", val model: String = "", val reasoningEffort: ReasoningEffort = ReasoningEffort.AUTOMATIC, val busy: Boolean = false,
     val error: String? = null, val storageError: String? = null, val available: Boolean = true,
     val connectionError: String? = null, val hasApiKey: Boolean = false,
-    val providerMode: String = "api", val chatGptConnected: Boolean = false,
+    val providerMode: String = "api", val apiModel: String = "", val chatGptModel: String = "", val chatGptConnected: Boolean = false,
     val chatGptEmail: String? = null, val chatGptModels: List<String> = emptyList(),
     val chatGptBusy: Boolean = false, val chatGptError: String? = null,
+    val apiModels: List<String> = emptyList(), val apiModelsUrl: String = "",
+    val apiModelsBusy: Boolean = false, val apiModelsError: String? = null,
 )
 
 interface StudioController {
@@ -27,6 +30,9 @@ interface StudioController {
     fun select(id: String)
     fun create(goal: String): Boolean
     fun configure(baseUrl: String, model: String, apiKey: String): Boolean
+    fun discoverApiModels(baseUrl: String, apiKey: String) = Unit
+    fun cancelApiModelDiscovery() = Unit
+    fun setSessionModel(model: String?) = Unit
     fun setReasoningEffort(effort: ReasoningEffort) = Unit
     fun setSessionReasoningEffort(effort: ReasoningEffort?) = Unit
     fun send(message: String): Boolean

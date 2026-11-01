@@ -24,6 +24,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
@@ -92,6 +93,7 @@ fun LearningText(
             is LearningTextSegment.Text -> segment.value
             is LearningTextSegment.Math -> mathAccessibilityDescription(segment.latex)
             is LearningTextSegment.Strong -> segment.value
+            is LearningTextSegment.Emphasis -> segment.value
             is LearningTextSegment.Code -> segment.value
         }
     }
@@ -143,6 +145,7 @@ private fun InlineMathParagraph(segments: List<LearningTextSegment>, modifier: M
             when (segment) {
                 is LearningTextSegment.Text -> append(segment.value)
                 is LearningTextSegment.Strong -> withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append(segment.value) }
+                is LearningTextSegment.Emphasis -> withStyle(SpanStyle(fontStyle = FontStyle.Italic)) { append(segment.value) }
                 is LearningTextSegment.Code -> withStyle(SpanStyle(
                     fontFamily = FontFamily.Monospace,
                     fontWeight = FontWeight.Medium,

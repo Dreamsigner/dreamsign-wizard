@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dreamsigner.wizard.ui.math.LearningText
 
-internal enum class LessonBlockKind { PARAGRAPH, HEADING, CODE, BULLET, CALLOUT }
+internal enum class LessonBlockKind { PARAGRAPH, HEADING, CODE, BULLET, ORDERED, CALLOUT }
 internal data class LessonBlock(val kind: LessonBlockKind, val text: String, val language: String = "")
 
 /** A deliberately small authoring format: no HTML execution, remote images or inferred headings. */
@@ -34,7 +34,28 @@ internal fun parseLessonDocument(source: String): List<LessonBlock> {
     var index = 0
     while (index < lines.size) {
         val line = lines[index]
+        val ordered = Regex("^\\s{0,3}(\\d+[.)])\\s+(.+)$").matchEntire(line)
+        val bullet = Regex("^\\s{0,3}[-+*]\\s+(.+)$").matchEntire(line)
+        val heading = Regex("^#{1,6}\\s+(.+)$").matchEntire(line)
+        val displayEnd = when {
+            line.trimStart().startsWith("\\[") -> "\\]"
+            line.trimStart().startsWith("\$\$") -> "\$\$"
+            else -> null
+        }
         when {
+            displayEnd != null && line.trimStart().indexOf(displayEnd, 2) < 0 &&
+                lines.drop(index + 1).any { displayEnd in it } -> {
+                // Keep blank lines inside a display formula; they are part of the same TeX block.
+                flush()
+                val math = mutableListOf(line)
+                index++
+                while (index < lines.size) {
+                    math += lines[index]
+                    if (displayEnd in lines[index]) break
+                    index++
+                }
+                blocks += LessonBlock(LessonBlockKind.PARAGRAPH, math.joinToString("\n"))
+            }
             line.startsWith("```") -> {
                 flush()
                 val start = index
@@ -48,11 +69,14 @@ internal fun parseLessonDocument(source: String): List<LessonBlock> {
                 } else blocks += LessonBlock(LessonBlockKind.CODE, code.joinToString("\n"), language)
             }
             line.isBlank() -> flush()
-            line.startsWith("## ") || line.startsWith("### ") -> {
-                flush(); blocks += LessonBlock(LessonBlockKind.HEADING, line.substringAfter(' ').trim())
+            heading != null -> {
+                flush(); blocks += LessonBlock(LessonBlockKind.HEADING, heading.groupValues[1].trim())
             }
-            line.startsWith("- ") -> {
-                flush(); blocks += LessonBlock(LessonBlockKind.BULLET, line.removePrefix("- "))
+            bullet != null -> {
+                flush(); blocks += LessonBlock(LessonBlockKind.BULLET, bullet.groupValues[1])
+            }
+            ordered != null -> {
+                flush(); blocks += LessonBlock(LessonBlockKind.ORDERED, ordered.groupValues[2], ordered.groupValues[1])
             }
             line.startsWith("> ") -> {
                 flush(); blocks += LessonBlock(LessonBlockKind.CALLOUT, line.removePrefix("> "))
@@ -92,6 +116,10 @@ internal fun LessonDocument(text: String, typesetMath: Boolean, modifier: Modifi
                 }
                 LessonBlockKind.BULLET -> Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     Text("•", color = ActionRed, fontSize = 17.sp)
+                    LearningText(block.text, Modifier.weight(1f), body, recognizeLegacyMath = typesetMath)
+                }
+                LessonBlockKind.ORDERED -> Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Text(block.language, color = ActionRed, fontSize = 17.sp)
                     LearningText(block.text, Modifier.weight(1f), body, recognizeLegacyMath = typesetMath)
                 }
                 LessonBlockKind.PARAGRAPH -> LearningText(block.text, style = body, recognizeLegacyMath = typesetMath)

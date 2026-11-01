@@ -270,6 +270,24 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
             TextButton(onClick = { showPlan = true }, enabled = !state.busy && state.storageError == null,
                 modifier = Modifier.testTag("studio-plan")) { Text("Plan") }
         }
+        var showSessionModels by remember(session.id) { mutableStateOf(false) }
+        val sessionModels = if (state.providerMode == "chatgpt") state.chatGptModels else if (state.apiModelsUrl == state.baseUrl) state.apiModels else emptyList()
+        Box {
+            TextButton(onClick = { showSessionModels = true }, enabled = !state.busy && state.storageError == null,
+                modifier = Modifier.testTag("studio-session-model")) {
+                Text("Modèle : ${session.modelChoice?.model ?: state.model.ifBlank { "non configuré" }}", maxLines = 1, overflow = TextOverflow.Ellipsis)
+            }
+            DropdownMenu(expanded = showSessionModels, onDismissRequest = { showSessionModels = false }) {
+                DropdownMenuItem(onClick = { controller.setSessionModel(null); showSessionModels = false }) {
+                    Text("Suivre le modèle par défaut (${state.model.ifBlank { "non configuré" }})")
+                }
+                (sessionModels + listOfNotNull(state.model.takeIf { it.isNotBlank() })).distinct().forEach { candidate ->
+                    DropdownMenuItem(onClick = { controller.setSessionModel(candidate); showSessionModels = false }) {
+                        Text(candidate + if (session.modelChoice?.model == candidate && session.modelChoice.providerMode == state.providerMode) " ✓" else "")
+                    }
+                }
+            }
+        }
         if (state.providerMode == "chatgpt" && state.chatGptConnected) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text("Utilise ton forfait ChatGPT", color = Graphite, fontSize = 13.sp)
@@ -331,10 +349,12 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
 @Composable
 private fun StudioConnectionDialog(controller: StudioController, state: StudioState, onDismiss: () -> Unit) {
     var baseUrl by remember(state.baseUrl) { mutableStateOf(state.baseUrl) }
-    var model by remember(state.model) { mutableStateOf(state.model) }
+    var model by remember(state.apiModel) { mutableStateOf(state.apiModel) }
     var apiKey by remember { mutableStateOf("") }
     var showModels by remember { mutableStateOf(false) }
     var showEfforts by remember { mutableStateOf(false) }
+    var modelSearch by remember { mutableStateOf("") }
+    var showApiModels by remember { mutableStateOf(false) }
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text("Connexion IA") },
@@ -358,7 +378,7 @@ private fun StudioConnectionDialog(controller: StudioController, state: StudioSt
                     Text("Connecté : ${state.chatGptEmail.orEmpty()}", color = Graphite)
                     Box {
                         OutlinedButton(onClick = { showModels = true }, enabled = state.chatGptModels.isNotEmpty() && !state.busy) {
-                            Text("Modèle : ${state.model.ifBlank { "Choisir" }}")
+                            Text("Modèle : ${if (state.providerMode == "chatgpt") state.model.ifBlank { "Choisir" } else "Choisir"}")
                         }
                         DropdownMenu(expanded = showModels, onDismissRequest = { showModels = false }) {
                             state.chatGptModels.forEach { availableModel ->
@@ -379,24 +399,41 @@ private fun StudioConnectionDialog(controller: StudioController, state: StudioSt
                 Text("Autre fournisseur avec clé API", style = MaterialTheme.typography.subtitle1, fontWeight = FontWeight.SemiBold)
                 Text("L’objectif, les messages et le plan accepté de la séance active sont transmis au fournisseur choisi.", color = Graphite)
                 OutlinedTextField(
-                    value = baseUrl, onValueChange = { baseUrl = it }, enabled = state.available && !state.busy,
+                    value = baseUrl, onValueChange = { baseUrl = it; controller.cancelApiModelDiscovery() }, enabled = state.available && !state.busy,
                     modifier = Modifier.fillMaxWidth(), label = { Text("URL de base") },
                     placeholder = { Text("https://api.openai.com/v1") }, singleLine = true, shape = LearningShape,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
                 )
                 OutlinedTextField(
-                    value = model, onValueChange = { model = it }, enabled = state.available && !state.busy,
-                    modifier = Modifier.fillMaxWidth(), label = { Text("Modèle") },
-                    placeholder = { Text("Nom du modèle fourni par le service") }, singleLine = true, shape = LearningShape,
-                )
-                OutlinedTextField(
-                    value = apiKey, onValueChange = { apiKey = it }, enabled = state.available && !state.busy,
+                    value = apiKey, onValueChange = { apiKey = it; controller.cancelApiModelDiscovery() }, enabled = state.available && !state.busy,
                     modifier = Modifier.fillMaxWidth().testTag("studio-api-key"), label = { Text("Clé API") },
                     singleLine = true, shape = LearningShape,
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 )
                 Text("La clé n’est pas enregistrée sur le disque ; elle reste en mémoire jusqu’à la fermeture de l’application.", color = Graphite, fontSize = 13.sp)
+                OutlinedButton(onClick = { controller.discoverApiModels(baseUrl, apiKey) }, enabled = state.available && !state.busy && !state.apiModelsBusy && baseUrl.isNotBlank()) {
+                    Text(if (state.apiModelsBusy) "Chargement des modèles…" else "Charger les modèles disponibles")
+                }
+                if (!state.apiModelsError.isNullOrBlank()) Text(state.apiModelsError!!, color = ActionRed, fontSize = 13.sp)
+                if (state.apiModelsUrl == baseUrl.trim().trimEnd('/') && state.apiModels.isNotEmpty()) {
+                    Text("Liste fournie par le service ; vérifie que le modèle prend en charge Chat Completions.", color = Graphite, fontSize = 13.sp)
+                    OutlinedTextField(value = modelSearch, onValueChange = { modelSearch = it }, modifier = Modifier.fillMaxWidth(),
+                        label = { Text("Rechercher un modèle") }, singleLine = true)
+                    Box {
+                        OutlinedButton(onClick = { showApiModels = true }, enabled = !state.busy) { Text("Choisir dans les modèles disponibles") }
+                        DropdownMenu(expanded = showApiModels, onDismissRequest = { showApiModels = false }) {
+                            state.apiModels.filter { it.contains(modelSearch, ignoreCase = true) }.take(100).forEach { candidate ->
+                                DropdownMenuItem(onClick = { model = candidate; showApiModels = false }) { Text(candidate) }
+                            }
+                        }
+                    }
+                }
+                OutlinedTextField(
+                    value = model, onValueChange = { model = it }, enabled = state.available && !state.busy,
+                    modifier = Modifier.fillMaxWidth(), label = { Text("Modèle") },
+                    placeholder = { Text("Nom du modèle fourni par le service") }, singleLine = true, shape = LearningShape,
+                )
                 if (!state.connectionError.isNullOrBlank()) Text(state.connectionError!!, color = ActionRed, fontSize = 13.sp)
             }
         },
@@ -409,7 +446,7 @@ private fun StudioConnectionDialog(controller: StudioController, state: StudioSt
                     }
                 }, enabled = state.available && !state.busy && baseUrl.isNotBlank() && model.isNotBlank(),
                 modifier = Modifier.heightIn(min = 48.dp), shape = LearningShape,
-            ) { Text("Enregistrer") }
+            ) { Text("Enregistrer la connexion API") }
         },
         dismissButton = { TextButton(onClick = onDismiss, enabled = !state.busy) { Text("Fermer") } },
     )

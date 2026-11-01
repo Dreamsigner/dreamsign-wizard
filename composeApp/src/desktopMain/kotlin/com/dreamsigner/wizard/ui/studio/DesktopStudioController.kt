@@ -27,8 +27,9 @@ internal data class TutorRequest(
 )
 internal fun interface StudioTutor { suspend fun respond(request: TutorRequest): String }
 
-@Serializable private data class StudioDisk(val baseUrl: String = "", val model: String = "", val sessions: List<StudioSessionDisk> = emptyList(), val selectedId: String? = null, val providerMode: String = "api", val reasoningEffort: String = "AUTOMATIC")
-@Serializable private data class StudioSessionDisk(val id: String, val goal: String, val messages: List<StudioMessageDisk>, val plan: StudioPlanDisk? = null, val reasoningEffort: String? = null)
+@Serializable private data class StudioDisk(val baseUrl: String = "", val model: String = "", val sessions: List<StudioSessionDisk> = emptyList(), val selectedId: String? = null, val providerMode: String = "api", val reasoningEffort: String = "AUTOMATIC", val apiModel: String? = null, val chatGptModel: String? = null)
+@Serializable private data class StudioSessionDisk(val id: String, val goal: String, val messages: List<StudioMessageDisk>, val plan: StudioPlanDisk? = null, val reasoningEffort: String? = null, val modelChoice: StudioModelChoiceDisk? = null)
+@Serializable private data class StudioModelChoiceDisk(val providerMode: String, val baseUrl: String, val model: String)
 @Serializable private data class StudioPlanDisk(val steps: List<StudioPlanStepDisk>, val decision: String = "proposed")
 @Serializable private data class StudioPlanStepDisk(val title: String, val prerequisites: List<Int>, val evidence: String, val sources: List<Int>)
 @Serializable private data class StudioMessageDisk(val role: String, val text: String)
@@ -43,6 +44,8 @@ internal class DesktopStudioController(
     private val apiKey = StringBuilder()
     private var requestJob: Job? = null
     private var requestVersion = 0L
+    private var catalogVersion = 0L
+    private var catalogJob: Job? = null
     private val pendingBySession = ConcurrentHashMap<String, String>()
     private val chatGpt = ChatGptPlanClient(file.resolveSibling("chatgpt-plan.json"))
     override val state = MutableStateFlow(load().copy(chatGptConnected = chatGpt.connected, chatGptEmail = chatGpt.accountEmail, chatGptError = chatGpt.storageError))
@@ -68,8 +71,74 @@ internal class DesktopStudioController(
 
     override fun create(goal: String): Boolean {
         if (state.value.storageError != null || state.value.busy || goal.isBlank() || goal.length > 500) return false
-        val session = StudioSession(UUID.randomUUID().toString(), goal.trim(), emptyList())
+        val current = state.value
+        val choice = current.model.takeIf { it.isNotBlank() }?.let { StudioModelChoice(current.providerMode, if (current.providerMode == "api") current.baseUrl else "", it) }
+        val session = StudioSession(UUID.randomUUID().toString(), goal.trim(), emptyList(), reasoningEffort = current.reasoningEffort, modelChoice = choice)
         return mutate { copy(sessions = listOf(session) + sessions, selectedId = session.id, error = null) }
+    }
+
+    override fun discoverApiModels(baseUrl: String, apiKey: String) {
+        if (state.value.busy || state.value.apiModelsBusy) return
+        val normalized = baseUrl.trim().trimEnd('/')
+        val endpoint = try { validateEndpoint(normalized) } catch (_: Exception) {
+            transient { copy(apiModels = emptyList(), apiModelsUrl = "", apiModelsError = "Saisis une URL HTTPS valide, ou une adresse HTTP locale.") }
+            return
+        }
+        val secret = apiKey.trim().ifBlank {
+            if (normalized == state.value.baseUrl) synchronized(this.apiKey) { this.apiKey.toString() } else ""
+        }
+        if (secret.isBlank() && !endpoint.isLoopback()) {
+            transient { copy(apiModels = emptyList(), apiModelsUrl = "", apiModelsError = "Saisis la clé API du fournisseur distant.") }
+            return
+        }
+        val version = synchronized(lock) { ++catalogVersion }
+        transient { copy(apiModels = emptyList(), apiModelsUrl = "", apiModelsBusy = true, apiModelsError = null) }
+        catalogJob = scope.launch {
+            try {
+                val modelsUri = URI(endpoint.toString().removeSuffix("/chat/completions") + "/models")
+                val builder = HttpRequest.newBuilder(modelsUri).timeout(java.time.Duration.ofSeconds(15))
+                if (secret.isNotBlank()) builder.header("Authorization", "Bearer $secret")
+                val client = HttpClient.newBuilder().connectTimeout(java.time.Duration.ofSeconds(10)).followRedirects(HttpClient.Redirect.NEVER).build()
+                val response = withTimeout(15_000) { client.sendAsync(builder.GET().build(), boundedBodyHandler(1024 * 1024)).await() }
+                require(response.statusCode() in 200..299)
+                val data = Json.parseToJsonElement(response.body().decodeToString()).jsonObject.getValue("data").jsonArray
+                val models = data.mapNotNull { item -> (item as? JsonObject)?.get("id")?.let { (it as? JsonPrimitive)?.contentOrNull } }
+                    .filter { it.isNotBlank() && it.length <= 200 }.distinct().sorted().take(2000)
+                synchronized(lock) {
+                    if (version == catalogVersion) state.value = state.value.copy(apiModels = models, apiModelsUrl = normalized, apiModelsBusy = false,
+                        apiModelsError = if (models.isEmpty()) "Le fournisseur n’a retourné aucun modèle. Tu peux saisir son identifiant manuellement." else null)
+                }
+            } catch (_: Exception) {
+                synchronized(lock) {
+                    if (version == catalogVersion) state.value = state.value.copy(apiModelsBusy = false, apiModelsError = "Impossible de charger les modèles. Vérifie l’URL et la clé, ou saisis un identifiant manuellement.")
+                }
+            }
+        }
+    }
+
+    override fun cancelApiModelDiscovery() {
+        synchronized(lock) {
+            catalogVersion += 1
+            catalogJob?.cancel()
+            catalogJob = null
+            state.value = state.value.copy(apiModels = emptyList(), apiModelsUrl = "", apiModelsBusy = false, apiModelsError = null)
+        }
+    }
+
+    override fun setSessionModel(model: String?) {
+        val current = state.value
+        val id = current.selectedId ?: return
+        if (current.busy || current.storageError != null) return
+        val available = if (current.providerMode == "chatgpt") current.chatGptModels else if (current.apiModelsUrl == current.baseUrl) current.apiModels else emptyList()
+        if (model != null && model != current.model && model !in available) return
+        val choice = model?.let { StudioModelChoice(current.providerMode, if (current.providerMode == "api") current.baseUrl else "", it) }
+        mutate { copy(sessions = sessions.map { if (it.id == id) it.copy(modelChoice = choice) else it }, error = null) }
+    }
+
+    private fun effectiveSessionConfig(current: StudioState, session: StudioSession): StudioState? {
+        val choice = session.modelChoice ?: return current
+        if (choice.providerMode != current.providerMode || (choice.providerMode == "api" && choice.baseUrl != current.baseUrl)) return null
+        return current.copy(model = choice.model)
     }
 
     override fun setReasoningEffort(effort: ReasoningEffort) {
@@ -94,12 +163,16 @@ internal class DesktopStudioController(
             transient { copy(connectionError = "Saisis le nom du modèle proposé par ton fournisseur.") }
             return false
         }
-        if (apiKey.isBlank() && !endpoint.isLoopback()) {
+        val effectiveKey = apiKey.trim().ifBlank {
+            if (normalizedUrl == state.value.baseUrl) synchronized(this.apiKey) { this.apiKey.toString() } else ""
+        }
+        if (effectiveKey.isBlank() && !endpoint.isLoopback()) {
             transient { copy(connectionError = "Saisis la clé API du fournisseur distant.") }
             return false
         }
-        val saved = mutate { copy(baseUrl = normalizedUrl, model = model.trim(), providerMode = "api", error = null, connectionError = null, hasApiKey = apiKey.isNotBlank()) }
-        if (saved) synchronized(this.apiKey) { this.apiKey.setLength(0); this.apiKey.append(apiKey.trim()) }
+        val saved = mutate { copy(baseUrl = normalizedUrl, model = model.trim(), apiModel = model.trim(), providerMode = "api", error = null, connectionError = null, hasApiKey = effectiveKey.isNotBlank(),
+            apiModels = if (apiModelsUrl == normalizedUrl) apiModels else emptyList(), apiModelsUrl = if (apiModelsUrl == normalizedUrl) apiModelsUrl else "") }
+        if (saved) synchronized(this.apiKey) { this.apiKey.setLength(0); this.apiKey.append(effectiveKey) }
         return saved
     }
 
@@ -108,14 +181,18 @@ internal class DesktopStudioController(
         if (snapshot.busy || snapshot.storageError != null || message.isBlank() || message.length > 4_000) return false
         val session = snapshot.sessions.firstOrNull { it.id == snapshot.selectedId } ?: return false
         if (pendingBySession.containsKey(session.id)) return false
-        val endpoint = if (snapshot.providerMode == "chatgpt") null else try { validateEndpoint(snapshot.baseUrl) } catch (_: Exception) { null }
+        val sessionConfig = effectiveSessionConfig(snapshot, session) ?: run {
+            transient { copy(error = "Cette séance utilise un autre fournisseur. Rétablis sa connexion ou choisis le modèle actuel dans la séance.") }
+            return false
+        }
+        val endpoint = if (sessionConfig.providerMode == "chatgpt") null else try { validateEndpoint(sessionConfig.baseUrl) } catch (_: Exception) { null }
         val secret = synchronized(apiKey) { apiKey.toString() }
         if (snapshot.providerMode == "chatgpt") {
-            if (!chatGpt.connected || snapshot.model.isBlank()) {
+            if (!chatGpt.connected || sessionConfig.model.isBlank()) {
                 transient { copy(error = "Connecte ton compte ChatGPT et choisis un modèle dans Connexion IA.") }
                 return false
             }
-        } else if (endpoint == null || snapshot.model.isBlank() || (secret.isBlank() && !endpoint.isLoopback())) {
+        } else if (endpoint == null || sessionConfig.model.isBlank() || (secret.isBlank() && !endpoint.isLoopback())) {
             transient { copy(error = "Configure une URL HTTPS, un modèle et une clé (sauf pour un service local).") }
             return false
         }
@@ -125,7 +202,7 @@ internal class DesktopStudioController(
         }
         if (!saved) return false
         pendingBySession[session.id] = learnerMessage
-        startRequest(session.id, snapshot.copy(sessions = state.value.sessions, selectedId = session.id), endpoint, secret)
+        startRequest(session.id, sessionConfig.copy(sessions = state.value.sessions, selectedId = session.id), endpoint, secret)
         return true
     }
 
@@ -141,22 +218,27 @@ internal class DesktopStudioController(
         if (current.busy || current.storageError != null) return
         val id = current.selectedId ?: return
         if (pendingBySession[id].isNullOrBlank()) return
-        val endpoint = try { validateEndpoint(current.baseUrl) } catch (_: Exception) { null }
-        if (current.providerMode == "chatgpt") {
-            if (!chatGpt.connected || current.model.isBlank()) {
+        val session = current.sessions.firstOrNull { it.id == id } ?: return
+        val config = effectiveSessionConfig(current, session) ?: run {
+            transient { copy(error = "Cette séance utilise un autre fournisseur. Rétablis sa connexion ou choisis le modèle actuel dans la séance.") }
+            return
+        }
+        val endpoint = try { validateEndpoint(config.baseUrl) } catch (_: Exception) { null }
+        if (config.providerMode == "chatgpt") {
+            if (!chatGpt.connected || config.model.isBlank()) {
                 transient { copy(error = "Connecte ton compte ChatGPT et choisis un modèle pour reprendre cette séance.") }
                 return
             }
-            startRequest(id, current, null, "")
+            startRequest(id, config, null, "")
             return
         }
-        if (endpoint == null || current.model.isBlank()) { transient { copy(error = "Configure une URL et un modèle valides pour reprendre cette séance.") }; return }
+        if (endpoint == null || config.model.isBlank()) { transient { copy(error = "Configure une URL et un modèle valides pour reprendre cette séance.") }; return }
         val secret = synchronized(apiKey) { apiKey.toString() }
         if (secret.isBlank() && !endpoint.isLoopback()) {
             transient { copy(error = "Saisis à nouveau la clé du fournisseur pour reprendre cette séance.") }
             return
         }
-        startRequest(id, current, endpoint, secret)
+        startRequest(id, config, endpoint, secret)
     }
 
     override fun cancel() {
@@ -239,7 +321,7 @@ internal class DesktopStudioController(
                 val models = chatGpt.models().map { it.slug }
                 if (models.isEmpty()) error("Aucun modèle ChatGPT disponible pour ce compte.")
                 val saved = mutate {
-                    copy(providerMode = "chatgpt", model = models.first(), chatGptConnected = true,
+                    copy(providerMode = "chatgpt", model = chatGptModel.takeIf { it in models } ?: models.first(), chatGptModel = chatGptModel.takeIf { it in models } ?: models.first(), chatGptConnected = true,
                         chatGptEmail = email, chatGptModels = models, chatGptBusy = false, chatGptError = null)
                 }
                 if (!saved) transient { copy(chatGptBusy = false, chatGptError = "Connexion réussie, mais les préférences de l’atelier n’ont pas pu être enregistrées.") }
@@ -250,8 +332,8 @@ internal class DesktopStudioController(
     }
 
     override fun selectChatGptModel(model: String) {
-        if (state.value.providerMode != "chatgpt" || model !in state.value.chatGptModels || state.value.busy) return
-        mutate { copy(model = model) }
+        if (model !in state.value.chatGptModels || state.value.busy) return
+        mutate { copy(providerMode = "chatgpt", model = model, chatGptModel = model, error = null) }
     }
 
     override fun disconnectChatGpt() {
@@ -260,7 +342,7 @@ internal class DesktopStudioController(
         scope.launch {
             try {
                 val revoked = chatGpt.disconnect()
-                mutate { copy(providerMode = "api", chatGptConnected = false, chatGptEmail = null, chatGptModels = emptyList(), model = "", chatGptBusy = false,
+                mutate { copy(providerMode = "api", chatGptConnected = false, chatGptEmail = null, chatGptModels = emptyList(), model = apiModel, chatGptModel = "", chatGptBusy = false,
                     chatGptError = if (revoked) null else "Jetons locaux effacés. La révocation distante n’a pas été confirmée ; vérifie les connexions dans ChatGPT.") }
             } catch (_: Exception) {
                 transient { copy(chatGptBusy = false, chatGptError = "Impossible d’effacer la connexion ChatGPT locale.") }
@@ -281,7 +363,7 @@ internal class DesktopStudioController(
 
     private fun write(s: StudioState) {
         Files.createDirectories(file.parent)
-        val disk = StudioDisk(s.baseUrl, s.model, s.sessions.map { it.toDisk() }, s.selectedId, s.providerMode, s.reasoningEffort.name)
+        val disk = StudioDisk(s.baseUrl, s.model, s.sessions.map { it.toDisk() }, s.selectedId, s.providerMode, s.reasoningEffort.name, s.apiModel, s.chatGptModel)
         val temp = Files.createTempFile(file.parent, "studio-", ".tmp")
         try {
             Files.writeString(temp, json.encodeToString(disk))
@@ -291,9 +373,9 @@ internal class DesktopStudioController(
     }
 
     override fun close() { cancel(); synchronized(apiKey) { apiKey.setLength(0) }; scope.cancel() }
-    private fun fromDisk(d: StudioDisk) = StudioState(baseUrl = d.baseUrl, model = d.model, sessions = d.sessions.map { it.fromDisk() }, selectedId = d.selectedId, providerMode = d.providerMode, reasoningEffort = ReasoningEffort.entries.firstOrNull { it.name == d.reasoningEffort } ?: ReasoningEffort.AUTOMATIC)
-    private fun StudioSession.toDisk() = StudioSessionDisk(id, goal, messages.map { StudioMessageDisk(it.role, it.text) }, plan?.let { StudioPlanDisk(it.steps.map { step -> StudioPlanStepDisk(step.title, step.prerequisites, step.evidence, step.sources) }, it.decision) }, reasoningEffort?.name)
-    private fun StudioSessionDisk.fromDisk() = StudioSession(id, goal, messages.map { StudioMessage(it.role, it.text) }, plan?.let { StudioPlan(it.steps.map { step -> StudioPlanStep(step.title, step.prerequisites, step.evidence, step.sources) }, it.decision) }, reasoningEffort?.let { saved -> ReasoningEffort.entries.firstOrNull { it.name == saved } })
+    private fun fromDisk(d: StudioDisk) = StudioState(baseUrl = d.baseUrl, model = d.model, sessions = d.sessions.map { it.fromDisk() }, selectedId = d.selectedId, providerMode = d.providerMode, reasoningEffort = ReasoningEffort.entries.firstOrNull { it.name == d.reasoningEffort } ?: ReasoningEffort.AUTOMATIC, apiModel = d.apiModel ?: if (d.providerMode == "api") d.model else "", chatGptModel = d.chatGptModel ?: if (d.providerMode == "chatgpt") d.model else "")
+    private fun StudioSession.toDisk() = StudioSessionDisk(id, goal, messages.map { StudioMessageDisk(it.role, it.text) }, plan?.let { StudioPlanDisk(it.steps.map { step -> StudioPlanStepDisk(step.title, step.prerequisites, step.evidence, step.sources) }, it.decision) }, reasoningEffort?.name, modelChoice?.let { StudioModelChoiceDisk(it.providerMode, it.baseUrl, it.model) })
+    private fun StudioSessionDisk.fromDisk() = StudioSession(id, goal, messages.map { StudioMessage(it.role, it.text) }, plan?.let { StudioPlan(it.steps.map { step -> StudioPlanStep(step.title, step.prerequisites, step.evidence, step.sources) }, it.decision) }, reasoningEffort?.let { saved -> ReasoningEffort.entries.firstOrNull { it.name == saved } }, modelChoice?.let { StudioModelChoice(it.providerMode, it.baseUrl, it.model) })
 }
 
 private class OpenAiCompatibleTutor : StudioTutor {

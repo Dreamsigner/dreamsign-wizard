@@ -1,27 +1,50 @@
 package com.dreamsigner.wizard.ui.math
 
-/** A plain text or LaTeX segment parsed from the lightweight `$...$` / `$$...$$` syntax. */
+/** A plain text or LaTeX segment parsed from common Markdown and math delimiters. */
 sealed interface LearningTextSegment {
     data class Text(val value: String) : LearningTextSegment
     data class Math(val latex: String, val display: Boolean) : LearningTextSegment
     data class Strong(val value: String) : LearningTextSegment
+    data class Emphasis(val value: String) : LearningTextSegment
     data class Code(val value: String) : LearningTextSegment
 }
 
 /** Splits learning copy into text and math while leaving unmatched delimiters untouched. */
 fun parseLearningText(source: String, recognizeLegacyMath: Boolean = false): List<LearningTextSegment> {
-    val markup = Regex("`([^`\\n]+)`|(?<![A-Za-z0-9_])\\*\\*([^*\\n]+)\\*\\*(?![A-Za-z0-9_])")
-    val matches = markup.findAll(source).toList()
-    if (matches.isEmpty()) return parseMathSegments(source, recognizeLegacyMath)
+    // Protect inline code before searching for math delimiters; code may contain dollars or TeX.
+    val code = Regex("`([^`\\n]+)`")
     val segments = mutableListOf<LearningTextSegment>()
+    fun addFormatted(value: String) {
+        parseMathSegments(value, false).forEach { segment ->
+            if (segment !is LearningTextSegment.Text) {
+                segments += segment
+            } else {
+                val markup = Regex("(?<![A-Za-z0-9_])\\*\\*([^*\\n]+)\\*\\*(?![A-Za-z0-9_])|(?<![A-Za-z0-9_*])\\*([^*\\s](?:[^*\\n]*?[^*\\s])?)\\*(?![A-Za-z0-9_*])")
+                var start = 0
+                markup.findAll(segment.value).forEach { match ->
+                    if (match.range.first > start) {
+                        val text = segment.value.substring(start, match.range.first)
+                        segments += if (recognizeLegacyMath) parseLegacyMath(text) else listOf(LearningTextSegment.Text(text))
+                    }
+                    segments += if (match.groups[1] != null) LearningTextSegment.Strong(match.groupValues[1])
+                        else LearningTextSegment.Emphasis(match.groupValues[2])
+                    start = match.range.last + 1
+                }
+                if (start < segment.value.length) {
+                    val text = segment.value.substring(start)
+                    segments += if (recognizeLegacyMath) parseLegacyMath(text) else listOf(LearningTextSegment.Text(text))
+                }
+            }
+        }
+    }
     var cursor = 0
-    matches.forEach { match ->
-        if (match.range.first > cursor) segments += parseMathSegments(source.substring(cursor, match.range.first), recognizeLegacyMath)
-        segments += if (match.groups[1] != null) LearningTextSegment.Code(match.groupValues[1]) else LearningTextSegment.Strong(match.groupValues[2])
+    code.findAll(source).forEach { match ->
+        if (match.range.first > cursor) addFormatted(source.substring(cursor, match.range.first))
+        segments += LearningTextSegment.Code(match.groupValues[1])
         cursor = match.range.last + 1
     }
-    if (cursor < source.length) segments += parseMathSegments(source.substring(cursor), recognizeLegacyMath)
-    return segments
+    if (cursor < source.length) addFormatted(source.substring(cursor))
+    return segments.ifEmpty { listOf(LearningTextSegment.Text(source)) }
 }
 
 private fun parseMathSegments(source: String, recognizeLegacyMath: Boolean): List<LearningTextSegment> {
@@ -29,23 +52,33 @@ private fun parseMathSegments(source: String, recognizeLegacyMath: Boolean): Lis
     var cursor = 0
     var textStart = 0
     while (cursor < source.length) {
-        if (source[cursor] != '$' || (cursor > 0 && source[cursor - 1] == '\\')) {
+        val escaped = isEscaped(source, cursor)
+        val display = !escaped && (source.startsWith("\$\$", cursor) || source.startsWith("\\[", cursor))
+        val opening = when {
+            escaped -> null
+            source.startsWith("\$\$", cursor) -> "\$\$"
+            source.startsWith("\\[", cursor) -> "\\["
+            source.startsWith("\\(", cursor) -> "\\("
+            source[cursor] == '$' -> "\$"
+            else -> null
+        }
+        if (opening == null) {
             cursor++
             continue
         }
-        val display = source.startsWith("\$\$", cursor)
-        val delimiter = if (display) "\$\$" else "\$"
-        val contentStart = cursor + delimiter.length
-        val end = source.indexOf(delimiter, contentStart)
+        val closing = when (opening) { "\\[" -> "\\]"; "\\(" -> "\\)"; else -> opening }
+        val contentStart = cursor + opening.length
+        var end = source.indexOf(closing, contentStart)
+        while (end >= 0 && isEscaped(source, end)) end = source.indexOf(closing, end + closing.length)
         if (end < 0) {
-            cursor += delimiter.length
+            cursor += opening.length
             continue
         }
         if (cursor > textStart) result += LearningTextSegment.Text(source.substring(textStart, cursor))
         val latex = source.substring(contentStart, end)
         if (latex.isNotBlank()) result += LearningTextSegment.Math(linearizeExplicitPhysicalUnitFractions(latex), display)
-        else result += LearningTextSegment.Text(delimiter)
-        cursor = end + delimiter.length
+        else result += LearningTextSegment.Text(source.substring(cursor, end + closing.length))
+        cursor = end + closing.length
         textStart = cursor
     }
     if (textStart < source.length) result += LearningTextSegment.Text(source.substring(textStart))
@@ -53,6 +86,13 @@ private fun parseMathSegments(source: String, recognizeLegacyMath: Boolean): Lis
     return result.flatMap { segment ->
         if (segment is LearningTextSegment.Text) parseLegacyMath(segment.value) else listOf(segment)
     }
+}
+
+private fun isEscaped(source: String, index: Int): Boolean {
+    var slashCount = 0
+    var previous = index - 1
+    while (previous >= 0 && source[previous] == '\\') { slashCount++; previous-- }
+    return slashCount % 2 != 0
 }
 
 private data class MathCandidate(val start: Int, val end: Int, val latex: String)

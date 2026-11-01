@@ -10,7 +10,9 @@ MathRenderingProvider(DesktopMathRenderer) {
 }
 ```
 
-`LearningText` recognizes `$...$` inline and `$$...$$` display delimiters.
+`LearningText` recognizes `$...$` and `\(...\)` inline, and `$$...$$` and
+`\[...\]` for display. The same reader is used for Studio IA messages.
+Expressions unsupported by the local engine remain visible as source text.
 Inline equations use native Compose Text placeholders, so surrounding prose
 wraps as one paragraph instead of a FlowRow of independently aligned fragments.
 Numeric matrices use separate horizontally scrollable blocks. Desktop images

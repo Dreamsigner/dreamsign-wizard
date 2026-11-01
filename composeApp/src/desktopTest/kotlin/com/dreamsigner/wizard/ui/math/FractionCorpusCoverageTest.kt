@@ -21,10 +21,11 @@ class FractionCorpusCoverageTest {
             parseLessonDocument(source).filter { it.kind != LessonBlockKind.CODE }.forEach { block ->
                 parseLearningText(block.text, true).forEach segmentLoop@ { segment ->
                     when (segment) {
-                        is LearningTextSegment.Text, is LearningTextSegment.Strong -> {
+                        is LearningTextSegment.Text, is LearningTextSegment.Strong, is LearningTextSegment.Emphasis -> {
                             val value = when (segment) {
                                 is LearningTextSegment.Text -> segment.value
                                 is LearningTextSegment.Strong -> segment.value
+                                is LearningTextSegment.Emphasis -> segment.value
                                 else -> error("Unreachable")
                             }
                             if ('/' !in value) return@segmentLoop

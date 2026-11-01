@@ -18,6 +18,10 @@ Dans **Studio IA**, créer un objectif, décrire ses connaissances et son raison
 
 Dans **Connexion IA**, le niveau de réflexion du tuteur peut être réglé sur **Automatique**, **Faible**, **Moyen** ou **Élevé**. Chaque séance peut garder ce réglage ou choisir son propre niveau dans le menu **Réflexion**. Les choix sont enregistrés localement. Les niveaux disponibles dépendent du modèle et du fournisseur ; **Automatique** laisse ce dernier utiliser sa valeur par défaut.
 
+Pour un fournisseur compatible Chat Completions, **Charger les modèles disponibles** interroge son catalogue `/models` à la demande. La liste peut être recherchée ; la saisie manuelle reste possible si le service ne propose pas cette route. Une nouvelle séance mémorise le fournisseur, le modèle et le niveau de réflexion actifs lors de sa création. Le menu **Modèle** permet ensuite de choisir un autre modèle pour cette séance ou de suivre le réglage par défaut. Un changement d'URL ou de fournisseur demande un nouveau choix explicite avant l'envoi. Le catalogue ne certifie ni la compatibilité Chat Completions ni les capacités, tarifs ou limites de chaque modèle.
+
+Les réponses du Studio IA affichent les formules LaTeX entre `$...$`, `$$...$$`, `\(...\)` ou `\[...\]` avec le moteur local, ainsi qu'un sous-ensemble de Markdown comprenant titres, listes, gras, italique et code. Les notations non prises en charge restent visibles en texte.
+
 Les échanges sont stockés localement dans le dossier de données Windows de l'application, séparément de la progression des cours. Lors d'un envoi, l'objectif et un contexte borné de la séance sont transmis au fournisseur configuré. Un serveur HTTP local peut fonctionner sans clé; les fournisseurs distants nécessitent HTTPS et une clé. Les tests utilisent un serveur local et des réponses déterministes, sans appeler un fournisseur payant.
 
 Le diagnostic et la validation des prérequis restent conversationnels. Le graphe de connaissances et la pratique adaptative ne sont pas encore disponibles. La [trajectoire de parité](docs/product/2026-10-30-studio-parity.md), la [liste des pistes issues des PR LearnHarness](docs/product/2026-10-30-learnharness-pr-features.md) et le [plan de réalisation](tasks/plan.md) précisent les étapes suivantes.
@@ -67,9 +71,9 @@ Consulter le [catalogue détaillé](docs/courses/README.md) et la [couverture p�
 
 ## Installation
 
-1. Ouvrir la [release Windows 2.1.0](https://github.com/Dreamsigner/dreamsign-wizard/releases/tag/v2.1.0).
-2. Télécharger l’installateur **DreamsignWizard-2.1.0-Setup.exe**.
-3. Lancer **DreamsignWizard-2.1.0-Setup.exe** et suivre l’assistant. L’installation est propre à l’utilisateur Windows, avec raccourcis sur le Bureau et dans le menu Démarrer.
+1. Ouvrir la [dernière release Windows stable](https://github.com/Dreamsigner/dreamsign-wizard/releases/latest).
+2. Télécharger l’installateur `DreamsignWizard-<version>-Setup.exe`.
+3. Lancer `DreamsignWizard-<version>-Setup.exe` et suivre l’assistant. L’installation est propre à l’utilisateur Windows, avec raccourcis sur le Bureau et dans le menu Démarrer.
 
 Java est inclus : aucun JDK ni Gradle n’est nécessaire. La désinstallation se fait depuis les applications installées des paramètres Windows. L’installateur n’est pas signé numériquement; Windows peut afficher un avertissement d’éditeur inconnu. `SHA256SUMS.txt` accompagne l’exécutable pour vérifier l’intégrité du téléchargement.
 
@@ -129,6 +133,10 @@ Versions du projet : Kotlin **2.2.21** et Compose Multiplatform **1.9.3**. Les d
 | `python tools/export_course_notes.py --check` | Vérifier les exports Markdown des cours |
 
 Après construction, le lanceur se trouve dans `composeApp/build/compose/binaries/main/app/DreamsignWizard/`.
+
+### Publication Windows
+
+La version de référence est `desktopReleaseVersion` dans `composeApp/build.gradle.kts`. Après validation et intégration sur `main`, un tag stable `vX.Y.Z` correspondant à cette version lance le workflow : il teste et construit l’installateur, vérifie installation, mise à niveau et désinstallation, puis publie l’exécutable et son SHA-256. Le tag doit désigner un commit présent sur `main`. Pour fournir des notes rédigées, ajouter `docs/release-notes/vX.Y.Z.md` avant le tag ; sinon GitHub génère les notes. La publication n’a lieu que si les vérifications obligatoires réussissent. Le test vidéo natif reste indicatif.
 
 ### Structure du projet
 

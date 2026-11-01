@@ -117,7 +117,7 @@ class StudioUiTest {
         val transformedKey = keySemantics[SemanticsProperties.EditableText].text
         assertEquals("•".repeat("SECRET_UI_KEY".length), transformedKey)
         assertFalse("SECRET_UI_KEY" in transformedKey)
-        onNodeWithText("Enregistrer").performClick()
+        onNodeWithText("Enregistrer la connexion API").performClick()
 
         runOnIdle {
             assertEquals("SECRET_UI_KEY", controller.configuredKey)

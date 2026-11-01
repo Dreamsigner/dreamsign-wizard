@@ -9,6 +9,15 @@ import kotlin.test.assertTrue
 
 class MathTextRenderingTest {
     @Test
+    fun modelPhysicsFormulasRenderThroughTheDesktopEngine() {
+        val examples = listOf("\\(E=mc^2\\)", "\\[F=ma=12\\,\\mathrm{N}\\]", "\\[\\frac{\\mathrm{m}}{\\mathrm{s}}\\]")
+        examples.forEach { source ->
+            val formula = parseLearningText(source).single() as LearningTextSegment.Math
+            assertTrue(renderMathBitmap(formula.latex, 24f, androidx.compose.ui.graphics.Color.Black, formula.display) != null, source)
+        }
+    }
+
+    @Test
     fun malformedLatexReturnsNullForVisibleTextFallback() {
         assertNull(renderMathBitmap("\\unknownCommand{broken", 24f, androidx.compose.ui.graphics.Color.Black, display = true))
     }

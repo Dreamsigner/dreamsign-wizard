@@ -25,6 +25,19 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v6
+      - name: Determine and validate Windows release version
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $content = Get-Content -Raw 'composeApp/build.gradle.kts'
+          $matches = [regex]::Matches($content, '(?m)^val desktopReleaseVersion = "(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)"\r?$')
+          if ($matches.Count -ne 1) { throw 'Expected exactly one desktop release version.' }
+          $version = $matches[0].Groups[1..3].Value -join '.'
+          $major, $minor, $patch = $version.Split('.') | ForEach-Object { [int]$_ }
+          if ($major -gt 255 -or $minor -gt 255 -or $patch -ge 65535) { throw 'Version exceeds Windows Installer limits or leaves no room for the upgrade fixture.' }
+          if ($env:GITHUB_REF_TYPE -eq 'tag' -and $env:GITHUB_REF_NAME -ne "v$version") { throw "Tag must match project version v$version." }
+          "DESKTOP_VERSION=$version" >> $env:GITHUB_ENV
+          "UPGRADE_VERSION=$major.$minor.$($patch + 1)" >> $env:GITHUB_ENV
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
@@ -102,21 +115,21 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Installer build failed.' }
           $setupDir = Join-Path $env:RUNNER_TEMP 'windows-setup'
           New-Item -ItemType Directory -Path $setupDir -Force | Out-Null
-          $source = 'composeApp/build/compose/binaries/main/exe/DreamsignWizard-2.1.0.exe'
-          $setup = Join-Path $setupDir 'DreamsignWizard-2.1.0-Setup.exe'
+          $source = "composeApp/build/compose/binaries/main/exe/DreamsignWizard-$env:DESKTOP_VERSION.exe"
+          $setup = Join-Path $setupDir "DreamsignWizard-$env:DESKTOP_VERSION-Setup.exe"
           Copy-Item -LiteralPath $source -Destination $setup
           New-Item -ItemType Directory -Path 'composeApp/build/installer-fixtures' -Force | Out-Null
-          Copy-Item -LiteralPath $source -Destination 'composeApp/build/installer-fixtures/2.1.0.exe'
+          Copy-Item -LiteralPath $source -Destination "composeApp/build/installer-fixtures/$env:DESKTOP_VERSION.exe"
           $hash = (Get-FileHash -LiteralPath $setup -Algorithm SHA256).Hash.ToLowerInvariant()
-          "$hash  DreamsignWizard-2.1.0-Setup.exe" | Set-Content -LiteralPath (Join-Path $setupDir 'SHA256SUMS.txt') -Encoding ascii
+          "$hash  DreamsignWizard-$env:DESKTOP_VERSION-Setup.exe" | Set-Content -LiteralPath (Join-Path $setupDir 'SHA256SUMS.txt') -Encoding ascii
       - name: Verify installation, upgrade and uninstall on disposable runner
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
           # Build an unpublished, newer package solely to test the stable upgrade identity.
-          gradle :composeApp:packageExe '-PdesktopPackageVersion=2.1.1' --stacktrace
+          gradle :composeApp:packageExe "-PdesktopPackageVersion=$env:UPGRADE_VERSION" --stacktrace
           if ($LASTEXITCODE -ne 0) { throw 'Upgrade fixture build failed.' }
-          ./tools/test_windows_installer.ps1 -Installer 'composeApp/build/installer-fixtures/2.1.0.exe' -UpgradeInstaller 'composeApp/build/compose/binaries/main/exe/DreamsignWizard-2.1.1.exe' -ExpectedVersion '2.1.0' -ExpectedUpgradeVersion '2.1.1'
+          ./tools/test_windows_installer.ps1 -Installer "composeApp/build/installer-fixtures/$env:DESKTOP_VERSION.exe" -UpgradeInstaller "composeApp/build/compose/binaries/main/exe/DreamsignWizard-$env:UPGRADE_VERSION.exe" -ExpectedVersion $env:DESKTOP_VERSION -ExpectedUpgradeVersion $env:UPGRADE_VERSION
       - uses: actions/upload-artifact@v7
         with:
           name: DreamsignWizard-Windows-Setup
@@ -146,7 +159,7 @@ jobs:
 
 
   publish-windows-release:
-    if: github.event_name == 'push' && github.ref == 'refs/tags/v2.1.0' && needs.package-windows.result == 'success'
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && needs.package-windows.result == 'success'
     needs: package-windows
     runs-on: ubuntu-latest
     permissions:
@@ -160,11 +173,10 @@ jobs:
         shell: bash
         env:
           TAG_NAME: ${{ github.ref_name }}
-          EXPECTED_VERSION: 2.1.0
           EXPECTED_COMMIT: ${{ github.sha }}
         run: |
           set -euo pipefail
-          if [[ "$TAG_NAME" != "v$EXPECTED_VERSION" ]]; then
+          if [[ ! "$TAG_NAME" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]; then
             echo "Refusing to publish unexpected version tag: $TAG_NAME" >&2
             exit 1
           fi
@@ -174,6 +186,9 @@ jobs:
             echo 'The release tag does not resolve to the workflow source commit.' >&2
             exit 1
           fi
+          version="${TAG_NAME#v}"
+          grep -Fx "val desktopReleaseVersion = \"$version\"" composeApp/build.gradle.kts > /dev/null
+          git merge-base --is-ancestor "$tagged_commit" origin/main || { echo 'Release source is not on main.' >&2; exit 1; }
       - uses: actions/download-artifact@v8
         with:
           name: DreamsignWizard-Windows-Setup
@@ -182,11 +197,11 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           TAG_NAME: ${{ github.ref_name }}
-          VERSION: 2.1.0
           ASSET_DIR: ${{ runner.temp }}/windows-setup
         shell: bash
         run: |
           set -euo pipefail
+          VERSION="${TAG_NAME#v}"
           installer="$ASSET_DIR/DreamsignWizard-$VERSION-Setup.exe"
           checksums="$ASSET_DIR/SHA256SUMS.txt"
           test -f "$installer"
@@ -196,18 +211,11 @@ jobs:
             exit 1
           fi
           (cd "$ASSET_DIR" && sha256sum --check SHA256SUMS.txt)
-          notes_file="$RUNNER_TEMP/release-notes.md"
-          cat > "$notes_file" <<'NOTES'
-          ## Dreamsign Wizard 2.1.0
-
-          Choose the tutor's default reasoning level in Connexion IA, then optionally override it for each Studio IA session. Automatic, Low, Medium, and High are available; nonautomatic levels depend on the selected model and provider. Settings persist locally. ChatGPT uses the Responses API and API key providers use Chat Completions. Browser sign-in and inference have not been verified with a real ChatGPT account.
-
-          A knowledge graph, adaptive practice, document attachments, and full LearnHarness parity are not included.
-
-          Download `DreamsignWizard-2.1.0-Setup.exe` and run it to install the application.
-
-          `SHA256SUMS.txt` contains the SHA-256 checksum for the installer.
-          NOTES
-          gh release create "$TAG_NAME" "$installer" "$checksums" \
-            --title "Dreamsign Wizard $VERSION" \
-            --notes-file "$notes_file"
+          notes_file="docs/release-notes/$TAG_NAME.md"
+          if [[ -f "$notes_file" ]]; then
+            gh release create "$TAG_NAME" "$installer" "$checksums" \
+              --title "Dreamsign Wizard $VERSION" --notes-file "$notes_file"
+          else
+            gh release create "$TAG_NAME" "$installer" "$checksums" \
+              --title "Dreamsign Wizard $VERSION" --generate-notes
+          fi

@@ -12,15 +12,94 @@ import java.nio.file.Files
 import kotlin.test.*
 
 class DesktopStudioControllerTest {
+    @Test fun modelDiscoveryUsesConfiguredEndpointAndNeverPersistsKey() = runBlocking {
+        val file = Files.createTempDirectory("studio-model-list").resolve("studio.json")
+        val server = HttpServer.create(InetSocketAddress("127.0.0.1", 0), 0)
+        var auth = ""
+        server.createContext("/v1/models") { exchange ->
+            auth = exchange.requestHeaders.getFirst("Authorization").orEmpty()
+            val bytes = """{"data":[{"id":"z-model"},{"id":"a-model"},{"id":"a-model"}]}""".toByteArray()
+            exchange.sendResponseHeaders(200, bytes.size.toLong())
+            exchange.responseBody.use { it.write(bytes) }
+        }
+        server.start()
+        val controller = DesktopStudioController(file)
+        try {
+            val url = "http://127.0.0.1:${server.address.port}/v1"
+            controller.discoverApiModels(url, "private-key")
+            withTimeout(5_000) { while (controller.state.value.apiModelsBusy) delay(10) }
+            assertEquals(listOf("a-model", "z-model"), controller.state.value.apiModels)
+            assertEquals("Bearer private-key", auth)
+            assertTrue(controller.configure(url, "a-model", "private-key"))
+            assertFalse(Files.readString(file).contains("private-key"))
+        } finally { controller.close(); server.stop(0) }
+    }
+
+    @Test fun cancelledDiscoveryCannotRestoreAStaleCatalog() = runBlocking {
+        val file = Files.createTempDirectory("studio-model-cancel").resolve("studio.json")
+        val server = HttpServer.create(InetSocketAddress("127.0.0.1", 0), 0)
+        val started = java.util.concurrent.CountDownLatch(1)
+        val release = java.util.concurrent.CountDownLatch(1)
+        server.createContext("/v1/models") { exchange ->
+            started.countDown()
+            release.await(3, java.util.concurrent.TimeUnit.SECONDS)
+            try {
+                val bytes = """{"data":[{"id":"stale-model"}]}""".toByteArray()
+                exchange.sendResponseHeaders(200, bytes.size.toLong())
+                exchange.responseBody.use { it.write(bytes) }
+            } catch (_: java.io.IOException) { exchange.close() }
+        }
+        server.start()
+        val controller = DesktopStudioController(file)
+        try {
+            controller.discoverApiModels("http://127.0.0.1:${server.address.port}", "")
+            assertTrue(started.await(3, java.util.concurrent.TimeUnit.SECONDS))
+            controller.cancelApiModelDiscovery()
+            release.countDown()
+            delay(100)
+            assertFalse(controller.state.value.apiModelsBusy)
+            assertTrue(controller.state.value.apiModels.isEmpty())
+            assertTrue(controller.state.value.apiModelsUrl.isEmpty())
+        } finally { release.countDown(); controller.close(); server.stop(0) }
+    }
+
+    @Test fun sessionModelSurvivesDefaultChangeAndRejectsDifferentEndpoint() = runBlocking {
+        val file = Files.createTempDirectory("studio-model-pin").resolve("studio.json")
+        val requests = mutableListOf<TutorRequest>()
+        val tutor = StudioTutor { request -> synchronized(requests) { requests.add(request) }; "Réponse" }
+        var controller = DesktopStudioController(file, tutor)
+        try {
+            assertTrue(controller.configure("http://localhost:1234/v1", "model-a", ""))
+            assertTrue(controller.create("But"))
+            assertTrue(controller.configure("http://localhost:1234/v1", "model-b", ""))
+            assertTrue(controller.send("Question"))
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            assertEquals("model-a", synchronized(requests) { requests.single().model })
+            assertTrue(controller.configure("http://localhost:5678/v1", "model-c", ""))
+            assertFalse(controller.send("Ne pas envoyer au mauvais fournisseur"))
+            assertEquals(2, controller.state.value.sessions.single().messages.size)
+        } finally { controller.close() }
+        controller = DesktopStudioController(file, tutor)
+        try {
+            assertEquals("model-a", controller.state.value.sessions.single().modelChoice?.model)
+            assertFalse(controller.send("Toujours le mauvais fournisseur"))
+            controller.setSessionModel(null)
+            assertTrue(controller.send("Utiliser le choix actuel"))
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            assertEquals("model-c", synchronized(requests) { requests.last().model })
+        } finally { controller.close() }
+    }
+
     @Test fun sessionEffortPersistsAndOverridesDefaultIncludingAutomatic() = runBlocking {
         val file = Files.createTempDirectory("studio-session-effort").resolve("studio.json")
         val requests = mutableListOf<TutorRequest>()
         val tutor = StudioTutor { request -> synchronized(requests) { requests.add(request) }; "Réponse" }
         var controller = DesktopStudioController(file, tutor)
         try {
-            assertTrue(controller.create("But"))
             assertTrue(controller.configure("http://localhost:1234/v1", "model", ""))
             controller.setReasoningEffort(ReasoningEffort.HIGH)
+            assertTrue(controller.create("But"))
+            controller.setReasoningEffort(ReasoningEffort.LOW)
             assertTrue(controller.send("Première question"))
             withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
             controller.setSessionReasoningEffort(ReasoningEffort.AUTOMATIC)
@@ -30,6 +109,7 @@ class DesktopStudioControllerTest {
             assertEquals(ReasoningEffort.AUTOMATIC, controller.state.value.sessions.single().reasoningEffort)
             assertTrue(controller.send("Deuxième question"))
             withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            controller.setReasoningEffort(ReasoningEffort.HIGH)
             controller.setSessionReasoningEffort(null)
             assertTrue(controller.send("Troisième question"))
             withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
@@ -83,9 +163,9 @@ class DesktopStudioControllerTest {
         server.start()
         val controller = DesktopStudioController(file)
         try {
-            assertTrue(controller.create("But"))
             assertTrue(controller.configure("http://127.0.0.1:${server.address.port}/v1", "model", ""))
             controller.setReasoningEffort(ReasoningEffort.LOW)
+            assertTrue(controller.create("But"))
             assertTrue(controller.send("Question"))
             withTimeout(5_000) { while (controller.state.value.error == null) delay(10) }
             assertTrue(controller.state.value.error!!.contains("Automatique"))
