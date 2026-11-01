@@ -267,6 +267,25 @@ class StudioUiTest {
     }
 
     @Test
+    fun practiceHidesCommittedSolutionUntilAnswerAtCompactSize() = runDesktopComposeUiTest(width = 360, height = 480) {
+        val controller = MemoryStudioController(initialSession = true).apply { installProblem() }
+        setContent { LearningAppTheme { CompositionLocalProvider(LocalStudioController provides controller) { StudioScreen() } } }
+        onNodeWithTag("studio-problem-solution").assertDoesNotExist()
+        onNodeWithTag("studio-problem-hint").performScrollTo().performClick()
+        onNodeWithTag("studio-problem-hint-0").performScrollTo().assertIsDisplayed()
+        onNodeWithTag("studio-problem-answer").performScrollTo().performTextInput("4")
+        onNodeWithTag("studio-problem-thinking").performScrollTo().performTextInput("Deux paires font quatre")
+        onNodeWithTag("studio-problem-submit").performScrollTo().performClick()
+        onNodeWithTag("studio-problem-solution").performScrollTo().assertIsDisplayed()
+        runOnIdle { assertEquals("Deux paires font quatre", controller.problemThinking) }
+        val file = File("build/reports/ui-snapshots/studio-problem-360-result.png")
+        check(file.parentFile.isDirectory || file.parentFile.mkdirs())
+        Image.makeFromBitmap(onRoot().captureToImage().asSkiaBitmap()).use { image ->
+            image.encodeToData()!!.use { file.writeBytes(it.bytes) }
+        }
+    }
+
+    @Test
     fun unsupportedPlatformExplainsAndDisablesProviderAndGoalActions() = runDesktopComposeUiTest(width = 360, height = 480) {
         val controller = MemoryStudioController().apply {
             state.value = state.value.copy(available = false, error = "Le tuteur IA est disponible uniquement dans l’application Windows.")
@@ -311,11 +330,17 @@ class StudioUiTest {
         var quizDontKnow: Boolean? = null
         var quizThinking: String? = null
         var quizConfidence: Int? = null
+        var problemThinking: String? = null
         fun installQuiz() {
             val session = state.value.sessions.single()
             val quiz = StudioQuiz("Quelle fraction représente une moitié ?", listOf(StudioQuizOption("a", "Un tiers"), StudioQuizOption("b", "Une moitié")),
                 correctIds = listOf("b"), explanation = "Une moitié correspond à une des deux parts égales.")
             state.value = state.value.copy(sessions = listOf(session.copy(messages = listOf(StudioMessage("assistant", "À toi de répondre.", quiz = quiz)))))
+        }
+        fun installProblem() {
+            val session = state.value.sessions.single()
+            val problem = StudioProblem("Combien font 2 + 2 ?", "recall", "On réunit deux paires : 4.", listOf("Pense aux paires."))
+            state.value = state.value.copy(sessions = listOf(session.copy(messages = listOf(StudioMessage("assistant", "", problem = problem)))))
         }
         override fun select(id: String) { state.value = state.value.copy(selectedId = id, error = null) }
         override fun create(goal: String): Boolean {
@@ -342,6 +367,26 @@ class StudioUiTest {
             return true
         }
         override fun requestQuiz(): Boolean { quizRequests++; return true }
+        override fun revealPracticeHint(messageIndex: Int): Boolean {
+            val session = state.value.sessions.single()
+            val updated = session.copy(messages = session.messages.mapIndexed { index, message ->
+                if (index == messageIndex) message.copy(problem = message.problem!!.copy(shownHints = 1)) else message
+            })
+            state.value = state.value.copy(sessions = listOf(updated))
+            return true
+        }
+        override fun submitPracticeAttempt(messageIndex: Int, answer: String, thinking: String): Boolean {
+            problemThinking = thinking
+            val session = state.value.sessions.single()
+            val updated = session.copy(messages = session.messages.mapIndexed { index, message ->
+                if (index == messageIndex) message.copy(problem = message.problem!!.copy(
+                    attempt = StudioProblemAttempt(answer, thinking, 1L),
+                    result = StudioProblemResult("solvedWithHints", "Tu as trouvé la bonne réponse."),
+                )) else message
+            })
+            state.value = state.value.copy(sessions = listOf(updated))
+            return true
+        }
         override fun submitQuiz(messageIndex: Int, selectedIds: List<String>, dontKnow: Boolean, thinking: String, confidence: Int?): Boolean {
             quizSelection = selectedIds
             quizDontKnow = dontKnow

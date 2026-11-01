@@ -12,6 +12,59 @@ import java.nio.file.Files
 import kotlin.test.*
 
 class DesktopStudioControllerTest {
+    @Test fun practiceKeepsSolutionHiddenUntilVerdictAndPersistsReasoning() = runBlocking {
+        val file = Files.createTempDirectory("studio-practice").resolve("studio.json")
+        val fence = 0x60.toChar().toString().repeat(3)
+        val problem = """{"statement":"Combien font 2 + 2 ?","mode":"recall","modelSolution":"On réunit deux paires : 4.","hints":["Pense aux paires."],"target":[]}"""
+        val verdict = """{"outcome":"solvedWithHints","verdict":"Tu as correctement réuni les deux paires.","missClass":null,"retest":false}"""
+        val verdictCalls = java.util.concurrent.atomic.AtomicInteger()
+        val tutor = StudioTutor { request ->
+            when {
+                request.history.last().text == STUDIO_PROBLEM_REQUEST -> fence + "studio-problem\n" + problem + "\n" + fence
+                request.history.last().text.startsWith(STUDIO_PRACTICE_ATTEMPT_PREFIX) -> {
+                    assertTrue(request.history.any { studioMessageForTutor(it).contains("On réunit deux paires : 4.") })
+                    assertTrue(request.history.last().text.contains("J'ai regroupé deux paires"))
+                    if (verdictCalls.incrementAndGet() == 1) "verdict non structuré" else fence + "studio-verdict\n" + verdict + "\n" + fence
+                }
+                else -> error("Unexpected request")
+            }
+        }
+        var controller = DesktopStudioController(file, tutor)
+        try {
+            assertTrue(controller.configure("http://localhost:1234/v1", "model", ""))
+            assertTrue(controller.create("Additionner"))
+            assertTrue(controller.requestPracticeProblem())
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            val posed = controller.state.value.sessions.single().messages[1]
+            assertEquals("", posed.text)
+            assertEquals("On réunit deux paires : 4.", posed.problem?.modelSolution)
+            assertNull(posed.problem?.result)
+            assertFalse(controller.requestPracticeProblem())
+            assertFalse(controller.requestQuiz())
+            assertTrue(controller.revealPracticeHint(1))
+            assertFalse(controller.revealPracticeHint(1))
+            assertTrue(controller.submitPracticeAttempt(1, "4", "J'ai regroupé deux paires"))
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            val pending = controller.state.value.sessions.single().messages[1].problem!!
+            assertEquals("J'ai regroupé deux paires", pending.attempt?.thinking)
+            assertNull(pending.result)
+            assertNotNull(controller.state.value.error)
+            assertFalse(controller.submitPracticeAttempt(1, "5", ""))
+        } finally { controller.close() }
+        controller = DesktopStudioController(file, tutor)
+        try {
+            var saved = controller.state.value.sessions.single().messages[1].problem!!
+            assertEquals(1, saved.shownHints)
+            assertEquals("J'ai regroupé deux paires", saved.attempt?.thinking)
+            assertNull(saved.result)
+            controller.retry()
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            saved = controller.state.value.sessions.single().messages[1].problem!!
+            assertEquals("solvedWithHints", saved.result?.outcome)
+            assertEquals(2, verdictCalls.get())
+        } finally { controller.close() }
+    }
+
     @Test fun invalidGeneratedPlanKeepsRequestForRetry() = runBlocking {
         val file = Files.createTempDirectory("studio-invalid-plan").resolve("studio.json")
         val calls = java.util.concurrent.atomic.AtomicInteger()

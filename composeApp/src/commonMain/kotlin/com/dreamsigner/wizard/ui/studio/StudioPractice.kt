@@ -71,6 +71,8 @@ internal fun parseStudioTutorReply(reply: String): ParsedStudioReply {
 }
 
 /** Reconstructs the model's own question, including its key, for later tutor turns. */
-internal fun studioMessageForTutor(message: StudioMessage): String = message.quiz?.let { quiz ->
+internal fun studioMessageForTutor(message: StudioMessage): String = message.problem?.let { problem ->
+    listOf(message.text, studioProblemForTutor(problem)).filter { it.isNotBlank() }.joinToString("\n\n")
+} ?: message.quiz?.let { quiz ->
     listOf(message.text, "```studio-quiz\n${Json.encodeToString(quiz)}\n```").filter { it.isNotBlank() }.joinToString("\n\n")
 } ?: message.text

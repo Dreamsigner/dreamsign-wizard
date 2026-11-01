@@ -29,6 +29,8 @@ Validation du 1er novembre 2026 : 231 tests Desktop réussis, compilation Kotlin
   - [ ] Validation effective des prérequis avant chaque étape.
 - [ ] Graphe de connaissances avec sources et mécanisme de correction.
 - [ ] Pratique adaptative basée sur les raisonnements observés.
+  - [x] Problème autonome à solution engagée avant présentation, indices gradués, réponse et raisonnement enregistrés, verdict et reprise.
+  - [ ] Choix du problème suivant et des reprises fondé sur des preuves de maîtrise vérifiées.
 - [ ] Intégration documentée des cours et documents choisis.
 - [ ] Recherche, démonstrations et dictée locale.
 

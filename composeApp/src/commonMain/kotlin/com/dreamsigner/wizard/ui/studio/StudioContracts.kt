@@ -8,7 +8,7 @@ enum class ReasoningEffort(val label: String, val wireValue: String?) {
     AUTOMATIC("Automatique", null), LOW("Faible", "low"), MEDIUM("Moyen", "medium"), HIGH("Élevé", "high")
 }
 
-data class StudioMessage(val role: String, val text: String, val quiz: StudioQuiz? = null, val quizAnswer: StudioQuizAnswer? = null)
+data class StudioMessage(val role: String, val text: String, val quiz: StudioQuiz? = null, val quizAnswer: StudioQuizAnswer? = null, val problem: StudioProblem? = null)
 data class StudioPlanStep(val title: String, val prerequisites: List<Int>, val evidence: String, val sources: List<Int>)
 data class StudioPlan(val steps: List<StudioPlanStep>, val decision: String = "proposed")
 data class StudioDiagnosisObservation(val observation: String, val sources: List<Int>)
@@ -40,6 +40,10 @@ interface StudioController {
     fun send(message: String): Boolean
     fun requestQuiz(): Boolean = false
     fun submitQuiz(messageIndex: Int, selectedIds: List<String>, dontKnow: Boolean, thinking: String, confidence: Int?): Boolean = false
+    fun requestPracticeProblem(): Boolean = false
+    fun revealPracticeHint(messageIndex: Int): Boolean = false
+    fun submitPracticeAttempt(messageIndex: Int, answer: String, thinking: String): Boolean = false
+    fun surrenderPracticeProblem(messageIndex: Int): Boolean = false
     fun requestGeneratedPlan(): Boolean = false
     fun discardPlanProposal(): Boolean = false
     fun savePlan(plan: StudioPlan): Boolean = false

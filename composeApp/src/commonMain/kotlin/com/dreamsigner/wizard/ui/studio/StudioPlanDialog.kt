@@ -58,7 +58,9 @@ internal fun StudioPlanDialog(session: StudioSession, controller: StudioControll
                         val visible = when (message.text) {
                             STUDIO_QUIZ_REQUEST -> "QCM demandé"
                             STUDIO_PLAN_REQUEST -> "Plan pédagogique demandé"
-                            else -> message.text.ifBlank { message.quiz?.question ?: "Question du tuteur" }
+                            STUDIO_PROBLEM_REQUEST -> "Problème de pratique demandé"
+                            else -> if (message.text.startsWith(STUDIO_PRACTICE_ATTEMPT_PREFIX)) "Tentative envoyée"
+                                else message.text.ifBlank { message.quiz?.question ?: message.problem?.statement ?: "Question du tuteur" }
                         }
                         Text("${index + 1}. ${if (message.role == "user") "Toi" else "Tuteur"} : $visible")
                     }
