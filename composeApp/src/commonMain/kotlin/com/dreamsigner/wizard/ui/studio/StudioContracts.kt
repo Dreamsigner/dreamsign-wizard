@@ -25,6 +25,7 @@ data class StudioState(
     val chatGptBusy: Boolean = false, val chatGptError: String? = null,
     val apiModels: List<String> = emptyList(), val apiModelsUrl: String = "",
     val apiModelsBusy: Boolean = false, val apiModelsError: String? = null,
+    val modelSlots: Map<StudioModelSlot, StudioModelSetting> = emptyMap(), val modelOverrides: Map<StudioModelRole, StudioModelSetting> = emptyMap(),
     val knowledgeGraph: KnowledgeGraph = KnowledgeGraph(), val graphProposal: KnowledgeGraphProposal? = null, val graphError: String? = null,
 )
 
@@ -35,6 +36,8 @@ interface StudioController {
     fun configure(baseUrl: String, model: String, apiKey: String): Boolean
     fun discoverApiModels(baseUrl: String, apiKey: String) = Unit
     fun cancelApiModelDiscovery() = Unit
+    fun setModelSlot(slot: StudioModelSlot, model: String, effort: ReasoningEffort?) = Unit
+    fun setModelOverride(role: StudioModelRole, model: String, effort: ReasoningEffort?) = Unit
     fun setSessionModel(model: String?) = Unit
     fun setReasoningEffort(effort: ReasoningEffort) = Unit
     fun setSessionReasoningEffort(effort: ReasoningEffort?) = Unit

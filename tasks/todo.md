@@ -16,6 +16,7 @@
 - [ ] Examiner et prioriser les [pistes issues des PR LearnHarness](../docs/product/2026-10-30-learnharness-pr-features.md).
 
 - [x] Découverte à la demande des modèles d'un service compatible Chat Completions, recherche et choix par séance, avec conservation du fournisseur et du niveau de réflexion.
+- [x] Modèles principal et secondaire, exceptions par tâche et niveau de réflexion utilisés par les appels du Studio IA.
 - [x] Étendre le rendu des réponses du Studio IA aux délimiteurs LaTeX usuels, aux formules multilignes et aux listes numérotées.
 - [ ] Ajouter des métadonnées de capacités, contexte et coût uniquement depuis des sources fiables par fournisseur ; filtrer les niveaux de réflexion pris en charge.
 - [x] Ajouter les QCM sélectionnables du Studio IA, le raisonnement et la confiance avant validation, avec correction révélée ensuite.

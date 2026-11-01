@@ -370,6 +370,41 @@ class DesktopStudioControllerTest {
         } finally { release.countDown(); controller.close(); server.stop(0) }
     }
 
+    @Test fun roleRoutingPersistsAndSelectsEffectiveRequest() = runBlocking {
+        val file = Files.createTempDirectory("studio-routing").resolve("studio.json")
+        val requests = mutableListOf<TutorRequest>()
+        val tutor = StudioTutor { request -> synchronized(requests) { requests.add(request) }; "Réponse" }
+        var controller = DesktopStudioController(file, tutor)
+        try {
+            assertTrue(controller.configure("http://localhost:1234/v1", "default", ""))
+            controller.setModelSlot(StudioModelSlot.STRONG, "strong", ReasoningEffort.LOW)
+            controller.setModelOverride(StudioModelRole.DIAGNOSTIC, "diagnostic", ReasoningEffort.HIGH)
+            assertTrue(controller.create("But"))
+        } finally { controller.close() }
+        controller = DesktopStudioController(file, tutor)
+        try {
+            assertEquals("strong", controller.state.value.modelSlots[StudioModelSlot.STRONG]?.model?.model)
+            assertTrue(controller.send("Question"))
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            assertEquals("diagnostic", synchronized(requests) { requests.last().model })
+            assertEquals(ReasoningEffort.HIGH, synchronized(requests) { requests.last().reasoningEffort })
+            controller.setModelOverride(StudioModelRole.DIAGNOSTIC, "", null)
+            assertTrue(controller.send("Suite"))
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            assertEquals("strong", synchronized(requests) { requests.last().model })
+            assertEquals(ReasoningEffort.LOW, synchronized(requests) { requests.last().reasoningEffort })
+            controller.setModelOverride(StudioModelRole.TEACHING_PLAN, "teacher", null)
+            controller.setModelOverride(StudioModelRole.PRACTICE, "practice", null)
+            assertTrue(controller.savePlan(StudioPlan(listOf(StudioPlanStep("Étape", emptyList(), "Preuve", listOf(0))), "accepted")))
+            assertTrue(controller.send("Explique-moi"))
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            assertEquals("teacher", synchronized(requests) { requests.last().model })
+            assertTrue(controller.requestPracticeProblem())
+            withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+            assertEquals("practice", synchronized(requests) { requests.last().model })
+        } finally { controller.close() }
+    }
+
     @Test fun sessionModelSurvivesDefaultChangeAndRejectsDifferentEndpoint() = runBlocking {
         val file = Files.createTempDirectory("studio-model-pin").resolve("studio.json")
         val requests = mutableListOf<TutorRequest>()

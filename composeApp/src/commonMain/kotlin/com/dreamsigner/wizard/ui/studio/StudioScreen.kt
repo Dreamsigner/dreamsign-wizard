@@ -461,6 +461,23 @@ private fun StudioConnectionDialog(controller: StudioController, state: StudioSt
                 Text("La connexion et ses jetons sont enregistrés dans un fichier local protégé. Déconnecter ce compte efface les jetons locaux.", color = Graphite, fontSize = 13.sp)
                 if (!state.chatGptError.isNullOrBlank()) Text(state.chatGptError!!, color = ActionRed, fontSize = 13.sp)
                 Divider(color = Concrete)
+                Text("Modèles par tâche", style = MaterialTheme.typography.subtitle1, fontWeight = FontWeight.SemiBold)
+                Text("Fournisseur actif : ${if (state.providerMode == "chatgpt") "ChatGPT" else "API"}. Le choix propre à une séance reste prioritaire. Laisse vide pour hériter.", color = Graphite, fontSize = 13.sp)
+                Text("Disponibilité, prix et niveaux de réflexion pris en charge sont inconnus : vérifie-les auprès du fournisseur.", color = Graphite, fontSize = 13.sp)
+                StudioModelSlot.entries.forEach { slot ->
+                    val label = if (slot == StudioModelSlot.STRONG) "Principal : diagnostic, plan et pratique" else "Secondaire : graphe"
+                    StudioRoutingEditor(label, state.modelSlots[slot], state) { model, effort -> controller.setModelSlot(slot, model, effort) }
+                }
+                StudioModelRole.entries.forEach { role ->
+                    val label = when (role) {
+                        StudioModelRole.DIAGNOSTIC -> "Diagnostic"
+                        StudioModelRole.TEACHING_PLAN -> "Plan pédagogique"
+                        StudioModelRole.PRACTICE -> "Pratique"
+                        StudioModelRole.GRAPH_EXTRACTION -> "Extraction du graphe"
+                    }
+                    StudioRoutingEditor("Exception : $label", state.modelOverrides[role], state) { model, effort -> controller.setModelOverride(role, model, effort) }
+                }
+                Divider(color = Concrete)
                 Text("Autre fournisseur avec clé API", style = MaterialTheme.typography.subtitle1, fontWeight = FontWeight.SemiBold)
                 Text("L’objectif, les messages et le plan accepté de la séance active sont transmis au fournisseur choisi.", color = Graphite)
                 OutlinedTextField(
@@ -515,6 +532,28 @@ private fun StudioConnectionDialog(controller: StudioController, state: StudioSt
         },
         dismissButton = { TextButton(onClick = onDismiss, enabled = !state.busy) { Text("Fermer") } },
     )
+}
+
+@Composable
+private fun StudioRoutingEditor(label: String, setting: StudioModelSetting?, state: StudioState, onSave: (String, ReasoningEffort?) -> Unit) {
+    var model by remember(setting) { mutableStateOf(setting?.model?.model.orEmpty()) }
+    var effort by remember(setting) { mutableStateOf(setting?.reasoningEffort) }
+    var expanded by remember { mutableStateOf(false) }
+    OutlinedTextField(value = model, onValueChange = { model = it }, label = { Text(label) }, singleLine = true,
+        enabled = state.available && !state.busy, modifier = Modifier.fillMaxWidth())
+    Box {
+        OutlinedButton(onClick = { expanded = true }, enabled = state.available && !state.busy) { Text("Réflexion : ${effort?.label ?: "Hériter"}") }
+        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            DropdownMenuItem(onClick = { effort = null; expanded = false }) { Text("Hériter") }
+            ReasoningEffort.entries.forEach { candidate ->
+                DropdownMenuItem(onClick = { effort = candidate; expanded = false }) { Text(candidate.label) }
+            }
+        }
+    }
+    if (setting?.model != null && (setting.model.providerMode != state.providerMode || (state.providerMode == "api" && setting.model.baseUrl != state.baseUrl))) {
+        Text("Ce réglage appartient à une autre connexion. Enregistre-le à nouveau pour utiliser le fournisseur actif.", color = ActionRed, fontSize = 13.sp)
+    }
+    TextButton(onClick = { onSave(model, effort) }, enabled = state.available && !state.busy) { Text("Enregistrer : $label") }
 }
 
 @Composable

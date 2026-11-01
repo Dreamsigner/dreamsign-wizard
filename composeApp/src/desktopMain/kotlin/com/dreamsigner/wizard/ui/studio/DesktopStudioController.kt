@@ -27,7 +27,8 @@ internal data class TutorRequest(
 )
 internal fun interface StudioTutor { suspend fun respond(request: TutorRequest): String }
 
-@Serializable private data class StudioDisk(val baseUrl: String = "", val model: String = "", val sessions: List<StudioSessionDisk> = emptyList(), val selectedId: String? = null, val providerMode: String = "api", val reasoningEffort: String = "AUTOMATIC", val apiModel: String? = null, val chatGptModel: String? = null, val graphProposal: KnowledgeGraphProposal? = null)
+@Serializable private data class StudioDisk(val baseUrl: String = "", val model: String = "", val sessions: List<StudioSessionDisk> = emptyList(), val selectedId: String? = null, val providerMode: String = "api", val reasoningEffort: String = "AUTOMATIC", val apiModel: String? = null, val chatGptModel: String? = null, val graphProposal: KnowledgeGraphProposal? = null, val modelSlots: Map<String, StudioModelSettingDisk> = emptyMap(), val modelOverrides: Map<String, StudioModelSettingDisk> = emptyMap())
+@Serializable private data class StudioModelSettingDisk(val model: StudioModelChoiceDisk? = null, val reasoningEffort: String? = null)
 @Serializable private data class StudioSessionDisk(val id: String, val goal: String, val messages: List<StudioMessageDisk>, val plan: StudioPlanDisk? = null, val reasoningEffort: String? = null, val modelChoice: StudioModelChoiceDisk? = null, val planProposal: StudioPlanProposalDisk? = null, val assessment: StudioDiagnosticAssessment? = null)
 @Serializable private data class StudioModelChoiceDisk(val providerMode: String, val baseUrl: String, val model: String)
 @Serializable private data class StudioPlanDisk(val steps: List<StudioPlanStepDisk>, val decision: String = "proposed")
@@ -79,8 +80,9 @@ internal class DesktopStudioController(
     override fun create(goal: String): Boolean {
         if (state.value.storageError != null || state.value.busy || goal.isBlank() || goal.length > 500) return false
         val current = state.value
-        val choice = current.model.takeIf { it.isNotBlank() }?.let { StudioModelChoice(current.providerMode, if (current.providerMode == "api") current.baseUrl else "", it) }
-        val session = StudioSession(UUID.randomUUID().toString(), goal.trim(), emptyList(), reasoningEffort = current.reasoningEffort, modelChoice = choice)
+        val routingEnabled = current.modelSlots.isNotEmpty() || current.modelOverrides.isNotEmpty()
+        val choice = if (routingEnabled) null else current.model.takeIf { it.isNotBlank() }?.let { StudioModelChoice(current.providerMode, if (current.providerMode == "api") current.baseUrl else "", it) }
+        val session = StudioSession(UUID.randomUUID().toString(), goal.trim(), emptyList(), reasoningEffort = if (routingEnabled) null else current.reasoningEffort, modelChoice = choice)
         return mutate { copy(sessions = listOf(session) + sessions, selectedId = session.id, error = null) }
     }
 
@@ -132,6 +134,20 @@ internal class DesktopStudioController(
         }
     }
 
+    private fun routingSetting(model: String, effort: ReasoningEffort?): StudioModelSetting {
+        val current = state.value
+        val choice = model.trim().takeIf { it.isNotEmpty() }?.let { StudioModelChoice(current.providerMode, if (current.providerMode == "api") current.baseUrl else "", it) }
+        return StudioModelSetting(choice, effort)
+    }
+
+    override fun setModelSlot(slot: StudioModelSlot, model: String, effort: ReasoningEffort?) {
+        if (!state.value.busy && state.value.storageError == null) mutate { copy(modelSlots = modelSlots + (slot to routingSetting(model, effort))) }
+    }
+
+    override fun setModelOverride(role: StudioModelRole, model: String, effort: ReasoningEffort?) {
+        if (!state.value.busy && state.value.storageError == null) mutate { copy(modelOverrides = modelOverrides + (role to routingSetting(model, effort))) }
+    }
+
     override fun setSessionModel(model: String?) {
         val current = state.value
         val id = current.selectedId ?: return
@@ -142,10 +158,22 @@ internal class DesktopStudioController(
         mutate { copy(sessions = sessions.map { if (it.id == id) it.copy(modelChoice = choice) else it }, error = null) }
     }
 
-    private fun effectiveSessionConfig(current: StudioState, session: StudioSession): StudioState? {
-        val choice = session.modelChoice ?: return current
+    private fun effectiveSessionConfig(current: StudioState, session: StudioSession, message: String): StudioState? {
+        val role = when {
+            message == STUDIO_GRAPH_REQUEST -> StudioModelRole.GRAPH_EXTRACTION
+            message == STUDIO_PLAN_REQUEST -> StudioModelRole.TEACHING_PLAN
+            message == STUDIO_DIAGNOSIS_REQUEST -> StudioModelRole.DIAGNOSTIC
+            message == STUDIO_PROBLEM_REQUEST || message.startsWith(STUDIO_PRACTICE_ATTEMPT_PREFIX) -> StudioModelRole.PRACTICE
+            session.plan?.decision == "accepted" -> StudioModelRole.TEACHING_PLAN
+            else -> StudioModelRole.DIAGNOSTIC
+        }
+        val fallback = StudioModelSetting(StudioModelChoice(current.providerMode, if (current.providerMode == "api") current.baseUrl else "", current.model), current.reasoningEffort)
+        val slot = current.modelSlots[studioSlotFor(role)]
+        val slots = mapOf(studioSlotFor(role) to StudioModelSetting(slot?.model ?: fallback.model, slot?.reasoningEffort ?: fallback.reasoningEffort))
+        val resolved = resolveStudioModel(role, slots, current.modelOverrides, StudioModelSetting(session.modelChoice, session.reasoningEffort)) ?: return null
+        val choice = resolved.model
         if (choice.providerMode != current.providerMode || (choice.providerMode == "api" && choice.baseUrl != current.baseUrl)) return null
-        return current.copy(model = choice.model)
+        return current.copy(model = choice.model, reasoningEffort = resolved.reasoningEffort ?: current.reasoningEffort)
     }
 
     override fun setReasoningEffort(effort: ReasoningEffort) {
@@ -365,7 +393,7 @@ internal class DesktopStudioController(
         if (snapshot.busy || snapshot.storageError != null || message.isBlank() || message.length > (if (submission == null && problemSubmission == null) 4_000 else 14_000)) return false
         val session = snapshot.sessions.firstOrNull { it.id == snapshot.selectedId } ?: return false
         if (pendingBySession.containsKey(session.id)) return false
-        val sessionConfig = effectiveSessionConfig(snapshot, session) ?: run {
+        val sessionConfig = effectiveSessionConfig(snapshot, session, message) ?: run {
             transient { copy(error = "Cette séance utilise un autre fournisseur. Rétablis sa connexion ou choisis le modèle actuel dans la séance.") }
             return false
         }
@@ -418,7 +446,7 @@ internal class DesktopStudioController(
         val id = current.selectedId ?: return
         if (pendingBySession[id].isNullOrBlank()) return
         val session = current.sessions.firstOrNull { it.id == id } ?: return
-        val config = effectiveSessionConfig(current, session) ?: run {
+        val config = effectiveSessionConfig(current, session, session.messages.lastOrNull()?.text.orEmpty()) ?: run {
             transient { copy(error = "Cette séance utilise un autre fournisseur. Rétablis sa connexion ou choisis le modèle actuel dans la séance.") }
             return
         }
@@ -455,7 +483,7 @@ internal class DesktopStudioController(
         if (state.value.busy) return
         if (pendingBySession[id].isNullOrBlank()) return
         val acceptedPlan = session.plan?.takeIf { it.decision == "accepted" && validPlan(it, session.messages.size) }
-        val effort = session.reasoningEffort ?: config.reasoningEffort
+        val effort = config.reasoningEffort
         val numberedContext = session.messages.lastOrNull()?.text in setOf(STUDIO_PLAN_REQUEST, STUDIO_DIAGNOSIS_REQUEST, STUDIO_GRAPH_REQUEST)
         val history = session.messages.takeLast(12).mapIndexed { offset, message ->
             if (!numberedContext) message else message.copy(
@@ -659,7 +687,7 @@ internal class DesktopStudioController(
 
     private fun write(s: StudioState) {
         Files.createDirectories(file.parent)
-        val disk = StudioDisk(s.baseUrl, s.model, s.sessions.map { it.toDisk() }, s.selectedId, s.providerMode, s.reasoningEffort.name, s.apiModel, s.chatGptModel, s.graphProposal)
+        val disk = StudioDisk(s.baseUrl, s.model, s.sessions.map { it.toDisk() }, s.selectedId, s.providerMode, s.reasoningEffort.name, s.apiModel, s.chatGptModel, s.graphProposal, s.modelSlots.mapKeys { it.key.name }.mapValues { it.value.toDisk() }, s.modelOverrides.mapKeys { it.key.name }.mapValues { it.value.toDisk() })
         val temp = Files.createTempFile(file.parent, "studio-", ".tmp")
         try {
             Files.writeString(temp, json.encodeToString(disk))
@@ -669,7 +697,9 @@ internal class DesktopStudioController(
     }
 
     override fun close() { cancel(); synchronized(apiKey) { apiKey.setLength(0) }; scope.cancel() }
-    private fun fromDisk(d: StudioDisk) = StudioState(baseUrl = d.baseUrl, model = d.model, sessions = d.sessions.map { it.fromDisk() }, selectedId = d.selectedId, providerMode = d.providerMode, reasoningEffort = ReasoningEffort.entries.firstOrNull { it.name == d.reasoningEffort } ?: ReasoningEffort.AUTOMATIC, apiModel = d.apiModel ?: if (d.providerMode == "api") d.model else "", chatGptModel = d.chatGptModel ?: if (d.providerMode == "chatgpt") d.model else "", graphProposal = d.graphProposal?.also { it.base.validate(); it.graph.validate() })
+    private fun fromDisk(d: StudioDisk) = StudioState(baseUrl = d.baseUrl, model = d.model, sessions = d.sessions.map { it.fromDisk() }, selectedId = d.selectedId, providerMode = d.providerMode, reasoningEffort = ReasoningEffort.entries.firstOrNull { it.name == d.reasoningEffort } ?: ReasoningEffort.AUTOMATIC, apiModel = d.apiModel ?: if (d.providerMode == "api") d.model else "", chatGptModel = d.chatGptModel ?: if (d.providerMode == "chatgpt") d.model else "", graphProposal = d.graphProposal?.also { it.base.validate(); it.graph.validate() }, modelSlots = d.modelSlots.mapNotNull { (key, value) -> StudioModelSlot.entries.firstOrNull { it.name == key }?.let { it to value.fromDisk() } }.toMap(), modelOverrides = d.modelOverrides.mapNotNull { (key, value) -> StudioModelRole.entries.firstOrNull { it.name == key }?.let { it to value.fromDisk() } }.toMap())
+    private fun StudioModelSetting.toDisk() = StudioModelSettingDisk(model?.let { StudioModelChoiceDisk(it.providerMode, it.baseUrl, it.model) }, reasoningEffort?.name)
+    private fun StudioModelSettingDisk.fromDisk() = StudioModelSetting(model?.let { StudioModelChoice(it.providerMode, it.baseUrl, it.model) }, reasoningEffort?.let { name -> ReasoningEffort.entries.firstOrNull { it.name == name } })
     private fun StudioPlan.toDisk() = StudioPlanDisk(steps.map { step -> StudioPlanStepDisk(step.title, step.prerequisites, step.evidence, step.sources) }, decision)
     private fun StudioPlanDisk.fromDisk() = StudioPlan(steps.map { step -> StudioPlanStep(step.title, step.prerequisites, step.evidence, step.sources) }, decision)
     private fun StudioSession.toDisk() = StudioSessionDisk(id, goal, messages.map { StudioMessageDisk(it.role, it.text, it.quiz, it.quizAnswer, it.problem) }, plan?.toDisk(), reasoningEffort?.name, modelChoice?.let { StudioModelChoiceDisk(it.providerMode, it.baseUrl, it.model) }, planProposal?.let { StudioPlanProposalDisk(it.diagnosis.map { observation -> StudioDiagnosisDisk(observation.observation, observation.sources) }, it.plan.toDisk()) }, assessment)
