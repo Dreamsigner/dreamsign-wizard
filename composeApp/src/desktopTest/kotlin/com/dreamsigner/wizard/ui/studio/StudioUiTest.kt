@@ -28,6 +28,32 @@ import kotlin.test.assertFalse
 
 class StudioUiTest {
     @Test
+    fun sessionModelSearchUsesActiveCatalogAndKeepsDefault() = runDesktopComposeUiTest(width = 1000, height = 800) {
+        val controller = MemoryStudioController(initialSession = true)
+        runOnIdle { controller.state.value = controller.state.value.copy(
+            providerMode = "api", baseUrl = "https://example.org/v1/", model = "default-model",
+            apiModelsUrl = "https://example.org/v1", apiModels = listOf("alpha-model", "beta-model"),
+            chatGptModels = listOf("chat-model"),
+        ) }
+        setContent { LearningAppTheme { CompositionLocalProvider(LocalStudioController provides controller) { StudioConnectionSettings() } } }
+        onNodeWithTag("studio-session-model").performClick()
+        onNodeWithText("Rechercher un modèle de séance").performTextInput("beta")
+        onNodeWithText("alpha-model").assertDoesNotExist()
+        onNodeWithText("default-model").assertExists()
+        onNodeWithText("beta-model").performClick()
+        runOnIdle { assertEquals("beta-model", controller.chosenSessionModel) }
+        runOnIdle { controller.state.value = controller.state.value.copy(baseUrl = "https://other.example/v1") }
+        onNodeWithTag("studio-session-model").performClick()
+        onNodeWithText("beta-model").assertDoesNotExist()
+        onNodeWithText("Suivre le modèle par défaut").performClick()
+        runOnIdle { assertEquals(null, controller.chosenSessionModel) }
+        runOnIdle { controller.state.value = controller.state.value.copy(providerMode = "chatgpt") }
+        onNodeWithTag("studio-session-model").performClick()
+        onNodeWithText("chat-model").assertExists()
+        onNodeWithText("alpha-model").assertDoesNotExist()
+    }
+
+    @Test
     fun conversationHeaderKeepsSessionAndActionsAvailableAtBothSizes() {
         listOf(360 to 480, 1000 to 800).forEach { (width, height) ->
             runDesktopComposeUiTest(width = width, height = height) {
@@ -590,6 +616,8 @@ class StudioUiTest {
         var acceptSend = false
         var lastMessage: String? = null
         var configuredKey: String? = null
+        var chosenSessionModel: String? = null
+        override fun setSessionModel(model: String?) { chosenSessionModel = model }
         var cancelCount = 0
         var acceptQuiz = false
         var quizRequests = 0

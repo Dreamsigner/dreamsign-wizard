@@ -156,15 +156,21 @@ fun StudioConnectionSettings() {
         if (session != null) {
             Text("Réglages de la séance : ${session.goal}", fontWeight = FontWeight.SemiBold, color = Ink)
             var showModels by remember(session.id) { mutableStateOf(false) }
+            var modelSearch by remember(session.id, state.providerMode, state.baseUrl) { mutableStateOf("") }
             var showEfforts by remember(session.id) { mutableStateOf(false) }
-            val models = if (state.providerMode == "chatgpt") state.chatGptModels else if (state.apiModelsUrl == state.baseUrl) state.apiModels else emptyList()
+            val models = if (state.providerMode == "chatgpt") state.chatGptModels
+                else if (state.apiModelsUrl.isNotBlank() && state.apiModelsUrl == state.baseUrl.trim().trimEnd('/')) state.apiModels else emptyList()
             Box {
                 OutlinedButton(onClick = { showModels = true }, enabled = !state.busy && state.storageError == null, modifier = Modifier.testTag("studio-session-model")) {
                     Text("Modèle : ${session.modelChoice?.model ?: state.model.ifBlank { "non configuré" }}")
                 }
                 DropdownMenu(expanded = showModels, onDismissRequest = { showModels = false }) {
                     DropdownMenuItem(onClick = { controller.setSessionModel(null); showModels = false }) { Text("Suivre le modèle par défaut") }
-                    (models + listOfNotNull(state.model.takeIf { it.isNotBlank() })).distinct().forEach { candidate ->
+                    OutlinedTextField(value = modelSearch, onValueChange = { modelSearch = it }, singleLine = true,
+                        label = { Text("Rechercher un modèle de séance") }, modifier = Modifier.fillMaxWidth())
+                    val defaultModel = state.model.takeIf { it.isNotBlank() }
+                    val matches = models.distinct().filter { it != defaultModel && it.contains(modelSearch, ignoreCase = true) }.take(99)
+                    (listOfNotNull(defaultModel) + matches).forEach { candidate ->
                         DropdownMenuItem(onClick = { controller.setSessionModel(candidate); showModels = false }) { Text(candidate) }
                     }
                 }
