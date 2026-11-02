@@ -3,6 +3,7 @@
 package com.dreamsigner.wizard.ui.studio
 
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -26,6 +27,26 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 
 class StudioUiTest {
+    @Test
+    fun routingEditorSearchesActiveCatalogAndKeepsManualEntry() = runDesktopComposeUiTest(width = 1000, height = 800) {
+        var saved = ""
+        val state = MutableStateFlow(StudioState(providerMode = "api", baseUrl = "https://example.org/v1",
+            apiModelsUrl = "https://example.org/v1", apiModels = listOf("alpha-model", "beta-model")))
+        setContent { LearningAppTheme { Column { StudioRoutingEditor("Diagnostic", null, state.collectAsState().value) { model, _ -> saved = model } } } }
+        onNodeWithText("Choisir un modèle : Diagnostic").performClick()
+        onNodeWithText("Rechercher un modèle : Diagnostic").performTextInput("beta")
+        onNodeWithText("alpha-model").assertDoesNotExist()
+        onNodeWithText("beta-model").performClick()
+        onNodeWithText("Enregistrer : Diagnostic").performClick()
+        runOnIdle { assertEquals("beta-model", saved) }
+        runOnIdle { state.value = state.value.copy(baseUrl = "https://other.example/v1") }
+        onNodeWithText("Choisir un modèle : Diagnostic").assertDoesNotExist()
+        onNodeWithText("Diagnostic").performTextClearance()
+        onNodeWithText("Diagnostic").performTextInput("manual-model")
+        onNodeWithText("Enregistrer : Diagnostic").performClick()
+        runOnIdle { assertEquals("manual-model", saved) }
+    }
+
     @Test
     fun compactRailKeepsSessionsAndNavigationAvailable() = runDesktopComposeUiTest(width = 360, height = 480) {
         val controller = MemoryStudioController(initialSession = true)

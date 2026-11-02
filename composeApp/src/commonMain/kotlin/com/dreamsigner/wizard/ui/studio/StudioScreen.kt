@@ -594,12 +594,34 @@ private fun StudioConnectionDialog(controller: StudioController, state: StudioSt
 }
 
 @Composable
-private fun StudioRoutingEditor(label: String, setting: StudioModelSetting?, state: StudioState, onSave: (String, ReasoningEffort?) -> Unit) {
+internal fun StudioRoutingEditor(label: String, setting: StudioModelSetting?, state: StudioState, onSave: (String, ReasoningEffort?) -> Unit) {
     var model by remember(setting) { mutableStateOf(setting?.model?.model.orEmpty()) }
     var effort by remember(setting) { mutableStateOf(setting?.reasoningEffort) }
     var expanded by remember { mutableStateOf(false) }
+    var modelsExpanded by remember { mutableStateOf(false) }
+    var search by remember { mutableStateOf("") }
+    val models = if (state.providerMode == "chatgpt") state.chatGptModels
+        else if (state.apiModelsUrl.isNotBlank() && state.apiModelsUrl == state.baseUrl.trim().trimEnd('/')) state.apiModels
+        else emptyList()
     OutlinedTextField(value = model, onValueChange = { model = it }, label = { Text(label) }, singleLine = true,
         enabled = state.available && !state.busy, modifier = Modifier.fillMaxWidth())
+    if (models.isNotEmpty()) {
+        Box {
+            OutlinedButton(onClick = { modelsExpanded = true }, enabled = state.available && !state.busy) {
+                Text("Choisir un modèle : $label")
+            }
+            DropdownMenu(expanded = modelsExpanded, onDismissRequest = { modelsExpanded = false }) {
+                OutlinedTextField(value = search, onValueChange = { search = it }, singleLine = true,
+                    label = { Text("Rechercher un modèle : $label") }, enabled = state.available && !state.busy,
+                    modifier = Modifier.fillMaxWidth())
+                val matches = models.filter { it.contains(search, ignoreCase = true) }.take(100)
+                if (matches.isEmpty()) DropdownMenuItem(onClick = {}, enabled = false) { Text("Aucun modèle trouvé") }
+                matches.forEach { candidate ->
+                    DropdownMenuItem(onClick = { model = candidate; modelsExpanded = false }) { Text(candidate) }
+                }
+            }
+        }
+    }
     Box {
         OutlinedButton(onClick = { expanded = true }, enabled = state.available && !state.busy) { Text("Réflexion : ${effort?.label ?: "Hériter"}") }
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
