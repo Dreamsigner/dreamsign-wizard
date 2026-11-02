@@ -24,6 +24,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 internal data class TutorRequest(
     val endpoint: URI, val model: String, val apiKey: String, val goal: String,
     val history: List<StudioMessage>, val acceptedPlan: StudioPlan? = null, val reasoningEffort: ReasoningEffort = ReasoningEffort.AUTOMATIC,
+    val practiceTargets: List<PracticeTarget>? = null,
 )
 internal fun interface StudioTutor { suspend fun respond(request: TutorRequest): String }
 
@@ -509,7 +510,12 @@ internal class DesktopStudioController(
                 quiz = null,
             )
         }
-        val request = endpoint?.let { TutorRequest(it, config.model, secret, session.goal, history, acceptedPlan, effort) }
+        val practiceTargets = if (session.messages.lastOrNull()?.text == STUDIO_PROBLEM_REQUEST) {
+            fitPracticeTargets(config.model, session.goal, history, acceptedPlan, effort,
+                practiceTargets(if (config.graphError == null) config.knowledgeGraph else KnowledgeGraph(), config.sessions, session.goal),
+                config.providerMode == "chatgpt")
+        } else null
+        val request = endpoint?.let { TutorRequest(it, config.model, secret, session.goal, history, acceptedPlan, effort, practiceTargets) }
         val version = synchronized(lock) {
             requestVersion += 1
             state.value = state.value.copy(busy = true, error = null)
@@ -518,10 +524,10 @@ internal class DesktopStudioController(
         val job = scope.launch(start = CoroutineStart.LAZY) {
             try {
                 val reply = withTimeout(90_000) {
-                    if (config.providerMode == "chatgpt") chatGpt.respond(config.model, session.goal, history, acceptedPlan, effort)
+                    if (config.providerMode == "chatgpt") chatGpt.respond(config.model, session.goal, history, acceptedPlan, effort, practiceTargets)
                     else tutor.respond(requireNotNull(request))
                 }
-                persistReply(id, reply, version)
+                persistReply(id, reply, version, practiceTargets)
             } catch (cancelled: CancellationException) {
                 setFailure(version, "Requête interrompue. Ton message est conservé; tu peux réessayer.")
                 throw cancelled
@@ -537,17 +543,20 @@ internal class DesktopStudioController(
         }
     }
 
-    private fun persistReply(id: String, reply: String, version: Long) = synchronized(lock) {
+    private fun persistReply(id: String, reply: String, version: Long, practiceTargets: List<PracticeTarget>?) = synchronized(lock) {
         if (requestVersion != version) return@synchronized
         val before = state.value
         val current = before.sessions.firstOrNull { it.id == id }
         if (current == null) { state.value = before.copy(busy = false, error = "La séance n’existe plus."); return@synchronized }
         if (current.messages.lastOrNull()?.text == STUDIO_PROBLEM_REQUEST) {
-            val problem = parseStudioProblem(reply)
-            if (problem == null) {
+            val parsedProblem = parseStudioProblem(reply)
+            val allowed = practiceTargets.orEmpty().associate { it.id to it.statement }
+            val live = before.knowledgeGraph.propositions.associate { it.id to it.statement }
+            if (parsedProblem == null || parsedProblem.target.any { before.graphError != null || it !in allowed || allowed[it] != live[it] }) {
                 state.value = before.copy(busy = false, error = "Le fournisseur n’a pas produit de problème structuré utilisable. Ta demande est conservée ; réessaie ou choisis un autre modèle.")
                 return@synchronized
             }
+            val problem = parsedProblem.copy(targetSnapshot = parsedProblem.target.associateWith { allowed.getValue(it) })
             val updated = current.copy(messages = current.messages + StudioMessage("assistant", "", problem = problem))
             val next = before.copy(sessions = before.sessions.map { if (it.id == id) updated else it }, busy = false, error = null)
             try { write(next); state.value = next; pendingBySession.remove(id) }
@@ -741,7 +750,7 @@ private class OpenAiCompatibleTutor : StudioTutor {
     private val client = HttpClient.newBuilder().connectTimeout(java.time.Duration.ofSeconds(10)).followRedirects(HttpClient.Redirect.NEVER).build()
 
     override suspend fun respond(request: TutorRequest): String {
-        val body = buildTutorBody(request.model, request.goal, request.history, request.acceptedPlan, request.reasoningEffort)
+        val body = buildTutorBody(request.model, request.goal, request.history, request.acceptedPlan, request.reasoningEffort, request.practiceTargets)
         val builder = HttpRequest.newBuilder(request.endpoint).timeout(java.time.Duration.ofSeconds(45)).header("Content-Type", "application/json")
         if (request.apiKey.isNotBlank()) builder.header("Authorization", "Bearer ${request.apiKey}")
         val response = withTimeout(45_000) {
@@ -770,6 +779,22 @@ private fun providerFailureMessage(failure: Exception): String {
 }
 
 internal const val MAX_TUTOR_BODY_CHARS = 60_000
+/** Fit the same target snapshot that is passed to the transport and reply validator. */
+internal fun fitPracticeTargets(model: String, goal: String, history: List<StudioMessage>, plan: StudioPlan?, effort: ReasoningEffort,
+    targets: List<PracticeTarget>, chatGpt: Boolean): List<PracticeTarget>? {
+    var fitted = targets
+    while (true) {
+        val fits = runCatching {
+            val body = if (chatGpt) buildChatGptBody(model, goal, history, plan, effort, fitted)
+                else buildTutorBody(model, goal, history, plan, effort, fitted)
+            body.length <= MAX_TUTOR_BODY_CHARS
+        }.getOrDefault(false)
+        if (fits) return fitted
+        if (fitted.isEmpty()) return null
+        fitted = fitted.dropLast(1)
+    }
+}
+
 internal const val TUTOR_SYSTEM_PROMPT = "Tu es un tuteur francophone. Commence par diagnostiquer les connaissances et le raisonnement de l’apprenant. Après sa réponse, propose les prérequis et un plan concis, puis enseigne progressivement en vérifiant sa compréhension. Sois honnête sur les limites et ne prétends pas avoir évalué une compétence sans preuve.\n" +
     "Pour chaque question de diagnostic ou de pratique, propose un QCM et réponds uniquement par un bloc structuré ```studio-quiz suivi d'un objet JSON puis ``` ; ne dévoile jamais la solution ou l'explication hors de ce bloc avant la réponse. " +
     "Le JSON doit contenir type (predict pour prédire un résultat avant explication, check pour vérifier la compréhension), question (énoncé complet autonome), options (tableau de 2 à 8 objets avec id unique court et label), multiSelect (booléen), correctIds (tableau non vide des id corrects) et explanation (explication complète). " +
@@ -786,9 +811,9 @@ internal fun acceptedPlanContext(plan: StudioPlan?): String = if (plan?.decision
     }
 }
 
-internal fun buildTutorBody(model: String, goal: String, history: List<StudioMessage>, acceptedPlan: StudioPlan? = null, reasoningEffort: ReasoningEffort = ReasoningEffort.AUTOMATIC): String {
+internal fun buildTutorBody(model: String, goal: String, history: List<StudioMessage>, acceptedPlan: StudioPlan? = null, reasoningEffort: ReasoningEffort = ReasoningEffort.AUTOMATIC, practiceTargets: List<PracticeTarget>? = null): String {
     val fixed = listOf(
-        buildJsonObject { put("role", "system"); put("content", TUTOR_SYSTEM_PROMPT + acceptedPlanContext(acceptedPlan)) },
+        buildJsonObject { put("role", "system"); put("content", TUTOR_SYSTEM_PROMPT + acceptedPlanContext(acceptedPlan) + (practiceTargets?.let(::practiceTargetsContext) ?: "")) },
         buildJsonObject { put("role", "user"); put("content", "Objectif d’apprentissage : $goal") },
     )
     val newestFirst = history.takeLast(12).asReversed()
