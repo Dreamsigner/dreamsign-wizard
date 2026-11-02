@@ -332,6 +332,20 @@ class StudioUiTest {
     }
 
     @Test
+    fun retestCardExplainsRepriseWithoutRevealingSolution() = runDesktopComposeUiTest(width = 360, height = 480) {
+        val problem = StudioProblem("Nouvelle question ?", "recall", "Solution secrète", retestOf = StudioRetestRef("session", 0))
+        setContent {
+            LearningAppTheme {
+                StudioProblemCard(problem, StudioProblemDraft(), {}, {}, {}, {}, {}, enabled = true)
+            }
+        }
+        onNodeWithTag("studio-problem-retest").assertIsDisplayed()
+        onNodeWithText("Reprise d’une difficulté précédente").assertIsDisplayed()
+        onNodeWithText("Solution secrète").assertDoesNotExist()
+        onNodeWithTag("studio-problem-solution").assertDoesNotExist()
+    }
+
+    @Test
     fun practiceHidesCommittedSolutionUntilAnswerAtBothSizes() {
       listOf(360 to 480, 1000 to 800).forEach { (width, height) ->
        runDesktopComposeUiTest(width = width, height = height) {

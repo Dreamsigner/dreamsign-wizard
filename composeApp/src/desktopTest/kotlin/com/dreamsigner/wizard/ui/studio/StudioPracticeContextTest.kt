@@ -4,6 +4,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 import kotlinx.serialization.json.*
+import kotlinx.serialization.decodeFromString
 import java.nio.file.Files
 import kotlin.test.*
 
@@ -86,4 +87,66 @@ class StudioPracticeContextTest {
             assertTrue(body.length <= MAX_TUTOR_BODY_CHARS)
         }
     }
+    @Test fun retestObligationsSurviveSerializationAndRequireCleanLinkedEvidence() {
+        val graph = KnowledgeGraph(propositions = listOf(proposition("a", "A"), proposition("b", "B")))
+        fun original(id: String) = StudioProblem("Ancien $id", "recall", "Solution", target = listOf(id),
+            targetSnapshot = mapOf(id to id.uppercase()), attempt = StudioProblemAttempt("x", "", 1),
+            result = StudioProblemResult("movedOn", "Retour"), retestRequired = true)
+        val first = original("a")
+        val restored = Json.decodeFromString<StudioProblem>(Json.encodeToString(StudioProblem.serializer(), first))
+        val ref = StudioRetestRef("s", 0)
+        fun retest(result: StudioProblemResult, hints: Int = 0) = restored.copy(statement = "Nouvel énoncé", hints = listOf("Indice"),
+            shownHints = hints, retestRequired = false, retestOf = ref, result = result)
+        fun sessions(vararg extra: StudioProblem) = listOf(StudioSession("s", "objectif",
+            (listOf(restored, original("b")) + extra).map { StudioMessage("assistant", "", problem = it) }))
+        assertEquals(ref, dueRetest(graph, sessions())?.first)
+        assertEquals(ref, dueRetest(graph, sessions(retest(StudioProblemResult("solvedWithHints", "Retour"), 1)))?.first)
+        assertEquals(ref, dueRetest(graph, sessions(retest(StudioProblemResult("solved", "Retour", retest = true))))?.first)
+        assertEquals(StudioRetestRef("s", 1), dueRetest(graph, sessions(retest(StudioProblemResult("solved", "Retour"))))?.first)
+        assertEquals(StudioRetestRef("s", 1), dueRetest(KnowledgeGraph(propositions = listOf(proposition("a", "Modifié"), proposition("b", "B"))), sessions())?.first)
+        assertNull(dueRetest(KnowledgeGraph(), sessions()))
+        assertNull(dueRetest(graph, listOf(StudioSession("legacy", "objectif", listOf(completed("a", "A", "movedOn", false))))))
+    }
+
+    @Test fun retestReplyRejectsWrongModeTargetAndSameStatement(): Unit = runBlocking {
+        val file = Files.createTempDirectory("practice-retest").resolve("studio.json")
+        DesktopKnowledgeGraphStore(file.resolveSibling("knowledge-graph.json")).save(KnowledgeGraph(propositions = listOf(proposition("p", "Proposition"))))
+        val fence = "`".repeat(3)
+        var call = 0
+        val tutor = StudioTutor { request ->
+            call++
+            when (call) {
+                1 -> fence + "studio-problem\n" + """{"statement":"Ancien ?","mode":"recall","modelSolution":"Solution","target":["p"]}""" + "\n" + fence
+                2 -> fence + "studio-verdict\n" + """{"outcome":"movedOn","verdict":"Retour","retest":true}""" + "\n" + fence
+                else -> {
+                    assertNotNull(request.practiceTargets?.first()?.retestOf)
+                    val (statement, mode, target) = when (call) {
+                        3 -> Triple("Autre ?", "composition", "p")
+                        4 -> Triple("Autre ?", "recall", "invented")
+                        5 -> Triple("Ancien ?", "recall", "p")
+                        else -> Triple("Nouveau ?", "recall", "p")
+                    }
+                    fence + "studio-problem\n" + """{"statement":"$statement","mode":"$mode","modelSolution":"Solution","target":["$target"]}""" + "\n" + fence
+                }
+            }
+        }
+        var controller = DesktopStudioController(file, tutor)
+        suspend fun waitForReply() = withTimeout(5_000) { while (controller.state.value.busy) delay(10) }
+        try {
+            assertTrue(controller.configure("http://localhost:1234/v1", "model", ""))
+            assertTrue(controller.create("Objectif"))
+            assertTrue(controller.requestPracticeProblem()); waitForReply()
+            val index = controller.state.value.sessions.single().messages.indexOfLast { it.problem != null }
+            assertTrue(controller.submitPracticeAttempt(index, "Réponse", "")); waitForReply()
+        } finally { controller.close() }
+        controller = DesktopStudioController(file, tutor)
+        try {
+            assertTrue(controller.requestPracticeProblem()); waitForReply()
+            repeat(3) { assertNotNull(controller.state.value.error); controller.retry(); waitForReply() }
+            val problem = controller.state.value.sessions.single().messages.last().problem
+            assertEquals("Nouveau ?", problem?.statement)
+            assertNotNull(problem?.retestOf)
+        } finally { controller.close() }
+    }
+
 }

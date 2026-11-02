@@ -26,6 +26,9 @@ internal fun StudioProblemCard(
 ) {
     Column(Modifier.fillMaxWidth().testTag("studio-problem"), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Text("Problème de pratique", color = Ink, style = MaterialTheme.typography.subtitle1, fontWeight = FontWeight.SemiBold)
+        if (problem.retestOf != null) {
+            Text("Reprise d’une difficulté précédente", color = Graphite, modifier = Modifier.testTag("studio-problem-retest"))
+        }
         LessonDocument(problem.statement, typesetMath = true)
         if (problem.shownHints > 0) {
             Surface(color = Paper, shape = LearningShape, modifier = Modifier.fillMaxWidth()) {

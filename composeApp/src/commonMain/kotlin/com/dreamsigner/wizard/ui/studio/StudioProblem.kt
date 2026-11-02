@@ -15,7 +15,12 @@ data class StudioProblem(
     val attempt: StudioProblemAttempt? = null,
     val result: StudioProblemResult? = null,
     val targetSnapshot: Map<String, String> = emptyMap(),
+    val retestRequired: Boolean = false,
+    val retestOf: StudioRetestRef? = null,
 )
+
+@Serializable
+data class StudioRetestRef(val sessionId: String, val messageIndex: Int)
 
 @Serializable
 data class StudioProblemAttempt(val answer: String, val thinking: String, val submittedAtEpochMillis: Long)
@@ -39,6 +44,8 @@ internal fun validStudioProblem(problem: StudioProblem): Boolean =
         problem.target.size <= 20 && problem.target.distinct().size == problem.target.size &&
         problem.target.all { it.isNotBlank() && it.length <= 100 } &&
         problem.targetSnapshot.keys.all { it in problem.target } && problem.targetSnapshot.values.all { it.isNotBlank() && it.length <= 1_000 } &&
+        (problem.retestOf == null || (problem.retestOf.sessionId.isNotBlank() && problem.retestOf.sessionId.length <= 100 && problem.retestOf.messageIndex >= 0)) &&
+        (!problem.retestRequired || (problem.result != null && problem.retestOf == null && problem.targetSnapshot.isNotEmpty())) &&
         problem.shownHints in 0..problem.hints.size &&
         (problem.attempt == null || (problem.attempt.answer.isNotBlank() && problem.attempt.answer.length <= 4_000 &&
             problem.attempt.thinking.length <= 3_000 && problem.attempt.submittedAtEpochMillis > 0)) &&
@@ -51,7 +58,7 @@ internal fun parseStudioProblem(reply: String): StudioProblem? {
     if (reply.length > 20_000) return null
     val match = Regex("(?s)\\A\\s*```studio-problem\\s*\\n(.*?)\\n```\\s*\\z").matchEntire(reply) ?: return null
     return runCatching { Json.decodeFromString<StudioProblem>(match.groupValues[1]) }.getOrNull()
-        ?.takeIf { it.shownHints == 0 && it.attempt == null && it.result == null && it.targetSnapshot.isEmpty() && validStudioProblem(it) }
+        ?.takeIf { it.shownHints == 0 && it.attempt == null && it.result == null && it.targetSnapshot.isEmpty() && !it.retestRequired && it.retestOf == null && validStudioProblem(it) }
 }
 
 internal fun studioProblemForTutor(problem: StudioProblem): String =

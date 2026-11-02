@@ -403,7 +403,7 @@ internal class DesktopStudioController(
         if (snapshot.busy || snapshot.storageError != null || pendingBySession.containsKey(session.id) || problem.result != null || problem.attempt != null) return false
         return mutate { copy(sessions = sessions.map { current ->
             if (current.id != session.id) current else current.copy(messages = current.messages.mapIndexed { index, message ->
-                if (index == messageIndex) message.copy(problem = problem.copy(result = StudioProblemResult("surrendered", "Problème arrêté par l'apprenant."))) else message
+                if (index == messageIndex) message.copy(problem = problem.copy(result = StudioProblemResult("surrendered", "Problème arrêté par l'apprenant."), retestRequired = problem.retestOf == null && problem.targetSnapshot.isNotEmpty())) else message
             })
         }) }
     }
@@ -564,6 +564,10 @@ internal class DesktopStudioController(
                 practiceTargets(if (config.graphError == null) config.knowledgeGraph else KnowledgeGraph(), config.sessions, session.goal),
                 config.providerMode == "chatgpt")
         } else null
+        if (session.messages.lastOrNull()?.text == STUDIO_PROBLEM_REQUEST && practiceTargets == null) {
+            transient { copy(busy = false, error = "Le contexte de pratique dépasse la limite du fournisseur. Réessaie dans une séance plus courte.") }
+            return
+        }
         val request = endpoint?.let { TutorRequest(it, config.model, secret, session.goal, history, acceptedPlan, effort, practiceTargets) }
         val version = synchronized(lock) {
             requestVersion += 1
@@ -601,11 +605,16 @@ internal class DesktopStudioController(
             val parsedProblem = parseStudioProblem(reply)
             val allowed = practiceTargets.orEmpty().associate { it.id to it.statement }
             val live = before.knowledgeGraph.propositions.associate { it.id to it.statement }
-            if (parsedProblem == null || parsedProblem.target.any { before.graphError != null || it !in allowed || allowed[it] != live[it] }) {
+            val retest = practiceTargets.orEmpty().firstOrNull()?.retestOf
+            val original = retest?.let { ref -> before.sessions.firstOrNull { it.id == ref.sessionId }?.messages?.getOrNull(ref.messageIndex)?.problem }
+            val validRetest = retest == null || (original != null && dueRetest(before.knowledgeGraph, before.sessions)?.first == retest &&
+                parsedProblem != null && allowed == original.targetSnapshot && parsedProblem.target.toSet() == allowed.keys && parsedProblem.mode == original.mode &&
+                parsedProblem.statement.trim().lowercase() != original.statement.trim().lowercase())
+            if (parsedProblem == null || !validRetest || parsedProblem.target.any { before.graphError != null || it !in allowed || allowed[it] != live[it] }) {
                 state.value = before.copy(busy = false, error = "Le fournisseur n’a pas produit de problème structuré utilisable. Ta demande est conservée ; réessaie ou choisis un autre modèle.")
                 return@synchronized
             }
-            val problem = parsedProblem.copy(targetSnapshot = parsedProblem.target.associateWith { allowed.getValue(it) })
+            val problem = parsedProblem.copy(targetSnapshot = parsedProblem.target.associateWith { allowed.getValue(it) }, retestOf = retest)
             val updated = current.copy(messages = current.messages + StudioMessage("assistant", "", problem = problem))
             val next = before.copy(sessions = before.sessions.map { if (it.id == id) updated else it }, busy = false, error = null)
             try { write(next); state.value = next; pendingBySession.remove(id) }
@@ -651,7 +660,7 @@ internal class DesktopStudioController(
                 return@synchronized
             }
             val updated = current.copy(messages = current.messages.mapIndexed { index, message ->
-                if (index == problemIndex) message.copy(problem = problem!!.copy(result = result)) else message
+                if (index == problemIndex) message.copy(problem = problem!!.copy(result = result, retestRequired = problem.retestOf == null && problem.targetSnapshot.isNotEmpty() && (result.outcome != "solved" || result.retest))) else message
             } + StudioMessage("assistant", "Retour de pratique disponible."))
             val next = before.copy(sessions = before.sessions.map { if (it.id == id) updated else it }, busy = false, error = null)
             try { write(next); state.value = next; pendingBySession.remove(id) }
@@ -839,7 +848,7 @@ internal fun fitPracticeTargets(model: String, goal: String, history: List<Studi
             body.length <= MAX_TUTOR_BODY_CHARS
         }.getOrDefault(false)
         if (fits) return fitted
-        if (fitted.isEmpty()) return null
+        if (fitted.isEmpty() || targets.firstOrNull()?.retestOf != null) return null
         fitted = fitted.dropLast(1)
     }
 }
