@@ -298,6 +298,8 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
             TextButton(onClick = onSessions, modifier = Modifier.testTag("studio-sessions-toggle")) { Text("Séances") }
             Text(session.goal, Modifier.weight(1f).testTag("studio-current-goal"), style = MaterialTheme.typography.h6, color = Ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
+        TextButton(onClick = { controller.exportSession() }, enabled = state.available && !state.busy, modifier = Modifier.testTag("studio-export")) { Text("Exporter la séance") }
+        if (!state.exportError.isNullOrBlank()) Text(state.exportError!!, color = ActionRed, modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite })
         Divider(Modifier.padding(top = 4.dp), color = Concrete)
         if (session.messages.isEmpty()) {
             Column(Modifier.weight(1f).fillMaxWidth(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {

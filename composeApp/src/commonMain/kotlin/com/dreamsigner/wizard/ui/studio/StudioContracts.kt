@@ -38,7 +38,7 @@ data class StudioSession(val id: String, val goal: String, val messages: List<St
 data class StudioState(
     val sessions: List<StudioSession> = emptyList(), val selectedId: String? = null,
     val baseUrl: String = "", val model: String = "", val reasoningEffort: ReasoningEffort = ReasoningEffort.AUTOMATIC, val busy: Boolean = false,
-    val error: String? = null, val storageError: String? = null, val available: Boolean = true,
+    val error: String? = null, val exportError: String? = null, val storageError: String? = null, val available: Boolean = true,
     val connectionError: String? = null, val hasApiKey: Boolean = false,
     val providerMode: String = "api", val apiModel: String = "", val chatGptModel: String = "", val chatGptConnected: Boolean = false,
     val chatGptEmail: String? = null, val chatGptModels: List<String> = emptyList(),
@@ -71,6 +71,7 @@ interface StudioController {
     fun surrenderPracticeProblem(messageIndex: Int): Boolean = false
     fun requestDiagnosisConclusion(): Boolean = false
     fun requestGraphExtraction(): Boolean = false
+    fun exportSession(): Boolean = false
     fun importNotes(): Boolean = false
     fun acceptGraphProposal(): Boolean = false
     fun discardGraphProposal(): Boolean = false

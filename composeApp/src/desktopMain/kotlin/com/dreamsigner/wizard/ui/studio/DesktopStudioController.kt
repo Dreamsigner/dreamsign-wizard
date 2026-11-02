@@ -42,6 +42,8 @@ internal class DesktopStudioController(
     private val file: Path = defaultStudioFile(),
     private val tutor: StudioTutor = OpenAiCompatibleTutor(),
     private val chooseNotes: () -> Path? = ::chooseNotesFile,
+    private val chooseExport: (String) -> Path? = ::chooseStudioExportFile,
+    private val writeExport: (Path, String) -> Unit = ::writeStudioExport,
 ) : StudioController {
     private val json = Json { encodeDefaults = true; ignoreUnknownKeys = false }
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
@@ -71,6 +73,22 @@ internal class DesktopStudioController(
             } catch (_: Exception) {
                 transient { copy(chatGptError = "Impossible de charger les modèles ChatGPT. Vérifie la connexion puis réessaie.") }
             }
+        }
+    }
+
+    override fun exportSession(): Boolean {
+        val current = state.value
+        val session = current.sessions.firstOrNull { it.id == current.selectedId } ?: return false
+        return try {
+            val path = chooseExport(studioExportFilename(session.goal)) ?: return false
+            val secret = synchronized(apiKey) { apiKey.toString() }
+            val markdown = renderStudioMarkdown(session).let { if (secret.isNotBlank()) it.replace(secret, "[clé masquée]") else it }
+            writeExport(path, markdown)
+            transient { copy(exportError = null) }
+            true
+        } catch (_: Exception) {
+            transient { copy(exportError = "Export impossible. Vérifie le dossier et choisis un nom de fichier qui n’existe pas déjà.") }
+            false
         }
     }
 
