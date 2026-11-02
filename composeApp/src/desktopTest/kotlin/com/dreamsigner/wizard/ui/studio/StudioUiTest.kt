@@ -14,6 +14,7 @@ import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.*
 import com.dreamsigner.wizard.LearningAppTheme
+import com.dreamsigner.wizard.media.PlatformAudioRecorder
 import com.dreamsigner.wizard.model.LearningUnit
 import com.dreamsigner.wizard.model.Lesson
 import com.dreamsigner.wizard.model.Subject
@@ -25,8 +26,66 @@ import java.nio.file.Files
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class StudioUiTest {
+    @Test
+    fun dictationInsertsEditableDraftWithoutSendingAtBothSizes() {
+        listOf(360 to 480, 1000 to 800).forEach { (width, height) ->
+            runDesktopComposeUiTest(width = width, height = height) {
+                val controller = MemoryStudioController(initialSession = true)
+                controller.state.value = controller.state.value.copy(dictationAvailable = true)
+                val recorder = FakeDictationRecorder()
+                val factory: () -> PlatformAudioRecorder = { recorder }
+                setContent { LearningAppTheme { CompositionLocalProvider(LocalStudioController provides controller, LocalStudioRecorderFactory provides factory) { StudioScreen() } } }
+                if (width == 360) {
+                    val draftBounds = onNodeWithTag("studio-draft").fetchSemanticsNode().boundsInRoot
+                    val micBounds = onNodeWithTag("studio-dictation-mic").fetchSemanticsNode().boundsInRoot
+                    val sendBounds = onNodeWithTag("studio-send").fetchSemanticsNode().boundsInRoot
+                    assertTrue(draftBounds.width >= 200f, "Le brouillon doit rester lisible sur écran étroit")
+                    assertTrue(micBounds.top >= draftBounds.bottom && sendBounds.top >= draftBounds.bottom,
+                        "Les commandes doivent se trouver sous le brouillon")
+                }
+                onNodeWithTag("studio-draft").performTextInput("Question :")
+                onNodeWithTag("studio-dictation-mic").assertIsDisplayed().performClick()
+                runOnIdle { assertEquals(1, recorder.starts) }
+                onNodeWithTag("studio-dictation-mic").performClick()
+                runOnIdle { assertEquals(1, recorder.stops); assertEquals(1, controller.dictationCalls); assertEquals(null, controller.lastMessage) }
+                onNodeWithTag("studio-draft").assertTextContains("Question : texte dicté")
+                val snapshot = File("build/reports/ui-snapshots/studio-dictation-$width.png")
+                check(snapshot.parentFile.isDirectory || snapshot.parentFile.mkdirs())
+                Image.makeFromBitmap(onAllNodes(isRoot()).onLast().captureToImage().asSkiaBitmap()).use { image ->
+                    image.encodeToData()!!.use { snapshot.writeBytes(it.bytes) }
+                }
+                onNodeWithTag("studio-draft").performTextInput(" modifié")
+                runOnIdle { assertEquals(null, controller.lastMessage) }
+            }
+        }
+    }
+
+    @Test
+    fun dictationSettingsSaveTheLauncherPath() = runDesktopComposeUiTest(width = 360, height = 800) {
+        val controller = MemoryStudioController()
+        controller.state.value = controller.state.value.copy(dictationAvailable = true)
+        setContent { LearningAppTheme { CompositionLocalProvider(LocalStudioController provides controller) { StudioConnectionSettings() } } }
+        onNodeWithTag("studio-dictation-settings").performClick()
+        onNodeWithTag("studio-dictation-path").performTextClearance()
+        onNodeWithTag("studio-dictation-path").performTextInput("D:\\outil\\lanceur.ps1")
+        onNodeWithTag("studio-dictation-save").performClick()
+        runOnIdle { assertEquals("D:\\outil\\lanceur.ps1", controller.state.value.dictationScriptPath) }
+        onNodeWithTag("studio-dictation-path").assertDoesNotExist()
+    }
+
+    private class FakeDictationRecorder : PlatformAudioRecorder {
+        var starts = 0
+        var stops = 0
+        private var complete: ((ByteArray) -> Unit)? = null
+        override fun start(maxDurationSeconds: Int, onStarted: () -> Unit, onComplete: (ByteArray) -> Unit, onError: (String) -> Unit) {
+            starts++; complete = onComplete; onStarted()
+        }
+        override fun stop() { stops++; complete?.invoke(byteArrayOf(1)) }
+        override fun cancel() { complete = null }
+    }
     @Test
     fun sessionModelSearchUsesActiveCatalogAndKeepsDefault() = runDesktopComposeUiTest(width = 1000, height = 800) {
         val controller = MemoryStudioController(initialSession = true)
@@ -658,6 +717,22 @@ class StudioUiTest {
                 model = if (initialSession) "local-model" else "",
             ),
         )
+        override fun configureDictation(path: String): Boolean {
+            state.value = state.value.copy(dictationScriptPath = path)
+            return true
+        }
+        var dictationCalls = 0
+        override fun transcribeDictation(wav: ByteArray): Boolean {
+            dictationCalls++
+            state.value = state.value.copy(dictationResult = "texte dicté", dictationSessionId = state.value.selectedId)
+            return true
+        }
+        override fun consumeDictationResult(): String? {
+            val result = state.value.dictationResult
+            state.value = state.value.copy(dictationResult = null)
+            return result
+        }
+        override fun cancelDictation() { state.value = state.value.copy(dictationResult = null, dictationSessionId = null) }
         var webQuery: String? = null
         override fun configureSearchKey(key: String) { state.value = state.value.copy(hasSearchKey = key.isNotBlank()) }
         override fun searchWeb(query: String) {

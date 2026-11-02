@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -32,6 +33,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dreamsigner.wizard.ui.*
+import com.dreamsigner.wizard.media.PlatformAudioRecorder
+import com.dreamsigner.wizard.media.createAudioRecorder
+import com.dreamsigner.wizard.media.bindAudioRecorderLifecycle
+
+internal val LocalStudioRecorderFactory = staticCompositionLocalOf<() -> PlatformAudioRecorder> { { createAudioRecorder() } }
 
 @Composable
 fun StudioScreen(subjects: List<com.dreamsigner.wizard.model.Subject> = emptyList()) {
@@ -157,6 +163,14 @@ fun StudioConnectionSettings() {
         OutlinedButton(onClick = { showSearchSettings = true }, enabled = state.available,
             modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("studio-search-settings"), shape = LearningShape) {
             Text("Recherche web (Brave)")
+        }
+        if (state.dictationAvailable) {
+            var showDictationSettings by remember { mutableStateOf(false) }
+            if (showDictationSettings) StudioDictationSettingsDialog(state, controller) { showDictationSettings = false }
+            OutlinedButton(onClick = { showDictationSettings = true },
+                modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("studio-dictation-settings"), shape = LearningShape) {
+                Text("Dictée locale Windows")
+            }
         }
         val session = state.sessions.firstOrNull { it.id == state.selectedId }
         if (session != null) {
@@ -316,6 +330,25 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
     var showWebSearch by remember(session.id) { mutableStateOf(false) }
     if (showWebSearch) StudioWebSearchDialog(state, session, controller) { showWebSearch = false }
     var draft by remember(session.id) { mutableStateOf("") }
+    val recorderFactory = LocalStudioRecorderFactory.current
+    val recorder = remember(session.id, recorderFactory) { recorderFactory() }
+    var recording by remember(session.id) { mutableStateOf(false) }
+    var recordingError by remember(session.id) { mutableStateOf<String?>(null) }
+    var captureGeneration by remember(session.id) { mutableIntStateOf(0) }
+    DisposableEffect(session.id, recorder, controller) {
+        val unbind = bindAudioRecorderLifecycle(recorder) {
+            captureGeneration++; recording = false; controller.cancelDictation()
+        }
+        onDispose { captureGeneration++; recorder.cancel(); controller.cancelDictation(); unbind() }
+    }
+    LaunchedEffect(state.dictationResult, state.dictationSessionId, session.id) {
+        if (state.dictationResult != null && state.dictationSessionId == session.id) {
+            controller.consumeDictationResult()?.takeIf { it.isNotBlank() }?.let { text ->
+                draft = if (draft.isBlank()) text else draft.trimEnd() + " " + text
+            }
+        }
+    }
+
     val quizDrafts = remember(session.id) { mutableStateMapOf<Int, StudioQuizDraft>() }
     val problemDrafts = remember(session.id) { mutableStateMapOf<Int, StudioProblemDraft>() }
     var showClarification by remember(session.id) { mutableStateOf(false) }
@@ -335,6 +368,7 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
     }
     BoxWithConstraints(Modifier.fillMaxSize()) {
     val dockMaxHeight = maxHeight * 0.55f
+    val compactComposer = maxWidth < 600.dp
     Column(Modifier.fillMaxSize().padding(horizontal = 20.dp, vertical = 8.dp)) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Text(session.goal, Modifier.weight(1f).testTag("studio-current-goal"), style = MaterialTheme.typography.h6, color = Ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
@@ -483,13 +517,43 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
 
             }
         }
-        if (!hasOpenExercise || showClarification) Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        if (!state.dictationError.isNullOrBlank() || !recordingError.isNullOrBlank()) {
+            Text(recordingError ?: state.dictationError.orEmpty(), color = ActionRed, fontSize = 13.sp,
+                modifier = Modifier.testTag("studio-dictation-error").semantics { liveRegion = LiveRegionMode.Polite })
+        }
+        if (state.dictationBusy) Row(verticalAlignment = Alignment.CenterVertically) {
+            Text("Transcription locale…", color = Graphite, fontSize = 13.sp)
+            TextButton(onClick = { captureGeneration++; recorder.cancel(); recording = false; controller.cancelDictation() },
+                modifier = Modifier.testTag("studio-dictation-cancel")) { Text("Annuler") }
+        }
+        if (!hasOpenExercise || showClarification) {
+            val composerField: @Composable (Modifier) -> Unit = { fieldModifier ->
             OutlinedTextField(
                 value = draft, onValueChange = { draft = it }, enabled = !state.busy && state.available,
-                modifier = Modifier.weight(1f).testTag("studio-draft"), label = { Text("Ton raisonnement ou ta question") },
+                modifier = fieldModifier.testTag("studio-draft"), label = { Text("Ton raisonnement ou ta question") },
                 placeholder = { Text("Écris à ton tuteur…") }, minLines = 1, maxLines = 4,
                 shape = LearningShape,
             )
+            }
+            val composerActions: @Composable () -> Unit = {
+            if (state.dictationAvailable) IconButton(
+                onClick = {
+                    if (recording) {
+                        recording = false
+                        recorder.stop()
+                    } else {
+                        recordingError = null
+                        val generation = ++captureGeneration
+                        recording = true
+                        recorder.start(270, onStarted = {}, onComplete = { wav ->
+                            if (generation == captureGeneration) { recording = false; controller.transcribeDictation(wav) }
+                        }, onError = { error ->
+                            if (generation == captureGeneration) { recording = false; recordingError = error }
+                        })
+                    }
+                }, enabled = !state.busy && !state.dictationBusy && state.available,
+                modifier = Modifier.testTag("studio-dictation-mic"),
+            ) { Text(if (recording) "■" else "🎤", modifier = Modifier.semantics { contentDescription = if (recording) "Arrêter la dictée" else "Démarrer la dictée" }) }
             Button(
                 onClick = { if (controller.send(draft)) draft = "" },
                 enabled = draft.isNotBlank() && !state.busy && state.available,
@@ -497,6 +561,19 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
                 colors = ButtonDefaults.buttonColors(backgroundColor = ActionRed, contentColor = White),
             ) { Text(if (state.busy) "Réponse…" else "Envoyer") }
             if (state.busy) TextButton(onClick = controller::cancel, modifier = Modifier.heightIn(min = 48.dp)) { Text("Annuler") }
+            }
+            if (compactComposer) {
+                Column(Modifier.fillMaxWidth()) {
+                    composerField(Modifier.fillMaxWidth())
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
+                        verticalAlignment = Alignment.CenterVertically) { composerActions() }
+                }
+            } else {
+                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    composerField(Modifier.weight(1f))
+                    composerActions()
+                }
+            }
         }
         else if (state.busy) TextButton(onClick = controller::cancel, modifier = Modifier.heightIn(min = 48.dp)) { Text("Annuler") }
     }
@@ -806,6 +883,27 @@ private fun StudioWebSourceItem(source: StudioWebSource, action: String, enabled
         Text(source.description, color = Graphite, fontSize = 13.sp, maxLines = 4, overflow = TextOverflow.Ellipsis)
         TextButton(onClick = onClick, enabled = enabled, modifier = Modifier.testTag(tag)) { Text(action) }
     }
+}
+
+@Composable
+private fun StudioDictationSettingsDialog(state: StudioState, controller: StudioController, onDismiss: () -> Unit) {
+    var path by remember(state.dictationScriptPath) { mutableStateOf(state.dictationScriptPath) }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Dictée locale Windows") },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("Utilise le lanceur PowerShell et ses dépendances locales existantes. L’outil copie automatiquement toute transcription non vide dans le presse-papiers.", color = Graphite, fontSize = 13.sp)
+                OutlinedTextField(path, { path = it }, label = { Text("Chemin du lanceur PowerShell") }, singleLine = true,
+                    modifier = Modifier.fillMaxWidth().testTag("studio-dictation-path"))
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = { if (controller.configureDictation(path.trim())) onDismiss() },
+                enabled = path.isNotBlank() && !state.dictationBusy, modifier = Modifier.testTag("studio-dictation-save")) { Text("Enregistrer") }
+        },
+        dismissButton = { TextButton(onClick = onDismiss) { Text("Fermer") } },
+    )
 }
 
 @Composable

@@ -75,8 +75,12 @@ fun validStudioWebSources(sources: List<StudioWebSource>): Boolean =
 enum class StudioSessionKind { TEACHING, PRACTICE }
 
 data class StudioSession(val id: String, val goal: String, val messages: List<StudioMessage>, val plan: StudioPlan? = null, val reasoningEffort: ReasoningEffort? = null, val modelChoice: StudioModelChoice? = null, val planProposal: StudioPlanProposal? = null, val assessment: StudioDiagnosticAssessment? = null, val stepEvidence: List<StudioStepEvidence> = emptyList(), val kind: StudioSessionKind = StudioSessionKind.TEACHING, val lessonSources: List<StudioLessonSource> = emptyList(), val webSources: List<StudioWebSource> = emptyList())
+const val DEFAULT_DICTATION_SCRIPT = "D:\\Coding\\Dictee-locale\\Start-LocalDictation.ps1"
+
 data class StudioState(
     val sessions: List<StudioSession> = emptyList(), val selectedId: String? = null,
+    val dictationScriptPath: String = DEFAULT_DICTATION_SCRIPT, val dictationAvailable: Boolean = false, val dictationBusy: Boolean = false,
+    val dictationError: String? = null, val dictationResult: String? = null, val dictationSessionId: String? = null,
     val baseUrl: String = "", val model: String = "", val reasoningEffort: ReasoningEffort = ReasoningEffort.AUTOMATIC, val busy: Boolean = false,
     val error: String? = null, val exportError: String? = null, val storageError: String? = null, val available: Boolean = true,
     val connectionError: String? = null, val hasApiKey: Boolean = false,
@@ -92,6 +96,10 @@ data class StudioState(
 
 interface StudioController {
     val state: StateFlow<StudioState>
+    fun configureDictation(path: String): Boolean = false
+    fun transcribeDictation(wav: ByteArray): Boolean = false
+    fun consumeDictationResult(): String? = null
+    fun cancelDictation() = Unit
     fun select(id: String)
     fun create(goal: String): Boolean
     fun create(goal: String, kind: StudioSessionKind): Boolean = create(goal)

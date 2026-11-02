@@ -28,7 +28,7 @@ internal data class TutorRequest(
 )
 internal fun interface StudioTutor { suspend fun respond(request: TutorRequest): String }
 
-@Serializable private data class StudioDisk(val baseUrl: String = "", val model: String = "", val sessions: List<StudioSessionDisk> = emptyList(), val selectedId: String? = null, val providerMode: String = "api", val reasoningEffort: String = "AUTOMATIC", val apiModel: String? = null, val chatGptModel: String? = null, val graphProposal: KnowledgeGraphProposal? = null, val modelSlots: Map<String, StudioModelSettingDisk> = emptyMap(), val modelOverrides: Map<String, StudioModelSettingDisk> = emptyMap())
+@Serializable private data class StudioDisk(val baseUrl: String = "", val model: String = "", val sessions: List<StudioSessionDisk> = emptyList(), val selectedId: String? = null, val providerMode: String = "api", val reasoningEffort: String = "AUTOMATIC", val apiModel: String? = null, val chatGptModel: String? = null, val graphProposal: KnowledgeGraphProposal? = null, val modelSlots: Map<String, StudioModelSettingDisk> = emptyMap(), val modelOverrides: Map<String, StudioModelSettingDisk> = emptyMap(), val dictationScriptPath: String = DEFAULT_DICTATION_SCRIPT)
 @Serializable private data class StudioModelSettingDisk(val model: StudioModelChoiceDisk? = null, val reasoningEffort: String? = null)
 @Serializable private data class StudioSessionDisk(val id: String, val goal: String, val messages: List<StudioMessageDisk>, val plan: StudioPlanDisk? = null, val reasoningEffort: String? = null, val modelChoice: StudioModelChoiceDisk? = null, val planProposal: StudioPlanProposalDisk? = null, val assessment: StudioDiagnosticAssessment? = null, val stepEvidence: List<StudioStepEvidence> = emptyList(), val kind: String = "TEACHING", val lessonSources: List<StudioLessonSource> = emptyList(), val webSources: List<StudioWebSource> = emptyList())
 @Serializable private data class StudioModelChoiceDisk(val providerMode: String, val baseUrl: String, val model: String)
@@ -45,12 +45,15 @@ internal class DesktopStudioController(
     private val chooseExport: (String) -> Path? = ::chooseStudioExportFile,
     private val writeExport: (Path, String) -> Unit = ::writeStudioExport,
     private val webSearch: StudioWebSearch = BraveWebSearch(),
+    private val dictation: StudioDictation = LocalStudioDictation(),
 ) : StudioController {
     private val json = Json { encodeDefaults = true; ignoreUnknownKeys = false }
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val lock = Any()
     private val apiKey = StringBuilder()
     private val searchKey = StringBuilder()
+    private var dictationJob: Job? = null
+    private var dictationVersion = 0L
     private var searchJob: Job? = null
     private var requestJob: Job? = null
     private var requestVersion = 0L
@@ -61,7 +64,7 @@ internal class DesktopStudioController(
     private val graphStore = DesktopKnowledgeGraphStore(file.resolveSibling("knowledge-graph.json"))
     override val state = MutableStateFlow(load().let { saved ->
         val graph = runCatching { graphStore.load() }
-        saved.copy(chatGptConnected = chatGpt.connected, chatGptEmail = chatGpt.accountEmail, chatGptError = chatGpt.storageError,
+        saved.copy(dictationAvailable = true, chatGptConnected = chatGpt.connected, chatGptEmail = chatGpt.accountEmail, chatGptError = chatGpt.storageError,
             knowledgeGraph = graph.getOrDefault(KnowledgeGraph()), graphError = if (graph.isFailure) "Le graphe de connaissances est illisible. Son fichier est conservé ; corrige-le avant d'enregistrer des changements." else null)
     })
 
@@ -159,8 +162,44 @@ internal class DesktopStudioController(
         return mutate { copy(sessions = sessions.map { if (it.id == id) it.copy(lessonSources = change(it.lessonSources)) else it }, error = null) }
     }
 
+    override fun configureDictation(path: String): Boolean {
+        val clean = path.trim()
+        if (clean.isBlank() || clean.length > 4096 || state.value.dictationBusy) return false
+        return mutate { copy(dictationScriptPath = clean, dictationError = null) }
+    }
+
+    override fun transcribeDictation(wav: ByteArray): Boolean {
+        val current = state.value
+        val id = current.selectedId ?: return false
+        if (current.dictationBusy || wav.isEmpty() || wav.size > 32 * 1024 * 1024) return false
+        val version = synchronized(lock) { ++dictationVersion }
+        transient { copy(dictationBusy = true, dictationError = null, dictationResult = null, dictationSessionId = id) }
+        dictationJob = scope.launch {
+            try {
+                val result = dictation.transcribe(current.dictationScriptPath, wav)
+                ensureActive()
+                transient { if (dictationVersion == version && selectedId == id) copy(dictationBusy = false, dictationResult = result.takeIf { it.isNotBlank() }, dictationError = if (result.isBlank()) "Aucune parole détectée." else null) else this }
+            } catch (e: CancellationException) { throw e }
+            catch (_: Exception) { transient { if (dictationVersion == version && selectedId == id) copy(dictationBusy = false, dictationError = "Transcription locale impossible. Vérifie le chemin du lanceur et réessaie.") else this } }
+        }
+        return true
+    }
+
+    override fun consumeDictationResult(): String? = synchronized(lock) {
+        val result = state.value.dictationResult
+        state.value = state.value.copy(dictationResult = null)
+        result
+    }
+
+    override fun cancelDictation() {
+        synchronized(lock) { ++dictationVersion }
+        dictationJob?.cancel()
+        transient { copy(dictationBusy = false, dictationError = null, dictationResult = null, dictationSessionId = null) }
+    }
+
     override fun select(id: String) {
         if (state.value.busy) return
+        cancelDictation()
         searchJob?.cancel()
         mutate { copy(selectedId = id, error = null, searchBusy = false, searchError = null, searchResults = emptyList()) }
     }
@@ -175,6 +214,7 @@ internal class DesktopStudioController(
         val routingEnabled = current.modelSlots.isNotEmpty() || current.modelOverrides.isNotEmpty()
         val choice = if (routingEnabled) null else current.model.takeIf { it.isNotBlank() }?.let { StudioModelChoice(current.providerMode, if (current.providerMode == "api") current.baseUrl else "", it) }
         val session = StudioSession(UUID.randomUUID().toString(), goal.trim(), emptyList(), reasoningEffort = if (routingEnabled) null else current.reasoningEffort, modelChoice = choice, kind = kind)
+        cancelDictation()
         searchJob?.cancel()
         val saved = mutate { copy(sessions = listOf(session) + sessions, selectedId = session.id, error = null,
             searchBusy = false, searchError = null, searchResults = emptyList()) }
@@ -874,7 +914,7 @@ internal class DesktopStudioController(
 
     private fun write(s: StudioState) {
         Files.createDirectories(file.parent)
-        val disk = StudioDisk(s.baseUrl, s.model, s.sessions.map { it.toDisk() }, s.selectedId, s.providerMode, s.reasoningEffort.name, s.apiModel, s.chatGptModel, s.graphProposal, s.modelSlots.mapKeys { it.key.name }.mapValues { it.value.toDisk() }, s.modelOverrides.mapKeys { it.key.name }.mapValues { it.value.toDisk() })
+        val disk = StudioDisk(s.baseUrl, s.model, s.sessions.map { it.toDisk() }, s.selectedId, s.providerMode, s.reasoningEffort.name, s.apiModel, s.chatGptModel, s.graphProposal, s.modelSlots.mapKeys { it.key.name }.mapValues { it.value.toDisk() }, s.modelOverrides.mapKeys { it.key.name }.mapValues { it.value.toDisk() }, s.dictationScriptPath)
         val temp = Files.createTempFile(file.parent, "studio-", ".tmp")
         try {
             Files.writeString(temp, json.encodeToString(disk))
@@ -883,8 +923,8 @@ internal class DesktopStudioController(
         } finally { Files.deleteIfExists(temp) }
     }
 
-    override fun close() { searchJob?.cancel(); synchronized(searchKey) { searchKey.setLength(0) }; cancel(); synchronized(apiKey) { apiKey.setLength(0) }; scope.cancel() }
-    private fun fromDisk(d: StudioDisk) = StudioState(baseUrl = d.baseUrl, model = d.model, sessions = d.sessions.map { it.fromDisk() }, selectedId = d.selectedId, providerMode = d.providerMode, reasoningEffort = ReasoningEffort.entries.firstOrNull { it.name == d.reasoningEffort } ?: ReasoningEffort.AUTOMATIC, apiModel = d.apiModel ?: if (d.providerMode == "api") d.model else "", chatGptModel = d.chatGptModel ?: if (d.providerMode == "chatgpt") d.model else "", graphProposal = d.graphProposal?.also { it.base.validate(); it.graph.validate() }, modelSlots = d.modelSlots.mapNotNull { (key, value) -> StudioModelSlot.entries.firstOrNull { it.name == key }?.let { it to value.fromDisk() } }.toMap(), modelOverrides = d.modelOverrides.mapNotNull { (key, value) -> StudioModelRole.entries.firstOrNull { it.name == key }?.let { it to value.fromDisk() } }.toMap())
+    override fun close() { cancelDictation(); searchJob?.cancel(); synchronized(searchKey) { searchKey.setLength(0) }; cancel(); synchronized(apiKey) { apiKey.setLength(0) }; scope.cancel() }
+    private fun fromDisk(d: StudioDisk) = StudioState(dictationScriptPath = d.dictationScriptPath, baseUrl = d.baseUrl, model = d.model, sessions = d.sessions.map { it.fromDisk() }, selectedId = d.selectedId, providerMode = d.providerMode, reasoningEffort = ReasoningEffort.entries.firstOrNull { it.name == d.reasoningEffort } ?: ReasoningEffort.AUTOMATIC, apiModel = d.apiModel ?: if (d.providerMode == "api") d.model else "", chatGptModel = d.chatGptModel ?: if (d.providerMode == "chatgpt") d.model else "", graphProposal = d.graphProposal?.also { it.base.validate(); it.graph.validate() }, modelSlots = d.modelSlots.mapNotNull { (key, value) -> StudioModelSlot.entries.firstOrNull { it.name == key }?.let { it to value.fromDisk() } }.toMap(), modelOverrides = d.modelOverrides.mapNotNull { (key, value) -> StudioModelRole.entries.firstOrNull { it.name == key }?.let { it to value.fromDisk() } }.toMap())
     private fun StudioModelSetting.toDisk() = StudioModelSettingDisk(model?.let { StudioModelChoiceDisk(it.providerMode, it.baseUrl, it.model) }, reasoningEffort?.name)
     private fun StudioModelSettingDisk.fromDisk() = StudioModelSetting(model?.let { StudioModelChoice(it.providerMode, it.baseUrl, it.model) }, reasoningEffort?.let { name -> ReasoningEffort.entries.firstOrNull { it.name == name } })
     private fun StudioPlan.toDisk() = StudioPlanDisk(steps.map { step -> StudioPlanStepDisk(step.title, step.prerequisites, step.evidence, step.sources) }, decision)
