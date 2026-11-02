@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -84,7 +85,7 @@ fun StudioScreen(subjects: List<com.dreamsigner.wizard.model.Subject> = emptyLis
                     )
                     StudioWorkspace(
                         state = state, session = session, controller = controller,
-                        modifier = Modifier.weight(1f).fillMaxHeight(),
+                        modifier = Modifier.weight(1f).fillMaxHeight(), showSessionsToggle = true,
                         onSessions = { paneOpen = !paneOpen }, onSources = { showSources = true }, diagnosisDraft = diagnosisDraft, onDiagnosisConsumed = { diagnosisDraft = false },
                     )
                 }
@@ -267,6 +268,7 @@ private fun StudioWorkspace(
     controller: StudioController,
     modifier: Modifier,
     compactGoal: Boolean = false,
+    showSessionsToggle: Boolean = false,
     onSessions: () -> Unit, onSources: () -> Unit, diagnosisDraft: Boolean, onDiagnosisConsumed: () -> Unit,
 ) {
     Surface(modifier.testTag("studio-workspace"), shape = LearningShape, color = White, elevation = 1.dp) {
@@ -292,17 +294,18 @@ private fun StudioWorkspace(
                 }
             }
         } else {
-            Conversation(state, session, controller, onSessions, onSources, diagnosisDraft, onDiagnosisConsumed)
+            Conversation(state, session, controller, onSessions, onSources, diagnosisDraft, onDiagnosisConsumed, showSessionsToggle)
         }
     }
 }
 
 @Composable
-private fun Conversation(state: StudioState, session: StudioSession, controller: StudioController, onSessions: () -> Unit, onSources: () -> Unit, diagnosisDraft: Boolean, onDiagnosisConsumed: () -> Unit) {
+private fun Conversation(state: StudioState, session: StudioSession, controller: StudioController, onSessions: () -> Unit, onSources: () -> Unit, diagnosisDraft: Boolean, onDiagnosisConsumed: () -> Unit, showSessionsToggle: Boolean) {
     var draft by remember(session.id) { mutableStateOf("") }
     val quizDrafts = remember(session.id) { mutableStateMapOf<Int, StudioQuizDraft>() }
     val problemDrafts = remember(session.id) { mutableStateMapOf<Int, StudioProblemDraft>() }
     var showClarification by remember(session.id) { mutableStateOf(false) }
+    var actionsOpen by remember(session.id) { mutableStateOf(false) }
     val activeQuizIndex = session.messages.indexOfLast { it.quiz != null && it.quizAnswer == null }
     val hasOpenQuiz = activeQuizIndex >= 0
     val activeProblemIndex = session.messages.indexOfLast { it.problem != null && it.problem.result == null }
@@ -320,11 +323,26 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
     val dockMaxHeight = maxHeight * 0.55f
     Column(Modifier.fillMaxSize().padding(horizontal = 20.dp, vertical = 8.dp)) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            TextButton(onClick = onSessions, modifier = Modifier.testTag("studio-sessions-toggle")) { Text("Séances") }
             Text(session.goal, Modifier.weight(1f).testTag("studio-current-goal"), style = MaterialTheme.typography.h6, color = Ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            if (showSessionsToggle) {
+                IconButton(onClick = onSessions, modifier = Modifier.testTag("studio-sessions-toggle")) {
+                    Icon(Icons.Default.List, contentDescription = "Séances")
+                }
+            }
+            Box {
+                IconButton(onClick = { actionsOpen = true }, modifier = Modifier.testTag("studio-actions")) {
+                    Icon(Icons.Default.MoreVert, contentDescription = "Actions de la séance")
+                }
+                DropdownMenu(expanded = actionsOpen, onDismissRequest = { actionsOpen = false }) {
+                    DropdownMenuItem(onClick = { actionsOpen = false; onSources() }, enabled = state.available && !state.busy, modifier = Modifier.testTag("studio-sources")) {
+                        Text("Sources de cours (${session.lessonSources.size})")
+                    }
+                    DropdownMenuItem(onClick = { actionsOpen = false; controller.exportSession() }, enabled = state.available && !state.busy, modifier = Modifier.testTag("studio-export")) {
+                        Text("Exporter la séance")
+                    }
+                }
+            }
         }
-        TextButton(onClick = onSources, enabled = state.available && !state.busy, modifier = Modifier.testTag("studio-sources")) { Text("Sources de cours (${session.lessonSources.size})") }
-        TextButton(onClick = { controller.exportSession() }, enabled = state.available && !state.busy, modifier = Modifier.testTag("studio-export")) { Text("Exporter la séance") }
         if (!state.exportError.isNullOrBlank()) Text(state.exportError!!, color = ActionRed, modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite })
         Divider(Modifier.padding(top = 4.dp), color = Concrete)
         if (session.messages.isEmpty()) {

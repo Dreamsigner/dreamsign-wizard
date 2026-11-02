@@ -28,6 +28,29 @@ import kotlin.test.assertFalse
 
 class StudioUiTest {
     @Test
+    fun conversationHeaderKeepsSessionAndActionsAvailableAtBothSizes() {
+        listOf(360 to 480, 1000 to 800).forEach { (width, height) ->
+            runDesktopComposeUiTest(width = width, height = height) {
+                val controller = MemoryStudioController(initialSession = true)
+                setContent { LearningAppTheme { CompositionLocalProvider(LocalStudioController provides controller) { StudioScreen() } } }
+                onNodeWithTag("studio-current-goal").assertIsDisplayed()
+                if (width == 360) {
+                    onNodeWithTag("studio-rail-sessions").assertIsDisplayed()
+                    onNodeWithTag("studio-sessions-toggle").assertDoesNotExist()
+                } else onNodeWithTag("studio-sessions-toggle").assertIsDisplayed()
+                val file = File("build/reports/ui-snapshots/studio-conversation-$width.png")
+                check(file.parentFile.isDirectory || file.parentFile.mkdirs())
+                Image.makeFromBitmap(onAllNodes(isRoot()).onLast().captureToImage().asSkiaBitmap()).use { image ->
+                    image.encodeToData()!!.use { file.writeBytes(it.bytes) }
+                }
+                onNodeWithTag("studio-actions").performClick()
+                onNodeWithTag("studio-sources").assertIsDisplayed()
+                onNodeWithTag("studio-export").assertIsDisplayed()
+            }
+        }
+    }
+
+    @Test
     fun routingEditorSearchesActiveCatalogAndKeepsManualEntry() = runDesktopComposeUiTest(width = 1000, height = 800) {
         var saved = ""
         val state = MutableStateFlow(StudioState(providerMode = "api", baseUrl = "https://example.org/v1",
@@ -103,6 +126,8 @@ class StudioUiTest {
                 try {
                     controller.create("Moitiés")
                     setContent { LearningAppTheme { CompositionLocalProvider(LocalStudioController provides controller) { StudioScreen(listOf(subject)) } } }
+                    onNodeWithTag("studio-actions").performClick()
+                    onNodeWithTag("studio-export").assertIsDisplayed()
                     onNodeWithTag("studio-sources").performClick()
                     onNodeWithTag("studio-source-search").performTextInput("Leçon test")
                     onNodeWithTag("studio-source-result").performScrollTo().performClick()
@@ -130,7 +155,7 @@ class StudioUiTest {
             plan = StudioPlan(listOf(StudioPlanStep("Fractions", emptyList(), "Expliquer les moitiés", listOf(0))), "accepted"),
         )))
         setContent { LearningAppTheme { CompositionLocalProvider(LocalStudioController provides controller) { StudioScreen() } } }
-        onNodeWithTag("studio-sessions-toggle").performClick()
+        onNodeWithTag("studio-rail-sessions").performClick()
         onNodeWithTag("studio-plan").performClick()
         onNodeWithText("Examiner les réponses (1)").performScrollTo().performClick()
         onNodeWithText("Valider cette preuve pour l’étape 1").performScrollTo().assertIsDisplayed()
@@ -163,7 +188,7 @@ class StudioUiTest {
     fun reviewedDiagnosticIsVisibleInPlanDialog() = runDesktopComposeUiTest(width = 360, height = 480) {
         val controller = MemoryStudioController(initialSession = true).apply { installAssessment() }
         setContent { LearningAppTheme { CompositionLocalProvider(LocalStudioController provides controller) { StudioScreen() } } }
-        onNodeWithTag("studio-sessions-toggle").performClick()
+        onNodeWithTag("studio-rail-sessions").performClick()
         onNodeWithTag("studio-plan").performClick()
         onNodeWithText("Diagnostic de la séance").assertIsDisplayed()
         onNodeWithText("Les moitiés sont comprises.").assertIsDisplayed()
@@ -183,7 +208,7 @@ class StudioUiTest {
                 CompositionLocalProvider(LocalStudioController provides controller) { StudioScreen() }
             }
         }
-        onNodeWithTag("studio-sessions-toggle").performClick()
+        onNodeWithTag("studio-rail-sessions").performClick()
         onNodeWithTag("studio-plan").performClick()
         onNodeWithText("Mon plan pédagogique").assertIsDisplayed()
         onNodeWithText("Préparer une demande de diagnostic").performScrollTo()
@@ -406,7 +431,7 @@ class StudioUiTest {
                 val controller = MemoryStudioController(initialSession = true)
                 controller.create("Exercices de calcul", StudioSessionKind.PRACTICE)
                 setContent { LearningAppTheme { CompositionLocalProvider(LocalStudioController provides controller) { StudioScreen() } } }
-                if (width == 360) onNodeWithTag("studio-sessions-toggle").performClick()
+                if (width == 360) onNodeWithTag("studio-rail-sessions").performClick()
                 onNodeWithTag("studio-session-search").performTextInput("SÉRIES")
                 onNodeWithText("Comprendre les séries").assertIsDisplayed()
                 onNodeWithTag("studio-session-session-1").assertDoesNotExist()
