@@ -8,14 +8,47 @@ import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.*
 import com.dreamsigner.wizard.LearningAppTheme
+import com.dreamsigner.wizard.model.LearningUnit
+import com.dreamsigner.wizard.model.Lesson
+import com.dreamsigner.wizard.model.Subject
+import com.dreamsigner.wizard.model.SubjectCategory
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.jetbrains.skia.Image
 import java.io.File
+import java.nio.file.Files
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 
 class StudioUiTest {
+    @Test
+    fun selectedCourseSourceIsPreviewedBeforeAddingAtBothSizes() {
+        val lesson = Lesson("l", "Leçon test", exercises = emptyList(), objective = "Comprendre les moitiés", learningNotes = "Deux parts égales font un tout.", sourceUrls = listOf("https://example.org/lesson"))
+        val subject = Subject("s", "Mathématiques", "", "", SubjectCategory.MATHEMATICS,
+            listOf(LearningUnit("u", 1, "Fractions", "", listOf(lesson))))
+        listOf(360 to 480, 1000 to 800).forEach { (width, height) ->
+            runDesktopComposeUiTest(width = width, height = height) {
+                val file = Files.createTempDirectory("studio-source-ui").resolve("studio.json")
+                val controller = DesktopStudioController(file, StudioTutor { "ok" })
+                try {
+                    controller.create("Moitiés")
+                    setContent { LearningAppTheme { CompositionLocalProvider(LocalStudioController provides controller) { StudioScreen(listOf(subject)) } } }
+                    onNodeWithTag("studio-sources").performClick()
+                    onNodeWithTag("studio-source-search").performTextInput("Leçon test")
+                    onNodeWithTag("studio-source-result").performScrollTo().performClick()
+                    onNodeWithTag("studio-source-add").performScrollTo().assertIsDisplayed()
+                    val snapshot = File("build/reports/ui-snapshots/studio-sources-$width.png")
+                    check(snapshot.parentFile.isDirectory || snapshot.parentFile.mkdirs())
+                    Image.makeFromBitmap(onAllNodes(isRoot()).onLast().captureToImage().asSkiaBitmap()).use { image ->
+                        image.encodeToData()!!.use { snapshot.writeBytes(it.bytes) }
+                    }
+                    onNodeWithTag("studio-source-add").performScrollTo().performClick()
+                    runOnIdle { assertEquals("Leçon test", controller.state.value.sessions.single().lessonSources.single().lessonTitle) }
+                } finally { controller.close() }
+            }
+        }
+    }
+
     @Test
     fun acceptedPlanShowsEvidenceToReviewAtCompactSize() = runDesktopComposeUiTest(width = 360, height = 480) {
         val controller = MemoryStudioController(initialSession = true)

@@ -138,8 +138,8 @@ internal class ChatGptPlanClient(private val file: Path) {
         }
     }
 
-    fun respond(model: String, goal: String, history: List<StudioMessage>, acceptedPlan: StudioPlan? = null, reasoningEffort: ReasoningEffort = ReasoningEffort.AUTOMATIC, practiceTargets: List<PracticeTarget>? = null): String {
-        val body = buildChatGptBody(model, goal, history, acceptedPlan, reasoningEffort, practiceTargets)
+    fun respond(model: String, goal: String, history: List<StudioMessage>, acceptedPlan: StudioPlan? = null, reasoningEffort: ReasoningEffort = ReasoningEffort.AUTOMATIC, practiceTargets: List<PracticeTarget>? = null, lessonSources: List<StudioLessonSource> = emptyList()): String {
+        val body = buildChatGptBody(model, goal, history, acceptedPlan, reasoningEffort, practiceTargets, lessonSources)
         check(body.length <= MAX_TUTOR_BODY_CHARS) { "La séance dépasse la limite de contexte." }
         val stream = requestStream("$RESOURCE/responses", body, reasoningEffort)
         return parseChatGptStream(stream)
@@ -316,7 +316,7 @@ internal class ChatGptPlanClient(private val file: Path) {
     }
 }
 
-internal fun buildChatGptBody(model: String, goal: String, history: List<StudioMessage>, acceptedPlan: StudioPlan? = null, reasoningEffort: ReasoningEffort = ReasoningEffort.AUTOMATIC, practiceTargets: List<PracticeTarget>? = null): String {
+internal fun buildChatGptBody(model: String, goal: String, history: List<StudioMessage>, acceptedPlan: StudioPlan? = null, reasoningEffort: ReasoningEffort = ReasoningEffort.AUTOMATIC, practiceTargets: List<PracticeTarget>? = null, lessonSources: List<StudioLessonSource> = emptyList()): String {
     val input = buildJsonArray {
         history.takeLast(12).forEach { turn ->
             add(buildJsonObject {
@@ -328,7 +328,7 @@ internal fun buildChatGptBody(model: String, goal: String, history: List<StudioM
     return buildJsonObject {
         put("model", model)
         reasoningEffort.wireValue?.let { effort -> put("reasoning", buildJsonObject { put("effort", effort) }) }
-        put("instructions", "$TUTOR_SYSTEM_PROMPT${acceptedPlanContext(acceptedPlan)}${practiceTargets?.let(::practiceTargetsContext) ?: ""}\nObjectif d’apprentissage : $goal")
+        put("instructions", "$TUTOR_SYSTEM_PROMPT${acceptedPlanContext(acceptedPlan)}${practiceTargets?.let(::practiceTargetsContext) ?: ""}${lessonSourcesContext(lessonSources)}\nObjectif d’apprentissage : $goal")
         put("input", input)
         put("store", false)
         put("stream", true)

@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.sp
 import com.dreamsigner.wizard.ui.*
 
 @Composable
-fun StudioScreen() {
+fun StudioScreen(subjects: List<com.dreamsigner.wizard.model.Subject> = emptyList()) {
     val controller = LocalStudioController.current
     val state by controller.state.collectAsState()
     var paneOpen by remember { mutableStateOf(true) }
@@ -37,6 +37,7 @@ fun StudioScreen() {
     var showGoal by remember { mutableStateOf(false) }
     var newKind by remember { mutableStateOf(StudioSessionKind.TEACHING) }
     var showGraph by remember { mutableStateOf(false) }
+    var showSources by remember { mutableStateOf(false) }
 
     if (showGraph) StudioKnowledgeGraphDialog(state, controller, onDismiss = { showGraph = false })
     if (showSessions) SessionPickerDialog(
@@ -54,6 +55,7 @@ fun StudioScreen() {
     )
 
     val selectedSession = state.sessions.firstOrNull { it.id == state.selectedId }
+    if (showSources && selectedSession != null) StudioSourcesDialog(selectedSession, studioLessonSources(subjects), controller, !state.busy && state.storageError == null, state.error) { showSources = false }
     if (showPlan && selectedSession != null) StudioPlanDialog(selectedSession, controller, onDismiss = { showPlan = false }, onDiagnosis = { diagnosisDraft = true; showPlan = false })
 
     BoxWithConstraints(Modifier.fillMaxSize().background(Paper)) {
@@ -84,14 +86,14 @@ fun StudioScreen() {
                     StudioWorkspace(
                         state = state, session = session, controller = controller,
                         modifier = Modifier.weight(1f).fillMaxHeight(),
-                        onSessions = { paneOpen = !paneOpen }, diagnosisDraft = diagnosisDraft, onDiagnosisConsumed = { diagnosisDraft = false },
+                        onSessions = { paneOpen = !paneOpen }, onSources = { showSources = true }, diagnosisDraft = diagnosisDraft, onDiagnosisConsumed = { diagnosisDraft = false },
                     )
                 }
             } else {
                 StudioWorkspace(
                     state = state, session = session, controller = controller,
                     modifier = Modifier.weight(1f).fillMaxWidth().padding(top = 14.dp),
-                    compactGoal = state.sessions.isEmpty(), onSessions = { showSessions = true }, diagnosisDraft = diagnosisDraft, onDiagnosisConsumed = { diagnosisDraft = false },
+                    compactGoal = state.sessions.isEmpty(), onSessions = { showSessions = true }, onSources = { showSources = true }, diagnosisDraft = diagnosisDraft, onDiagnosisConsumed = { diagnosisDraft = false },
                 )
             }
         }
@@ -242,7 +244,7 @@ private fun StudioWorkspace(
     controller: StudioController,
     modifier: Modifier,
     compactGoal: Boolean = false,
-    onSessions: () -> Unit, diagnosisDraft: Boolean, onDiagnosisConsumed: () -> Unit,
+    onSessions: () -> Unit, onSources: () -> Unit, diagnosisDraft: Boolean, onDiagnosisConsumed: () -> Unit,
 ) {
     Surface(modifier.testTag("studio-workspace"), shape = LearningShape, color = White, elevation = 1.dp) {
         if (session == null) {
@@ -267,13 +269,13 @@ private fun StudioWorkspace(
                 }
             }
         } else {
-            Conversation(state, session, controller, onSessions, diagnosisDraft, onDiagnosisConsumed)
+            Conversation(state, session, controller, onSessions, onSources, diagnosisDraft, onDiagnosisConsumed)
         }
     }
 }
 
 @Composable
-private fun Conversation(state: StudioState, session: StudioSession, controller: StudioController, onSessions: () -> Unit, diagnosisDraft: Boolean, onDiagnosisConsumed: () -> Unit) {
+private fun Conversation(state: StudioState, session: StudioSession, controller: StudioController, onSessions: () -> Unit, onSources: () -> Unit, diagnosisDraft: Boolean, onDiagnosisConsumed: () -> Unit) {
     var draft by remember(session.id) { mutableStateOf("") }
     val quizDrafts = remember(session.id) { mutableStateMapOf<Int, StudioQuizDraft>() }
     val problemDrafts = remember(session.id) { mutableStateMapOf<Int, StudioProblemDraft>() }
@@ -298,6 +300,7 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
             TextButton(onClick = onSessions, modifier = Modifier.testTag("studio-sessions-toggle")) { Text("Séances") }
             Text(session.goal, Modifier.weight(1f).testTag("studio-current-goal"), style = MaterialTheme.typography.h6, color = Ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
+        TextButton(onClick = onSources, enabled = state.available && !state.busy, modifier = Modifier.testTag("studio-sources")) { Text("Sources de cours (${session.lessonSources.size})") }
         TextButton(onClick = { controller.exportSession() }, enabled = state.available && !state.busy, modifier = Modifier.testTag("studio-export")) { Text("Exporter la séance") }
         if (!state.exportError.isNullOrBlank()) Text(state.exportError!!, color = ActionRed, modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite })
         Divider(Modifier.padding(top = 4.dp), color = Concrete)
@@ -677,3 +680,51 @@ private fun StatusNote(message: String, warning: Boolean, modifier: Modifier = M
 }
 
 private val ColorStudioLearner = androidx.compose.ui.graphics.Color(0xFFF0EDE6)
+
+@Composable
+private fun StudioSourcesDialog(session: StudioSession, catalogue: List<StudioLessonSource>, controller: StudioController, canEdit: Boolean, error: String?, onDismiss: () -> Unit) {
+    var query by remember { mutableStateOf("") }
+    var preview by remember { mutableStateOf<StudioLessonSource?>(null) }
+    val matches = remember(catalogue, query, session.lessonSources) {
+        val words = query.trim().split(Regex("\\s+")).filter { it.isNotBlank() }
+        if (words.isEmpty()) emptyList() else catalogue.asSequence().filter { source ->
+            session.lessonSources.none { it.sameIdentity(source) } && words.all { word ->
+                "${source.subjectTitle} ${source.unitTitle} ${source.lessonTitle}".contains(word, ignoreCase = true)
+            }
+        }.take(50).toList()
+    }
+    AlertDialog(onDismissRequest = onDismiss, title = { Text("Sources de cours") }, text = {
+        Column(Modifier.fillMaxWidth().heightIn(max = 400.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            Text("Les objectifs, notes et liens sélectionnés seront envoyés au fournisseur IA configuré à chaque demande. Maximum : 4 leçons.", fontSize = 13.sp)
+            if (!error.isNullOrBlank()) Text(error, color = ActionRed, fontSize = 13.sp, modifier = Modifier.testTag("studio-sources-error"))
+            OutlinedTextField(query, { query = it; preview = null }, label = { Text("Rechercher une leçon") }, singleLine = true, modifier = Modifier.fillMaxWidth().testTag("studio-source-search"))
+            LazyColumn(Modifier.weight(1f, fill = false).testTag("studio-source-list"), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                if (session.lessonSources.isNotEmpty()) item { Text("Sélectionnées", fontWeight = FontWeight.SemiBold) }
+                items(session.lessonSources, key = { "selected:${it.subjectId}:${it.unitId}:${it.lessonId}" }) { source ->
+                    val current = catalogue.firstOrNull { it.sameIdentity(source) }
+                    Text("${source.subjectTitle} / ${source.unitTitle} / ${source.lessonTitle}")
+                    if (current == null) Text("Cours retiré ; copie enregistrée conservée.", color = ActionRed)
+                    else if (current != source) Text("Cours modifié ; copie enregistrée conservée.", color = ActionRed)
+                    TextButton(onClick = { preview = source }) { Text("Voir la copie") }
+                    TextButton(onClick = { controller.removeLessonSource(source); preview = null }, enabled = canEdit) { Text("Retirer") }
+                }
+                if (query.isBlank()) item { Text("Recherche par matière, unité ou leçon.", fontSize = 13.sp) }
+                else if (matches.isEmpty()) item { Text("Aucune leçon correspondante.") }
+                else {
+                    item { Text("Résultats (50 maximum)", fontWeight = FontWeight.SemiBold) }
+                    items(matches, key = { "result:${it.subjectId}:${it.unitId}:${it.lessonId}" }) { source ->
+                        TextButton(onClick = { preview = source }, modifier = Modifier.testTag("studio-source-result")) { Text("${source.subjectTitle} / ${source.unitTitle} / ${source.lessonTitle}") }
+                    }
+                }
+                preview?.let { source ->
+                    item(key = "preview") {
+                        Divider()
+                        Text("Aperçu : ${source.lessonTitle}", fontWeight = FontWeight.SemiBold)
+                        Text("Objectif : ${source.objective}\nNotes : ${source.learningNotes}\nLiens : ${source.sourceUrls.joinToString()}")
+                        if (session.lessonSources.none { it.sameIdentity(source) }) TextButton(onClick = { if (controller.addLessonSource(source)) preview = null }, enabled = canEdit, modifier = Modifier.testTag("studio-source-add")) { Text("Ajouter à cette séance") }
+                    }
+                }
+            }
+        }
+    }, confirmButton = { TextButton(onClick = onDismiss) { Text("Fermer") } })
+}

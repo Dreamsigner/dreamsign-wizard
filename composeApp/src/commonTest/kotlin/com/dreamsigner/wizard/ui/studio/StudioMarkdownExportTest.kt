@@ -25,4 +25,14 @@ class StudioMarkdownExportTest {
         listOf("Mon raisonnement", "80 %", "Pourquoi", "Indice visible", "Réponse", "Pensée", "Bien", "Solution").forEach { assertTrue(output.contains(it), it) }
         assertFalse(output.contains("Indice secret"))
     }
+
+    @Test fun includesOnlyChosenCourseSources() {
+        val source = StudioLessonSource("s", "Mathématiques", 1, "u", "Fractions", "l", "Moitiés", 1,
+            "Comprendre les moitiés", "Deux parts égales forment un tout.", listOf("https://example.org/lesson"))
+        val output = renderStudioMarkdown(StudioSession("id", "But", emptyList(), lessonSources = listOf(source)))
+        listOf("Sources de cours choisies", "Moitiés", "Deux parts égales", "https://example.org/lesson").forEach {
+            assertTrue(output.contains(it), it)
+        }
+        assertFalse(output.contains("Cours non choisi"))
+    }
 }

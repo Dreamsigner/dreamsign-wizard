@@ -7,6 +7,20 @@ internal fun renderStudioMarkdown(session: StudioSession): String = buildString 
     }
     append("# Séance Studio IA\n\n")
     section("Objectif", session.goal)
+    if (session.lessonSources.isNotEmpty()) {
+        append("## Sources de cours choisies\n\n")
+        session.lessonSources.forEach { source ->
+            append("### ").append(source.subjectTitle).append(" / ").append(source.unitTitle)
+                .append(" / ").append(source.lessonTitle).append("\n\n")
+            section("Objectif de la leçon", source.objective)
+            section("Notes de la leçon", source.learningNotes)
+            if (source.sourceUrls.isNotEmpty()) {
+                append("Références :\n")
+                source.sourceUrls.forEach { append("- ").append(it).append("\n") }
+                append("\n")
+            }
+        }
+    }
     session.plan?.takeIf { it.decision == "accepted" }?.let { plan ->
         append("## Plan accepté\n\n")
         plan.steps.forEachIndexed { index, step ->

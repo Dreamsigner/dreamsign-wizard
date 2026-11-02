@@ -151,7 +151,7 @@ fun DreamsignWizardApp(
                                 else EmptyLearningState("Aucun cours disponible", "Les cours apparaîtront ici dès qu’ils seront disponibles.")
                             AppScreen.PROFILE -> ProfileScreen(stats, persistence)
                             AppScreen.SETTINGS -> SettingsScreen(persistence, settingsContent)
-                            AppScreen.AI_STUDIO -> StudioScreen()
+                            AppScreen.AI_STUDIO -> StudioScreen(subjects)
                             AppScreen.LESSON_QUIZ, AppScreen.COURSE_READER -> Unit
                         } }
                     }

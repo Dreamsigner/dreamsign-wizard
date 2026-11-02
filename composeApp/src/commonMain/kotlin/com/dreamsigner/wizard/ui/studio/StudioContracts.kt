@@ -32,9 +32,40 @@ fun StudioSession.stepReady(index: Int): Boolean {
     }
 }
 
+@Serializable
+data class StudioLessonSource(
+    val subjectId: String, val subjectTitle: String, val curriculumVersion: Int,
+    val unitId: String, val unitTitle: String, val lessonId: String, val lessonTitle: String,
+    val contentVersion: Int, val objective: String, val learningNotes: String, val sourceUrls: List<String>,
+)
+
+fun studioLessonSources(subjects: List<com.dreamsigner.wizard.model.Subject>): List<StudioLessonSource> =
+    subjects.flatMap { subject -> subject.units.flatMap { unit -> unit.lessons.map { lesson ->
+        StudioLessonSource(subject.id, subject.title, subject.curriculumVersion, unit.id, unit.title,
+            lesson.id, lesson.title, lesson.contentVersion, lesson.objective, lesson.learningNotes, lesson.sourceUrls)
+    } } }
+
+const val MAX_STUDIO_LESSON_SOURCES = 4
+const val MAX_STUDIO_SOURCE_CHARS = 12_000
+const val MAX_STUDIO_SOURCES_CHARS = 24_000
+
+fun validStudioLessonSources(sources: List<StudioLessonSource>): Boolean {
+    fun StudioLessonSource.size() = subjectId.length + subjectTitle.length + unitId.length + unitTitle.length + lessonId.length + lessonTitle.length + objective.length + learningNotes.length + sourceUrls.sumOf { it.length }
+    return sources.size <= MAX_STUDIO_LESSON_SOURCES &&
+        sources.sumOf { it.size() } <= MAX_STUDIO_SOURCES_CHARS &&
+        sources.all { source ->
+            listOf(source.subjectId, source.unitId, source.lessonId, source.subjectTitle, source.unitTitle, source.lessonTitle).all { it.isNotBlank() && it.length <= 500 } &&
+                source.curriculumVersion > 0 && source.contentVersion > 0 && source.size() <= MAX_STUDIO_SOURCE_CHARS &&
+                source.sourceUrls.size <= 30 && source.sourceUrls.all { it.length <= 2048 && (it.startsWith("https://") || it.startsWith("http://")) }
+        } && sources.indices.all { i -> sources.take(i).none { it.sameIdentity(sources[i]) } }
+}
+
+fun StudioLessonSource.sameIdentity(other: StudioLessonSource) =
+    subjectId == other.subjectId && unitId == other.unitId && lessonId == other.lessonId
+
 enum class StudioSessionKind { TEACHING, PRACTICE }
 
-data class StudioSession(val id: String, val goal: String, val messages: List<StudioMessage>, val plan: StudioPlan? = null, val reasoningEffort: ReasoningEffort? = null, val modelChoice: StudioModelChoice? = null, val planProposal: StudioPlanProposal? = null, val assessment: StudioDiagnosticAssessment? = null, val stepEvidence: List<StudioStepEvidence> = emptyList(), val kind: StudioSessionKind = StudioSessionKind.TEACHING)
+data class StudioSession(val id: String, val goal: String, val messages: List<StudioMessage>, val plan: StudioPlan? = null, val reasoningEffort: ReasoningEffort? = null, val modelChoice: StudioModelChoice? = null, val planProposal: StudioPlanProposal? = null, val assessment: StudioDiagnosticAssessment? = null, val stepEvidence: List<StudioStepEvidence> = emptyList(), val kind: StudioSessionKind = StudioSessionKind.TEACHING, val lessonSources: List<StudioLessonSource> = emptyList())
 data class StudioState(
     val sessions: List<StudioSession> = emptyList(), val selectedId: String? = null,
     val baseUrl: String = "", val model: String = "", val reasoningEffort: ReasoningEffort = ReasoningEffort.AUTOMATIC, val busy: Boolean = false,
@@ -72,6 +103,8 @@ interface StudioController {
     fun requestDiagnosisConclusion(): Boolean = false
     fun requestGraphExtraction(): Boolean = false
     fun exportSession(): Boolean = false
+    fun addLessonSource(source: StudioLessonSource): Boolean = false
+    fun removeLessonSource(source: StudioLessonSource): Boolean = false
     fun importNotes(): Boolean = false
     fun acceptGraphProposal(): Boolean = false
     fun discardGraphProposal(): Boolean = false
