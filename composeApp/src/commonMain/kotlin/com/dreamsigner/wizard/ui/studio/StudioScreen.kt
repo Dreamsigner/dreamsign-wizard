@@ -152,6 +152,12 @@ fun StudioConnectionSettings() {
             onClick = { showConnection = true }, enabled = state.available && !state.busy,
             modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp), shape = LearningShape,
         ) { Text("Configurer le fournisseur") }
+        var showSearchSettings by remember { mutableStateOf(false) }
+        if (showSearchSettings) StudioWebSearchSettingsDialog(state, controller) { showSearchSettings = false }
+        OutlinedButton(onClick = { showSearchSettings = true }, enabled = state.available,
+            modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("studio-search-settings"), shape = LearningShape) {
+            Text("Recherche web (Brave)")
+        }
         val session = state.sessions.firstOrNull { it.id == state.selectedId }
         if (session != null) {
             Text("Réglages de la séance : ${session.goal}", fontWeight = FontWeight.SemiBold, color = Ink)
@@ -307,6 +313,8 @@ private fun StudioWorkspace(
 
 @Composable
 private fun Conversation(state: StudioState, session: StudioSession, controller: StudioController, onSessions: () -> Unit, onSources: () -> Unit, diagnosisDraft: Boolean, onDiagnosisConsumed: () -> Unit, showSessionsToggle: Boolean) {
+    var showWebSearch by remember(session.id) { mutableStateOf(false) }
+    if (showWebSearch) StudioWebSearchDialog(state, session, controller) { showWebSearch = false }
     var draft by remember(session.id) { mutableStateOf("") }
     val quizDrafts = remember(session.id) { mutableStateMapOf<Int, StudioQuizDraft>() }
     val problemDrafts = remember(session.id) { mutableStateMapOf<Int, StudioProblemDraft>() }
@@ -343,6 +351,7 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
                     DropdownMenuItem(onClick = { actionsOpen = false; onSources() }, enabled = state.available && !state.busy, modifier = Modifier.testTag("studio-sources")) {
                         Text("Sources de cours (${session.lessonSources.size})")
                     }
+                    DropdownMenuItem(onClick = { actionsOpen = false; showWebSearch = true }, enabled = state.available, modifier = Modifier.testTag("studio-web-search")) { Text("Recherche web") }
                     DropdownMenuItem(onClick = { actionsOpen = false; controller.exportSession() }, enabled = state.available && !state.busy, modifier = Modifier.testTag("studio-export")) {
                         Text("Exporter la séance")
                     }
@@ -756,4 +765,68 @@ private fun StudioSourcesDialog(session: StudioSession, catalogue: List<StudioLe
             }
         }
     }, confirmButton = { TextButton(onClick = onDismiss) { Text("Fermer") } })
+}
+
+@Composable
+private fun StudioWebSearchDialog(state: StudioState, session: StudioSession, controller: StudioController, onDismiss: () -> Unit) {
+    var query by remember(session.id) { mutableStateOf("") }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Recherche web (Brave)") },
+        text = {
+            Column(Modifier.fillMaxWidth().heightIn(max = 440.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("Les résultats sont des contenus externes à vérifier. Seules les sources ajoutées sont utilisées dans cette séance.", color = Graphite, fontSize = 13.sp)
+                if (!state.hasSearchKey) Text("Configure une clé Brave dans les paramètres.", color = ActionRed)
+                OutlinedTextField(value = query, onValueChange = { query = it }, label = { Text("Requête") },
+                    modifier = Modifier.fillMaxWidth().testTag("studio-web-query"), maxLines = 3)
+                Button(onClick = { controller.searchWeb(query) }, enabled = state.hasSearchKey && !state.searchBusy && query.isNotBlank(),
+                    modifier = Modifier.testTag("studio-web-submit")) { Text(if (state.searchBusy) "Recherche en cours…" else "Rechercher") }
+                state.searchError?.let { Text(it, color = ActionRed, modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite }) }
+                Text("Sources choisies (${session.webSources.size}/5)", fontWeight = FontWeight.SemiBold, color = Ink)
+                if (session.webSources.isEmpty()) Text("Aucune source choisie.", color = Graphite, fontSize = 13.sp)
+                session.webSources.forEachIndexed { index, source ->
+                    StudioWebSourceItem(source, "Retirer", !state.busy && state.storageError == null, "studio-web-remove-$index") { controller.removeWebSource(source) }
+                }
+                if (state.searchResults.isNotEmpty()) Text("Résultats", fontWeight = FontWeight.SemiBold, color = Ink)
+                state.searchResults.forEachIndexed { index, source ->
+                    val selected = session.webSources.any { it.url == source.url }
+                    StudioWebSourceItem(source, if (selected) "Ajoutée" else "Ajouter", !selected && session.webSources.size < 5 && !state.busy && state.storageError == null, "studio-web-add-$index") { controller.addWebSource(source) }
+                }
+            }
+        },
+        confirmButton = { TextButton(onClick = onDismiss, modifier = Modifier.testTag("studio-web-close")) { Text("Fermer") } },
+    )
+}
+
+@Composable
+private fun StudioWebSourceItem(source: StudioWebSource, action: String, enabled: Boolean, tag: String, onClick: () -> Unit) {
+    Column(Modifier.fillMaxWidth().border(1.dp, Concrete, LearningShape).padding(10.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Text(source.title, fontWeight = FontWeight.SemiBold, color = Ink)
+        Text(source.url, color = Graphite, fontSize = 12.sp, maxLines = 3, overflow = TextOverflow.Ellipsis)
+        Text(source.description, color = Graphite, fontSize = 13.sp, maxLines = 4, overflow = TextOverflow.Ellipsis)
+        TextButton(onClick = onClick, enabled = enabled, modifier = Modifier.testTag(tag)) { Text(action) }
+    }
+}
+
+@Composable
+private fun StudioWebSearchSettingsDialog(state: StudioState, controller: StudioController, onDismiss: () -> Unit) {
+    var searchKey by remember { mutableStateOf("") }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Recherche web (Brave)") },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("La clé reste en mémoire et ne sera pas sauvegardée. Elle devra être ressaisie au démarrage.", color = Graphite, fontSize = 13.sp)
+                OutlinedTextField(value = searchKey, onValueChange = { searchKey = it }, singleLine = true,
+                    label = { Text("Clé API Brave") }, visualTransformation = PasswordVisualTransformation(),
+                    modifier = Modifier.fillMaxWidth().testTag("studio-search-key"))
+                Text(if (state.hasSearchKey) "Clé configurée pour cette session." else "Aucune clé Brave configurée.", color = Graphite, fontSize = 13.sp)
+                TextButton(onClick = { controller.configureSearchKey(""); searchKey = "" },
+                    enabled = state.hasSearchKey || searchKey.isNotEmpty(), modifier = Modifier.testTag("studio-search-key-clear")) { Text("Effacer") }
+            }
+        },
+        confirmButton = { TextButton(onClick = { controller.configureSearchKey(searchKey); searchKey = "" },
+            enabled = searchKey.isNotBlank(), modifier = Modifier.testTag("studio-search-key-save")) { Text("Enregistrer") } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text("Fermer") } },
+    )
 }

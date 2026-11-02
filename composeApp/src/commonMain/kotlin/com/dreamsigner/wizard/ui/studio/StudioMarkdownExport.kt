@@ -7,6 +7,14 @@ internal fun renderStudioMarkdown(session: StudioSession): String = buildString 
     }
     append("# Séance Studio IA\n\n")
     section("Objectif", session.goal)
+    if (session.webSources.isNotEmpty()) {
+        appendLine("## Sources web sélectionnées")
+        session.webSources.forEach { source ->
+            appendLine("- ${source.title} — ${source.url}")
+            appendLine("  ${source.description}")
+        }
+        appendLine()
+    }
     if (session.lessonSources.isNotEmpty()) {
         append("## Sources de cours choisies\n\n")
         session.lessonSources.forEach { source ->

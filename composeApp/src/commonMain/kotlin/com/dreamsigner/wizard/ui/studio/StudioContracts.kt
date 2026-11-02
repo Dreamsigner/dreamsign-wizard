@@ -63,9 +63,18 @@ fun validStudioLessonSources(sources: List<StudioLessonSource>): Boolean {
 fun StudioLessonSource.sameIdentity(other: StudioLessonSource) =
     subjectId == other.subjectId && unitId == other.unitId && lessonId == other.lessonId
 
+@Serializable
+data class StudioWebSource(val title: String, val url: String, val description: String)
+
+fun validStudioWebSources(sources: List<StudioWebSource>): Boolean =
+    sources.size <= 5 && sources.distinctBy { it.url }.size == sources.size && sources.all {
+        it.title.isNotBlank() && it.title.length <= 300 && it.url.length <= 2048 &&
+            it.url.startsWith("https://") && it.description.length <= 2000
+    }
+
 enum class StudioSessionKind { TEACHING, PRACTICE }
 
-data class StudioSession(val id: String, val goal: String, val messages: List<StudioMessage>, val plan: StudioPlan? = null, val reasoningEffort: ReasoningEffort? = null, val modelChoice: StudioModelChoice? = null, val planProposal: StudioPlanProposal? = null, val assessment: StudioDiagnosticAssessment? = null, val stepEvidence: List<StudioStepEvidence> = emptyList(), val kind: StudioSessionKind = StudioSessionKind.TEACHING, val lessonSources: List<StudioLessonSource> = emptyList())
+data class StudioSession(val id: String, val goal: String, val messages: List<StudioMessage>, val plan: StudioPlan? = null, val reasoningEffort: ReasoningEffort? = null, val modelChoice: StudioModelChoice? = null, val planProposal: StudioPlanProposal? = null, val assessment: StudioDiagnosticAssessment? = null, val stepEvidence: List<StudioStepEvidence> = emptyList(), val kind: StudioSessionKind = StudioSessionKind.TEACHING, val lessonSources: List<StudioLessonSource> = emptyList(), val webSources: List<StudioWebSource> = emptyList())
 data class StudioState(
     val sessions: List<StudioSession> = emptyList(), val selectedId: String? = null,
     val baseUrl: String = "", val model: String = "", val reasoningEffort: ReasoningEffort = ReasoningEffort.AUTOMATIC, val busy: Boolean = false,
@@ -77,6 +86,7 @@ data class StudioState(
     val apiModels: List<String> = emptyList(), val apiModelsUrl: String = "",
     val apiModelsBusy: Boolean = false, val apiModelsError: String? = null,
     val modelSlots: Map<StudioModelSlot, StudioModelSetting> = emptyMap(), val modelOverrides: Map<StudioModelRole, StudioModelSetting> = emptyMap(),
+    val searchBusy: Boolean = false, val searchError: String? = null, val searchResults: List<StudioWebSource> = emptyList(), val hasSearchKey: Boolean = false,
     val knowledgeGraph: KnowledgeGraph = KnowledgeGraph(), val graphProposal: KnowledgeGraphProposal? = null, val graphError: String? = null,
 )
 
@@ -103,6 +113,10 @@ interface StudioController {
     fun requestDiagnosisConclusion(): Boolean = false
     fun requestGraphExtraction(): Boolean = false
     fun exportSession(): Boolean = false
+    fun configureSearchKey(key: String) = Unit
+    fun searchWeb(query: String) = Unit
+    fun addWebSource(source: StudioWebSource): Boolean = false
+    fun removeWebSource(source: StudioWebSource): Boolean = false
     fun addLessonSource(source: StudioLessonSource): Boolean = false
     fun removeLessonSource(source: StudioLessonSource): Boolean = false
     fun importNotes(): Boolean = false

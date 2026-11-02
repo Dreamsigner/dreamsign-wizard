@@ -593,6 +593,51 @@ class StudioUiTest {
         onNodeWithText("Commencer").assertIsNotEnabled()
     }
 
+    @Test
+    fun webSearchRequiresKeyAndExplicitSelectionAtBothSizes() {
+        listOf(360 to 480, 1000 to 800).forEach { (width, height) ->
+            runDesktopComposeUiTest(width = width, height = height) {
+                val controller = MemoryStudioController(initialSession = true)
+                setContent { LearningAppTheme { CompositionLocalProvider(LocalStudioController provides controller) { StudioScreen() } } }
+                onNodeWithTag("studio-actions").performClick()
+                onNodeWithTag("studio-web-search").performClick()
+                onNodeWithText("Configure une clé Brave dans les paramètres.").assertIsDisplayed()
+                onNodeWithTag("studio-web-submit").assertIsNotEnabled()
+                onNodeWithTag("studio-web-close").performClick()
+                onNodeWithTag("studio-web-query").assertDoesNotExist()
+                runOnIdle { controller.configureSearchKey("secret") }
+                onNodeWithTag("studio-actions").performClick()
+                onNodeWithTag("studio-web-search").performClick()
+                onNodeWithTag("studio-web-query").performScrollTo().performTextInput("fractions")
+                onNodeWithTag("studio-web-submit").performScrollTo().performClick()
+                runOnIdle { assertEquals("fractions", controller.webQuery); assertEquals(0, controller.state.value.sessions.single().webSources.size) }
+                val snapshot = File("build/reports/ui-snapshots/studio-web-search-$width.png")
+                check(snapshot.parentFile.isDirectory || snapshot.parentFile.mkdirs())
+                Image.makeFromBitmap(onAllNodes(isRoot()).onLast().captureToImage().asSkiaBitmap()).use { image ->
+                    image.encodeToData()!!.use { snapshot.writeBytes(it.bytes) }
+                }
+                onNodeWithTag("studio-web-add-0").performScrollTo().performClick()
+                runOnIdle { assertEquals(1, controller.state.value.sessions.single().webSources.size) }
+                onNodeWithTag("studio-web-remove-0").performScrollTo().performClick()
+                runOnIdle { assertEquals(0, controller.state.value.sessions.single().webSources.size) }
+                onNodeWithTag("studio-web-close").performClick()
+            }
+        }
+    }
+
+    @Test
+    fun braveKeyCanBeSavedAndClearedInSettings() = runDesktopComposeUiTest(width = 1000, height = 800) {
+        val controller = MemoryStudioController()
+        setContent { LearningAppTheme { CompositionLocalProvider(LocalStudioController provides controller) { StudioConnectionSettings() } } }
+        onNodeWithTag("studio-search-settings").performClick()
+        onNodeWithText("Aucune clé Brave configurée.").assertIsDisplayed()
+        onNodeWithTag("studio-search-key").performTextInput("secret")
+        onNodeWithTag("studio-search-key-save").performClick()
+        runOnIdle { assertEquals(true, controller.state.value.hasSearchKey) }
+        onNodeWithTag("studio-search-key-clear").performClick()
+        runOnIdle { assertEquals(false, controller.state.value.hasSearchKey) }
+    }
+
     private class MemoryStudioController(initialSession: Boolean = false, sampleMessages: Boolean = false) : StudioController {
         private var nextId = 1
         private val startingSessions = if (initialSession) listOf(
@@ -613,6 +658,20 @@ class StudioUiTest {
                 model = if (initialSession) "local-model" else "",
             ),
         )
+        var webQuery: String? = null
+        override fun configureSearchKey(key: String) { state.value = state.value.copy(hasSearchKey = key.isNotBlank()) }
+        override fun searchWeb(query: String) {
+            webQuery = query
+            state.value = state.value.copy(searchResults = listOf(StudioWebSource("Fractions", "https://example.org/fractions", "Une présentation des fractions.")))
+        }
+        override fun addWebSource(source: StudioWebSource): Boolean {
+            state.value = state.value.copy(sessions = state.value.sessions.map { if (it.id == state.value.selectedId) it.copy(webSources = it.webSources + source) else it })
+            return true
+        }
+        override fun removeWebSource(source: StudioWebSource): Boolean {
+            state.value = state.value.copy(sessions = state.value.sessions.map { if (it.id == state.value.selectedId) it.copy(webSources = it.webSources - source) else it })
+            return true
+        }
         var acceptSend = false
         var lastMessage: String? = null
         var configuredKey: String? = null
