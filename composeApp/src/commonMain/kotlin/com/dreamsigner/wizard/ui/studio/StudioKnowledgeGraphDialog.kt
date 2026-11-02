@@ -73,6 +73,9 @@ internal fun StudioKnowledgeGraphDialog(state: StudioState, controller: StudioCo
                         modifier = Modifier.fillMaxWidth().testTag("studio-graph-search"),
                         trailingIcon = if (query.isNotEmpty()) ({ TextButton(onClick = { query = "" }) { Text("Effacer") } }) else null,
                     )
+                    Text("La recherche filtre les listes ci-dessous ; la carte affiche toutes les propositions enregistrées.", style = MaterialTheme.typography.caption)
+                    StudioKnowledgeGraphCanvas(state.knowledgeGraph, ::sources)
+                    Divider()
                     val search = query.trim()
                     val propositions = state.knowledgeGraph.propositions.filter { it.statement.contains(search, ignoreCase = true) }
                     val reasonings = state.knowledgeGraph.reasonings.filter { reasoning(it, state.knowledgeGraph).contains(search, ignoreCase = true) }

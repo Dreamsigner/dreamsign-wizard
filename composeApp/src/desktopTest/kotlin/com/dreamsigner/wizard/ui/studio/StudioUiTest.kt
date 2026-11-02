@@ -3,6 +3,11 @@
 package com.dreamsigner.wizard.ui.studio
 
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Surface
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asSkiaBitmap
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.SemanticsActions
@@ -21,6 +26,30 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 
 class StudioUiTest {
+    @Test
+    fun graphCanvasSelectsPropositionAndShowsSourceAtBothSizes() {
+        listOf(360 to 480, 1000 to 800).forEach { (width, height) ->
+            runDesktopComposeUiTest(width = width, height = height) {
+                val source = KnowledgeSource("session", 0, "Notes.txt")
+                val graph = KnowledgeGraph(propositions = listOf(
+                    KnowledgeProposition("a", "Première proposition", listOf(source)),
+                    KnowledgeProposition("b", "Conclusion", listOf(source)),
+                ), reasonings = listOf(KnowledgeReasoning("r", listOf("a"), "b", listOf(source))))
+                setContent { LearningAppTheme { Surface(color = androidx.compose.ui.graphics.Color.White) {
+                    Column(Modifier.verticalScroll(rememberScrollState())) { StudioKnowledgeGraphCanvas(graph) { it.first().documentName.orEmpty() } }
+                } } }
+                onNodeWithTag("studio-graph-node-a").performScrollTo().performClick()
+                onNodeWithTag("studio-graph-selection").performScrollTo().assertIsDisplayed()
+                onNodeWithText("Sources : Notes.txt").assertIsDisplayed()
+                val file = File("build/reports/ui-snapshots/studio-graph-canvas-$width.png")
+                check(file.parentFile.isDirectory || file.parentFile.mkdirs())
+                Image.makeFromBitmap(onAllNodes(isRoot()).onLast().captureToImage().asSkiaBitmap()).use { image ->
+                    image.encodeToData()!!.use { file.writeBytes(it.bytes) }
+                }
+            }
+        }
+    }
+
     @Test
     fun selectedCourseSourceIsPreviewedBeforeAddingAtBothSizes() {
         val lesson = Lesson("l", "Leçon test", exercises = emptyList(), objective = "Comprendre les moitiés", learningNotes = "Deux parts égales font un tout.", sourceUrls = listOf("https://example.org/lesson"))
