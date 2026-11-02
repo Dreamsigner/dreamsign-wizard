@@ -48,7 +48,7 @@ class StudioUiTest {
         setContent { LearningAppTheme { CompositionLocalProvider(LocalStudioController provides controller) { StudioScreen() } } }
         onNodeWithTag("studio-graph").performClick()
         onNodeWithText("Graphe de connaissances").assertIsDisplayed()
-        onNodeWithText("Une moitié vaut 1/2.").assertIsDisplayed()
+        onNodeWithText("Une moitié vaut 1/2.").performScrollTo().assertIsDisplayed()
         val file = File("build/reports/ui-snapshots/studio-graph-360.png")
         check(file.parentFile.isDirectory || file.parentFile.mkdirs())
         Image.makeFromBitmap(onAllNodes(isRoot()).onLast().captureToImage().asSkiaBitmap()).use { image ->
@@ -294,6 +294,51 @@ class StudioUiTest {
         onNodeWithText("Exercices de calcul").assertDoesNotExist()
         onNodeWithText("Toutes").performClick()
         onNodeWithText("Exercices de calcul").assertIsDisplayed()
+    }
+
+    @Test
+    fun sessionSearchCombinesKindFilterAndKeepsSelectionAtBothSizes() {
+        listOf(360 to 480, 1000 to 800).forEach { (width, height) ->
+            runDesktopComposeUiTest(width = width, height = height) {
+                val controller = MemoryStudioController(initialSession = true)
+                controller.create("Exercices de calcul", StudioSessionKind.PRACTICE)
+                setContent { LearningAppTheme { CompositionLocalProvider(LocalStudioController provides controller) { StudioScreen() } } }
+                if (width == 360) onNodeWithTag("studio-sessions-toggle").performClick()
+                onNodeWithTag("studio-session-search").performTextInput("SÉRIES")
+                onNodeWithText("Comprendre les séries").assertIsDisplayed()
+                onNodeWithTag("studio-session-session-1").assertDoesNotExist()
+                onNodeWithText("Pratique").performClick()
+                onNodeWithText("Aucune séance trouvée. Essaie un autre terme ou efface la recherche.").assertIsDisplayed()
+                runOnIdle { assertEquals("session-1", controller.state.value.selectedId) }
+                onNodeWithText("Effacer").performClick()
+                onNodeWithTag("studio-session-session-1").assertIsDisplayed()
+                val file = File("build/reports/ui-snapshots/studio-session-search-$width.png")
+                check(file.parentFile.isDirectory || file.parentFile.mkdirs())
+                Image.makeFromBitmap(onAllNodes(isRoot()).onLast().captureToImage().asSkiaBitmap()).use { image ->
+                    image.encodeToData()!!.use { file.writeBytes(it.bytes) }
+                }
+            }
+        }
+    }
+
+    @Test
+    fun graphSearchFindsReasoningAndLeavesReviewVisible() = runDesktopComposeUiTest(width = 1000, height = 800) {
+        val controller = MemoryStudioController(initialSession = true)
+        val source = listOf(KnowledgeSource("session-0", 0))
+        val graph = KnowledgeGraph(propositions = listOf(
+            KnowledgeProposition("a", "La terre tourne", source),
+            KnowledgeProposition("b", "Le jour alterne avec la nuit", source),
+        ), reasonings = listOf(KnowledgeReasoning("r", listOf("a"), "b", source)))
+        controller.state.value = controller.state.value.copy(knowledgeGraph = graph, graphProposal = KnowledgeGraphProposal(graph, graph))
+        setContent { LearningAppTheme { StudioKnowledgeGraphDialog(controller.state.value, controller) {} } }
+        onNodeWithTag("studio-graph-search").performScrollTo().performTextInput("TERRE")
+        onNodeWithText("La terre tourne").performScrollTo().assertIsDisplayed()
+        onNodeWithText("La terre tourne → Le jour alterne avec la nuit").performScrollTo().assertIsDisplayed()
+        onNodeWithText("Accepter la proposition").performScrollTo().assertIsDisplayed()
+        onNodeWithTag("studio-graph-search").performScrollTo().performTextReplacement("introuvable")
+        onNodeWithText("Aucun résultat. Essaie un autre terme ou efface la recherche.").performScrollTo().assertIsDisplayed()
+        onNodeWithText("Effacer").performScrollTo().performClick()
+        onNodeWithText("Le jour alterne avec la nuit").performScrollTo().assertIsDisplayed()
     }
 
     @Test

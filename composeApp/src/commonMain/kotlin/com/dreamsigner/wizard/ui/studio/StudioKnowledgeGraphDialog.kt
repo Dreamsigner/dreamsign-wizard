@@ -6,11 +6,13 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 
 @Composable
 internal fun StudioKnowledgeGraphDialog(state: StudioState, controller: StudioController, onDismiss: () -> Unit) {
+    var query by remember { mutableStateOf("") }
     var localError by remember { mutableStateOf<String?>(null) }
     var deleteProposition by remember { mutableStateOf<KnowledgeProposition?>(null) }
     var deleteReasoning by remember { mutableStateOf<KnowledgeReasoning?>(null) }
@@ -65,9 +67,21 @@ internal fun StudioKnowledgeGraphDialog(state: StudioState, controller: StudioCo
                         TextButton(onClick = { result(controller.discardGraphProposal()) }, enabled = !state.busy && state.storageError == null) { Text("Rejeter la proposition") }
                     }
                     Divider()
+                    OutlinedTextField(
+                        value = query, onValueChange = { query = it },
+                        label = { Text("Rechercher dans le graphe") }, singleLine = true,
+                        modifier = Modifier.fillMaxWidth().testTag("studio-graph-search"),
+                        trailingIcon = if (query.isNotEmpty()) ({ TextButton(onClick = { query = "" }) { Text("Effacer") } }) else null,
+                    )
+                    val search = query.trim()
+                    val propositions = state.knowledgeGraph.propositions.filter { it.statement.contains(search, ignoreCase = true) }
+                    val reasonings = state.knowledgeGraph.reasonings.filter { reasoning(it, state.knowledgeGraph).contains(search, ignoreCase = true) }
+                    if (search.isNotEmpty() && propositions.isEmpty() && reasonings.isEmpty()) {
+                        Text("Aucun résultat. Essaie un autre terme ou efface la recherche.")
+                    }
                     Text("Propositions enregistrées", style = MaterialTheme.typography.subtitle1)
                     if (state.knowledgeGraph.propositions.isEmpty()) Text("Aucune proposition enregistrée.")
-                    state.knowledgeGraph.propositions.forEach { item ->
+                    propositions.forEach { item ->
                         key(item.id) {
                             var editing by remember { mutableStateOf(false) }
                             var draft by remember(item.statement) { mutableStateOf(item.statement) }
@@ -90,7 +104,7 @@ internal fun StudioKnowledgeGraphDialog(state: StudioState, controller: StudioCo
                     }
                     Text("Raisonnements enregistrés", style = MaterialTheme.typography.subtitle1)
                     if (state.knowledgeGraph.reasonings.isEmpty()) Text("Aucun raisonnement enregistré.")
-                    state.knowledgeGraph.reasonings.forEach { item ->
+                    reasonings.forEach { item ->
                         Text(reasoning(item, state.knowledgeGraph))
                         Text("Sources : ${sources(item.sources)}", style = MaterialTheme.typography.caption)
                         TextButton(onClick = { deleteReasoning = item }, enabled = canEdit) { Text("Supprimer le raisonnement") }

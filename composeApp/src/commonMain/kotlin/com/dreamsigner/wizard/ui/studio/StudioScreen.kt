@@ -180,21 +180,23 @@ private fun SessionSidebar(
             Divider(color = Concrete)
             Text("Séances enregistrées", style = MaterialTheme.typography.subtitle1, color = Ink)
             var filter by remember { mutableStateOf<StudioSessionKind?>(null) }
+            var query by remember { mutableStateOf("") }
+            SessionSearchField(query, { query = it })
             Row {
                 listOf(null to "Toutes", StudioSessionKind.TEACHING to "Cours", StudioSessionKind.PRACTICE to "Pratique").forEach { (kind, label) ->
                     TextButton(onClick = { filter = kind }, contentPadding = PaddingValues(horizontal = 4.dp)) { Text(label, color = if (filter == kind) ActionRed else Graphite, fontSize = 12.sp) }
                 }
             }
-            val visibleSessions = state.sessions.filter { filter == null || it.kind == filter }
+            val visibleSessions = state.sessions.filter { (filter == null || it.kind == filter) && it.goal.contains(query.trim(), ignoreCase = true) }
             if (visibleSessions.isEmpty()) {
-                Text("Tes échanges réapparaîtront ici.", color = Graphite, fontSize = 14.sp)
+                Text(if (query.isNotBlank()) "Aucune séance trouvée. Essaie un autre terme ou efface la recherche." else if (state.sessions.isNotEmpty()) "Aucune séance dans cette catégorie." else "Tes échanges réapparaîtront ici.", color = Graphite, fontSize = 14.sp)
             } else {
                 LazyColumn(Modifier.weight(1f).fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     items(visibleSessions, key = { it.id }) { item ->
                         val selected = item.id == state.selectedId
                         TextButton(
                             onClick = { onSelect(item.id) }, enabled = !state.busy,
-                            modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
+                            modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("studio-session-${item.id}")
                                 .background(if (selected) ActionRed.copy(alpha = 0.08f) else White, LearningShape)
                                 .then(if (selected) Modifier.border(1.dp, ActionRed, LearningShape) else Modifier),
                             shape = LearningShape,
@@ -586,6 +588,16 @@ private fun StudioRoutingEditor(label: String, setting: StudioModelSetting?, sta
 }
 
 @Composable
+private fun SessionSearchField(query: String, onQueryChange: (String) -> Unit) {
+    OutlinedTextField(
+        value = query, onValueChange = onQueryChange,
+        modifier = Modifier.fillMaxWidth().testTag("studio-session-search"),
+        label = { Text("Rechercher une séance") }, singleLine = true,
+        trailingIcon = if (query.isNotEmpty()) ({ TextButton(onClick = { onQueryChange("") }) { Text("Effacer") } }) else null,
+    )
+}
+
+@Composable
 private fun SessionPickerDialog(
     state: StudioState,
     onSelect: (String) -> Unit,
@@ -594,19 +606,23 @@ private fun SessionPickerDialog(
     onDismiss: () -> Unit,
 ) {
     var filter by remember { mutableStateOf<StudioSessionKind?>(null) }
+    var query by remember { mutableStateOf("") }
+    val visibleSessions = state.sessions.filter { (filter == null || it.kind == filter) && it.goal.contains(query.trim(), ignoreCase = true) }
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text("Choisir une séance") },
         text = {
             Column {
+                SessionSearchField(query, { query = it })
                 Row {
                     listOf(null to "Toutes", StudioSessionKind.TEACHING to "Cours", StudioSessionKind.PRACTICE to "Pratique").forEach { (kind, label) ->
                         TextButton(onClick = { filter = kind }, contentPadding = PaddingValues(horizontal = 4.dp)) { Text(label, color = if (filter == kind) ActionRed else Graphite) }
                     }
                 }
+                if (visibleSessions.isEmpty()) Text(if (query.isNotBlank()) "Aucune séance trouvée. Essaie un autre terme ou efface la recherche." else "Aucune séance dans cette catégorie.")
                 LazyColumn(Modifier.heightIn(max = 300.dp)) {
-                items(state.sessions.filter { filter == null || it.kind == filter }, key = { it.id }) { session ->
-                    TextButton(onClick = { onSelect(session.id) }, enabled = !state.busy, modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)) {
+                items(visibleSessions, key = { it.id }) { session ->
+                    TextButton(onClick = { onSelect(session.id) }, enabled = !state.busy, modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("studio-session-${session.id}")) {
                         Text(session.goal, modifier = Modifier.fillMaxWidth(), maxLines = 2, overflow = TextOverflow.Ellipsis)
                     }
                 }
