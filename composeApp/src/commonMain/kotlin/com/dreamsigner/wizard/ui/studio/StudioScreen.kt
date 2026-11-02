@@ -11,6 +11,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,20 +39,13 @@ fun StudioScreen(subjects: List<com.dreamsigner.wizard.model.Subject> = emptyLis
     var paneOpen by remember { mutableStateOf(true) }
     var showPlan by remember { mutableStateOf(false) }
     var diagnosisDraft by remember { mutableStateOf(false) }
-    var showSessions by remember { mutableStateOf(false) }
+    var compactSessionsOpen by remember { mutableStateOf(false) }
     var showGoal by remember { mutableStateOf(false) }
     var newKind by remember { mutableStateOf(StudioSessionKind.TEACHING) }
     var showGraph by remember { mutableStateOf(false) }
     var showSources by remember { mutableStateOf(false) }
 
     if (showGraph) StudioKnowledgeGraphDialog(state, controller, onDismiss = { showGraph = false })
-    if (showSessions) SessionPickerDialog(
-        state = state,
-        onSelect = { controller.select(it); showSessions = false },
-        onNewGoal = { kind -> newKind = kind; showSessions = false; showGoal = true },
-        onPlan = { showSessions = false; showPlan = true },
-        onDismiss = { showSessions = false },
-    )
     if (showGoal) NewGoalDialog(
         enabled = state.available && !state.busy,
         kind = newKind,
@@ -90,11 +89,35 @@ fun StudioScreen(subjects: List<com.dreamsigner.wizard.model.Subject> = emptyLis
                     )
                 }
             } else {
-                StudioWorkspace(
-                    state = state, session = session, controller = controller,
-                    modifier = Modifier.weight(1f).fillMaxWidth().padding(top = 14.dp),
-                    compactGoal = state.sessions.isEmpty(), onSessions = { showSessions = true }, onSources = { showSources = true }, diagnosisDraft = diagnosisDraft, onDiagnosisConsumed = { diagnosisDraft = false },
-                )
+                Row(Modifier.weight(1f).fillMaxWidth().padding(top = 14.dp)) {
+                    Column(Modifier.width(48.dp).fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally) {
+                        IconButton(onClick = { compactSessionsOpen = !compactSessionsOpen }, modifier = Modifier.testTag("studio-rail-sessions")) {
+                            Icon(Icons.Default.List, contentDescription = "Séances", tint = if (compactSessionsOpen) ActionRed else Graphite)
+                        }
+                        IconButton(onClick = { compactSessionsOpen = false }, modifier = Modifier.testTag("studio-rail-conversation")) {
+                            Icon(Icons.Default.Edit, contentDescription = "Conversation", tint = if (!compactSessionsOpen) ActionRed else Graphite)
+                        }
+                        IconButton(onClick = { compactSessionsOpen = false; showPlan = true }, enabled = session != null && !state.busy && state.storageError == null, modifier = Modifier.testTag("studio-rail-plan")) {
+                            Icon(Icons.Default.Info, contentDescription = "Plan de la séance")
+                        }
+                        IconButton(onClick = { compactSessionsOpen = false; showSources = true }, enabled = session != null, modifier = Modifier.testTag("studio-rail-sources")) {
+                            Icon(Icons.Default.Search, contentDescription = "Sources")
+                        }
+                        IconButton(onClick = { compactSessionsOpen = false; showGraph = true }, enabled = state.available, modifier = Modifier.testTag("studio-rail-graph")) {
+                            Icon(Icons.Default.Share, contentDescription = "Graphe")
+                        }
+                    }
+                    if (compactSessionsOpen) SessionSidebar(
+                        state = state, modifier = Modifier.weight(1f).fillMaxHeight().testTag("studio-compact-sessions"),
+                        onSelect = { controller.select(it); compactSessionsOpen = false },
+                        onCreate = { kind -> newKind = kind; compactSessionsOpen = false; showGoal = true },
+                        onPlan = { compactSessionsOpen = false; showPlan = true },
+                    ) else StudioWorkspace(
+                        state = state, session = session, controller = controller,
+                        modifier = Modifier.weight(1f).fillMaxHeight(),
+                        compactGoal = state.sessions.isEmpty(), onSessions = { compactSessionsOpen = true }, onSources = { showSources = true }, diagnosisDraft = diagnosisDraft, onDiagnosisConsumed = { diagnosisDraft = false },
+                    )
+                }
             }
         }
     }
@@ -599,46 +622,6 @@ private fun SessionSearchField(query: String, onQueryChange: (String) -> Unit) {
         modifier = Modifier.fillMaxWidth().testTag("studio-session-search"),
         label = { Text("Rechercher une séance") }, singleLine = true,
         trailingIcon = if (query.isNotEmpty()) ({ TextButton(onClick = { onQueryChange("") }) { Text("Effacer") } }) else null,
-    )
-}
-
-@Composable
-private fun SessionPickerDialog(
-    state: StudioState,
-    onSelect: (String) -> Unit,
-    onNewGoal: (StudioSessionKind) -> Unit,
-    onPlan: () -> Unit,
-    onDismiss: () -> Unit,
-) {
-    var filter by remember { mutableStateOf<StudioSessionKind?>(null) }
-    var query by remember { mutableStateOf("") }
-    val visibleSessions = state.sessions.filter { (filter == null || it.kind == filter) && it.goal.contains(query.trim(), ignoreCase = true) }
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text("Choisir une séance") },
-        text = {
-            Column {
-                SessionSearchField(query, { query = it })
-                Row {
-                    listOf(null to "Toutes", StudioSessionKind.TEACHING to "Cours", StudioSessionKind.PRACTICE to "Pratique").forEach { (kind, label) ->
-                        TextButton(onClick = { filter = kind }, contentPadding = PaddingValues(horizontal = 4.dp)) { Text(label, color = if (filter == kind) ActionRed else Graphite) }
-                    }
-                }
-                if (visibleSessions.isEmpty()) Text(if (query.isNotBlank()) "Aucune séance trouvée. Essaie un autre terme ou efface la recherche." else "Aucune séance dans cette catégorie.")
-                LazyColumn(Modifier.heightIn(max = 300.dp)) {
-                items(visibleSessions, key = { it.id }) { session ->
-                    TextButton(onClick = { onSelect(session.id) }, enabled = !state.busy, modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("studio-session-${session.id}")) {
-                        Text(session.goal, modifier = Modifier.fillMaxWidth(), maxLines = 2, overflow = TextOverflow.Ellipsis)
-                    }
-                }
-                }
-            }
-        },
-        confirmButton = { Row {
-            TextButton(onClick = { onNewGoal(StudioSessionKind.TEACHING) }, enabled = state.available && !state.busy) { Text("+ Apprendre") }
-            TextButton(onClick = { onNewGoal(StudioSessionKind.PRACTICE) }, enabled = state.available && !state.busy) { Text("+ Pratique") }
-        } },
-        dismissButton = { Row { if (state.selectedId != null) TextButton(onClick = onPlan, enabled = !state.busy, modifier = Modifier.testTag("studio-plan")) { Text("Plan") }; TextButton(onClick = onDismiss) { Text("Fermer") } } },
     )
 }
 

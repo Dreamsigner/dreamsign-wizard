@@ -27,6 +27,26 @@ import kotlin.test.assertFalse
 
 class StudioUiTest {
     @Test
+    fun compactRailKeepsSessionsAndNavigationAvailable() = runDesktopComposeUiTest(width = 360, height = 480) {
+        val controller = MemoryStudioController(initialSession = true)
+        val id = controller.state.value.sessions.single().id
+        setContent { LearningAppTheme { CompositionLocalProvider(LocalStudioController provides controller) { StudioScreen() } } }
+        onNodeWithTag("studio-rail-sessions").assertIsDisplayed().performClick()
+        onNodeWithTag("studio-compact-sessions").assertIsDisplayed()
+        onNodeWithTag("studio-rail-conversation").assertIsDisplayed()
+        onNodeWithTag("studio-session-$id").performClick()
+        onNodeWithTag("studio-workspace").assertIsDisplayed()
+        onNodeWithTag("studio-rail-sessions").performClick()
+        onNodeWithTag("studio-rail-conversation").performClick()
+        onNodeWithTag("studio-workspace").assertIsDisplayed()
+        val file = File("build/reports/ui-snapshots/studio-compact-rail-360.png")
+        check(file.parentFile.isDirectory || file.parentFile.mkdirs())
+        Image.makeFromBitmap(onAllNodes(isRoot()).onLast().captureToImage().asSkiaBitmap()).use { image ->
+            image.encodeToData()!!.use { file.writeBytes(it.bytes) }
+        }
+    }
+
+    @Test
     fun graphCanvasSelectsPropositionAndShowsSourceAtBothSizes() {
         listOf(360 to 480, 1000 to 800).forEach { (width, height) ->
             runDesktopComposeUiTest(width = width, height = height) {
