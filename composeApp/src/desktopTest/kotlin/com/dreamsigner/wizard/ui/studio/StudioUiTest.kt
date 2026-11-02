@@ -329,10 +329,18 @@ class StudioUiTest {
     }
 
     @Test
-    fun practiceHidesCommittedSolutionUntilAnswerAtCompactSize() = runDesktopComposeUiTest(width = 360, height = 480) {
+    fun practiceHidesCommittedSolutionUntilAnswerAtBothSizes() {
+      listOf(360 to 480, 1000 to 800).forEach { (width, height) ->
+       runDesktopComposeUiTest(width = width, height = height) {
         val controller = MemoryStudioController(initialSession = true).apply { installProblem() }
         setContent { LearningAppTheme { CompositionLocalProvider(LocalStudioController provides controller) { StudioScreen() } } }
         onNodeWithTag("studio-problem-solution").assertDoesNotExist()
+        onNodeWithTag("studio-problem-answer").performScrollTo().assertIsDisplayed()
+        val initialFile = File("build/reports/ui-snapshots/studio-problem-$width-initial.png")
+        check(initialFile.parentFile.isDirectory || initialFile.parentFile.mkdirs())
+        Image.makeFromBitmap(onRoot().captureToImage().asSkiaBitmap()).use { image ->
+            image.encodeToData()!!.use { initialFile.writeBytes(it.bytes) }
+        }
         onNodeWithTag("studio-problem-hint").performScrollTo().performClick()
         onNodeWithTag("studio-problem-hint-0").performScrollTo().assertIsDisplayed()
         onNodeWithTag("studio-problem-answer").performScrollTo().performTextInput("4")
@@ -340,11 +348,14 @@ class StudioUiTest {
         onNodeWithTag("studio-problem-submit").performScrollTo().performClick()
         onNodeWithTag("studio-problem-solution").performScrollTo().assertIsDisplayed()
         runOnIdle { assertEquals("Deux paires font quatre", controller.problemThinking) }
-        val file = File("build/reports/ui-snapshots/studio-problem-360-result.png")
+        val file = File("build/reports/ui-snapshots/studio-problem-$width-result.png")
         check(file.parentFile.isDirectory || file.parentFile.mkdirs())
         Image.makeFromBitmap(onRoot().captureToImage().asSkiaBitmap()).use { image ->
             image.encodeToData()!!.use { file.writeBytes(it.bytes) }
         }
+        onNodeWithTag("studio-problem-next").performScrollTo().assertIsDisplayed()
+       }
+      }
     }
 
     @Test

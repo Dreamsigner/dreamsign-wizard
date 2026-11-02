@@ -308,9 +308,9 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
                     val learner = message.role != "assistant"
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = if (learner) Arrangement.End else Arrangement.Start) {
                         Surface(
-                            modifier = Modifier.widthIn(max = 680.dp).fillMaxWidth(if (message.quiz != null) 1f else 0.88f),
-                            color = if (message.quiz != null) White else if (learner) ColorStudioLearner else Paper,
-                            border = if (message.quiz != null) androidx.compose.foundation.BorderStroke(1.dp, Concrete) else null,
+                            modifier = Modifier.widthIn(max = 680.dp).fillMaxWidth(if (message.quiz != null || message.problem != null) 1f else 0.88f),
+                            color = if (message.quiz != null || message.problem != null) White else if (learner) ColorStudioLearner else Paper,
+                            border = if (message.quiz != null || message.problem != null) androidx.compose.foundation.BorderStroke(1.dp, Concrete) else null,
                             shape = RoundedCornerShape(14.dp),
                         ) {
                             Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
