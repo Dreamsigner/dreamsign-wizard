@@ -71,6 +71,7 @@ interface StudioController {
     fun surrenderPracticeProblem(messageIndex: Int): Boolean = false
     fun requestDiagnosisConclusion(): Boolean = false
     fun requestGraphExtraction(): Boolean = false
+    fun importNotes(): Boolean = false
     fun acceptGraphProposal(): Boolean = false
     fun discardGraphProposal(): Boolean = false
     fun updateGraphProposition(id: String, statement: String): Boolean = false

@@ -3,7 +3,7 @@ package com.dreamsigner.wizard.ui.studio
 import kotlinx.serialization.Serializable
 
 /** A reference into the current ordered conversation; indices are zero-based. */
-@Serializable data class KnowledgeSource(val sessionId: String, val messageIndex: Int)
+@Serializable data class KnowledgeSource(val sessionId: String, val messageIndex: Int, val documentName: String? = null)
 @Serializable data class KnowledgeProposition(val id: String, val statement: String, val sources: List<KnowledgeSource>)
 @Serializable data class KnowledgeReasoning(val id: String, val premises: List<String>, val conclusion: String, val sources: List<KnowledgeSource>)
 @Serializable data class KnowledgeGraph(val version: Int = 1, val propositions: List<KnowledgeProposition> = emptyList(), val reasonings: List<KnowledgeReasoning> = emptyList()) {

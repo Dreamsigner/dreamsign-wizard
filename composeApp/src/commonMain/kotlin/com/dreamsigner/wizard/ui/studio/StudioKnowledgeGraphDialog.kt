@@ -16,6 +16,7 @@ internal fun StudioKnowledgeGraphDialog(state: StudioState, controller: StudioCo
     var deleteReasoning by remember { mutableStateOf<KnowledgeReasoning?>(null) }
     val canEdit = !state.busy && state.storageError == null && state.graphError == null
     fun sources(values: List<KnowledgeSource>): String = values.joinToString(" ; ") { source ->
+        if (source.documentName != null) return@joinToString "Document : ${source.documentName} (${source.sessionId.takeLast(8)})"
         val goal = state.sessions.firstOrNull { it.id == source.sessionId }?.goal ?: "Séance ${source.sessionId}"
         "$goal — message ${source.messageIndex + 1}"
     }
@@ -34,6 +35,8 @@ internal fun StudioKnowledgeGraphDialog(state: StudioState, controller: StudioCo
                     TextButton(onClick = { result(controller.requestGraphExtraction()) }, enabled = canEdit && state.graphProposal == null && state.selectedId != null) {
                         Text("Extraire les connaissances de cette séance")
                     }
+                    Text("Importer des notes (TXT, Markdown ou PDF texte) envoie leur contenu au fournisseur IA configuré. Les propositions doivent être vérifiées avant acceptation.")
+                    TextButton(onClick = { result(controller.importNotes()) }, enabled = canEdit && state.graphProposal == null && state.selectedId != null) { Text("Choisir des notes à importer") }
                     if (state.busy) Text("Préparation en cours…")
                     state.graphError?.let { Text(it, color = MaterialTheme.colors.error) }
                     if (state.graphError != null) TextButton(onClick = { result(controller.refreshKnowledgeGraph()) }) { Text("Recharger le graphe") }

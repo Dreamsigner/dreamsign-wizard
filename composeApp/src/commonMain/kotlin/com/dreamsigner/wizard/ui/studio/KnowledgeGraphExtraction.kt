@@ -39,7 +39,7 @@ internal object KnowledgeGraphExtraction {
     }
 
     /** Merge exact matches only; ambiguous semantic equivalence is left to the user. */
-    fun propose(graph: KnowledgeGraph, extraction: KnowledgeExtraction, sessionId: String, allowedMessageIndices: Set<Int>): KnowledgeGraphProposal {
+    fun propose(graph: KnowledgeGraph, extraction: KnowledgeExtraction, sessionId: String, allowedMessageIndices: Set<Int>, documentName: String? = null): KnowledgeGraphProposal {
         require(sessionId.isNotBlank())
         graph.validate()
         // Revalidate even if callers construct the value directly instead of parsing it.
@@ -52,7 +52,7 @@ internal object KnowledgeGraphExtraction {
             while ("$prefix$n" in used) n++
             return "$prefix$n"
         }
-        fun provenance(indices: List<Int>) = indices.map { KnowledgeSource(sessionId, it) }
+        fun provenance(indices: List<Int>) = indices.map { KnowledgeSource(sessionId, it, documentName) }
         checked.propositions.forEach { item ->
             val match = propositions.indexOfFirst { it.statement == item.statement }
             val id = if (match >= 0) propositions[match].id else nextId("extracted-p-", propositions.map { it.id }.toSet())

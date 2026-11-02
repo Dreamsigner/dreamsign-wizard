@@ -281,12 +281,16 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
     val activeProblemIndex = session.messages.indexOfLast { it.problem != null && it.problem.result == null }
     val hasOpenProblem = activeProblemIndex >= 0
     val hasOpenExercise = hasOpenQuiz || hasOpenProblem
+    val dockIndex = session.messages.indexOfLast { it.quiz != null || it.problem != null }
+    var dockExpanded by remember(session.id, dockIndex) { mutableStateOf(true) }
     LaunchedEffect(session.id, activeQuizIndex) { showClarification = false }
     LaunchedEffect(diagnosisDraft) { if (diagnosisDraft) { draft = "Peux-tu approfondir le diagnostic de mes prérequis avant de poursuivre le plan ?"; onDiagnosisConsumed() } }
     val messagesState = rememberLazyListState()
     LaunchedEffect(session.id, session.messages.size) {
         if (session.messages.isNotEmpty()) messagesState.animateScrollToItem(session.messages.lastIndex)
     }
+    BoxWithConstraints(Modifier.fillMaxSize()) {
+    val dockMaxHeight = maxHeight * 0.55f
     Column(Modifier.fillMaxSize().padding(horizontal = 20.dp, vertical = 8.dp)) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             TextButton(onClick = onSessions, modifier = Modifier.testTag("studio-sessions-toggle")) { Text("Séances") }
@@ -305,6 +309,7 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
             ) {
                 items(session.messages.size, key = { index -> "${session.id}-$index" }) { index ->
                     val message = session.messages[index]
+                    if (index == dockIndex && message.text.isBlank()) return@items
                     val learner = message.role != "assistant"
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = if (learner) Arrangement.End else Arrangement.Start) {
                         Surface(
@@ -325,7 +330,7 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
                                     else -> message.text
                                 }.let { if (it.startsWith(STUDIO_PRACTICE_ATTEMPT_PREFIX)) "Tentative envoyée" else it }
                                 if (displayText.isNotBlank()) LessonDocument(displayText, typesetMath = true)
-                                message.quiz?.let { quiz ->
+                                message.quiz?.takeIf { index != dockIndex }?.let { quiz ->
                                     val quizDraft = quizDrafts[index] ?: StudioQuizDraft()
                                     StudioQuizCard(
                                         quiz = quiz, answer = message.quizAnswer, draft = quizDraft,
@@ -336,7 +341,7 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
                                         enabled = state.available && !state.busy && state.storageError == null,
                                     )
                                 }
-                                message.problem?.let { problem ->
+                                message.problem?.takeIf { index != dockIndex }?.let { problem ->
                                     val problemDraft = problemDrafts[index] ?: StudioProblemDraft()
                                     StudioProblemCard(problem, problemDraft, onDraftChange = { problemDrafts[index] = it },
                                         onHint = { controller.revealPracticeHint(index) },
@@ -345,6 +350,53 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
                                         onNext = { controller.requestPracticeProblem() },
                                         enabled = state.available && !state.busy && state.storageError == null)
                                 }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (dockIndex >= 0) {
+            val message = session.messages[dockIndex]
+            Surface(
+                modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp).testTag("studio-exercise-dock"),
+                shape = LearningShape, color = White,
+                border = androidx.compose.foundation.BorderStroke(1.dp, Concrete),
+                elevation = 2.dp,
+            ) {
+                Column(Modifier.fillMaxWidth()) {
+                    TextButton(
+                        onClick = { dockExpanded = !dockExpanded },
+                        modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("studio-dock-toggle"),
+                    ) {
+                        Text(
+                            (if (message.quiz != null) "Question" else "Pratique") +
+                                if (dockExpanded) " · Réduire" else " · Reprendre",
+                            modifier = Modifier.fillMaxWidth(), color = Ink, fontWeight = FontWeight.SemiBold,
+                        )
+                    }
+                    if (dockExpanded) {
+                        Divider(color = Concrete)
+                        Column(
+                            Modifier.fillMaxWidth().heightIn(max = dockMaxHeight)
+                                .verticalScroll(rememberScrollState()).padding(14.dp)
+                                .testTag("studio-dock-content"),
+                        ) {
+                            message.quiz?.let { quiz ->
+                                val quizDraft = quizDrafts[dockIndex] ?: StudioQuizDraft()
+                                StudioQuizCard(quiz, message.quizAnswer, quizDraft,
+                                    onDraftChange = { quizDrafts[dockIndex] = it },
+                                    onSubmit = { controller.submitQuiz(dockIndex, quizDraft.selectedIds, quizDraft.dontKnow, quizDraft.thinking, quizDraft.confidence) },
+                                    enabled = state.available && !state.busy && state.storageError == null)
+                            }
+                            message.problem?.let { problem ->
+                                val problemDraft = problemDrafts[dockIndex] ?: StudioProblemDraft()
+                                StudioProblemCard(problem, problemDraft, onDraftChange = { problemDrafts[dockIndex] = it },
+                                    onHint = { controller.revealPracticeHint(dockIndex) },
+                                    onSubmit = { controller.submitPracticeAttempt(dockIndex, problemDraft.answer, problemDraft.thinking) },
+                                    onSurrender = { controller.surrenderPracticeProblem(dockIndex) },
+                                    onNext = { controller.requestPracticeProblem() },
+                                    enabled = state.available && !state.busy && state.storageError == null)
                             }
                         }
                     }
@@ -384,6 +436,7 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
             if (state.busy) TextButton(onClick = controller::cancel, modifier = Modifier.heightIn(min = 48.dp)) { Text("Annuler") }
         }
         else if (state.busy) TextButton(onClick = controller::cancel, modifier = Modifier.heightIn(min = 48.dp)) { Text("Annuler") }
+    }
     }
 }
 
