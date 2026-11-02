@@ -27,7 +27,7 @@ class DesktopNotesImportTest {
             captured = request
             """{"propositions":[{"id":"a","statement":"Une moitié vaut 1/2.","messageIndices":[0]}],"reasonings":[]}"""
         }
-        var controller = DesktopStudioController(file, tutor, { notes })
+        var controller = DesktopStudioController(file, tutor, { listOf(notes) })
         try {
             assertTrue(controller.configure("http://localhost:1234/v1", "model", ""))
             assertTrue(controller.create("Fractions"))
@@ -46,11 +46,55 @@ class DesktopNotesImportTest {
             assertEquals("secret-name.md", controller.state.value.graphProposal!!.graph.propositions.single().sources.single().documentName)
             assertTrue(controller.acceptGraphProposal())
         } finally { controller.close() }
-        controller = DesktopStudioController(file, tutor, { notes })
+        controller = DesktopStudioController(file, tutor, { listOf(notes) })
         try {
             assertEquals("Une moitié vaut 1/2.", controller.state.value.knowledgeGraph.propositions.single().statement)
             assertEquals(null, controller.state.value.graphProposal)
             assertTrue(!Files.readString(file).contains("Une moitié vaut 1/2."))
+        } finally { controller.close() }
+    }
+
+    @Test fun multipleDocumentsHaveDistinctSourcesAndOneReview() = runBlocking {
+        val directory = Files.createTempDirectory("multi-notes")
+        val first = directory.resolve("first.txt").also { Files.writeString(it, "Première note") }
+        val second = directory.resolve("second.md").also { Files.writeString(it, "Deuxième note") }
+        var calls = 0
+        val controller = DesktopStudioController(directory.resolve("studio.json"), StudioTutor { request ->
+            calls++
+            assertTrue(request.history.single().text.contains("DOCUMENT 0"))
+            assertTrue(request.history.single().text.contains("DOCUMENT 1"))
+            assertTrue(!request.history.single().text.contains(directory.toString()))
+            """{"propositions":[{"id":"a","statement":"Un","messageIndices":[0]},{"id":"b","statement":"Deux","messageIndices":[1]}],"reasonings":[]}"""
+        }, { listOf(first, second) })
+        try {
+            assertTrue(controller.configure("http://localhost:1234/v1", "model", ""))
+            assertTrue(controller.create("Objectif"))
+            assertTrue(controller.importNotes())
+            withTimeout(10_000) { while (controller.state.value.busy) delay(10) }
+            assertEquals(1, calls)
+            assertTrue(controller.state.value.knowledgeGraph.propositions.isEmpty())
+            val sources = controller.state.value.graphProposal!!.graph.propositions.map { it.sources.single() }
+            assertEquals(listOf("first.txt", "second.md"), sources.map { it.documentName })
+            assertEquals(2, sources.map { it.sessionId }.distinct().size)
+            assertTrue(controller.acceptGraphProposal())
+            assertEquals(2, controller.state.value.knowledgeGraph.propositions.size)
+        } finally { controller.close() }
+    }
+
+    @Test fun invalidDocumentStopsWholeImportBeforeCallingModel() = runBlocking {
+        val directory = Files.createTempDirectory("invalid-notes")
+        val valid = directory.resolve("valid.txt").also { Files.writeString(it, "Texte") }
+        val invalid = directory.resolve("invalid.txt").also { Files.writeString(it, " ") }
+        var calls = 0
+        val controller = DesktopStudioController(directory.resolve("studio.json"), StudioTutor { calls++; "" }, { listOf(valid, invalid) })
+        try {
+            assertTrue(controller.configure("http://localhost:1234/v1", "model", ""))
+            assertTrue(controller.create("Objectif"))
+            assertTrue(controller.importNotes())
+            withTimeout(10_000) { while (controller.state.value.busy) delay(10) }
+            assertEquals(0, calls)
+            assertEquals(null, controller.state.value.graphProposal)
+            assertTrue(controller.state.value.error != null)
         } finally { controller.close() }
     }
 

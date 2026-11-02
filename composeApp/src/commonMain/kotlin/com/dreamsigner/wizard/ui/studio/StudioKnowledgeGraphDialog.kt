@@ -37,7 +37,7 @@ internal fun StudioKnowledgeGraphDialog(state: StudioState, controller: StudioCo
                     TextButton(onClick = { result(controller.requestGraphExtraction()) }, enabled = canEdit && state.graphProposal == null && state.selectedId != null) {
                         Text("Extraire les connaissances de cette séance")
                     }
-                    Text("Importer des notes (TXT, Markdown ou PDF texte) envoie leur contenu au fournisseur IA configuré. Les propositions doivent être vérifiées avant acceptation.")
+                    Text("Importer jusqu’à 5 notes (TXT, Markdown ou PDF texte, 40 000 caractères au total) envoie leur contenu au fournisseur IA configuré. Une proposition commune doit être vérifiée avant acceptation.")
                     TextButton(onClick = { result(controller.importNotes()) }, enabled = canEdit && state.graphProposal == null && state.selectedId != null) { Text("Choisir des notes à importer") }
                     if (state.busy) Text("Préparation en cours…")
                     state.graphError?.let { Text(it, color = MaterialTheme.colors.error) }
