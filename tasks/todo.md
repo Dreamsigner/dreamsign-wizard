@@ -21,6 +21,7 @@
 - [ ] Ajouter des métadonnées de capacités, contexte et coût uniquement depuis des sources fiables par fournisseur ; filtrer les niveaux de réflexion pris en charge.
 - [x] Ajouter les QCM sélectionnables du Studio IA, le raisonnement et la confiance avant validation, avec correction révélée ensuite.
 - [x] Distinguer les QCM de prédiction et de vérification de compréhension, en conservant les anciens QCM.
+- [x] Présenter les QCM comme une carte de travail unique, avec confiance réglable et une seule validation.
 - [x] Réorganiser le Studio IA : navigation compacte, panneau de séances, réglages dans Paramètres et création de séances Apprendre/Pratique.
 - [ ] Poursuivre la direction visuelle et l'orchestration pédagogique de LearnHarness après vérification de la nouvelle interface.
 

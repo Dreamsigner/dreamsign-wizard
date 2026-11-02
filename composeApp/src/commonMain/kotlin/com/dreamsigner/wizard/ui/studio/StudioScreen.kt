@@ -308,8 +308,9 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
                     val learner = message.role != "assistant"
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = if (learner) Arrangement.End else Arrangement.Start) {
                         Surface(
-                            modifier = Modifier.widthIn(max = 680.dp).fillMaxWidth(0.88f),
-                            color = if (learner) ColorStudioLearner else Paper,
+                            modifier = Modifier.widthIn(max = 680.dp).fillMaxWidth(if (message.quiz != null) 1f else 0.88f),
+                            color = if (message.quiz != null) White else if (learner) ColorStudioLearner else Paper,
+                            border = if (message.quiz != null) androidx.compose.foundation.BorderStroke(1.dp, Concrete) else null,
                             shape = RoundedCornerShape(14.dp),
                         ) {
                             Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -364,12 +365,7 @@ private fun Conversation(state: StudioState, session: StudioSession, controller:
                     modifier = Modifier.testTag("studio-quiz-clarification")) {
                     Text(if (showClarification) "Retour au QCM" else "Clarifier")
                 }
-                if (!showClarification) {
-                    val answerDraft = quizDrafts[activeQuizIndex] ?: StudioQuizDraft()
-                    Button(onClick = { controller.submitQuiz(activeQuizIndex, answerDraft.selectedIds, answerDraft.dontKnow, answerDraft.thinking, answerDraft.confidence) },
-                        enabled = !state.busy && state.storageError == null && (answerDraft.dontKnow || answerDraft.selectedIds.isNotEmpty()) && answerDraft.thinking.length <= 3_000,
-                        modifier = Modifier.heightIn(min = 48.dp).testTag("studio-quiz-submit-dock")) { Text("Valider") }
-                }
+
             }
         }
         if (!hasOpenExercise || showClarification) Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.spacedBy(8.dp)) {

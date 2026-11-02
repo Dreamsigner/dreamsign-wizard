@@ -11,6 +11,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -40,8 +42,7 @@ internal fun StudioQuizCard(
     val selected = answer?.selectedIds ?: draft.selectedIds
     val dontKnow = answer?.dontKnow ?: draft.dontKnow
     Column(modifier.fillMaxWidth().testTag("studio-quiz"), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        Text(if (quiz.type == StudioQuizType.PREDICT) "Prédiction" else "Vérification de compréhension", color = Graphite, style = MaterialTheme.typography.overline, modifier = Modifier.testTag("studio-quiz-type"))
-        Text(if (quiz.type == StudioQuizType.PREDICT) "Prévois le résultat avant de découvrir l’explication." else "Vérifie ce que tu as compris.", color = Graphite, fontSize = 14.sp)
+        Text(if (quiz.type == StudioQuizType.PREDICT) "Prédiction" else "Vérification de compréhension", color = Ink, style = MaterialTheme.typography.subtitle1, fontWeight = FontWeight.SemiBold, modifier = Modifier.testTag("studio-quiz-type"))
         LessonDocument(quiz.question, typesetMath = true)
         Text(if (quiz.multiSelect) "Choisis une ou plusieurs réponses." else "Choisis une réponse.", color = Graphite, fontSize = 14.sp)
         Column(Modifier.selectableGroup(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -73,16 +74,19 @@ internal fun StudioQuizCard(
                 }
             }
             if (!answered) {
-                Row(
-                    Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("studio-quiz-dont-know")
+                Surface(
+                    modifier = Modifier.fillMaxWidth().testTag("studio-quiz-dont-know")
                         .selectable(selected = dontKnow, enabled = enabled, role = Role.RadioButton) {
                             onDraftChange(draft.copy(selectedIds = emptyList(), dontKnow = !dontKnow))
-                        }.padding(horizontal = 12.dp),
-                    verticalAlignment = Alignment.CenterVertically,
+                        },
+                    shape = LearningShape, color = if (dontKnow) Paper else White,
+                    border = BorderStroke(if (dontKnow) 2.dp else 1.dp, if (dontKnow) Ink else Concrete),
                 ) {
-                    RadioButton(dontKnow, onClick = null, enabled = enabled)
-                    Spacer(Modifier.width(8.dp))
-                    Text("Je ne sais pas", color = Ink)
+                    Row(Modifier.heightIn(min = 52.dp).padding(horizontal = 12.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+                        RadioButton(dontKnow, onClick = null, enabled = enabled)
+                        Spacer(Modifier.width(8.dp))
+                        Text("Je ne sais pas", color = Ink)
+                    }
                 }
             }
         }
@@ -98,6 +102,23 @@ internal fun StudioQuizCard(
             Text("Explication", color = Ink, fontWeight = FontWeight.SemiBold)
             LessonDocument(quiz.explanation, typesetMath = true, modifier = Modifier.testTag("studio-quiz-explanation"))
         } else {
+            Divider(color = Concrete)
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                Text("Confiance (facultatif)", color = Ink, fontWeight = FontWeight.SemiBold)
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(draft.confidence?.let { "$it %" } ?: "Non précisée", color = Graphite, fontSize = 13.sp)
+                    if (draft.confidence != null) TextButton(onClick = { onDraftChange(draft.copy(confidence = null)) }, enabled = enabled) { Text("Effacer") }
+                }
+            }
+            Slider(
+                value = (draft.confidence ?: 50).toFloat(),
+                onValueChange = { onDraftChange(draft.copy(confidence = it.toInt())) },
+                valueRange = 0f..100f,
+                enabled = enabled,
+                modifier = Modifier.fillMaxWidth().testTag("studio-quiz-confidence")
+                    .semantics { contentDescription = "Niveau de confiance" },
+                colors = SliderDefaults.colors(thumbColor = ActionRed, activeTrackColor = ActionRed),
+            )
             OutlinedTextField(
                 value = draft.thinking,
                 onValueChange = { onDraftChange(draft.copy(thinking = it)) },
@@ -105,25 +126,13 @@ internal fun StudioQuizCard(
                 modifier = Modifier.fillMaxWidth().testTag("studio-quiz-thinking"),
                 label = { Text("Ton raisonnement (facultatif)") },
                 placeholder = { Text("Explique comment tu as réfléchi…") },
-                minLines = 1, maxLines = 5, shape = LearningShape,
+                minLines = 2, maxLines = 5, shape = LearningShape,
             )
-            var showConfidence by remember { mutableStateOf(false) }
-            Box {
-                OutlinedButton(onClick = { showConfidence = true }, enabled = enabled, modifier = Modifier.testTag("studio-quiz-confidence")) {
-                    Text("Confiance : ${draft.confidence?.let { "$it %" } ?: "non précisée"}")
-                }
-                DropdownMenu(expanded = showConfidence, onDismissRequest = { showConfidence = false }) {
-                    listOf(null, 0, 25, 50, 75, 100).forEach { level ->
-                        DropdownMenuItem(onClick = { onDraftChange(draft.copy(confidence = level)); showConfidence = false }) {
-                            Text(level?.let { "$it %" } ?: "Non précisée")
-                        }
-                    }
-                }
-            }
             Button(
                 onClick = onSubmit,
                 enabled = enabled && (draft.dontKnow || draft.selectedIds.isNotEmpty()) && draft.thinking.length <= 3_000,
                 modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("studio-quiz-submit"),
+                colors = ButtonDefaults.buttonColors(backgroundColor = ActionRed, contentColor = White),
             ) { Text("Valider ma réponse") }
         }
     }

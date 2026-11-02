@@ -5,6 +5,7 @@ package com.dreamsigner.wizard.ui.studio
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.asSkiaBitmap
 import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.*
 import com.dreamsigner.wizard.LearningAppTheme
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -250,6 +251,7 @@ class StudioUiTest {
         onNodeWithTag("studio-request-quiz").assertDoesNotExist()
         onNodeWithTag("studio-quiz-submit").performScrollTo().assertIsNotEnabled()
         onNodeWithTag("studio-quiz-explanation").assertDoesNotExist()
+        onNodeWithTag("studio-quiz-submit-dock").assertDoesNotExist()
         onNodeWithTag("studio-quiz-option-b").performScrollTo().performClick().assertIsSelected()
         onNodeWithTag("studio-quiz-thinking").performScrollTo().performTextInput("Je divise le tout en deux parts égales.")
         onNodeWithTag("studio-quiz-clarification").performClick()
@@ -258,8 +260,7 @@ class StudioUiTest {
         onNodeWithTag("studio-quiz-option-b").performScrollTo().assertIsSelected()
         assertEquals("Je divise le tout en deux parts égales.", onNodeWithTag("studio-quiz-thinking").performScrollTo()
             .fetchSemanticsNode().config[SemanticsProperties.EditableText].text)
-        onNodeWithTag("studio-quiz-confidence").performScrollTo().performClick()
-        onNodeWithText("75 %").performClick()
+        onNodeWithTag("studio-quiz-confidence").performScrollTo().performSemanticsAction(SemanticsActions.SetProgress) { it(75f) }
         onNodeWithTag("studio-quiz-submit").performScrollTo().performClick()
         onNodeWithTag("studio-quiz-option-b").performScrollTo().assertIsSelected()
         assertEquals("Je divise le tout en deux parts égales.", onNodeWithTag("studio-quiz-thinking").performScrollTo()
